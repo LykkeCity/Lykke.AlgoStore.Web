@@ -1,0 +1,36 @@
+<div class="container algo-details-placeholder pt-10 pb-30">
+  <div class="row">
+
+    <div class="algo-details">
+      <div class="col-xs-3">
+        <span class="heading-sm">{{algo.Name}}</span>
+      </div>
+      <div class="col-xs-4">
+        <span class="text-lg">{{algo.Description}}</span>
+      </div>
+      <div class="col-xs-5 text-right">
+        <app-commands [algo]="algo"></app-commands>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row gray-bg">
+  <div class="container">
+    <div class="row">
+      <div class="col-xs-12">
+        <h2 class="text-lg pt-10 pb-10">Terminal</h2>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row terminal">
+  <div class="container">
+    <div class="row">
+      <div class="col-xs-12">
+        <textarea placeholder="Log goes here..." class="mt-30" [ngModel]="log"></textarea>
+      </div>
+    </div>
+  </div>
+</div>

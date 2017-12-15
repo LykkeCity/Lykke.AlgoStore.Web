@@ -1,0 +1,23 @@
+.algo-list-placeholder {
+    .algo-list {
+        .mat-header-row {
+            background-color: $gray;
+
+            a {
+                color: $dark;
+            }
+        }
+        .commands {
+            margin-bottom: 0;
+            padding-left: 0;
+
+            > li {
+                a {
+                    margin-left: 0;
+                    margin-right: 10px;
+                    
+                }
+            }
+        }
+    }
+}

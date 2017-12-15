@@ -1,0 +1,117 @@
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";
+/* You can add global styles to this file, and also import other style files */
+@import "./assets/scss/bootstrap_variables";
+@import "../node_modules/bootstrap-sass/assets/stylesheets/bootstrap";
+@import "./assets/scss/colors";
+@import "./assets/scss/fonts";
+@import "./assets/scss/icons";
+@import "./assets/scss/mixins";
+
+// COMPONENTS
+
+@import "./assets/scss/components/header";
+@import "./assets/scss/components/footer";
+@import "./assets/scss/components/curtain";
+@import "./assets/scss/components/buttons";
+@import "./assets/scss/components/header_collapse";
+@import "./assets/scss/components/tables";
+@import "./assets/scss/components/tabs";
+@import "./assets/scss/components/popup";
+@import "./assets/scss/components/spinner";
+@import "./assets/scss/components/dropdown";
+@import "./assets/scss/components/custom-select";
+@import "./assets/scss/components/lists";
+@import "./assets/scss/components/forms";
+@import "./assets/scss/components/typings";
+@import "./assets/scss/components/filter";
+@import "./assets/scss/components/commands";
+
+// LAYOUTS
+@import "assets/scss/layouts/general";
+@import "assets/scss/layouts/button_filters";
+@import "assets/scss/layouts/settings.scss";
+@import "assets/scss/layouts/home.scss";
+@import "assets/scss/layouts/store.scss";
+@import "assets/scss/layouts/algo_details.scss";
+@import "assets/scss/layouts/algo_list.scss";
+
+html,
+body {
+  padding: 0;
+  margin:0;
+  height: 100%;
+}
+
+html {
+  position: relative;
+}
+
+body {
+  /*padding-bottom: 150px;*/
+  min-height: 100%;
+}
+.table {
+  display: table;
+}
+
+.table-cell {
+  display: table-cell;
+}
+
+.disabled {
+  opacity: .5;
+  pointer-events: none;
+}
+
+.vertical-align {
+  display: flex;
+  align-items: center;
+}
+
+.mt-20 {
+  margin-top: 20px;
+}
+.mt-83 {
+  margin-top: 83px;
+}
+.mb-75 {
+  margin-bottom: 75px;
+}
+.mb-10 {
+  margin-bottom: 10px;
+}
+.lkk-icon-wrapper {
+  border-radius: 6px;
+  border: 1px solid #eee;
+  display: inline-block;
+  width: 50px;
+  height: 50px;
+  img {
+    width: 100%;
+    height: auto;
+  }
+}
+.ss-content {
+  width: calc(100% + 17px);
+  padding: 0 0 0 0;
+  right: 0;
+}
+.ss-scroll {
+  background: #3f4d60;
+  width: 4px;
+  opacity: 0.3;
+}
+.ss-container:hover .ss-scroll {
+  opacity: 0.3;
+}
+
+@for $i from 1 through 50 {
+  .mt-#{$i*5} { margin-top: $i * 5px}
+  .mb-#{$i*5} { margin-bottom: $i * 5px}
+  .ml-#{$i*5} { margin-left: $i * 5px}
+  .mr-#{$i*5} { margin-right: $i * 5px}
+  .pt-#{$i*5} { padding-top: $i * 5px}
+  .pb-#{$i*5} { padding-bottom: $i * 5px}
+  .pr-#{$i*5} { padding-right: $i * 5px}
+  .pl-#{$i*5} { padding-left: $i * 5px}
+}
