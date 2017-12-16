@@ -12,28 +12,58 @@ import { NotificationsService } from 'angular2-notifications';
 export class AlgoDetailsComponent implements OnInit {
   algo: Algo;
   log: string;
+  subscriptions: Array<{event, id}>;
+  logTimeout;
 
   constructor(private storeService: StoreService, private eventService: EventService, private notificationService: NotificationsService) { 
     
     this.algo = this.storeService.activeAlgo;
 
     this.storeService.algoGetLog(this.algo.Id);
-
-    this.eventService.subscribeToEvent('algo:test:started', this.onAlgoStatusChanged.bind(this));
-    this.eventService.subscribeToEvent('algo:test:stopped', this.onAlgoStatusChanged.bind(this));
-    this.eventService.subscribeToEvent('algo:delete:done', this.onAlgoStatusChanged.bind(this));
-
-    this.eventService.subscribeToEvent('algo:log:done',  this.onAlgoLogDone.bind(this));
-    this.eventService.subscribeToEvent('algo:log:error',  this.onAlgoLogError.bind(this));
+    this.subscriptions = new Array();
+    this.logTimeout = null;
   }
 
   ngOnInit() {
-   
+    this.subscriptions.push({
+      event: 'algo:test:started',
+      id: this.eventService.subscribeToEvent('algo:test:started', this.onAlgoStatusChanged.bind(this))
+    });
+    this.subscriptions.push({
+      event: 'algo:test:stopped',
+      id: this.eventService.subscribeToEvent('algo:test:stopped', this.onAlgoStatusChanged.bind(this))
+    });
+    this.subscriptions.push({
+      event: 'algo:delete:done',
+      id: this.eventService.subscribeToEvent('algo:delete:done', this.onAlgoStatusChanged.bind(this))
+    });
+
+    this.subscriptions.push({
+      event: 'algo:log:done',
+      id: this.eventService.subscribeToEvent('algo:log:done',  this.onAlgoLogDone.bind(this))
+    });
+    this.subscriptions.push({
+      event: 'algo:log:error',
+      id: this.eventService.subscribeToEvent('algo:log:error',  this.onAlgoLogError.bind(this))
+    });
+  }
+
+  ngOnDestroy() {
+    clearTimeout(this.logTimeout);
+    this.subscriptions.forEach(value => this.eventService.unsubscribeToEvent(value.event, value.id));
   }
 
   onAlgoLogDone(log){
-    this.storeService.algoGetLog(this.algo.Id);
     this.log = log.message;
+
+    // Setting a timeout since a successful execution of algoGetLog will result
+    // in this method getting invoked again. (See ngOnInit)
+    this.logTimeout = setTimeout(
+      () => {
+        this.storeService.algoGetLog(this.algo.Id);
+      },
+      5000
+    );
   }
 
   onAlgoLogError(error){
