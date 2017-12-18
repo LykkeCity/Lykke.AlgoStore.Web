@@ -17,6 +17,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System.IO;
+using Microsoft.AspNetCore.Http.Internal;
 
 namespace Lykke.Service.AlgoStoreWeb
 {
@@ -83,7 +84,7 @@ namespace Lykke.Service.AlgoStoreWeb
 
                 app.Use(async (context, next) =>
                 {
-                    //context.Request.EnableRewind();
+                    context.Request.EnableRewind();
 
                     await next();
 
