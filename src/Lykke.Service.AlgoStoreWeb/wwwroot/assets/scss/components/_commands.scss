@@ -1,0 +1,52 @@
+.commands {
+    >li {
+        list-style: none;
+        display: inline-block;
+      a {
+        background-image: url('assets/img/algo-details/buttons_sprite.png');
+        background-repeat: no-repeat;
+        display: block;
+        width: 25px;
+        height: 25px;
+        padding: 0;
+        margin-left: 10px;
+        &:hover {
+          background-color: transparent;
+        }
+        &.stop {
+          &:hover,
+          &.active {
+            background-position-y: -25px;
+          }
+        }
+        &.UNKNOWN, &.STOPPED, &.DEPLOYED {
+          background-position-y: -50px;
+          &:hover,
+          &.active {
+            background-position-y: -75px;
+          }
+        }
+        &.test {
+          background-position-y: -100px;
+          &:hover,
+          &.active {
+            background-position-y: -125px;
+          }
+        }
+        &.edit {
+          background-position-y: -150px;
+          &:hover,
+          &.active {
+            background-position-y: -175px;
+          }
+        }
+        &.delete {
+          background-position-y: -200px;
+          &:hover,
+          &.active {
+            background-position-y: -225px;
+          }
+        }
+      }
+    }
+  }
