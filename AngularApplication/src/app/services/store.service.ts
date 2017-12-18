@@ -41,6 +41,8 @@ export class StoreService extends CrudService {
     this.eventService.addEvent('algo:delete:error');
     this.eventService.addEvent('algo:log:done');
     this.eventService.addEvent('algo:log:error');
+    this.eventService.addEvent('algo:taillog:done');
+    this.eventService.addEvent('algo:taillog:error');
   }
 
   // algo endpoints
@@ -170,6 +172,21 @@ export class StoreService extends CrudService {
         this.eventService.emitEvent('algo:log:error', {message: err.error.message});
       } else {
         this.eventService.emitEvent('algo:log:error', {message: err.error});
+      }
+    });
+  }
+
+  algoGetTailLog(algoId) {
+    this.get(`/v1/management/test/tailLog?AlgoId=${algoId}&Tail=1000`)
+    .subscribe((res) => {
+
+      this.eventService.emitEvent('algo:taillog:done', {message: res.Log});
+
+    }, (err: HttpErrorResponse) => {
+      if (err.error instanceof Error) {
+        this.eventService.emitEvent('algo:taillog:error', {message: err.error.message});
+      } else {
+        this.eventService.emitEvent('algo:taillog:error', {message: err.error});
       }
     });
   }

@@ -19,7 +19,7 @@ export class AlgoDetailsComponent implements OnInit {
     
     this.algo = this.storeService.activeAlgo;
 
-    this.storeService.algoGetLog(this.algo.Id);
+    this.storeService.algoGetTailLog(this.algo.Id);
     this.subscriptions = new Array();
     this.logTimeout = null;
   }
@@ -39,12 +39,12 @@ export class AlgoDetailsComponent implements OnInit {
     });
 
     this.subscriptions.push({
-      event: 'algo:log:done',
-      id: this.eventService.subscribeToEvent('algo:log:done',  this.onAlgoLogDone.bind(this))
+      event: 'algo:taillog:done',
+      id: this.eventService.subscribeToEvent('algo:taillog:done',  this.onAlgoLogDone.bind(this))
     });
     this.subscriptions.push({
-      event: 'algo:log:error',
-      id: this.eventService.subscribeToEvent('algo:log:error',  this.onAlgoLogError.bind(this))
+      event: 'algo:taillog:error',
+      id: this.eventService.subscribeToEvent('algo:taillog:error',  this.onAlgoLogError.bind(this))
     });
   }
 

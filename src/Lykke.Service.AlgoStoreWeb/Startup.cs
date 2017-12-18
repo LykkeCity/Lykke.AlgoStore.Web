@@ -16,6 +16,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using System.IO;
 
 namespace Lykke.Service.AlgoStoreWeb
 {
@@ -78,6 +79,22 @@ namespace Lykke.Service.AlgoStoreWeb
                     builder.AllowAnyOrigin();
                     builder.AllowAnyHeader();
                     builder.AllowAnyMethod();
+                });
+
+                app.Use(async (context, next) =>
+                {
+                    //context.Request.EnableRewind();
+
+                    await next();
+
+                    if (context.Response.StatusCode == 404
+                        && !Path.HasExtension(context.Request.Path.Value)
+                        && !context.Request.Path.Value.StartsWith("/api", StringComparison.InvariantCulture))
+                    {
+                        context.Request.Path = "/index.html";
+                        context.Response.StatusCode = 200;
+                        await next();
+                    }
                 });
 
                 if (env.IsDevelopment())
