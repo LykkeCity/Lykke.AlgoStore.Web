@@ -3,6 +3,7 @@ import { StoreService } from '../../services/store.service';
 import { Algo } from '../../models/algo.interface';
 import { EventService } from '../../services/event.service';
 import { NotificationsService } from 'angular2-notifications';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-algo-detail',
@@ -15,7 +16,11 @@ export class AlgoDetailsComponent implements OnInit {
   subscriptions: Array<{event, id}>;
   logTimeout;
 
-  constructor(private storeService: StoreService, private eventService: EventService, private notificationService: NotificationsService) { 
+  constructor(
+    private storeService: StoreService, 
+    private eventService: EventService, 
+    private router: Router,
+    private notificationService: NotificationsService) { 
     
     this.algo = this.storeService.activeAlgo;
 
@@ -35,7 +40,7 @@ export class AlgoDetailsComponent implements OnInit {
     });
     this.subscriptions.push({
       event: 'algo:delete:done',
-      id: this.eventService.subscribeToEvent('algo:delete:done', this.onAlgoStatusChanged.bind(this))
+      id: this.eventService.subscribeToEvent('algo:delete:done', this.onDeleteDone.bind(this))
     });
 
     this.subscriptions.push({
@@ -60,7 +65,7 @@ export class AlgoDetailsComponent implements OnInit {
     // in this method getting invoked again. (See ngOnInit)
     this.logTimeout = setTimeout(
       () => {
-        this.storeService.algoGetLog(this.algo.Id);
+        this.storeService.algoGetTailLog(this.algo.Id);
       },
       5000
     );
@@ -70,8 +75,12 @@ export class AlgoDetailsComponent implements OnInit {
     this.notificationService.error('Error', error.ErrorMessage);
   }
 
+  onDeleteDone(){
+    this.router.navigate(['store/algo-list']);
+  }
+
   onAlgoStatusChanged(){
-    this.storeService.algoGetLog(this.algo.Id);
+    this.storeService.algoGetTailLog(this.algo.Id);
   }
 
 }
