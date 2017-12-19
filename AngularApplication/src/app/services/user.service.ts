@@ -9,15 +9,13 @@ import { UserData } from '../models/userdata.interface';
 @Injectable()
 export class UserService extends CrudService {
 
-  _userData: BehaviorSubject<UserData> = <BehaviorSubject<UserData>>new BehaviorSubject({});
+  _userData = new BehaviorSubject<UserData>(null);
   dataStore: UserData;
 
-  public userData: Observable<any>;
-
+  public userData = this._userData.asObservable();
 
   constructor(http: HttpClient, notificationService: NotificationsService) {
     super(http, notificationService);
-    this.userData = this._userData.asObservable();
     //this.getUserInfo();
   }
 
