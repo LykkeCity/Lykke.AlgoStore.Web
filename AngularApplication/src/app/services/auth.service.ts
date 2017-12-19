@@ -23,9 +23,9 @@ export class AuthService {
 
     this.localAuthUrl = environment.authUrl;
     this.authenticationUrl = environment.apiAuthUrl + '/connect/authorize' +
-      '?client_id=' + environment.applicationId +
+      '?client_id=' + encodeURIComponent(environment.applicationId) +
       '&response_type=code' +
-      '&redirect_uri=' + environment.redirectUrl;
+      '&redirect_uri=' + encodeURIComponent(environment.redirectUrl);
   }
 
   getAccessToken(code) {
