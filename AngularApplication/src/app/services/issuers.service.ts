@@ -3,7 +3,7 @@ import { CrudService } from './crud.service';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Observable } from 'rxjs/Observable';
-import { NotificationsService } from 'angular2-notifications/dist';
+import { NotificationsService } from 'angular2-notifications';
 import { Issuers } from '../models/issuers.interface';
 
 @Injectable()
