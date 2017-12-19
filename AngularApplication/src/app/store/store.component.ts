@@ -1,8 +1,10 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { StoreService } from '../services/store.service';
+import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { MatStepper } from '@angular/material';
 import { Router } from '@angular/router';
+import { Subscription } from 'rxjs/Subscription';
+
+import { StoreService } from '../services/store.service';
 import { Algo } from '../models/algo.interface';
 import { Language } from '../models/language.enum';
 import { EventService } from '../services/event.service';
@@ -12,7 +14,7 @@ import { EventService } from '../services/event.service';
   templateUrl: './store.component.html',
   styleUrls: ['./store.component.scss']
 })
-export class StoreComponent implements OnInit {
+export class StoreComponent implements OnInit, OnDestroy {
   hasDeploymentErrors: boolean;
   file: FormData;
   fileName: any;
@@ -31,15 +33,17 @@ export class StoreComponent implements OnInit {
   @ViewChild('fileInput') fileInput;
   @ViewChild('stepper') stepper: MatStepper;
 
+  private subscriptions: Subscription[] = [];
+
   constructor(private storeService: StoreService,
     private eventService: EventService,
     private router: Router,
     private formBuilder: FormBuilder) {
-     
+
     }
 
   ngOnInit() {
-   
+
     this.secondFormGroup = this.formBuilder.group({
       secondCtrl: ['', Validators.required]
     });
@@ -51,23 +55,29 @@ export class StoreComponent implements OnInit {
 
     this.storeService.algoGetAll();
 
-    this.storeService.algos.subscribe(result => {
-      this.algos = result;
+    this.subscriptions.push(
+      this.storeService.algos.subscribe(result => {
+        this.algos = result;
 
-      console.log('this.storeService.activeAlgo: '+ this.storeService.activeAlgo);
-      console.log("this.storeService.mode: "+ this.storeService.mode);
-      console.log('this.algos.length: ' + this.algos.length);
+        console.log('this.storeService.activeAlgo: '+ this.storeService.activeAlgo);
+        console.log("this.storeService.mode: "+ this.storeService.mode);
+        console.log('this.algos.length: ' + this.algos.length);
 
-      if (this.storeService.mode != 'create' && this.algos.length > 0) {
-        this.router.navigate(["store/algo-list"]);
-      } else {
-        //this.storeService.mode = null;
-        this.showUploadSection = !this.hasFile;
-      }
-    });
+        if (this.storeService.mode != 'create' && this.algos.length > 0) {
+          this.router.navigate(["store/algo-list"]);
+        } else {
+          //this.storeService.mode = null;
+          this.showUploadSection = !this.hasFile;
+        }
+      })
+    );
 
     this.eventService.subscribeToEvent('algo:deployment:done', this.onAlgoDeployed.bind(this));
     this.eventService.subscribeToEvent('algo:deployment:error', this.onAlgoDeploymentError.bind(this));
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
   onAlgoDeployed(){
