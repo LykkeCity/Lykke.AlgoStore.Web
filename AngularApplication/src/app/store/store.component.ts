@@ -24,7 +24,7 @@ export class StoreComponent implements OnInit, OnDestroy {
   secondFormGroup: FormGroup;
   updateFormGroup: FormGroup;
   hasFile: boolean;
-  showProgress: boolean = true;
+  showProgress = true;
 
   Language: any = Language;
 
@@ -59,14 +59,14 @@ export class StoreComponent implements OnInit, OnDestroy {
       this.storeService.algos.subscribe(result => {
         this.algos = result;
 
-        console.log('this.storeService.activeAlgo: '+ this.storeService.activeAlgo);
-        console.log("this.storeService.mode: "+ this.storeService.mode);
+        console.log('this.storeService.activeAlgo: ' + this.storeService.activeAlgo);
+        console.log('this.storeService.mode: ' + this.storeService.mode);
         console.log('this.algos.length: ' + this.algos.length);
 
-        if (this.storeService.mode != 'create' && this.algos.length > 0) {
-          this.router.navigate(["store/algo-list"]);
+        if (this.storeService.mode !== 'create' && this.algos.length > 0) {
+          this.router.navigate(['store/algo-list']);
         } else {
-          //this.storeService.mode = null;
+          // this.storeService.mode = null;
           this.showUploadSection = !this.hasFile;
         }
       })
@@ -80,12 +80,12 @@ export class StoreComponent implements OnInit, OnDestroy {
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
-  onAlgoDeployed(){
+  onAlgoDeployed() {
     this.showProgress = false;
     this.stepper.next();
   }
 
-  onAlgoDeploymentError(message){
+  onAlgoDeploymentError(message) {
     this.showProgress = false;
     this.hasDeploymentErrors = true;
   }
@@ -115,7 +115,7 @@ export class StoreComponent implements OnInit, OnDestroy {
   }
 
   initiateUpload(e) {
-    let fileInput = document.querySelector('input[type="file"]') as HTMLElement;
+    const fileInput = document.querySelector('input[type="file"]') as HTMLElement;
     fileInput.click();
   }
 
@@ -134,10 +134,10 @@ export class StoreComponent implements OnInit, OnDestroy {
 
     if (this.updateFormGroup.controls.name.value) {
 
-      let algo = {
+      const algo = {
         Name: this.updateFormGroup.controls.name.value,
         Description: this.updateFormGroup.controls.description.value
-      };
+     };
 
       this.storeService.algoCreateDetails(algo, this.file);
       this.stepper.next();
@@ -151,6 +151,6 @@ export class StoreComponent implements OnInit, OnDestroy {
   }
 
   showListOfAlgos() {
-    this.router.navigate(["store/algo-list"]);
+    this.router.navigate(['store/algo-list']);
   }
 }

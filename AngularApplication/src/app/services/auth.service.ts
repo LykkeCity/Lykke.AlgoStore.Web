@@ -74,7 +74,8 @@ export class AuthService {
       'Authorization': data.token_type + ' ' + data.access_token
     };
 
-    this.http.get(environment.apiAuthUrl + '/getlykkewallettoken', { headers }).subscribe((response: Response) => this.authenticate(response));
+    this.http.get(environment.apiAuthUrl + '/getlykkewallettoken', { headers })
+      .subscribe((response: Response) => this.authenticate(response));
   }
 
   setToken(data) {

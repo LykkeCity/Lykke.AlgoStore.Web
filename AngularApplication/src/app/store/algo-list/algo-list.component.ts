@@ -1,4 +1,4 @@
-import {Component, ViewChild, OnInit, ChangeDetectorRef, OnDestroy} from '@angular/core';
+import {Component, ViewChild, OnInit, ChangeDetectorRef, OnDestroy, AfterViewInit} from '@angular/core';
 import {MatPaginator, MatTableDataSource} from '@angular/material';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
@@ -13,7 +13,7 @@ import { EventService } from '../../services/event.service';
   templateUrl: './algo-list.component.html',
   styleUrls: ['./algo-list.component.scss']
 })
-export class AlgoListComponent implements OnInit, OnDestroy {
+export class AlgoListComponent implements OnInit, AfterViewInit, OnDestroy {
 
   displayedColumns = ['Name', 'Description', 'Status', 'Actions'];
   dataSource = new MatTableDataSource<Algo>();
@@ -38,7 +38,7 @@ export class AlgoListComponent implements OnInit, OnDestroy {
     );
   }
 
-  ngOnInit(){
+  ngOnInit() {
     this.eventService.subscribeToEvent('algo:test:started', this.onAlgoStatusChanged.bind(this));
     this.eventService.subscribeToEvent('algo:test:stopped', this.onAlgoStatusChanged.bind(this));
     this.eventService.subscribeToEvent('algo:delete:done', this.onAlgoStatusChanged.bind(this));
@@ -56,7 +56,7 @@ export class AlgoListComponent implements OnInit, OnDestroy {
     this.storeService.activeAlgo = null;
     this.storeService.mode = 'create';
     this.storeService._algos.next([]);
-    this.router.navigate(['store'])
+    this.router.navigate(['store']);
   }
 
   details(algo: Algo) {
@@ -65,7 +65,7 @@ export class AlgoListComponent implements OnInit, OnDestroy {
     return false;
   }
 
-  onAlgoStatusChanged(){
+  onAlgoStatusChanged() {
     this.storeService.algoGetAll();
   }
 }

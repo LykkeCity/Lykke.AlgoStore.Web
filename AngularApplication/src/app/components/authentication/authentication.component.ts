@@ -26,10 +26,10 @@ export class AuthenticationComponent implements OnInit, OnDestroy {
           this.authService.getAccessToken(params.code);
         } else if (!this.authService._isAuthenticated) {
           // TODO return to SSO
-          if(["/", "/home"].includes(this.router.url)) {
+          if (['/', '/home'].includes(this.router.url)) {
             this.router.navigate(['home']);
-          }else{
-            this.router.navigate(["store"]);
+          } else {
+            this.router.navigate(['store']);
           }
         }
       })

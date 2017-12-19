@@ -6,4 +6,4 @@ export interface PopupAlgoConfig {
     btnCancelText?: string;
     btnConfirmText?: string;
   }
-  
+

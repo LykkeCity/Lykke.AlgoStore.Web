@@ -11,7 +11,7 @@ export class SiteLayoutComponent implements OnInit {
 
   options: object;
 
-  constructor(private idleService: IdleService) { 
+  constructor(private idleService: IdleService) {
     this.options = {
       timeOut: 2800,
       clickToClose: true,

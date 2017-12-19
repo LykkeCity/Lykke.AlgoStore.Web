@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { EventService } from '../../services/event.service';
-import { SuccessMessageConfig } from "../../models/successConfig.interface";
+import { SuccessMessageConfig } from '../../models/successConfig.interface';
 import { Location } from '@angular/common';
 
 @Component({
@@ -8,7 +8,7 @@ import { Location } from '@angular/common';
   templateUrl: './form-success.component.html',
   styleUrls: ['./form-success.component.scss']
 })
-export class FormSuccessComponent implements OnInit, OnDestroy{
+export class FormSuccessComponent implements OnInit, OnDestroy {
   _showMessage: boolean;
   messageConfig: SuccessMessageConfig;
 

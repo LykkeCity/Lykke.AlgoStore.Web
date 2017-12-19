@@ -16,7 +16,7 @@ export class UserService extends CrudService {
 
   constructor(http: HttpClient, notificationService: NotificationsService) {
     super(http, notificationService);
-    //this.getUserInfo();
+    // this.getUserInfo();
   }
 
   getUserInfo() {

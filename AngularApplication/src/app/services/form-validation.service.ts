@@ -19,7 +19,7 @@ export class FormValidationService {
     // RFC 2822 compliant regex
     if (control && (control.value == null || control.value.length === 0 )) {
       return null;
-    } else if (control.value && control.value.match(/[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/)) {
+    } else if (control.value && control.value.match(/[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/)) { // tslint:disable-line max-line-length
       return null;
     } else {
       return { 'invalidEmailAddress': true };
@@ -47,7 +47,7 @@ export class FormValidationService {
   // }
 
   static passwordCompareValidator(control) {
-    if (control._parent && control._parent.controls.password.value && control._parent.controls.password.value === control._parent.controls.passwordConfirm.value) {
+    if (control._parent && control._parent.controls.password.value && control._parent.controls.password.value === control._parent.controls.passwordConfirm.value) { // tslint:disable-line max-line-length
       return null;
     } else {
       return { 'invalidCompare': true };

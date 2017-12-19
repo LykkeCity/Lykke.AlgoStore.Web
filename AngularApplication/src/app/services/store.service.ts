@@ -71,7 +71,7 @@ export class StoreService extends CrudService {
     this.post('/v1/clientData/metadata', algo)
       .subscribe((data: any) => {
 
-        if(!file) {
+        if (!file) {
           this.eventService.emitEvent('algo:test:updated');
           return false;
         }
@@ -79,7 +79,7 @@ export class StoreService extends CrudService {
         this.algosStore = data;
         this._algos.next([data]);
 
-        let formData = new FormData();
+        const formData = new FormData();
 
         formData.append('Data', file);
         formData.append('AlgoId', data.Id);
@@ -90,7 +90,7 @@ export class StoreService extends CrudService {
           .subscribe((res) => {
 
             this.post('/v1/management/deploy/binary', {AlgoId: data.Id})
-            .subscribe((res) => {
+            .subscribe(() => {
               this.eventService.emitEvent('algo:deployment:done');
 
             }, (err: HttpErrorResponse) => {
@@ -118,7 +118,7 @@ export class StoreService extends CrudService {
       });
   }
 
-  algoStart(algoId){
+  algoStart(algoId) {
     this.post('/v1/management/test/start', {AlgoId: algoId})
     .subscribe((res) => {
       this.eventService.emitEvent('algo:test:started');
@@ -132,7 +132,7 @@ export class StoreService extends CrudService {
     });
   }
 
-  algoStop(algoId){
+  algoStop(algoId) {
     this.post('/v1/management/test/stop', {AlgoId: algoId})
     .subscribe((res) => {
       this.eventService.emitEvent('algo:test:stopped');
@@ -146,7 +146,7 @@ export class StoreService extends CrudService {
     });
   }
 
-  algoDelete(algo: Algo){
+  algoDelete(algo: Algo) {
     this.post('/v1/clientData/metadata/cascadeDelete', algo)
     .subscribe((res) => {
       this.eventService.emitEvent('algo:delete:done', {algoId: algo.Id});
