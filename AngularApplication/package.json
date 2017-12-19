@@ -9,7 +9,7 @@
     "build:stage": "ng build --env=stage",
     "build": "ng build",
     "test": "ng test",
-    "lint": "ng lint",
+    "lint": "ng lint --type-check",
     "e2e": "ng e2e",
     "start:nginx": "docker-compose up -d --build",
     "stop:nginx": "docker-compose down ",
