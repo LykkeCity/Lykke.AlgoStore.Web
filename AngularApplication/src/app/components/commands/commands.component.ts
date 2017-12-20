@@ -20,8 +20,8 @@ export class CommandsComponent implements OnInit {
   Status: any = Status;
 
   constructor(
-    private storeService: StoreService, 
-    private eventService: EventService, 
+    private storeService: StoreService,
+    private eventService: EventService,
     private notificationService: NotificationsService,
     private router: Router) {
 
@@ -35,7 +35,7 @@ export class CommandsComponent implements OnInit {
 
   doCommand(command?: Command) {
     if (!command) {
-      if (this.algo.Status == Status.DEPLOYED || this.algo.Status == Status.UNKNOWN || this.algo.Status == Status.STOPPED) {
+      if (this.algo.Status === Status.DEPLOYED || this.algo.Status === Status.UNKNOWN || this.algo.Status === Status.STOPPED) {
         this.storeService.algoStart(this.algo.Id);
       } else {
         this.storeService.algoStop(this.algo.Id);
@@ -44,7 +44,7 @@ export class CommandsComponent implements OnInit {
       switch (command) {
         case Command.Edit:
             this.storeService.activeAlgo = this.algo;
-            this.router.navigate(["store/algo-edit"]);
+            this.router.navigate(['store/algo-edit']);
           break;
 
         case Command.Delete:

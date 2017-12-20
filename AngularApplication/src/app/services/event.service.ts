@@ -20,13 +20,11 @@ export class EventService  {
     return subId;
   }
 
-  unsubscribeToEvent(eventName , subId)
-  {
+  unsubscribeToEvent(eventName , subId) {
     this.events[eventName].subscriptions[subId].unsubscribe();
   }
 
-  emitEvent(eventName, params = {} )
-  {
+  emitEvent(eventName, params = {} ) {
     this.events[eventName].event.emit(params);
   }
 }

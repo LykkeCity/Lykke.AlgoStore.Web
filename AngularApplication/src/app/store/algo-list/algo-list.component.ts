@@ -1,8 +1,10 @@
-import {Component, ViewChild, OnInit, ChangeDetectorRef} from '@angular/core';
+import {Component, ViewChild, OnInit, ChangeDetectorRef, OnDestroy, AfterViewInit} from '@angular/core';
 import {MatPaginator, MatTableDataSource} from '@angular/material';
+import { Router } from '@angular/router';
+import { Subscription } from 'rxjs/Subscription';
+
 import { StoreService } from '../../services/store.service';
 import { Algo } from '../../models/algo.interface';
-import { Router } from '@angular/router';
 import { EventService } from '../../services/event.service';
 
 
@@ -11,7 +13,7 @@ import { EventService } from '../../services/event.service';
   templateUrl: './algo-list.component.html',
   styleUrls: ['./algo-list.component.scss']
 })
-export class AlgoListComponent implements OnInit  {
+export class AlgoListComponent implements OnInit, AfterViewInit, OnDestroy {
 
   displayedColumns = ['Name', 'Description', 'Status', 'Actions'];
   dataSource = new MatTableDataSource<Algo>();
@@ -19,20 +21,24 @@ export class AlgoListComponent implements OnInit  {
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
+  private subscriptions: Subscription[] = [];
+
   constructor(
-    private storeService: StoreService, 
-    private eventService: EventService, 
+    private storeService: StoreService,
+    private eventService: EventService,
     private router: Router) {
 
     this.storeService.algoGetAll();
 
-    this.storeService.algos.subscribe(result => {
+    this.subscriptions.push(
+      this.storeService.algos.subscribe(result => {
         this.dataSource.data = result;
         this.showAlgoList = result.length > 0 ? true : false;
-    });
+      })
+    );
   }
 
-  ngOnInit(){
+  ngOnInit() {
     this.eventService.subscribeToEvent('algo:test:started', this.onAlgoStatusChanged.bind(this));
     this.eventService.subscribeToEvent('algo:test:stopped', this.onAlgoStatusChanged.bind(this));
     this.eventService.subscribeToEvent('algo:delete:done', this.onAlgoStatusChanged.bind(this));
@@ -42,11 +48,15 @@ export class AlgoListComponent implements OnInit  {
     this.dataSource.paginator = this.paginator;
   }
 
+  ngOnDestroy() {
+    this.subscriptions.forEach(subscription => subscription.unsubscribe());
+  }
+
   createNewAlgo() {
     this.storeService.activeAlgo = null;
     this.storeService.mode = 'create';
     this.storeService._algos.next([]);
-    this.router.navigate(['store'])
+    this.router.navigate(['store']);
   }
 
   details(algo: Algo) {
@@ -55,7 +65,7 @@ export class AlgoListComponent implements OnInit  {
     return false;
   }
 
-  onAlgoStatusChanged(){
+  onAlgoStatusChanged() {
     this.storeService.algoGetAll();
   }
 }

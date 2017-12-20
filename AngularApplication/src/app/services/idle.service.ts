@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
 import { EventService } from './event.service';
 import {Idle, DEFAULT_INTERRUPTSOURCES} from '@ng-idle/core';
-import { environment } from '../../environments/environment'
+import { environment } from '../../environments/environment';
 import { AuthService } from './auth.service';
 import { PopupConfig } from '../models/popup.interface';
 import { Router } from '@angular/router';
 
 @Injectable()
-export class IdleService{
+export class IdleService {
 
   constructor(private idle: Idle,
               private authService: AuthService,
@@ -31,7 +31,7 @@ export class IdleService{
       this.eventService.emitEvent('popup:close');
 
       this.eventService.emitEvent('popup:open', popupConfig);
-      this.authService.logout(false)
+      this.authService.logout(false);
     });
 
     this.idle.onTimeoutWarning.subscribe((countdown) =>  {
@@ -43,7 +43,7 @@ export class IdleService{
         btnCancelText: 'Keep me logged in',
         btnConfirmText: 'Logout'
       };
-      this.eventService.emitEvent('popup:open', popupConfig)
+      this.eventService.emitEvent('popup:open', popupConfig);
     });
 
     this.eventService.subscribeToEvent('popup:confirm', this.onPopupConfirm.bind(this));
@@ -55,24 +55,24 @@ export class IdleService{
   }
 
   onPopupConfirm(popupData) {
-    switch(popupData.name) {
-      case  "sessionWarning":
+    switch (popupData.name) {
+      case 'sessionWarning':
         this.eventService.emitEvent('popup:close');
         this.authService.logout();
         break;
-      case "sessionExpired":
+      case 'sessionExpired':
         this.eventService.emitEvent('popup:close');
         this.authService.login();
         break;
     }
   }
   onPopupCancel(popupData) {
-    switch(popupData.name) {
-      case  "sessionWarning":
+    switch (popupData.name) {
+      case 'sessionWarning':
         this.eventService.emitEvent('popup:close');
         this.startWatch();
         break;
-      case "sessionExpired":
+      case 'sessionExpired':
         this.eventService.emitEvent('popup:close');
         this.authService.login();
         break;

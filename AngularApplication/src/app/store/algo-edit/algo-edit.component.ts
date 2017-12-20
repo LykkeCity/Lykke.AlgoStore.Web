@@ -38,13 +38,13 @@ export class AlgoEditComponent implements OnInit {
   }
 
   onAlgoUpdated() {
-    this.router.navigate(["store/algo-list"]);
+    this.router.navigate(['store/algo-list']);
   }
 
   update() {
     if (this.updateFormGroup.controls.name.value) {
 
-      let algo = {
+      const algo = {
         Id: this.storeService.activeAlgo.Id,
         Name: this.updateFormGroup.controls.name.value,
         Description: this.updateFormGroup.controls.description.value

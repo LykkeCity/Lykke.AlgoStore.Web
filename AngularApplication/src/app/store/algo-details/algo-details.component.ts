@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { StoreService } from '../../services/store.service';
 import { Algo } from '../../models/algo.interface';
 import { EventService } from '../../services/event.service';
@@ -10,18 +10,18 @@ import { Router } from '@angular/router';
   templateUrl: './algo-details.component.html',
   styleUrls: ['./algo-details.component.scss']
 })
-export class AlgoDetailsComponent implements OnInit {
+export class AlgoDetailsComponent implements OnInit, OnDestroy {
   algo: Algo;
   log: string;
   subscriptions: Array<{event, id}>;
   logTimeout;
 
   constructor(
-    private storeService: StoreService, 
-    private eventService: EventService, 
+    private storeService: StoreService,
+    private eventService: EventService,
     private router: Router,
-    private notificationService: NotificationsService) { 
-    
+    private notificationService: NotificationsService) {
+
     this.algo = this.storeService.activeAlgo;
 
     this.storeService.algoGetTailLog(this.algo.Id);
@@ -58,7 +58,7 @@ export class AlgoDetailsComponent implements OnInit {
     this.subscriptions.forEach(value => this.eventService.unsubscribeToEvent(value.event, value.id));
   }
 
-  onAlgoLogDone(log){
+  onAlgoLogDone(log) {
     this.log = log.message;
 
     // Setting a timeout since a successful execution of algoGetLog will result
@@ -71,15 +71,15 @@ export class AlgoDetailsComponent implements OnInit {
     );
   }
 
-  onAlgoLogError(error){
+  onAlgoLogError(error) {
     this.notificationService.error('Error', error.ErrorMessage);
   }
 
-  onDeleteDone(){
+  onDeleteDone() {
     this.router.navigate(['store/algo-list']);
   }
 
-  onAlgoStatusChanged(){
+  onAlgoStatusChanged() {
     this.storeService.algoGetTailLog(this.algo.Id);
   }
 

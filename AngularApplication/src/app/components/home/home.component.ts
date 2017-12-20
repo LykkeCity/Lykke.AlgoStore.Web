@@ -13,7 +13,7 @@ export class HomeComponent implements OnInit {
   ngOnInit() {
   }
 
-  openAnAccount(){
-    this.router.navigate(["store"]);
+  openAnAccount() {
+    this.router.navigate(['store']);
   }
 }

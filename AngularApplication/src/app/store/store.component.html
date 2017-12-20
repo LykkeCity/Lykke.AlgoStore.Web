@@ -46,7 +46,7 @@
                   <p class="plain text-lgb text-left">
                     Java maven Algo Archetype. In order to generate an algo you may use the Lykke Algo java archetype
                   </p>
-                  
+
                     <pre class="code pt-25">
 mvn org.apache.maven.plugins:maven-archetype-plugin:2.4:generate \
 -DarchetypeGroupId=com.lykke.algos \
@@ -59,13 +59,13 @@ mvn org.apache.maven.plugins:maven-archetype-plugin:2.4:generate \
                     </pre>
 
                     <p class="plain text-lgb text-left">
-                        This will create a java maven project for you with groupId com.algo, artifact id myalgo in directory myalgo in your current folder. 
+                        This will create a java maven project for you with groupId com.algo, artifact id myalgo in directory myalgo in your current folder.
                         Please go inside and review the contentns.
                     </p>
                     <pre class="code pt-20 pb-20">cd myalgo</pre>
 
                     <p class="plain text-lgb text-left">
-                        In order to make your algo to work please create a file called hft-client.properties with the following 
+                        In order to make your algo to work please create a file called hft.properties with the following
                         content in myalgo/src/main/resources
                     </p>
                     <pre class="code pt-25">
@@ -99,9 +99,9 @@ MARGIN=&lt;THE MARGINE WITH WHICH YOU WANT TO SELL, e.g 1.1&gt;
                     <pre class="code pt-25">
 ——————Check wallet!!!——————
 ——————Buy some coins on the market price!——————
-——————Selling XXX coins with some profit on YYY price!!!——————                      
+——————Selling XXX coins with some profit on YYY price!!!——————
                     </pre>
-                  
+
                     <p class="plain text-lgb text-left">
                         Then your algo is working and you are ready to deploy it in AlgoStore. For the purpose upload your jar-with-dependencies.jar file there.
                     </p>
@@ -160,7 +160,7 @@ MARGIN=&lt;THE MARGINE WITH WHICH YOU WANT TO SELL, e.g 1.1&gt;
           <mat-step>
             <ng-template matStepLabel>deploy</ng-template>
             <div class="step-four-deploy text-center mt-100">
-              
+
               <div *ngIf="showProgress">
                 <img src="assets/img/store/Rolling.svg" alt="">
               </div>

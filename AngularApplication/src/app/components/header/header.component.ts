@@ -7,7 +7,7 @@ import { EventService } from '../../services/event.service';
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss']
 })
-export class HeaderComponent{
+export class HeaderComponent {
 
   constructor(public authService: AuthService,
               private eventService: EventService) {

@@ -10,22 +10,21 @@ import { EventService } from './event.service';
 @Injectable()
 export class StoreService extends CrudService {
 
-  _algos: BehaviorSubject<Array<Algo>> = <BehaviorSubject<Algo[]>>new BehaviorSubject([]);
+  _algos = new BehaviorSubject<Array<Algo>>([]);
   algosStore: Array<any>; // TODO set interface
 
-  public algos: Observable<any>;
+  public algos = this._algos.asObservable();
 
   public activeAlgo: Algo;
   public mode: string;
 
   constructor(
-    http: HttpClient, 
-    notificationService: NotificationsService, 
+    http: HttpClient,
+    notificationService: NotificationsService,
     private eventService: EventService) {
     super(http, notificationService);
-    
+
     this.algosStore = [];
-    this.algos = this._algos.asObservable();
 
     this.bindEvents();
   }
@@ -71,8 +70,8 @@ export class StoreService extends CrudService {
 
     this.post('/v1/clientData/metadata', algo)
       .subscribe((data: any) => {
-        
-        if(!file) { 
+
+        if (!file) {
           this.eventService.emitEvent('algo:test:updated');
           return false;
         }
@@ -80,20 +79,20 @@ export class StoreService extends CrudService {
         this.algosStore = data;
         this._algos.next([data]);
 
-        let formData = new FormData();
-    
+        const formData = new FormData();
+
         formData.append('Data', file);
         formData.append('AlgoId', data.Id);
 
         console.log('Algo created');
-        
+
         this.post('/v1/clientData/imageData/upload/binary', formData )
           .subscribe((res) => {
-            
+
             this.post('/v1/management/deploy/binary', {AlgoId: data.Id})
-            .subscribe((res) => {
+            .subscribe(() => {
               this.eventService.emitEvent('algo:deployment:done');
-  
+
             }, (err: HttpErrorResponse) => {
               if (err.error instanceof Error) {
                 this.eventService.emitEvent('algo:deployment:error', {message: err.error.message});
@@ -119,7 +118,7 @@ export class StoreService extends CrudService {
       });
   }
 
-  algoStart(algoId){
+  algoStart(algoId) {
     this.post('/v1/management/test/start', {AlgoId: algoId})
     .subscribe((res) => {
       this.eventService.emitEvent('algo:test:started');
@@ -133,7 +132,7 @@ export class StoreService extends CrudService {
     });
   }
 
-  algoStop(algoId){
+  algoStop(algoId) {
     this.post('/v1/management/test/stop', {AlgoId: algoId})
     .subscribe((res) => {
       this.eventService.emitEvent('algo:test:stopped');
@@ -147,7 +146,7 @@ export class StoreService extends CrudService {
     });
   }
 
-  algoDelete(algo: Algo){
+  algoDelete(algo: Algo) {
     this.post('/v1/clientData/metadata/cascadeDelete', algo)
     .subscribe((res) => {
       this.eventService.emitEvent('algo:delete:done', {algoId: algo.Id});

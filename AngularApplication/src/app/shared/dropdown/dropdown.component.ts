@@ -7,13 +7,13 @@ import { DropdownButtonOptions } from '../../models/dropdown.interface';
   templateUrl: './dropdown.component.html',
   styleUrls: ['./dropdown.component.scss']
 })
-export class DropdownComponent implements OnChanges{
+export class DropdownComponent implements OnChanges {
 
   @Input() buttonOptions: DropdownButtonOptions;
   @Input() dropdownOptions: any;
   @Input() dropdownData: any;
   @Input() footerLinksData: any;
-  @Input() walletName: string; //wallet name if needed in asset dropdown links
+  @Input() walletName: string; // wallet name if needed in asset dropdown links
 
   isOpen: boolean;
 
@@ -22,7 +22,7 @@ export class DropdownComponent implements OnChanges{
   // TODO add default options for each @input
 
   ngOnChanges() {
-    if(this.walletName) {
+    if (this.walletName) {
       this.walletName = this.walletName.replace(/\s/g, '-');
     }
   }

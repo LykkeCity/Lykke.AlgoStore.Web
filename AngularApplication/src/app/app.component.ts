@@ -6,9 +6,9 @@ import { IdleService } from './services/idle.service';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent implements OnInit{
+export class AppComponent implements OnInit {
 
-  //options: object;
+  // options: object;
 
   constructor(/*private idleService: IdleService*/) {
 
@@ -25,6 +25,6 @@ export class AppComponent implements OnInit{
   }
 
   ngOnInit() {
-    //this.idleService.init();
+    // this.idleService.init();
   }
 }

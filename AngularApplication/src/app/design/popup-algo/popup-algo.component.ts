@@ -14,7 +14,7 @@ export class PopupAlgoComponent implements OnInit {
   popupConfig: PopupAlgoConfig;
   elementBody: any;
 
-  constructor(private eventService: EventService) { 
+  constructor(private eventService: EventService) {
     this.elementBody = document.querySelector('body');
     this.showPopup = false;
     this.bindEvents();
