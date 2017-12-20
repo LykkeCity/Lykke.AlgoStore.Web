@@ -25,25 +25,7 @@ export class StoreService extends CrudService {
     super(http, notificationService);
 
     this.algosStore = [];
-
-    this.bindEvents();
   }
-
-  bindEvents() {
-    this.eventService.addEvent('algo:deployment:done');
-    this.eventService.addEvent('algo:deployment:error');
-    this.eventService.addEvent('algo:test:started');
-    this.eventService.addEvent('algo:test:stopped');
-    this.eventService.addEvent('algo:test:error');
-    this.eventService.addEvent('algo:test:updated');
-    this.eventService.addEvent('algo:delete:done');
-    this.eventService.addEvent('algo:delete:error');
-    this.eventService.addEvent('algo:log:done');
-    this.eventService.addEvent('algo:log:error');
-    this.eventService.addEvent('algo:taillog:done');
-    this.eventService.addEvent('algo:taillog:error');
-  }
-
   // algo endpoints
 
   algoGetAll() {
@@ -72,7 +54,7 @@ export class StoreService extends CrudService {
       .subscribe((data: any) => {
 
         if (!file) {
-          this.eventService.emitEvent('algo:test:updated');
+          this.eventService.algoTestUpdated.next();
           return false;
         }
 
@@ -91,13 +73,13 @@ export class StoreService extends CrudService {
 
             this.post('/v1/management/deploy/binary', {AlgoId: data.Id})
             .subscribe(() => {
-              this.eventService.emitEvent('algo:deployment:done');
+              this.eventService.algoDeploymentDone.next();
 
             }, (err: HttpErrorResponse) => {
               if (err.error instanceof Error) {
-                this.eventService.emitEvent('algo:deployment:error', {message: err.error.message});
+                this.eventService.algoDeploymentError.next({message: err.error.message});
               } else {
-                this.eventService.emitEvent('algo:deployment:error', {message: err.error});
+                this.eventService.algoDeploymentError.next({message: err.error});
               }
             });
           }, (err: HttpErrorResponse) => {
@@ -121,13 +103,13 @@ export class StoreService extends CrudService {
   algoStart(algoId) {
     this.post('/v1/management/test/start', {AlgoId: algoId})
     .subscribe((res) => {
-      this.eventService.emitEvent('algo:test:started');
+      this.eventService.algoTestStarted.next();
 
     }, (err: HttpErrorResponse) => {
       if (err.error instanceof Error) {
-        this.eventService.emitEvent('algo:test:error', {message: err.error.message});
+        this.eventService.algoTestError.next({message: err.error.message});
       } else {
-        this.eventService.emitEvent('algo:test:error', {message: err.error});
+        this.eventService.algoTestError.next({message: err.error});
       }
     });
   }
@@ -135,13 +117,13 @@ export class StoreService extends CrudService {
   algoStop(algoId) {
     this.post('/v1/management/test/stop', {AlgoId: algoId})
     .subscribe((res) => {
-      this.eventService.emitEvent('algo:test:stopped');
+      this.eventService.algoTestStopped.next();
 
     }, (err: HttpErrorResponse) => {
       if (err.error instanceof Error) {
-        this.eventService.emitEvent('algo:test:error', {message: err.error.message});
+        this.eventService.algoTestError.next({message: err.error.message});
       } else {
-        this.eventService.emitEvent('algo:test:error', {message: err.error});
+        this.eventService.algoTestError.next({message: err.error});
       }
     });
   }
@@ -149,13 +131,13 @@ export class StoreService extends CrudService {
   algoDelete(algo: Algo) {
     this.post('/v1/clientData/metadata/cascadeDelete', algo)
     .subscribe((res) => {
-      this.eventService.emitEvent('algo:delete:done', {algoId: algo.Id});
+      this.eventService.algoDeleteDone.next({algoId: algo.Id});
 
     }, (err: HttpErrorResponse) => {
       if (err.error instanceof Error) {
-        this.eventService.emitEvent('algo:delete:error', {message: err.error.message});
+        this.eventService.algoDeleteError.next({message: err.error.message});
       } else {
-        this.eventService.emitEvent('algo:delete:error', {message: err.error});
+        this.eventService.algoDeleteError.next({message: err.error});
       }
     });
   }
@@ -163,14 +145,13 @@ export class StoreService extends CrudService {
   algoGetLog(algoId) {
     this.get(`/v1/management/test/log?AlgoId=${algoId}`)
     .subscribe((res) => {
-
-      this.eventService.emitEvent('algo:log:done', {message: res.Log});
+      this.eventService.algoLogDone.next({message: res.Log});
 
     }, (err: HttpErrorResponse) => {
       if (err.error instanceof Error) {
-        this.eventService.emitEvent('algo:log:error', {message: err.error.message});
+        this.eventService.algoLogError.next({message: err.error.message});
       } else {
-        this.eventService.emitEvent('algo:log:error', {message: err.error});
+        this.eventService.algoLogError.next({message: err.error});
       }
     });
   }
@@ -178,14 +159,13 @@ export class StoreService extends CrudService {
   algoGetTailLog(algoId) {
     this.get(`/v1/management/test/tailLog?AlgoId=${algoId}&Tail=1000`)
     .subscribe((res) => {
-
-      this.eventService.emitEvent('algo:taillog:done', {message: res.Log});
+      this.eventService.algoTaillogDone.next({message: res.Log});
 
     }, (err: HttpErrorResponse) => {
       if (err.error instanceof Error) {
-        this.eventService.emitEvent('algo:taillog:error', {message: err.error.message});
+        this.eventService.algoTaillogError.next({message: err.error.message});
       } else {
-        this.eventService.emitEvent('algo:taillog:error', {message: err.error});
+        this.eventService.algoTaillogError.next({message: err.error});
       }
     });
   }

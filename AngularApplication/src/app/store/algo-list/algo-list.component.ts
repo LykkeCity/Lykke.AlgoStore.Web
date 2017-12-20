@@ -39,9 +39,11 @@ export class AlgoListComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.eventService.subscribeToEvent('algo:test:started', this.onAlgoStatusChanged.bind(this));
-    this.eventService.subscribeToEvent('algo:test:stopped', this.onAlgoStatusChanged.bind(this));
-    this.eventService.subscribeToEvent('algo:delete:done', this.onAlgoStatusChanged.bind(this));
+    this.subscriptions.push(
+      this.eventService.algoTestStarted.subscribe(this.onAlgoStatusChanged),
+      this.eventService.algoTestStopped.subscribe(this.onAlgoStatusChanged),
+      this.eventService.algoDeleteDone.subscribe(this.onAlgoStatusChanged),
+    );
   }
 
   ngAfterViewInit() {
@@ -65,7 +67,7 @@ export class AlgoListComponent implements OnInit, AfterViewInit, OnDestroy {
     return false;
   }
 
-  onAlgoStatusChanged() {
+  onAlgoStatusChanged = () => {
     this.storeService.algoGetAll();
   }
 }

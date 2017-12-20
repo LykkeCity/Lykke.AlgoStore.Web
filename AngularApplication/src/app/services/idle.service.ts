@@ -28,9 +28,9 @@ export class IdleService {
         text: 'Please proceed to login.',
         btnCancelText: 'Log in'
       };
-      this.eventService.emitEvent('popup:close');
+      this.eventService.popupClose.next();
 
-      this.eventService.emitEvent('popup:open', popupConfig);
+      this.eventService.popupOpen.next(popupConfig);
       this.authService.logout(false);
     });
 
@@ -43,37 +43,37 @@ export class IdleService {
         btnCancelText: 'Keep me logged in',
         btnConfirmText: 'Logout'
       };
-      this.eventService.emitEvent('popup:open', popupConfig);
+      this.eventService.popupOpen.next(popupConfig);
     });
 
-    this.eventService.subscribeToEvent('popup:confirm', this.onPopupConfirm.bind(this));
-    this.eventService.subscribeToEvent('popup:cancel', this.onPopupCancel.bind(this));
+    this.eventService.popupConfirm.subscribe(this.onPopupConfirm);
+    this.eventService.popupCancel.subscribe(this.onPopupCancel);
   }
 
   startWatch() {
     this.idle.watch();
   }
 
-  onPopupConfirm(popupData) {
+  onPopupConfirm = (popupData) => {
     switch (popupData.name) {
       case 'sessionWarning':
-        this.eventService.emitEvent('popup:close');
+        this.eventService.popupClose.next();
         this.authService.logout();
         break;
       case 'sessionExpired':
-        this.eventService.emitEvent('popup:close');
+        this.eventService.popupClose.next();
         this.authService.login();
         break;
     }
   }
-  onPopupCancel(popupData) {
+  onPopupCancel = (popupData) => {
     switch (popupData.name) {
       case 'sessionWarning':
-        this.eventService.emitEvent('popup:close');
+        this.eventService.popupClose.next();
         this.startWatch();
         break;
       case 'sessionExpired':
-        this.eventService.emitEvent('popup:close');
+        this.eventService.popupClose.next();
         this.authService.login();
         break;
     }

@@ -72,20 +72,22 @@ export class StoreComponent implements OnInit, OnDestroy {
       })
     );
 
-    this.eventService.subscribeToEvent('algo:deployment:done', this.onAlgoDeployed.bind(this));
-    this.eventService.subscribeToEvent('algo:deployment:error', this.onAlgoDeploymentError.bind(this));
+    this.subscriptions.push(
+      this.eventService.algoDeploymentDone.subscribe(this.onAlgoDeployed),
+      this.eventService.algoDeploymentError.subscribe(this.onAlgoDeploymentError),
+    );
   }
 
   ngOnDestroy() {
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
-  onAlgoDeployed() {
+  onAlgoDeployed = () => {
     this.showProgress = false;
     this.stepper.next();
   }
 
-  onAlgoDeploymentError(message) {
+  onAlgoDeploymentError = () => {
     this.showProgress = false;
     this.hasDeploymentErrors = true;
   }

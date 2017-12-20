@@ -61,7 +61,7 @@ export class DesignComponent implements OnInit, AfterViewInit {
       btnCancelText: 'Keep me logged in',
       btnConfirmText: 'Logout'
     };
-    this.eventService.emitEvent('popup:algo:open', popupConfig);
+    this.eventService.popupAlgoOpen.next(popupConfig);
   }
 
 }

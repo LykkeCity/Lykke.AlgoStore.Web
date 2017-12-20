@@ -1,23 +1,27 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy } from '@angular/core';
+import { Router } from '@angular/router';
+import { NotificationsService } from 'angular2-notifications';
+import { Subscription } from 'rxjs/Subscription';
+
 import { StoreService } from '../../services/store.service';
 import { Command } from '../../models/command.enum';
 import { Status } from '../../models/status.enum';
 import { Algo } from '../../models/algo.interface';
 import { EventService } from '../../services/event.service';
-import { Router } from '@angular/router';
-import { NotificationsService } from 'angular2-notifications';
 
 @Component({
   selector: 'app-commands',
   templateUrl: './commands.component.html',
   styleUrls: ['./commands.component.scss']
 })
-export class CommandsComponent implements OnInit {
+export class CommandsComponent implements OnInit, OnDestroy {
 
   @Input() algo: Algo;
 
   Command: any = Command;
   Status: any = Status;
+
+  private subscriptions: Subscription[] = [];
 
   constructor(
     private storeService: StoreService,
@@ -25,12 +29,18 @@ export class CommandsComponent implements OnInit {
     private notificationService: NotificationsService,
     private router: Router) {
 
-    this.eventService.subscribeToEvent('algo:test:started', this.onAlgoTestStarted.bind(this));
-    this.eventService.subscribeToEvent('algo:test:error', this.onAlgoTestError.bind(this));
+    this.subscriptions.push(
+      this.eventService.algoTestStarted.subscribe(this.onAlgoTestStarted),
+      this.eventService.algoTestError.subscribe(this.onAlgoTestError),
+    );
   }
 
   ngOnInit() {
 
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
   doCommand(command?: Command) {
@@ -59,12 +69,12 @@ export class CommandsComponent implements OnInit {
     return false;
   }
 
-  onAlgoTestStarted(status: Status) {
+  onAlgoTestStarted = (status: Status) => {
     this.algo.Status = status;
     console.log(status);
   }
 
-  onAlgoTestError() {
+  onAlgoTestError = () => {
     this.notificationService.error('Error', 'Some error occured!');
     console.log('AlgoTestError');
   }
