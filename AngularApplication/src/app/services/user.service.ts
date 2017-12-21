@@ -3,22 +3,20 @@ import { CrudService } from './crud.service';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Observable } from 'rxjs/Observable';
-import { NotificationsService } from 'angular2-notifications/dist';
+import { NotificationsService } from 'angular2-notifications';
 import { UserData } from '../models/userdata.interface';
 
 @Injectable()
 export class UserService extends CrudService {
 
-  _userData: BehaviorSubject<UserData> = <BehaviorSubject<UserData>>new BehaviorSubject({});
+  _userData = new BehaviorSubject<UserData>(null);
   dataStore: UserData;
 
-  public userData: Observable<any>;
-
+  public userData = this._userData.asObservable();
 
   constructor(http: HttpClient, notificationService: NotificationsService) {
     super(http, notificationService);
-    this.userData = this._userData.asObservable();
-    //this.getUserInfo();
+    // this.getUserInfo();
   }
 
   getUserInfo() {

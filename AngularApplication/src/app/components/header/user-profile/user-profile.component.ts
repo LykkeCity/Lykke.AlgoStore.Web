@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Subscription } from 'rxjs/Subscription';
+
 import { UserService } from '../../../services/user.service';
 import { UserData } from '../../../models/userdata.interface';
 import { AuthService } from '../../../services/auth.service';
@@ -8,20 +10,27 @@ import { AuthService } from '../../../services/auth.service';
   templateUrl: './user-profile.component.html',
   styleUrls: ['./user-profile.component.scss']
 })
-export class UserProfileComponent implements OnInit {
+export class UserProfileComponent implements OnInit, OnDestroy {
 
   userData: UserData;
+  private subscriptions: Subscription[] = [];
 
   constructor(private userService: UserService, private authService: AuthService) {
   }
 
   ngOnInit() {
-    this.userService.userData.subscribe(data => {
-      this.userData = data;
-    });
+    this.subscriptions.push(
+      this.userService.userData.subscribe(data => {
+        this.userData = data;
+      })
+    );
   }
 
-  logout(redirect: boolean){
+  ngOnDestroy() {
+    this.subscriptions.forEach(subscription => subscription.unsubscribe());
+  }
+
+  logout(redirect: boolean) {
     this.authService.logout(redirect);
   }
 
