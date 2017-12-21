@@ -10,41 +10,22 @@ import { EventService } from './event.service';
 @Injectable()
 export class StoreService extends CrudService {
 
-  _algos: BehaviorSubject<Array<Algo>> = <BehaviorSubject<Algo[]>>new BehaviorSubject([]);
+  _algos = new BehaviorSubject<Array<Algo>>([]);
   algosStore: Array<any>; // TODO set interface
 
-  public algos: Observable<any>;
+  public algos = this._algos.asObservable();
 
   public activeAlgo: Algo;
   public mode: string;
 
   constructor(
-    http: HttpClient, 
-    notificationService: NotificationsService, 
+    http: HttpClient,
+    notificationService: NotificationsService,
     private eventService: EventService) {
     super(http, notificationService);
-    
+
     this.algosStore = [];
-    this.algos = this._algos.asObservable();
-
-    this.bindEvents();
   }
-
-  bindEvents() {
-    this.eventService.addEvent('algo:deployment:done');
-    this.eventService.addEvent('algo:deployment:error');
-    this.eventService.addEvent('algo:test:started');
-    this.eventService.addEvent('algo:test:stopped');
-    this.eventService.addEvent('algo:test:error');
-    this.eventService.addEvent('algo:test:updated');
-    this.eventService.addEvent('algo:delete:done');
-    this.eventService.addEvent('algo:delete:error');
-    this.eventService.addEvent('algo:log:done');
-    this.eventService.addEvent('algo:log:error');
-    this.eventService.addEvent('algo:taillog:done');
-    this.eventService.addEvent('algo:taillog:error');
-  }
-
   // algo endpoints
 
   algoGetAll() {
@@ -71,34 +52,34 @@ export class StoreService extends CrudService {
 
     this.post('/v1/clientData/metadata', algo)
       .subscribe((data: any) => {
-        
-        if(!file) { 
-          this.eventService.emitEvent('algo:test:updated');
+
+        if (!file) {
+          this.eventService.algoTestUpdated.next();
           return false;
         }
 
         this.algosStore = data;
         this._algos.next([data]);
 
-        let formData = new FormData();
-    
+        const formData = new FormData();
+
         formData.append('Data', file);
         formData.append('AlgoId', data.Id);
 
         console.log('Algo created');
-        
+
         this.post('/v1/clientData/imageData/upload/binary', formData )
           .subscribe((res) => {
-            
+
             this.post('/v1/management/deploy/binary', {AlgoId: data.Id})
-            .subscribe((res) => {
-              this.eventService.emitEvent('algo:deployment:done');
-  
+            .subscribe(() => {
+              this.eventService.algoDeploymentDone.next();
+
             }, (err: HttpErrorResponse) => {
               if (err.error instanceof Error) {
-                this.eventService.emitEvent('algo:deployment:error', {message: err.error.message});
+                this.eventService.algoDeploymentError.next({message: err.error.message});
               } else {
-                this.eventService.emitEvent('algo:deployment:error', {message: err.error});
+                this.eventService.algoDeploymentError.next({message: err.error});
               }
             });
           }, (err: HttpErrorResponse) => {
@@ -119,44 +100,44 @@ export class StoreService extends CrudService {
       });
   }
 
-  algoStart(algoId){
+  algoStart(algoId) {
     this.post('/v1/management/test/start', {AlgoId: algoId})
     .subscribe((res) => {
-      this.eventService.emitEvent('algo:test:started');
+      this.eventService.algoTestStarted.next();
 
     }, (err: HttpErrorResponse) => {
       if (err.error instanceof Error) {
-        this.eventService.emitEvent('algo:test:error', {message: err.error.message});
+        this.eventService.algoTestError.next({message: err.error.message});
       } else {
-        this.eventService.emitEvent('algo:test:error', {message: err.error});
+        this.eventService.algoTestError.next({message: err.error});
       }
     });
   }
 
-  algoStop(algoId){
+  algoStop(algoId) {
     this.post('/v1/management/test/stop', {AlgoId: algoId})
     .subscribe((res) => {
-      this.eventService.emitEvent('algo:test:stopped');
+      this.eventService.algoTestStopped.next();
 
     }, (err: HttpErrorResponse) => {
       if (err.error instanceof Error) {
-        this.eventService.emitEvent('algo:test:error', {message: err.error.message});
+        this.eventService.algoTestError.next({message: err.error.message});
       } else {
-        this.eventService.emitEvent('algo:test:error', {message: err.error});
+        this.eventService.algoTestError.next({message: err.error});
       }
     });
   }
 
-  algoDelete(algo: Algo){
+  algoDelete(algo: Algo) {
     this.post('/v1/clientData/metadata/cascadeDelete', algo)
     .subscribe((res) => {
-      this.eventService.emitEvent('algo:delete:done', {algoId: algo.Id});
+      this.eventService.algoDeleteDone.next({algoId: algo.Id});
 
     }, (err: HttpErrorResponse) => {
       if (err.error instanceof Error) {
-        this.eventService.emitEvent('algo:delete:error', {message: err.error.message});
+        this.eventService.algoDeleteError.next({message: err.error.message});
       } else {
-        this.eventService.emitEvent('algo:delete:error', {message: err.error});
+        this.eventService.algoDeleteError.next({message: err.error});
       }
     });
   }
@@ -164,14 +145,13 @@ export class StoreService extends CrudService {
   algoGetLog(algoId) {
     this.get(`/v1/management/test/log?AlgoId=${algoId}`)
     .subscribe((res) => {
-
-      this.eventService.emitEvent('algo:log:done', {message: res.Log});
+      this.eventService.algoLogDone.next({message: res.Log});
 
     }, (err: HttpErrorResponse) => {
       if (err.error instanceof Error) {
-        this.eventService.emitEvent('algo:log:error', {message: err.error.message});
+        this.eventService.algoLogError.next({message: err.error.message});
       } else {
-        this.eventService.emitEvent('algo:log:error', {message: err.error});
+        this.eventService.algoLogError.next({message: err.error});
       }
     });
   }
@@ -179,14 +159,13 @@ export class StoreService extends CrudService {
   algoGetTailLog(algoId) {
     this.get(`/v1/management/test/tailLog?AlgoId=${algoId}&Tail=1000`)
     .subscribe((res) => {
-
-      this.eventService.emitEvent('algo:taillog:done', {message: res.Log});
+      this.eventService.algoTaillogDone.next({message: res.Log});
 
     }, (err: HttpErrorResponse) => {
       if (err.error instanceof Error) {
-        this.eventService.emitEvent('algo:taillog:error', {message: err.error.message});
+        this.eventService.algoTaillogError.next({message: err.error.message});
       } else {
-        this.eventService.emitEvent('algo:taillog:error', {message: err.error});
+        this.eventService.algoTaillogError.next({message: err.error});
       }
     });
   }

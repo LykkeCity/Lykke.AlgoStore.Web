@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { RequestOptions, Headers } from '@angular/http';
 import { HttpClient, HttpParams/*, HttpHeaders*/ } from '@angular/common/http';
 
-import { NotificationsService } from 'angular2-notifications/dist';
+import { NotificationsService } from 'angular2-notifications';
 import { environment } from '../../environments/environment';
 import { Router } from '@angular/router';
 
@@ -23,9 +23,9 @@ export class AuthService {
 
     this.localAuthUrl = environment.authUrl;
     this.authenticationUrl = environment.apiAuthUrl + '/connect/authorize' +
-      '?client_id=' + environment.applicationId +
+      '?client_id=' + encodeURIComponent(environment.applicationId) +
       '&response_type=code' +
-      '&redirect_uri=' + environment.redirectUrl;
+      '&redirect_uri=' + encodeURIComponent(environment.redirectUrl);
   }
 
   getAccessToken(code) {
@@ -74,7 +74,8 @@ export class AuthService {
       'Authorization': data.token_type + ' ' + data.access_token
     };
 
-    this.http.get(environment.apiAuthUrl + '/getlykkewallettoken', { headers }).subscribe((response: Response) => this.authenticate(response));
+    this.http.get(environment.apiAuthUrl + '/getlykkewallettoken', { headers })
+      .subscribe((response: Response) => this.authenticate(response));
   }
 
   setToken(data) {

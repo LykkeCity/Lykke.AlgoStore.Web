@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 import { PopupConfig } from '../models/popup.interface';
 import { EventService } from '../services/event.service';
 
@@ -7,22 +7,22 @@ import { EventService } from '../services/event.service';
   templateUrl: './design.component.html',
   styleUrls: ['./design.component.scss']
 })
-export class DesignComponent implements OnInit {
+export class DesignComponent implements OnInit, AfterViewInit {
 
   @ViewChild('editor') editor;
 
-  text: string = `
+  text = `
   public class Dog {
     String breed;
     int age;
     String color;
- 
+
     void barking() {
     }
- 
+
     void hungry() {
     }
- 
+
     void sleeping() {
     }
  }
@@ -36,21 +36,21 @@ export class DesignComponent implements OnInit {
   }
 
   ngAfterViewInit() {
-    this.editor.setTheme("eclipse");
+    this.editor.setTheme('eclipse');
 
     this.editor.getEditor().setOptions({
       enableBasicAutocompletion: true
     });
 
     this.editor.getEditor().commands.addCommand({
-      name: "showOtherCompletions",
-      bindKey: "Ctrl-.",
+      name: 'showOtherCompletions',
+      bindKey: 'Ctrl-.',
       exec: function (editor) {
-       
+
       }
     });
 
-    //this.showPopup();
+    // this.showPopup();
   }
 
   clickMe(){

@@ -1,8 +1,10 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { StoreService } from '../services/store.service';
+import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { MatStepper } from '@angular/material';
 import { Router } from '@angular/router';
+import { Subscription } from 'rxjs/Subscription';
+
+import { StoreService } from '../services/store.service';
 import { Algo } from '../models/algo.interface';
 import { Language } from '../models/language.enum';
 import { EventService } from '../services/event.service';
@@ -12,7 +14,7 @@ import { EventService } from '../services/event.service';
   templateUrl: './store.component.html',
   styleUrls: ['./store.component.scss']
 })
-export class StoreComponent implements OnInit {
+export class StoreComponent implements OnInit, OnDestroy {
   hasDeploymentErrors: boolean;
   file: FormData;
   fileName: any;
@@ -22,7 +24,7 @@ export class StoreComponent implements OnInit {
   secondFormGroup: FormGroup;
   updateFormGroup: FormGroup;
   hasFile: boolean;
-  showProgress: boolean = true;
+  showProgress = true;
 
   Language: any = Language;
 
@@ -31,15 +33,17 @@ export class StoreComponent implements OnInit {
   @ViewChild('fileInput') fileInput;
   @ViewChild('stepper') stepper: MatStepper;
 
+  private subscriptions: Subscription[] = [];
+
   constructor(private storeService: StoreService,
     private eventService: EventService,
     private router: Router,
     private formBuilder: FormBuilder) {
-     
+
     }
 
   ngOnInit() {
-   
+
     this.secondFormGroup = this.formBuilder.group({
       secondCtrl: ['', Validators.required]
     });
@@ -51,31 +55,39 @@ export class StoreComponent implements OnInit {
 
     this.storeService.algoGetAll();
 
-    this.storeService.algos.subscribe(result => {
-      this.algos = result;
+    this.subscriptions.push(
+      this.storeService.algos.subscribe(result => {
+        this.algos = result;
 
-      console.log('this.storeService.activeAlgo: '+ this.storeService.activeAlgo);
-      console.log("this.storeService.mode: "+ this.storeService.mode);
-      console.log('this.algos.length: ' + this.algos.length);
+        console.log('this.storeService.activeAlgo: ' + this.storeService.activeAlgo);
+        console.log('this.storeService.mode: ' + this.storeService.mode);
+        console.log('this.algos.length: ' + this.algos.length);
 
-      if (this.storeService.mode != 'create' && this.algos.length > 0) {
-        this.router.navigate(["store/algo-list"]);
-      } else {
-        //this.storeService.mode = null;
-        this.showUploadSection = !this.hasFile;
-      }
-    });
+        if (this.storeService.mode !== 'create' && this.algos.length > 0) {
+          this.router.navigate(['store/algo-list']);
+        } else {
+          // this.storeService.mode = null;
+          this.showUploadSection = !this.hasFile;
+        }
+      })
+    );
 
-    this.eventService.subscribeToEvent('algo:deployment:done', this.onAlgoDeployed.bind(this));
-    this.eventService.subscribeToEvent('algo:deployment:error', this.onAlgoDeploymentError.bind(this));
+    this.subscriptions.push(
+      this.eventService.algoDeploymentDone.subscribe(this.onAlgoDeployed),
+      this.eventService.algoDeploymentError.subscribe(this.onAlgoDeploymentError),
+    );
   }
 
-  onAlgoDeployed(){
+  ngOnDestroy() {
+    this.subscriptions.forEach(subscription => subscription.unsubscribe());
+  }
+
+  onAlgoDeployed = () => {
     this.showProgress = false;
     this.stepper.next();
   }
 
-  onAlgoDeploymentError(message){
+  onAlgoDeploymentError = () => {
     this.showProgress = false;
     this.hasDeploymentErrors = true;
   }
@@ -105,7 +117,7 @@ export class StoreComponent implements OnInit {
   }
 
   initiateUpload(e) {
-    let fileInput = document.querySelector('input[type="file"]') as HTMLElement;
+    const fileInput = document.querySelector('input[type="file"]') as HTMLElement;
     fileInput.click();
   }
 
@@ -124,10 +136,10 @@ export class StoreComponent implements OnInit {
 
     if (this.updateFormGroup.controls.name.value) {
 
-      let algo = {
+      const algo = {
         Name: this.updateFormGroup.controls.name.value,
         Description: this.updateFormGroup.controls.description.value
-      };
+     };
 
       this.storeService.algoCreateDetails(algo, this.file);
       this.stepper.next();
@@ -141,6 +153,6 @@ export class StoreComponent implements OnInit {
   }
 
   showListOfAlgos() {
-    this.router.navigate(["store/algo-list"]);
+    this.router.navigate(['store/algo-list']);
   }
 }

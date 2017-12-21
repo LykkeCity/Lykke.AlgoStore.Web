@@ -1,64 +1,51 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { NotificationsService } from 'angular2-notifications';
+import { Router } from '@angular/router';
+import { Subscription } from 'rxjs/Subscription';
+
 import { StoreService } from '../../services/store.service';
 import { Algo } from '../../models/algo.interface';
 import { EventService } from '../../services/event.service';
-import { NotificationsService } from 'angular2-notifications';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-algo-detail',
   templateUrl: './algo-details.component.html',
   styleUrls: ['./algo-details.component.scss']
 })
-export class AlgoDetailsComponent implements OnInit {
+export class AlgoDetailsComponent implements OnInit, OnDestroy {
   algo: Algo;
   log: string;
-  subscriptions: Array<{event, id}>;
+  private subscriptions: Subscription[] = [];
   logTimeout;
 
   constructor(
-    private storeService: StoreService, 
-    private eventService: EventService, 
+    private storeService: StoreService,
+    private eventService: EventService,
     private router: Router,
-    private notificationService: NotificationsService) { 
-    
+    private notificationService: NotificationsService) {
+
     this.algo = this.storeService.activeAlgo;
 
     this.storeService.algoGetTailLog(this.algo.Id);
-    this.subscriptions = new Array();
     this.logTimeout = null;
   }
 
   ngOnInit() {
-    this.subscriptions.push({
-      event: 'algo:test:started',
-      id: this.eventService.subscribeToEvent('algo:test:started', this.onAlgoStatusChanged.bind(this))
-    });
-    this.subscriptions.push({
-      event: 'algo:test:stopped',
-      id: this.eventService.subscribeToEvent('algo:test:stopped', this.onAlgoStatusChanged.bind(this))
-    });
-    this.subscriptions.push({
-      event: 'algo:delete:done',
-      id: this.eventService.subscribeToEvent('algo:delete:done', this.onDeleteDone.bind(this))
-    });
-
-    this.subscriptions.push({
-      event: 'algo:taillog:done',
-      id: this.eventService.subscribeToEvent('algo:taillog:done',  this.onAlgoLogDone.bind(this))
-    });
-    this.subscriptions.push({
-      event: 'algo:taillog:error',
-      id: this.eventService.subscribeToEvent('algo:taillog:error',  this.onAlgoLogError.bind(this))
-    });
+    this.subscriptions.push(
+      this.eventService.algoTestStarted.subscribe(this.onAlgoStatusChanged),
+      this.eventService.algoTestStopped.subscribe(this.onAlgoStatusChanged),
+      this.eventService.algoDeleteDone.subscribe(this.onDeleteDone),
+      this.eventService.algoTaillogDone.subscribe(this.onAlgoLogDone),
+      this.eventService.algoTaillogError.subscribe(this.onAlgoLogError),
+    );
   }
 
   ngOnDestroy() {
     clearTimeout(this.logTimeout);
-    this.subscriptions.forEach(value => this.eventService.unsubscribeToEvent(value.event, value.id));
+    this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
-  onAlgoLogDone(log){
+  onAlgoLogDone = (log: {message: string}) => {
     this.log = log.message;
 
     // Setting a timeout since a successful execution of algoGetLog will result
@@ -71,15 +58,15 @@ export class AlgoDetailsComponent implements OnInit {
     );
   }
 
-  onAlgoLogError(error){
-    this.notificationService.error('Error', error.ErrorMessage);
+  onAlgoLogError = (error: {message: string}) => {
+    this.notificationService.error('Error', error.message);
   }
 
-  onDeleteDone(){
+  onDeleteDone = () => {
     this.router.navigate(['store/algo-list']);
   }
 
-  onAlgoStatusChanged(){
+  onAlgoStatusChanged = () => {
     this.storeService.algoGetTailLog(this.algo.Id);
   }
 

@@ -18,13 +18,13 @@ const routes: Routes = [
     path: '',
     component: SiteLayoutComponent,
     children: [
-      //{ path: 'auth', component: AuthenticationComponent },
+      // { path: 'auth', component: AuthenticationComponent },
       { path: 'design', loadChildren: 'app/design/design.module#DesignModule', canActivate: [AuthGuard] },
       { path: 'settings', loadChildren: 'app/settings/settings.module#SettingsModule', canActivate: [AuthGuard] },
       { path: 'store', loadChildren: 'app/store/store.module#StoreModule', canActivate: [AuthGuard] },
       { path: 'store/algo-details', component: AlgoDetailsComponent, canActivate: [AuthGuard] },
       { path: 'store/algo-list', component: AlgoListComponent, canActivate: [AuthGuard] },
-      //{ path: 'store/algo/:id/edit', component: AlgoEditComponent, canActivate: [AuthGuard] },
+      // { path: 'store/algo/:id/edit', component: AlgoEditComponent, canActivate: [AuthGuard] },
       { path: 'store/algo-edit', component: AlgoEditComponent, canActivate: [AuthGuard] },
       { path: '404', component: NotFoundComponent },
     ]
