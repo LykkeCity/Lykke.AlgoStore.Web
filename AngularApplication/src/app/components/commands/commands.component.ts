@@ -8,6 +8,7 @@ import { Command } from '../../models/command.enum';
 import { Status } from '../../models/status.enum';
 import { Algo } from '../../models/algo.interface';
 import { EventService } from '../../services/event.service';
+import { PopupConfig } from '../../models/popup.interface';
 
 @Component({
   selector: 'app-commands',
@@ -29,14 +30,15 @@ export class CommandsComponent implements OnInit, OnDestroy {
     private notificationService: NotificationsService,
     private router: Router) {
 
-    this.subscriptions.push(
-      this.eventService.algoTestStarted.subscribe(this.onAlgoTestStarted),
-      this.eventService.algoTestError.subscribe(this.onAlgoTestError),
-    );
   }
 
   ngOnInit() {
-
+    this.subscriptions.push(
+      this.eventService.algoTestStarted.subscribe(this.onAlgoTestStarted),
+      this.eventService.algoTestError.subscribe(this.onAlgoTestError),
+      this.eventService.popupConfirm.subscribe(this.onPopupConfirm),
+      this.eventService.popupCancel.subscribe(this.onPopupCancel),
+    );
   }
 
   ngOnDestroy() {
@@ -46,19 +48,51 @@ export class CommandsComponent implements OnInit, OnDestroy {
   doCommand(command?: Command) {
     if (!command) {
       if (this.algo.Status === Status.DEPLOYED || this.algo.Status === Status.UNKNOWN || this.algo.Status === Status.STOPPED) {
-        this.storeService.algoStart(this.algo.Id);
+        const popupConfig: PopupConfig = {
+          hideIcon: true,
+          name: 'startAlgoWarning',
+          width: 370,
+          title: 'Start Algo?',
+          text: 'Are you sure you want to start running the Algo?',
+          btnCancelText: 'No, I don’t want',
+          btnConfirmText: 'Yes, Start Algo'
+        };
+
+        this.eventService.popupOpen.next(popupConfig);
+
       } else {
-        this.storeService.algoStop(this.algo.Id);
+        const popupConfig: PopupConfig = {
+          hideIcon: true,
+          name: 'stopAlgoWarning',
+          width: 370,
+          title: 'Stop Algo?',
+          text: 'Are you sure you want to stop running the Algo?',
+          btnCancelText: 'No, I don’t want',
+          btnConfirmText: 'Yes, Stop Algo'
+        };
+
+        this.eventService.popupOpen.next(popupConfig);
       }
     } else {
       switch (command) {
         case Command.Edit:
-            this.storeService.activeAlgo = this.algo;
-            this.router.navigate(['store/algo-edit']);
+          this.storeService.activeAlgo = this.algo;
+          this.router.navigate(['store/algo-edit']);
           break;
 
         case Command.Delete:
-          this.storeService.algoDelete(this.algo);
+
+          const popupConfig: PopupConfig = {
+            hideIcon: true,
+            name: 'deleteAlgoWarning',
+            width: 370,
+            title: 'Delete Algo?',
+            text: 'Are you sure you want to delete this Algo from your list?',
+            btnCancelText: 'No, I don’t want',
+            btnConfirmText: 'Yes, Delete Algo'
+          };
+
+          this.eventService.popupOpen.next(popupConfig);
           break;
 
         default:
@@ -77,6 +111,31 @@ export class CommandsComponent implements OnInit, OnDestroy {
   onAlgoTestError = () => {
     this.notificationService.error('Error', 'Some error occured!');
     console.log('AlgoTestError');
+  }
+
+
+  onPopupConfirm = (popupData) => {
+    switch (popupData.name) {
+      case "startAlgoWarning":
+        this.storeService.algoStart(this.algo.Id);
+        this.eventService.popupClose.next();
+        break;
+
+      case "stopAlgoWarning":
+        this.storeService.algoStop(this.algo.Id);
+        this.eventService.popupClose.next();
+        break;
+
+        case "deleteAlgoWarning":
+        this.storeService.algoDelete(this.algo);
+        this.eventService.popupClose.next();
+        break;
+
+    }
+  }
+
+  onPopupCancel = (popupData) => {
+    this.eventService.popupClose.next();
   }
 
 }

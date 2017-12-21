@@ -1,13 +1,14 @@
-import { Component, OnInit, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, AfterViewInit, OnDestroy } from '@angular/core';
 import { PopupConfig } from '../models/popup.interface';
 import { EventService } from '../services/event.service';
+import { Subscription } from 'rxjs/Subscription';
 
 @Component({
   selector: 'app-design',
   templateUrl: './design.component.html',
   styleUrls: ['./design.component.scss']
 })
-export class DesignComponent implements OnInit, AfterViewInit {
+export class DesignComponent implements OnInit, AfterViewInit, OnDestroy {
 
   @ViewChild('editor') editor;
 
@@ -28,11 +29,15 @@ export class DesignComponent implements OnInit, AfterViewInit {
  }
   `;
 
+  private subscriptions: Subscription[] = [];
+
   constructor(private eventService: EventService) { }
 
   ngOnInit() {
-    this.eventService.subscribeToEvent('popup:confirm', this.onPopupConfirm.bind(this));
-    this.eventService.subscribeToEvent('popup:cancel', this.onPopupCancel.bind(this));
+    this.subscriptions.push(
+      this.eventService.popupConfirm.subscribe(this.onPopupConfirm),
+      this.eventService.popupCancel.subscribe(this.onPopupCancel),
+    );
   }
 
   ngAfterViewInit() {
@@ -49,8 +54,10 @@ export class DesignComponent implements OnInit, AfterViewInit {
 
       }
     });
+  }
 
-    // this.showPopup();
+  ngOnDestroy() {
+    this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
   clickMe(){
@@ -67,20 +74,21 @@ export class DesignComponent implements OnInit, AfterViewInit {
       btnCancelText: 'No, I don’t want',
       btnConfirmText: 'Yes, Delete Algo'
     };
-    this.eventService.emitEvent('popup:open', popupConfig);
+    
+    this.eventService.popupOpen.next(popupConfig);
   }
 
-  onPopupConfirm(popupData) {
+  onPopupConfirm = (popupData) => {
     switch(popupData.name) {
       case  "deleteAlgoWarning":
-        this.eventService.emitEvent('popup:close');
+        this.eventService.popupClose.next();
         break;
     }
   }
-  onPopupCancel(popupData) {
+  onPopupCancel = (popupData) => {
     switch(popupData.name) {
       case  "deleteAlgoWarning":
-        this.eventService.emitEvent('popup:close');
+        this.eventService.popupClose.next();
         break;
     }
   }

@@ -59,14 +59,9 @@ export class StoreComponent implements OnInit, OnDestroy {
       this.storeService.algos.subscribe(result => {
         this.algos = result;
 
-        console.log('this.storeService.activeAlgo: ' + this.storeService.activeAlgo);
-        console.log('this.storeService.mode: ' + this.storeService.mode);
-        console.log('this.algos.length: ' + this.algos.length);
-
         if (this.storeService.mode !== 'create' && this.algos.length > 0) {
           this.router.navigate(['store/algo-list']);
         } else {
-          // this.storeService.mode = null;
           this.showUploadSection = !this.hasFile;
         }
       })
