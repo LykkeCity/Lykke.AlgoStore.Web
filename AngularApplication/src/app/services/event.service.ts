@@ -4,7 +4,6 @@ import { Subject } from 'rxjs/Subject';
 
 import { Status } from '../models/status.enum';
 import { PopupConfig } from '../models/popup.interface';
-import { PopupAlgoConfig } from '../models/popup-algo.interface';
 import { SuccessMessageConfig } from '../models/successConfig.interface';
 
 @Injectable()
@@ -32,7 +31,7 @@ export class EventService  {
   popupCancel = new Subject<{name: string}>();
   popupConfirm = new Subject<{name: string}>();
 
-  popupAlgoOpen = new Subject<PopupAlgoConfig>();
+  popupAlgoOpen = new Subject<PopupConfig>();
   popupAlgoClose = new Subject<void>();
   popupAlgoCancel = new Subject<{name: string}>();
   popupAlgoConfirm = new Subject<{name: string}>();
