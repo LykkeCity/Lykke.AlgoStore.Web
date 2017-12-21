@@ -6,7 +6,7 @@ import { DesignRouting } from './design-routing.module';
 // COMPONENTS
 import { DesignComponent } from './design.component';
 import { AceEditorModule } from 'ng2-ace-editor';
-import { PopupAlgoComponent } from './popup-algo/popup-algo.component';
+import { SharedModule } from '../shared/shared.module';
 
 // SERVICES
 
@@ -15,11 +15,10 @@ import { PopupAlgoComponent } from './popup-algo/popup-algo.component';
   imports: [
     DesignRouting,
     AceEditorModule,
-    CommonModule
+    SharedModule
   ],
   declarations: [
-    DesignComponent,
-    PopupAlgoComponent
+    DesignComponent
   ],
   providers: []
 })

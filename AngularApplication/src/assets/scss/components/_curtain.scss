@@ -28,7 +28,7 @@ body.blur-popup {
   .container,
   .small-container,
   .main-footer,
-  app-site-layout > app-design > :not(app-popup-algo) {
+  app-site-layout > app-design > :not(app-popup) {
     filter: blur(5px);
   }
 

@@ -31,7 +31,8 @@ export class DesignComponent implements OnInit {
   constructor(private eventService: EventService) { }
 
   ngOnInit() {
-    
+    this.eventService.subscribeToEvent('popup:confirm', this.onPopupConfirm.bind(this));
+    this.eventService.subscribeToEvent('popup:cancel', this.onPopupCancel.bind(this));
   }
 
   ngAfterViewInit() {
@@ -52,16 +53,36 @@ export class DesignComponent implements OnInit {
     //this.showPopup();
   }
 
+  clickMe(){
+    this.showPopup();
+  }
+
   showPopup() {
     const popupConfig: PopupConfig = {
-      name: 'sessionWarning',
+      hideIcon: true,
+      name: 'deleteAlgoWarning',
       width: 370,
-      title: 'Your session is about expire',
-      text: 'You will be logged off in ' + 12 + ' second due to inactivity.',
-      btnCancelText: 'Keep me logged in',
-      btnConfirmText: 'Logout'
+      title: 'Delete Algo?',
+      text: 'Are you sure you want to delete this Algo from your list?',
+      btnCancelText: 'No, I don’t want',
+      btnConfirmText: 'Yes, Delete Algo'
     };
-    this.eventService.emitEvent('popup:algo:open', popupConfig);
+    this.eventService.emitEvent('popup:open', popupConfig);
+  }
+
+  onPopupConfirm(popupData) {
+    switch(popupData.name) {
+      case  "deleteAlgoWarning":
+        this.eventService.emitEvent('popup:close');
+        break;
+    }
+  }
+  onPopupCancel(popupData) {
+    switch(popupData.name) {
+      case  "deleteAlgoWarning":
+        this.eventService.emitEvent('popup:close');
+        break;
+    }
   }
 
 }

@@ -32,6 +32,7 @@ export class PopupComponent implements OnInit {
 
   onPopupOpen(data: PopupConfig) {
     this.showPopup = true;
+    
     this.popupConfig = data;
     this.elementBody.classList.add('blur-popup');
   }

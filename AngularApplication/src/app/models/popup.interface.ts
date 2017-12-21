@@ -1,4 +1,5 @@
 export interface PopupConfig {
+  hideIcon?: boolean;
   name: string;
   width?: number;
   title: string;
