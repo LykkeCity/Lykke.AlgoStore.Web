@@ -28,13 +28,8 @@ export class EventService  {
 
   popupOpen = new Subject<PopupConfig>();
   popupClose = new Subject<PopupConfig>();
-  popupCancel = new Subject<{name: string}>();
-  popupConfirm = new Subject<{name: string}>();
-
-  popupAlgoOpen = new Subject<PopupConfig>();
-  popupAlgoClose = new Subject<void>();
-  popupAlgoCancel = new Subject<{name: string}>();
-  popupAlgoConfirm = new Subject<{name: string}>();
+  popupCancel = new Subject<PopupConfig>();
+  popupConfirm = new Subject<PopupConfig>();
 
   successShow = new Subject<SuccessMessageConfig>();
   successHide = new Subject<void>();

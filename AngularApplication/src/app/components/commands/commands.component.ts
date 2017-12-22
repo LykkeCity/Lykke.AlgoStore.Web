@@ -50,6 +50,7 @@ export class CommandsComponent implements OnInit, OnDestroy {
       if (this.algo.Status === Status.DEPLOYED || this.algo.Status === Status.UNKNOWN || this.algo.Status === Status.STOPPED) {
         const popupConfig: PopupConfig = {
           hideIcon: true,
+          data: { algoId: this.algo.Id },
           name: 'startAlgoWarning',
           width: 370,
           title: 'Start Algo?',
@@ -63,6 +64,7 @@ export class CommandsComponent implements OnInit, OnDestroy {
       } else {
         const popupConfig: PopupConfig = {
           hideIcon: true,
+          data: { algoId: this.algo.Id },
           name: 'stopAlgoWarning',
           width: 370,
           title: 'Stop Algo?',
@@ -84,6 +86,7 @@ export class CommandsComponent implements OnInit, OnDestroy {
 
           const popupConfig: PopupConfig = {
             hideIcon: true,
+            data: { algoId: this.algo.Id },
             name: 'deleteAlgoWarning',
             width: 370,
             title: 'Delete Algo?',
@@ -117,20 +120,25 @@ export class CommandsComponent implements OnInit, OnDestroy {
   onPopupConfirm = (popupData) => {
     switch (popupData.name) {
       case "startAlgoWarning":
-        this.storeService.algoStart(this.algo.Id);
-        this.eventService.popupClose.next();
+        if (popupData.data.algoId == this.algo.Id) {
+          this.storeService.algoStart(this.algo.Id);
+          this.eventService.popupClose.next();
+        }
         break;
 
       case "stopAlgoWarning":
-        this.storeService.algoStop(this.algo.Id);
-        this.eventService.popupClose.next();
+        if (popupData.data.algoId == this.algo.Id) {
+          this.storeService.algoStop(this.algo.Id);
+          this.eventService.popupClose.next();
+        }
         break;
 
-        case "deleteAlgoWarning":
-        this.storeService.algoDelete(this.algo);
-        this.eventService.popupClose.next();
+      case "deleteAlgoWarning":
+        if (popupData.data.algoId == this.algo.Id) {
+          this.storeService.algoDelete(this.algo);
+          this.eventService.popupClose.next();
+        }
         break;
-
     }
   }
 

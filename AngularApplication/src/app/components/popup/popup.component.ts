@@ -46,9 +46,11 @@ export class PopupComponent implements OnInit, OnDestroy {
   }
 
   onPopupCancel() {
-    this.eventService.popupCancel.next({name: this.popupConfig.name});
+    //this.eventService.popupCancel.next({name: this.popupConfig.name});
+    this.eventService.popupCancel.next(this.popupConfig);
   }
   onPopupConfirm() {
-    this.eventService.popupConfirm.next({name: this.popupConfig.name});
+    this.eventService.popupConfirm.next(this.popupConfig);
   }
+
 }
