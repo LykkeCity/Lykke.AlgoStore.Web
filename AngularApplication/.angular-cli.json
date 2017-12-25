@@ -18,6 +18,11 @@
       "tsconfig": "tsconfig.app.json",
       "testTsconfig": "tsconfig.spec.json",
       "prefix": "app",
+      "stylePreprocessorOptions": {
+        "includePaths": [
+          "assets/scss"
+        ]
+      },
       "styles": [
         "../node_modules/simple-scrollbar/simple-scrollbar.css",
         "styles.scss",

@@ -1,0 +1,19 @@
+.header-placeholder {
+    a {text-decoration: none;}
+    .navbar {
+      min-height: 80px;
+      line-height: 80px;
+      .header-page-title {
+        display: inline-block;
+        margin: 0;
+        font-size: 28px;
+        line-height: 40px;
+        letter-spacing: -0.5px;
+        vertical-align: middle;
+        color: #333333;
+        strong {
+          font-family: "Proxima Nova Semibold";
+        }
+      }
+    }
+  }
