@@ -1,15 +1,8 @@
 import { NgModule } from '@angular/core';
-import { FormValidationService } from '../services/form-validation.service';
-import { QrComponent } from './qr/qr.component';
-import { ErrorMessagesComponent } from './error-messages/error-messages.component';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { FormSuccessComponent } from './form-success/form-success.component';
-import { DropdownComponent } from './dropdown/dropdown.component';
-import { ClickOutsideDirective } from './dropdown/clickOutside.directive';
 import { RouterModule } from '@angular/router';
 import { PopupComponent } from '../components/popup/popup.component';
-import { TableComponent } from './table/table.component';
 
 @NgModule({
   imports: [
@@ -17,28 +10,14 @@ import { TableComponent } from './table/table.component';
     FormsModule,
     RouterModule
   ],
-  providers: [
-    FormValidationService,
-  ],
+  providers: [],
   declarations: [
-    QrComponent,
-    ErrorMessagesComponent,
-    FormSuccessComponent,
-    DropdownComponent,
-    ClickOutsideDirective,
-    PopupComponent,
-    TableComponent,
+    PopupComponent
   ],
   exports: [
     CommonModule,
     FormsModule,
-    QrComponent,
-    DropdownComponent,
-    ErrorMessagesComponent,
-    FormSuccessComponent,
-    PopupComponent,
-    TableComponent,
-    ClickOutsideDirective
+    PopupComponent
   ]
 })
 export class SharedModule {}

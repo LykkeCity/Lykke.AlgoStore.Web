@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { SharedModule } from '../shared/shared.module';
 
 // ROUTING
 import { StoreRouting } from './store-routing.module';
@@ -16,6 +16,7 @@ import { AlgoEditComponent } from './algo-edit/algo-edit.component';
 import { AlgoListComponent } from './algo-list/algo-list.component';
 import { CommandsComponent } from '../components/commands/commands.component';
 
+
 // SERVICES
 
 
@@ -30,7 +31,7 @@ import { CommandsComponent } from '../components/commands/commands.component';
     MatPaginatorModule,
     MatFormFieldModule,
     MatInputModule,
-    CommonModule
+    SharedModule
   ],
   declarations: [
     StoreComponent,
