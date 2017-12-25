@@ -6,11 +6,15 @@ import { StoreRouting } from './store-routing.module';
 import { CdkStepperModule } from '@angular/cdk/stepper';
 import { MatStepperModule } from '@angular/material/stepper';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material';
+import { MatInputModule, MatTableModule, MatPaginatorModule } from '@angular/material';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 // COMPONENTS
 import { StoreComponent } from './store.component';
+import { AlgoDetailsComponent } from './algo-details/algo-details.component';
+import { AlgoEditComponent } from './algo-edit/algo-edit.component';
+import { AlgoListComponent } from './algo-list/algo-list.component';
+import { CommandsComponent } from '../components/commands/commands.component';
 
 // SERVICES
 
@@ -22,12 +26,18 @@ import { StoreComponent } from './store.component';
     MatStepperModule,
     FormsModule,
     ReactiveFormsModule,
+    MatTableModule,
+    MatPaginatorModule,
     MatFormFieldModule,
     MatInputModule,
     CommonModule
   ],
   declarations: [
-    StoreComponent
+    StoreComponent,
+    CommandsComponent,
+    AlgoDetailsComponent,
+    AlgoEditComponent,
+    AlgoListComponent
   ],
   providers: []
 })

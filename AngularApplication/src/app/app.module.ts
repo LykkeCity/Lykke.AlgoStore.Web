@@ -8,12 +8,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 // Components
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './components/header/header.component';
-import { SearchComponent } from './components/header/search/search.component';
 import { NotificationsComponent } from './components/header/notifications/notifications.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
-import { AlgoDetailsComponent } from './store/algo-details/algo-details.component';
-import { AlgoListComponent } from './store/algo-list/algo-list.component';
 
 // Services
 import { AuthService } from './services/auth.service';
@@ -39,29 +36,20 @@ import { StoreService } from './services/store.service';
 import { HomeComponent } from './components/home/home.component';
 import { SiteLayoutComponent } from './layout/site-layout/site-layout.component';
 import { TokenInterceptor } from './services/token-interceptor.service';
-import { CommandsComponent } from './components/commands/commands.component';
 import { MatTableModule, MatPaginatorModule, MatFormFieldModule, MatInputModule } from '@angular/material';
-import { AlgoEditComponent } from './store/algo-edit/algo-edit.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-
-
 
 @NgModule({
   declarations: [
     AppComponent,
     SiteLayoutComponent,
     HeaderComponent,
-    SearchComponent,
     NotificationsComponent,
     FooterComponent,
     NotFoundComponent,
     AuthenticationComponent,
     UserProfileComponent,
-    HomeComponent,
-    AlgoDetailsComponent,
-    CommandsComponent,
-    AlgoListComponent,
-    AlgoEditComponent
+    HomeComponent
   ],
   imports: [
     BrowserModule,
@@ -74,8 +62,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     MomentModule,
     NgIdleKeepaliveModule.forRoot(),
     SettingsModule,
-    MatTableModule,
-    MatPaginatorModule,
     FormsModule,
     ReactiveFormsModule,
     MatFormFieldModule,
