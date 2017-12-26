@@ -8,6 +8,8 @@ import { StoreService } from '../services/store.service';
 import { Algo } from '../models/algo.interface';
 import { Language } from '../models/language.enum';
 import { EventService } from '../services/event.service';
+import { HttpErrorResponse } from '@angular/common/http';
+import { NotificationsService } from 'angular2-notifications';
 
 @Component({
   selector: 'app-store',
@@ -16,7 +18,7 @@ import { EventService } from '../services/event.service';
 })
 export class StoreComponent implements OnInit, OnDestroy {
   hasDeploymentErrors: boolean;
-  file: FormData;
+  file: any;
   fileName: any;
   showUploadSection: boolean;
   algos: Array<Algo>;
@@ -33,14 +35,13 @@ export class StoreComponent implements OnInit, OnDestroy {
   @ViewChild('fileInput') fileInput;
   @ViewChild('stepper') stepper: MatStepper;
 
-  private subscriptions: Subscription[] = [];
+  private subscriptions = new Subscription();
 
   constructor(private storeService: StoreService,
     private eventService: EventService,
     private router: Router,
-    private formBuilder: FormBuilder) {
-
-    }
+    private notificationsService: NotificationsService,
+    private formBuilder: FormBuilder) { }
 
   ngOnInit() {
 
@@ -53,9 +54,21 @@ export class StoreComponent implements OnInit, OnDestroy {
       description: ['']
     });
 
-    this.storeService.algoGetAll();
+    this.subscriptions.add(this.storeService.algoGetAll()
+      .subscribe((data: Algo[]) => {
 
-    this.subscriptions.push(
+        this.storeService.algosStore = data;
+        this.storeService._algos.next([...data]);
+      }, (err: HttpErrorResponse) => {
+        if (err.error instanceof Error) {
+          this.notificationsService.error('Error', 'An error occurred!');
+        } else {
+          this.storeService.algosStore = [];
+          this.storeService._algos.next([]);
+        }
+      }));
+
+    this.subscriptions.add(
       this.storeService.algos.subscribe(result => {
         this.algos = result;
 
@@ -67,14 +80,14 @@ export class StoreComponent implements OnInit, OnDestroy {
       })
     );
 
-    this.subscriptions.push(
-      this.eventService.algoDeploymentDone.subscribe(this.onAlgoDeployed),
-      this.eventService.algoDeploymentError.subscribe(this.onAlgoDeploymentError),
-    );
+    // this.subscriptions.push(
+    //   this.eventService.algoDeploymentDone.subscribe(this.onAlgoDeployed),
+    //   this.eventService.algoDeploymentError.subscribe(this.onAlgoDeploymentError),
+    // );
   }
 
   ngOnDestroy() {
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
+    this.subscriptions.unsubscribe();
   }
 
   onAlgoDeployed = () => {
@@ -106,9 +119,9 @@ export class StoreComponent implements OnInit, OnDestroy {
 
   // Set state for 'Next' button on 'update' tab
   isAlgoDetailsButtonDisabled() {
-     if (!this.hasFile && !this.updateFormGroup.valid) {
-       return true;
-     }
+    if (!this.hasFile && !this.updateFormGroup.valid) {
+      return true;
+    }
   }
 
   initiateUpload(e) {
@@ -129,22 +142,53 @@ export class StoreComponent implements OnInit, OnDestroy {
     this.showUploadSection = false;
     this.stepper.selectedIndex = 2;
 
+    this.stepper.next();
+
     if (this.updateFormGroup.controls.name.value) {
 
       const algo = {
         Name: this.updateFormGroup.controls.name.value,
         Description: this.updateFormGroup.controls.description.value
-     };
+      };
 
-      this.storeService.algoCreateDetails(algo, this.file);
-      this.stepper.next();
+      this.showProgress = true;
+
+      this.storeService.algoCreateDetails(algo)
+        .subscribe((data: any) => {
+          this.storeService.algosStore = data;
+          this.storeService._algos.next([data]);
+
+          const formData = new FormData();
+
+          formData.append('Data', this.file);
+          formData.append('AlgoId', data.Id);
+
+          console.log('Algo created');
+
+          this.storeService.algoUpload(formData)
+            .subscribe(() => {
+              this.storeService.algoDeploy(data)
+              .subscribe(success => {
+                this.showProgress = false;
+              }, error => {
+                this.showProgress = false;
+                this.hasDeploymentErrors = true;
+              })
+            })
+        },
+        (err: HttpErrorResponse) => {
+              if (err.error instanceof Error) {
+                console.log('An error occurred:', err.error.message);
+              } else {
+                this.storeService.algosStore = [];
+                this.storeService._algos.next([]);
+              }
+            });
+
+      
     }
 
     return false;
-  }
-
-  algoCreateDetails(algo: Algo) {
-    this.storeService.algoCreateDetails(algo);
   }
 
   showListOfAlgos() {

@@ -6,6 +6,7 @@ import { Subscription } from 'rxjs/Subscription';
 import { StoreService } from '../../services/store.service';
 import { Algo } from '../../models/algo.interface';
 import { EventService } from '../../services/event.service';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-algo-detail',
@@ -15,8 +16,9 @@ import { EventService } from '../../services/event.service';
 export class AlgoDetailsComponent implements OnInit, OnDestroy {
   algo: Algo;
   log: string;
-  private subscriptions: Subscription[] = [];
-  logTimeout;
+  private subscriptions = new Subscription();
+  logInterval;
+  private subscribeToLogTailData: any;
 
   constructor(
     private storeService: StoreService,
@@ -26,39 +28,32 @@ export class AlgoDetailsComponent implements OnInit, OnDestroy {
 
     this.algo = this.storeService.activeAlgo;
 
-    this.storeService.algoGetTailLog(this.algo.Id);
-    this.logTimeout = null;
+    this.logInterval = null;
+
   }
 
   ngOnInit() {
-    this.subscriptions.push(
-      this.eventService.algoTestStarted.subscribe(this.onAlgoStatusChanged),
-      this.eventService.algoTestStopped.subscribe(this.onAlgoStatusChanged),
-      this.eventService.algoDeleteDone.subscribe(this.onDeleteDone),
-      this.eventService.algoTaillogDone.subscribe(this.onAlgoLogDone),
-      this.eventService.algoTaillogError.subscribe(this.onAlgoLogError),
-    );
+    this.subscriptions.add(this.eventService.algoTestStarted.subscribe(this.onAlgoStatusChanged));
+    this.subscriptions.add(this.eventService.algoTestStopped.subscribe(this.onAlgoStatusChanged));
+    this.subscriptions.add(this.eventService.algoDeleteDone.subscribe(this.onDeleteDone));
+    this.subscriptions.add(this.eventService.algoTaillogError.subscribe(this.onAlgoLogError));
+
+    this.subscribeToLogTailData = this.storeService.algoGetTailLog(this.algo.Id, 1000).subscribe(this.onAlgoLogDone);
   }
 
   ngOnDestroy() {
-    clearTimeout(this.logTimeout);
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
+    clearInterval(this.logInterval);
+    this.subscriptions.unsubscribe();
   }
 
-  onAlgoLogDone = (log: {message: string}) => {
-    this.log = log.message;
+  onAlgoLogDone = (log: {Log: string}) => {
 
-    // Setting a timeout since a successful execution of algoGetLog will result
-    // in this method getting invoked again. (See ngOnInit)
-    this.logTimeout = setTimeout(
-      () => {
-        this.storeService.algoGetTailLog(this.algo.Id);
-      },
-      5000
-    );
+    this.log += log.Log;
+    this.subscribeToLogTailData.unsubscribe();
+    this.subscribeToLogTailData = this.storeService.algoGetTailLog(this.algo.Id, 1000).subscribe(this.onAlgoLogDone);
   }
 
-  onAlgoLogError = (error: {message: string}) => {
+  onAlgoLogError = (error: { message: string }) => {
     this.notificationService.error('Error', error.message);
   }
 
@@ -67,7 +62,7 @@ export class AlgoDetailsComponent implements OnInit, OnDestroy {
   }
 
   onAlgoStatusChanged = () => {
-    this.storeService.algoGetTailLog(this.algo.Id);
+    this.storeService.algoGetTailLog(this.algo.Id, 1000);
   }
 
 }

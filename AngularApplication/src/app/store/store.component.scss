@@ -35,7 +35,7 @@
       .step-one-language {
         .language-button {
           margin: 1rem;
-          height: 30rem;
+          height: 15rem;
           position: relative;
           cursor: pointer;
           &:hover,
@@ -45,8 +45,8 @@
           img {
             position: absolute;
             left: 50%;
-            top: 40%;
-            transform: translate(-50%, -40%);
+            top: 29%;
+            transform: translate(-50%, -34%);
           }
           p {
             position: absolute;
@@ -89,7 +89,7 @@
           background: transparent;
   
           font-family: "Proxima Nova";
-          font-size: 1.8rem;
+          font-size:.9rem;
   
           &:after {
             position: absolute;

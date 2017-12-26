@@ -10,7 +10,7 @@ import { SuccessMessageConfig } from '../models/successConfig.interface';
 export class EventService  {
 
   algoTestStarted = new Subject<Status>();
-  algoTestStopped = new Subject<void>();
+  algoTestStopped = new Subject<Status>();
   algoTestError = new Subject<{message: string}>();
   algoTestUpdated = new Subject<void>();
 

@@ -9,6 +9,7 @@ import { Status } from '../../models/status.enum';
 import { Algo } from '../../models/algo.interface';
 import { EventService } from '../../services/event.service';
 import { PopupConfig } from '../../models/popup.interface';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-commands',
@@ -22,27 +23,25 @@ export class CommandsComponent implements OnInit, OnDestroy {
   Command: any = Command;
   Status: any = Status;
 
-  private subscriptions: Subscription[] = [];
+  private subscriptions = new Subscription();
+
+  subscribeToStart: any;
+  subscribeToStop: any;
+  subscribeToDelete: any;
 
   constructor(
     private storeService: StoreService,
     private eventService: EventService,
     private notificationService: NotificationsService,
-    private router: Router) {
-
-  }
+    private router: Router) {}
 
   ngOnInit() {
-    this.subscriptions.push(
-      this.eventService.algoTestStarted.subscribe(this.onAlgoTestStarted),
-      this.eventService.algoTestError.subscribe(this.onAlgoTestError),
-      this.eventService.popupConfirm.subscribe(this.onPopupConfirm),
-      this.eventService.popupCancel.subscribe(this.onPopupCancel),
-    );
+    this.subscriptions.add(this.eventService.popupConfirm.subscribe(this.onPopupConfirm));
+    this.subscriptions.add(this.eventService.popupCancel.subscribe(this.onPopupCancel));
   }
 
   ngOnDestroy() {
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
+    this.subscriptions.unsubscribe();
   }
 
   doCommand(command?: Command) {
@@ -50,7 +49,6 @@ export class CommandsComponent implements OnInit, OnDestroy {
       if (this.algo.Status === Status.DEPLOYED || this.algo.Status === Status.UNKNOWN || this.algo.Status === Status.STOPPED) {
         const popupConfig: PopupConfig = {
           hideIcon: true,
-          data: { algoId: this.algo.Id },
           name: 'startAlgoWarning',
           width: 370,
           title: 'Start Algo?',
@@ -60,11 +58,9 @@ export class CommandsComponent implements OnInit, OnDestroy {
         };
 
         this.eventService.popupOpen.next(popupConfig);
-
       } else {
         const popupConfig: PopupConfig = {
           hideIcon: true,
-          data: { algoId: this.algo.Id },
           name: 'stopAlgoWarning',
           width: 370,
           title: 'Stop Algo?',
@@ -77,6 +73,7 @@ export class CommandsComponent implements OnInit, OnDestroy {
       }
     } else {
       switch (command) {
+
         case Command.Edit:
           this.storeService.activeAlgo = this.algo;
           this.router.navigate(['store/algo-edit']);
@@ -106,38 +103,65 @@ export class CommandsComponent implements OnInit, OnDestroy {
     return false;
   }
 
-  onAlgoTestStarted = (status: Status) => {
-    this.algo.Status = status;
-    console.log(status);
+  onAlgoTestStarted = () => {
+    this.algo.Status = Status.STARTED;
+    this.eventService.algoTestStarted.next();
+    this.unsubscribe();
   }
 
-  onAlgoTestError = () => {
+  onAlgoTestStopped = () => {
+    this.algo.Status = Status.STOPPED;
+    this.eventService.algoTestStopped.next();
+    this.unsubscribe();
+  }
+
+  onAlgoDeleteDone = () => {
+    this.eventService.algoDeleteDone.next();
+  }
+
+  onAlgoDeleteError = (err: HttpErrorResponse) => {
     this.notificationService.error('Error', 'Some error occured!');
-    console.log('AlgoTestError');
+    this.unsubscribe();
   }
 
+  onAlgoTestError = (err: HttpErrorResponse) => {
+    this.notificationService.error('Error', 'Some error occured!');
+    this.unsubscribe();
+  }
+
+  unsubscribe() {
+    if (this.subscribeToStart) this.subscribeToStart.unsubscribe();
+    if (this.subscribeToStop) this.subscribeToStop.unsubscribe();
+    if (this.subscribeToDelete) this.subscribeToDelete.unsubscribe();
+  }
 
   onPopupConfirm = (popupData) => {
     switch (popupData.name) {
       case "startAlgoWarning":
-        if (popupData.data.algoId == this.algo.Id) {
-          this.storeService.algoStart(this.algo.Id);
-          this.eventService.popupClose.next();
-        }
+        this.subscribeToStart = this.storeService.algoStart(this.algo.Id)
+        .subscribe(
+          this.onAlgoTestStarted,
+          this.onAlgoTestError);
+
+        this.eventService.popupClose.next();
         break;
 
       case "stopAlgoWarning":
-        if (popupData.data.algoId == this.algo.Id) {
-          this.storeService.algoStop(this.algo.Id);
-          this.eventService.popupClose.next();
-        }
+        this.subscribeToStop = this.storeService.algoStop(this.algo.Id)
+        .subscribe(
+          this.onAlgoTestStopped,
+          this.onAlgoTestError);
+
+        this.eventService.popupClose.next();
         break;
 
       case "deleteAlgoWarning":
-        if (popupData.data.algoId == this.algo.Id) {
-          this.storeService.algoDelete(this.algo);
+          this.subscribeToDelete = this.storeService.algoDelete(this.algo)
+          .subscribe(
+            this.onAlgoDeleteDone,
+            this.onAlgoDeleteError
+          );
           this.eventService.popupClose.next();
-        }
         break;
     }
   }
@@ -145,5 +169,4 @@ export class CommandsComponent implements OnInit, OnDestroy {
   onPopupCancel = (popupData) => {
     this.eventService.popupClose.next();
   }
-
 }

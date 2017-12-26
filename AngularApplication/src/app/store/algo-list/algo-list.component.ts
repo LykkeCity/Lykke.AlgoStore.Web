@@ -21,29 +21,20 @@ export class AlgoListComponent implements OnInit, AfterViewInit, OnDestroy {
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
-  private subscriptions: Subscription[] = [];
+  private subscriptions = new Subscription();
 
   constructor(
     private storeService: StoreService,
     private eventService: EventService,
     private router: Router) {
 
-    this.storeService.algoGetAll();
-
-    this.subscriptions.push(
-      this.storeService.algos.subscribe(result => {
-        this.dataSource.data = result;
-        this.showAlgoList = result.length > 0 ? true : false;
-      })
-    );
   }
 
   ngOnInit() {
-    this.subscriptions.push(
-      this.eventService.algoTestStarted.subscribe(this.onAlgoStatusChanged),
-      this.eventService.algoTestStopped.subscribe(this.onAlgoStatusChanged),
-      this.eventService.algoDeleteDone.subscribe(this.onAlgoStatusChanged),
-    );
+    this.subscriptions.add(this.storeService.algoGetAll().subscribe(this.onDataObtained));
+    this.subscriptions.add(this.eventService.algoTestStarted.subscribe(this.onAlgoStatusChanged));
+    this.subscriptions.add(this.eventService.algoTestStopped.subscribe(this.onAlgoStatusChanged));
+    this.subscriptions.add(this.eventService.algoDeleteDone.subscribe(this.onAlgoStatusChanged));
   }
 
   ngAfterViewInit() {
@@ -51,7 +42,7 @@ export class AlgoListComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
+    this.subscriptions.unsubscribe();
   }
 
   createNewAlgo() {
@@ -67,7 +58,18 @@ export class AlgoListComponent implements OnInit, AfterViewInit, OnDestroy {
     return false;
   }
 
+  onDataObtained = (result) => {
+    this.dataSource.data = result;
+    this.showAlgoList = result.length > 0 ? true : false;
+
+  }
+
+  onDataError = (result) => {
+    console.log(result);
+
+  }
+
   onAlgoStatusChanged = () => {
-    this.storeService.algoGetAll();
+    this.subscriptions.add(this.storeService.algoGetAll().subscribe(this.onDataObtained, this.onDataError));
   }
 }

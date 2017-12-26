@@ -5,6 +5,8 @@ import { Subscription } from 'rxjs/Subscription';
 import { StoreService } from '../../services/store.service';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { EventService } from '../../services/event.service';
+import { HttpErrorResponse } from '@angular/common/http';
+import { NotificationsService } from 'angular2-notifications';
 
 @Component({
   selector: 'app-algo-edit',
@@ -15,18 +17,14 @@ export class AlgoEditComponent implements OnInit, OnDestroy {
 
   updateFormGroup: FormGroup;
 
-  private subscriptions: Subscription[] = [];
+  private subscriptions = new Subscription();
 
   constructor(
     private storeService: StoreService,
     private eventService: EventService,
     private router: Router,
-    private formBuilder: FormBuilder) {
-
-    this.subscriptions.push(
-      this.eventService.algoTestUpdated.subscribe(this.onAlgoUpdated)
-    );
-  }
+    private notificationService: NotificationsService,
+    private formBuilder: FormBuilder) { }
 
   ngOnInit() {
     this.updateFormGroup = this.formBuilder.group({
@@ -44,11 +42,20 @@ export class AlgoEditComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
+    this.subscriptions.unsubscribe();
   }
 
   onAlgoUpdated = () => {
     this.router.navigate(['store/algo-list']);
+  }
+
+  onAlgoUpdatedError = (err: HttpErrorResponse) => {
+    if (err.error instanceof Error) {
+      console.log('An error occurred:', err.error.message);
+    } else {
+      this.notificationService.error('Error', 'Something went wrong!');
+      console.log(`Backend returned code ${err.status}, body was: ${err.error}`);
+    }
   }
 
   update() {
@@ -60,7 +67,7 @@ export class AlgoEditComponent implements OnInit, OnDestroy {
         Description: this.updateFormGroup.controls.description.value
       };
 
-      this.storeService.algoCreateDetails(algo);
+      this.subscriptions.add(this.storeService.algoCreateDetails(algo).subscribe(this.onAlgoUpdated, this.onAlgoUpdatedError));
     }
   }
 }
