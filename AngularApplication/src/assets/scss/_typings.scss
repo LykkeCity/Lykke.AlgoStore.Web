@@ -4,41 +4,41 @@ h1, h2, h3, h4, h5, h6 {
 
 .heading-lg {
   font-family: "Proxima Nova Bold";
-  font-size: 40px;
+  font-size: 2rem; //40px;
   line-height: 1.25;
   color: #333333;
 }
 
 .heading-lgm {
   font-family: "Proxima Nova Light";
-  font-size: 36px;
+  font-size: 1.55rem; //36px;
   line-height: 1.11;
   color: #333333;
 }
 
 .heading-md {
   font-family: "Proxima Nova Light";
-  font-size: 28px;
+  font-size: 1.4rem; //28px;
   line-height: 1.43;
   color: #babfc6;
 }
 
 .heading-sm {
   font-family: "Proxima Nova Semibold";
-  font-size: 22px;
+  font-size: 1.1rem; //22px;
   color: #333;
 }
 
 .heading-xs {
   font-family: "Proxima Nova";
-  font-size: 13px;
+  font-size: .77rem; //13px;
   line-height: 1.85;
   letter-spacing: 2.4px;
   color: #3f4d60;
 }
 .text-lg {
   font-family: "Proxima Nova";
-  font-size: 18px;
+  font-size: .9rem; //18px;
   line-height: 1.67;
   //text-align: left;
   color: #3f4d60;
@@ -50,14 +50,14 @@ h1, h2, h3, h4, h5, h6 {
 
 .text-md {
   font-family: "Proxima Nova";
-  font-size: 16px;
+  font-size: .8rem; //16px;
   line-height: 1.5;
   color: #3f4d60;
 }
 
 .text-s {
   font-family: "Proxima Nova";
-  font-size: 14px;
+  font-size: .7rem; //14px;
   line-height: 1.43;
   color: #babfc6;
 }
@@ -67,12 +67,12 @@ h1, h2, h3, h4, h5, h6 {
   font-family: "Proxima Nova";
   letter-spacing: 2.4px;
   color: #3f4d60;
-  font-size: 12px;
+  font-size: .6rem; //12px;
 }
 
 .text-xs {
   font-family: "Proxima Nova";
-  font-size: 12px;
+  font-size: .6rem; //12px;
   line-height: 1;
   color: #3f4d60;
 }

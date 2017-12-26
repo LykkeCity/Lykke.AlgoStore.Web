@@ -1,27 +1,26 @@
 .button {
   display: inline-block;
-  font-size: 16px;
+  font-size: .8rem;
   background: none;
   border: none;
   outline: none;
   &.button-default {
     font-family: "Proxima Nova Light";
     color: #8c94a0;
-    // TODO add information icon for info butotn
     .icon {
       &:before {
-        font-size: 25px;
+        font-size: 1.25rem;
       }
     }
   }
   &.button-blue {
     border-radius: 100px;
     background-color: #0da7fc;
-    line-height: 40px;
+    line-height: 2rem;
     padding: 10px 20px;
     color: #ffffff;
-    font-size: 16px;
-    line-height: 20px;
+    font-size: .8rem;
+    line-height: 1rem;
     font-family: "Proxima Nova";
     position: relative;
 
