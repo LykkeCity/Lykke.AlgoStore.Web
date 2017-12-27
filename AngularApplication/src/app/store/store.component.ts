@@ -168,26 +168,23 @@ export class StoreComponent implements OnInit, OnDestroy {
           this.storeService.algoUpload(formData)
             .subscribe(() => {
               this.storeService.algoDeploy(data)
-              .subscribe(success => {
-                this.showProgress = false;
-              }, error => {
-                this.showProgress = false;
-                this.hasDeploymentErrors = true;
-              })
+                .subscribe(success => {
+                  this.showProgress = false;
+                }, error => {
+                  this.showProgress = false;
+                  this.hasDeploymentErrors = true;
+                })
             })
         },
         (err: HttpErrorResponse) => {
-              if (err.error instanceof Error) {
-                console.log('An error occurred:', err.error.message);
-              } else {
-                this.storeService.algosStore = [];
-                this.storeService._algos.next([]);
-              }
-            });
-
-      
+          if (err.error instanceof Error) {
+            console.log('An error occurred:', err.error.message);
+          } else {
+            this.storeService.algosStore = [];
+            this.storeService._algos.next([]);
+          }
+        });
     }
-
     return false;
   }
 

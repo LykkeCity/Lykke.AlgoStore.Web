@@ -6,6 +6,7 @@ import { Subscription } from 'rxjs/Subscription';
 import { StoreService } from '../../services/store.service';
 import { Algo } from '../../models/algo.interface';
 import { EventService } from '../../services/event.service';
+import { Status } from '../../models/status.enum';
 
 
 @Component({
@@ -66,7 +67,6 @@ export class AlgoListComponent implements OnInit, AfterViewInit, OnDestroy {
 
   onDataError = (result) => {
     console.log(result);
-
   }
 
   onAlgoStatusChanged = () => {

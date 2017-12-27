@@ -3,5 +3,6 @@ export enum Status {
     DEPLOYED = 'DEPLOYED',
     STARTED = 'STARTED',
     STOPPED = 'STOPPED',
-    PAUSED = 'PAUSED'
+    PAUSED = 'PAUSED',
+    DELETED = 'DELETED'
 }
