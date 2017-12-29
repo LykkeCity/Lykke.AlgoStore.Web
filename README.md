@@ -1,1 +1,0 @@
-# Lykke Algo Store Web
