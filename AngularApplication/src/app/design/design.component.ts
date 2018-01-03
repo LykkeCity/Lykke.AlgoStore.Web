@@ -38,7 +38,7 @@ export class DesignComponent implements OnInit, AfterViewInit, OnDestroy {
   private subscriptions: Subscription[] = [];
   log: string;
 
-  constructor(private eventService: EventService, private storeService: StoreService) { 
+  constructor(private eventService: EventService, private storeService: StoreService) {
   this.store = storeService;
   }
 
@@ -82,7 +82,7 @@ export class DesignComponent implements OnInit, AfterViewInit, OnDestroy {
       btnCancelText: 'Cancel',
       btnConfirmText: 'Yes, download the template'
     };
-    
+
     this.eventService.popupOpen.next(popupConfig);
   }
 

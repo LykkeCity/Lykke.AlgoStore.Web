@@ -1,49 +1,48 @@
 <div class="design-placeholder">
 
-    <div class="row editor mb-20">
-      <div class="container">
-        <div class="col-md-3 sidebar">
-          <h2>
-            Hight-frequency API
-          </h2>
-          <div class="available-endpoints">
-            <div class="row">
-              <div class="col-md-4">
-                <span>API key: </span>
-              </div>
-              <div class="col-md-8">
-                <input type="text" placeholder="XXXX-XXXX-XXXX-XXXX">
-              </div>
+  <div class="row editor mb-20">
+    <div class="container">
+      <div class="col-md-3 sidebar">
+        <h2>
+          Hight-frequency API
+        </h2>
+        <div class="available-endpoints">
+          <div class="row">
+            <div class="col-md-4">
+              <span>API key: </span>
             </div>
-          </div>
-          <h2>
-            Resources
-          </h2>
-          <div class="resources">
-            <ul>
-              <li>HFT API SDK</li>
-              <li><a href="javascript:void(0)" (click)="downloadProjectTemplate()">Algo project</a></li>
-            </ul>
+            <div class="col-md-8">
+              <input type="text" placeholder="XXXX-XXXX-XXXX-XXXX">
+            </div>
           </div>
         </div>
-        <div class="col-md-9 code">
-          <div class="row">
-            <div class="col-md-6">
-              <h2 class="pull-left">Algo name: {{store.activeAlgo.Name}}</h2>
-            </div>
-            <div class="col-md-6 text-right pt-5 pb-5">
-              <a href="javascript:void(0)" (click)="save()">Save</a>
-              <span class="ml-5 mr-5">|</span>
-              <span>Status: Draft</span>
-            </div>
-          </div>
-          <ace-editor [(text)]="text" [mode]="'java'" #editor style="min-height:50vh;"></ace-editor>
+        <h2>
+          Resources
+        </h2>
+        <div class="resources">
+          <ul>
+            <li>HFT API SDK</li>
+            <li><a href="javascript:" (click)="downloadProjectTemplate()">Algo project</a></li>
+          </ul>
         </div>
       </div>
+      <div class="col-md-9 code">
+        <div class="row">
+          <div class="col-md-6">
+            <h2 class="pull-left">Algo name: {{store.activeAlgo.Name}}</h2>
+          </div>
+          <div class="col-md-6 text-right pt-5 pb-5">
+            <a href="javascript;">Save</a>
+            <span class="ml-5 mr-5">|</span>
+            <span>Status: Draft</span>
+          </div>
+        </div>
+        <ace-editor [(text)]="text" [mode]="'java'" #editor style="min-height:50vh;"></ace-editor>
+      </div>
     </div>
-  
-  
-    <app-terminal [model]="log" [title]="'Console'"></app-terminal>
   </div>
-  <app-popup></app-popup>
-  
+
+
+  <app-terminal [model]="log" [title]="'Console'"></app-terminal>
+</div>
+<app-popup></app-popup>

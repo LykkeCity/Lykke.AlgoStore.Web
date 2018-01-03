@@ -63,7 +63,7 @@ export class StoreComponent implements OnInit, OnDestroy {
       this.subscriptions.add(
         this.storeService.algos.subscribe(result => {
           this.algos = result;
-  
+
           if (this.storeService.mode !== 'create' && this.algos.length > 0) {
             this.router.navigate(['store/algo-list']);
           }

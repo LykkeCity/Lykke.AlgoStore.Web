@@ -69,5 +69,5 @@ export class StoreService extends CrudService {
 
   algoGetTailLog(algoId, tail) {
     return this.get(`/v1/management/test/tailLog?AlgoId=${algoId}&Tail=${tail}`);
-  }  
+  }
 }
