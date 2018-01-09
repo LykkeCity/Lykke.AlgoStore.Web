@@ -1,0 +1,13 @@
+@import "colors";
+
+.algo-list-placeholder {
+    .algo-list {
+        .mat-header-row {
+            background-color: $gray;
+
+            a {
+                color: $dark;
+            }
+        }
+    }
+}
