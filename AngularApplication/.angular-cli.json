@@ -38,7 +38,9 @@
         "../node_modules/qrious/dist/qrious.min.js",
         "../node_modules/simple-scrollbar/simple-scrollbar.min.js",
         "../node_modules/moment/min/moment.min.js",
-        "../node_modules/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"
+        "../node_modules/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js",
+        "assets/js/charting_library-master/charting_library/charting_library.min.js",
+        "assets/js/charting_library-master/charting_library/datafeed/udf/datafeed.js"
       ],
       "environmentSource": "environments/environment.ts",
       "environments": {

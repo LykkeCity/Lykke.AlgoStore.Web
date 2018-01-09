@@ -25,16 +25,17 @@ import { NgIdleKeepaliveModule } from '@ng-idle/keepalive';
 import { AuthenticationComponent } from './components/authentication/authentication.component';
 import { IdleService } from './services/idle.service';
 import { StoreService } from './services/store.service';
-import { HomeComponent } from './components/home/home.component';
 import { SiteLayoutComponent } from './layout/site-layout/site-layout.component';
 import { TokenInterceptor } from './services/token-interceptor.service';
+import { HomeComponent } from './components/home/home.component';
+import { NotFoundComponent } from './components/not-found/not-found.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     SiteLayoutComponent,
-    NotFoundComponent,
     AuthenticationComponent,
+    NotFoundComponent,
     HomeComponent
   ],
   imports: [
@@ -47,7 +48,7 @@ import { TokenInterceptor } from './services/token-interceptor.service';
     MomentModule,
     NgIdleKeepaliveModule.forRoot()
   ],
-  providers: [
+ providers: [
     AuthGuard,
     AuthService,
     EventService,
@@ -59,6 +60,7 @@ import { TokenInterceptor } from './services/token-interceptor.service';
       multi: true
     }
   ],
+  providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
