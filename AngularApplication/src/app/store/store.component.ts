@@ -31,6 +31,7 @@ export class StoreComponent implements OnInit, OnDestroy {
 
   constructor(private storeService: StoreService,
     private eventService: EventService,
+    private router: Router,
     private notificationsService: NotificationsService,
     private formBuilder: FormBuilder) { }
 
@@ -118,5 +119,9 @@ export class StoreComponent implements OnInit, OnDestroy {
         });
     }
     return false;
+  }
+
+  openDesigner() {
+    this.router.navigate(['design']);
   }
 }
