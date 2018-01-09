@@ -114,6 +114,32 @@ MARGIN=&lt;THE MARGINE WITH WHICH YOU WANT TO SELL, e.g 1.1&gt;
             </div>
           </mat-step>
 
+          <mat-step [stepControl]="updateFormGroup">
+            <h1 class="heading-sm text-center mt-40 mb-60">Add algo details</h1>
+            <form [formGroup]="updateFormGroup">
+              <ng-template matStepLabel>details</ng-template>
+              <div class="col-md-3"></div>
+              <div class="col-md-6 text-center">
+
+                <div class="step-two-setup-metadata">
+                  <p class="error"></p>
+                  <mat-form-field>
+                    <input matInput placeholder="Algo name" formControlName="name" required>
+                  </mat-form-field>
+                  <br>
+                  <mat-form-field>
+                    <textarea matInput placeholder="Description" matTextareaAutosize matAutosizeMinRows="2" matAutosizeMaxRows="5" formControlName="description"></textarea>
+                  </mat-form-field>
+                  <div>
+                    <button class="button button-blue" mat-button matStepperNext (click)="update()" [disabled]="isAlgoDetailsButtonDisabled()">Next</button>
+                  </div>
+                </div>
+
+              </div>
+              <div class="col-md-3"></div>
+            </form>
+          </mat-step>
+
           <mat-step>
             <ng-template matStepLabel>done</ng-template>
             <div class="step-four-deploy text-center mt-100">
@@ -121,7 +147,7 @@ MARGIN=&lt;THE MARGINE WITH WHICH YOU WANT TO SELL, e.g 1.1&gt;
               <div *ngIf="!hasErrors" class="mt-100">
                 <h3>All done! Let's code the algo...</h3>
                 <div class="mt-100">
-                  <button class="button button-blue" mat-button matStepperPrevious>Code</button>
+                  <button class="button button-blue" mat-button matStepperPrevious (click)="openDesigner()">Code</button>
                 </div>
               </div>
 

@@ -15,6 +15,7 @@ const routes: Routes = [
     path: '',
     component: SiteLayoutComponent,
     children: [
+      { path: 'design', loadChildren: 'app/design/design.module#DesignModule', canActivate: [AuthGuard] },
       { path: 'store', loadChildren: 'app/store/store.module#StoreModule', canActivate: [AuthGuard] },
       { path: '404', component: NotFoundComponent },
     ]
