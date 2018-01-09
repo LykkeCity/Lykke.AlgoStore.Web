@@ -1,0 +1,122 @@
+@import "mixins";
+@import "colors";
+
+
+::ng-deep .store-placeholder {
+    margin-bottom: 150px;
+     .stepper {
+      .mat-step-header {
+        .mat-step-icon {
+          background-color: transparent;
+          border: 1px solid $black !important;
+          color: black;
+          width: 40px;
+          height: 40px;
+          &[ng-reflect-ng-switch="edit"] {
+            width: 40px;
+            height: 40px;
+            border: 0 !important;
+            background-image: url(/assets/img/store/method-draw-image.svg);
+            background-repeat: no-repeat;
+            background-size: 40px;
+            mat-icon {
+              display: none;
+            }
+          }
+        }
+        .mat-step-icon-not-touched {
+          width: 40px;
+          height: 40px;
+          background-color: transparent;
+          border: 1px solid $darkGray;
+          color: $darkGray;
+        }
+      }
+      .step-one-language {
+        .language-button {
+          margin: 1rem;
+          height: 15rem;
+          position: relative;
+          cursor: pointer;
+          &:hover,
+          &.active {
+            @include language-shadow;
+          }
+          img {
+            position: absolute;
+            left: 50%;
+            top: 29%;
+            transform: translate(-50%, -34%);
+          }
+          p {
+            position: absolute;
+            bottom: 0;
+            font-size: 4.2rem;
+            width: 100%;
+          }
+          &.net {
+            img {
+              max-width: 206px;
+            }
+          }
+          &.java {
+            img {
+              max-width: 103px;
+            }
+          }
+          &.python {
+            img {
+              max-width: 100px;
+            }
+          }
+        }
+      }
+      .step-two-setup {
+        .plain,
+        .code {
+          margin: 30px 0;
+        }
+        .plain {
+          color: $dark;
+        }
+        .code {
+          border-top: 1px solid $darkGray;
+          border-right: 1px solid $darkGray;
+          border-bottom: 1px solid $darkGray;
+          border-radius: 10px;
+          color: $code;
+          position: relative;
+          background: transparent;
+  
+          font-family: "Proxima Nova";
+          font-size:.9rem;
+  
+          &:after {
+            position: absolute;
+            content: '';
+            border-left: 2px solid $blue;
+            height: 88%;
+            transform: translateX(-35%);
+            top: 6%;
+            left: 0px;
+          }
+        }
+      }
+      .step-two-setup-metadata {
+        .file-uploaded {
+          padding: 10px;
+          border: 1px solid $gray;
+          &:after {
+            clear: both;
+            float: none;
+            display: block;
+            content: "\a";
+          }
+        }
+        .mat-form-field {
+          width: 29rem;
+        }
+      }
+    }
+  }
+  
