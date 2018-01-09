@@ -1,4 +1,5 @@
 import { NgModule } from '@angular/core';
+import { SharedModule } from '../shared/shared.module';
 
 // ROUTING
 import { StoreRouting } from './store-routing.module';
@@ -9,8 +10,7 @@ import { MatInputModule, MatTableModule, MatPaginatorModule } from '@angular/mat
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 // COMPONENTS
-import { StoreComponent } from './store.component';
-
+import { StoreComponent } from './store.component'
 
 // SERVICES
 @NgModule({
@@ -24,6 +24,7 @@ import { StoreComponent } from './store.component';
     MatPaginatorModule,
     MatFormFieldModule,
     MatInputModule,
+    SharedModule
   ],
   declarations: [
     StoreComponent
