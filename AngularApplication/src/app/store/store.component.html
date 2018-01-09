@@ -1,7 +1,142 @@
 <div class="container store-placeholder">
   <div class="row">
     <div class="col-xs-12">
-    store (protected page) works!
+      <div class="stepper">
+        <mat-horizontal-stepper [linear]="true" #stepper>
+
+          <mat-step>
+            <div class="step-one-language">
+              <ng-template matStepLabel>language</ng-template>
+
+              <h1 class="heading-sm text-center mt-40 mb-60">Choose Langage for the Algo:</h1>
+              <div class="row">
+                <div class="col-md-4 text-center">
+                  <div class="language-button net disabled" (click)="setLanguage(Language.NET)">
+                    <img src="assets/img/store/Microsoft.Net_logo.svg" alt="">
+                    <p class="text-center">.NET</p>
+                  </div>
+                </div>
+                <div class="col-md-4 text-center">
+
+                  <div class="language-button java active" (click)="setLanguage(Language.Java)">
+                    <img src="assets/img/store/java_logo.svg" alt="">
+                    <p class="text-center">Java</p>
+                  </div>
+
+                </div>
+                <div class="col-md-4 text-center">
+                  <div class="language-button python disabled" (click)="setLanguage(Language.Python)">
+                    <img src="assets/img/store/python_logo.svg" alt="">
+                    <p class="text-center">Python</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </mat-step>
+
+          <mat-step>
+            <div class="step-two-setup">
+              <ng-template matStepLabel>setup</ng-template>
+              <div class="row">
+                  <h1 class="heading-sm text-center mt-40 mb-60">Set up your custom algorithm</h1>
+              </div>
+              <div class="row">
+                <div class="col-md-1"></div>
+                <div class="col-md-10">
+                  <p class="plain text-lgb text-left">
+                    Java maven Algo Archetype. In order to generate an algo you may use the Lykke Algo java archetype
+                  </p>
+
+                    <pre class="code pt-25">
+mvn org.apache.maven.plugins:maven-archetype-plugin:2.4:generate \
+-DarchetypeGroupId=com.lykke.algos \
+-DarchetypeArtifactId=algos-archetype \
+-DarchetypeVersion=1.0-SNAPSHOT \
+-DgroupId=com.algo \
+-DartifactId=myalgo \
+-Dversion=1.0-SNAPSHOT \
+-DarchetypeCatalog=https://oss.sonatype.org/content/repositories/snapshots
+                    </pre>
+
+                    <p class="plain text-lgb text-left">
+                        This will create a java maven project for you with groupId com.algo, artifact id myalgo in directory myalgo in your current folder.
+                        Please go inside and review the contentns.
+                    </p>
+                    <pre class="code pt-20 pb-20">cd myalgo</pre>
+
+                    <p class="plain text-lgb text-left">
+                        In order to make your algo to work please create a file called hft.properties with the following
+                        content in myalgo/src/main/resources
+                    </p>
+                    <pre class="code pt-25">
+HFT_API_BASE_PATH=&lt;LYKKE HFT API trading endpoint, e.g https://hft-service-dev.lykkex.net&gt;
+HFT_KEY=&lt;YOUR HFT API client key&gt;
+WALLET_KEY=&lt;YOUR WALLET KEY&gt;
+ASSET_PAIR=&lt;THE ASSET PAIR YOU WANT TO TRADE, e.g BTCUSD&gt;
+ASSET=&lt;THE ASSET YOU WANT TO BUY AND SELL, e.g BTC&gt;
+VOLUME=&lt;THE VOLUME YOU WANT TO BUY, e.g 0.001&gt;
+MARGIN=&lt;THE MARGINE WITH WHICH YOU WANT TO SELL, e.g 1.1&gt;
+                    </pre>
+
+                    <p class="plain text-lgb text-left">
+                        Once you are ready with that you may package your algo
+                    </p>
+                    <pre class="code pt-20 pb-20">mvn clean package</pre>
+
+                    <p class="plain text-lgb text-left">
+                        This will generate an executable jar with dependencies file in your target folder.
+                    </p>
+                    <pre class="code pt-20 pb-20">target/myalgo-1.0-SNAPSHOT-jar-with-dependencies.jar</pre>
+
+                    <p class="plain text-lgb text-left">
+                        In order to verify it you may execute:
+                    </p>
+                    <pre class="code pt-20 pb-20">java -jar myalgo/target/myalgo-1.0-SNAPSHOT-jar-with-dependencies.jar</pre>
+
+                    <p class="plain text-lgb text-left">
+                        If you see an output like
+                    </p>
+                    <pre class="code pt-25">
+——————Check wallet!!!——————
+——————Buy some coins on the market price!——————
+——————Selling XXX coins with some profit on YYY price!!!——————
+                    </pre>
+
+                    <p class="plain text-lgb text-left">
+                        Then your algo is working and you are ready to deploy it in AlgoStore. For the purpose upload your jar-with-dependencies.jar file there.
+                    </p>
+                </div>
+                <div class="col-md-1"></div>
+              </div>
+              <div class="text-center">
+                <button class="button button-blue" mat-button matStepperNext>Next</button>
+              </div>
+            </div>
+          </mat-step>
+
+          <mat-step>
+            <ng-template matStepLabel>done</ng-template>
+            <div class="step-four-deploy text-center mt-100">
+
+              <div *ngIf="!hasErrors" class="mt-100">
+                <h3>All done! Let's code the algo...</h3>
+                <div class="mt-100">
+                  <button class="button button-blue" mat-button matStepperPrevious>Code</button>
+                </div>
+              </div>
+
+              <div *ngIf="hasErrors" class="mt-100">
+                <h3>There is a problem with your algo</h3>
+                <div class="mt-100">
+                  <button class="button button-blue" mat-button matStepperPrevious>Back</button>
+                </div>
+              </div>
+
+            </div>
+          </mat-step>
+
+        </mat-horizontal-stepper>
+      </div>
     </div>
   </div>
 </div>

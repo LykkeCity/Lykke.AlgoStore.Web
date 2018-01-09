@@ -7,7 +7,10 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 // Components
 import { AppComponent } from './app.component';
+import { AuthenticationComponent } from './components/authentication/authentication.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
+import { SiteLayoutComponent } from './layout/site-layout/site-layout.component';
+import { HomeComponent } from './components/home/home.component';
 
 // Services
 import { AuthService } from './services/auth.service';
@@ -22,13 +25,10 @@ import { MomentModule } from 'angular2-moment'; // moment-style pipes for date f
 import { NgIdleKeepaliveModule } from '@ng-idle/keepalive';
 
 // APP MODULES
-import { AuthenticationComponent } from './components/authentication/authentication.component';
 import { IdleService } from './services/idle.service';
 import { StoreService } from './services/store.service';
-import { SiteLayoutComponent } from './layout/site-layout/site-layout.component';
 import { TokenInterceptor } from './services/token-interceptor.service';
-import { HomeComponent } from './components/home/home.component';
-import { NotFoundComponent } from './components/not-found/not-found.component';
+
 
 @NgModule({
   declarations: [
@@ -60,7 +60,6 @@ import { NotFoundComponent } from './components/not-found/not-found.component';
       multi: true
     }
   ],
-  providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
