@@ -5,6 +5,7 @@ export interface PopupConfig {
   width?: number;
   title: string;
   text: string;
+  textClass?: string;
   btnCancelText?: string;
   btnConfirmText?: string;
 }
