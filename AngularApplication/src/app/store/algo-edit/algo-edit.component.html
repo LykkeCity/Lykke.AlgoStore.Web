@@ -1,0 +1,29 @@
+<div class="container algo-edit-placeholder pt-10 pb-30">
+  <div class="row">
+    <div class="col-xs-12">
+      <h1 class="heading-sm text-center mt-40 mb-60">Edit algo</h1>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-3"></div>
+    <div class="col-xs-6 text-center">
+      <form [formGroup]="updateFormGroup">
+        <mat-form-field>
+          <input matInput placeholder="Algo name" formControlName="name" required>
+        </mat-form-field>
+        <br>
+        <mat-form-field>
+          <textarea matInput placeholder="Description" matTextareaAutosize matAutosizeMinRows="2" matAutosizeMaxRows="5" formControlName="description"></textarea>
+        </mat-form-field>
+      </form>
+    </div>
+    <div class="col-md-3"></div>
+  </div>
+
+  <div class="row mt-60">
+    <div class="col-xs-12 text-center">
+      <button class="button button-blue" (click)="update()" [disabled]="!updateFormGroup.valid">Save algo</button>
+    </div>
+  </div>
+
+</div>

@@ -12,6 +12,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 // COMPONENTS
 import { StoreComponent } from './store.component'
 import { AlgoListComponent } from './algo-list/algo-list.component';
+import { AlgoEditComponent } from './algo-edit/algo-edit.component';
+import { CommandsComponent } from '../components/commands/commands.component';
 
 // SERVICES
 @NgModule({
@@ -28,8 +30,10 @@ import { AlgoListComponent } from './algo-list/algo-list.component';
     SharedModule
   ],
   declarations: [
+    CommandsComponent,
     StoreComponent,
-    AlgoListComponent
+    AlgoListComponent,
+    AlgoEditComponent
   ],
   providers: []
 })
