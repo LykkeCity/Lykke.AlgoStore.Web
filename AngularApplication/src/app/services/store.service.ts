@@ -34,4 +34,40 @@ export class StoreService extends CrudService {
   algoCreateDetails(algo: Algo) {
     return this.post('/v1/clientData/metadata', algo);
   }
+
+  algoGet(algoId) {
+    return this.get(`/v1/clientData/imageData/upload/string?AlgoId=${algoId}`);
+  }
+
+  algoSave(algoId, data) {
+    return this.post(`/v1/clientData/imageData/upload/string?AlgoId=${algoId}&Data=${data}`, null);
+  }
+
+  algoUpload(formData: FormData) {
+    return this.post('/v1/clientData/imageData/upload/binary', formData);
+  }
+
+  algoDeploy(data: any) {
+    return this.post('/v1/management/deploy/binary', { AlgoId: data.Id });
+  }
+
+  algoStart(algoId) {
+    return this.post('/v1/management/test/start', { AlgoId: algoId });
+  }
+
+  algoStop(algoId) {
+    return this.post('/v1/management/test/stop', { AlgoId: algoId });
+  }
+
+  algoDelete(algo: Algo) {
+    return this.post('/v1/clientData/metadata/cascadeDelete', algo);
+  }
+
+  algoGetLog(algoId) {
+    return this.get(`/v1/management/test/log?AlgoId=${algoId}`);
+  }
+
+  algoGetTailLog(algoId, tail) {
+    return this.get(`/v1/management/test/tailLog?AlgoId=${algoId}&Tail=${tail}`);
+  }  
 }

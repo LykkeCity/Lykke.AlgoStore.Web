@@ -14,6 +14,7 @@ import { StoreComponent } from './store.component'
 import { AlgoListComponent } from './algo-list/algo-list.component';
 import { AlgoEditComponent } from './algo-edit/algo-edit.component';
 import { CommandsComponent } from '../components/commands/commands.component';
+import { AlgoDetailsComponent } from './algo-details/algo-details.component';
 
 // SERVICES
 @NgModule({
@@ -33,7 +34,8 @@ import { CommandsComponent } from '../components/commands/commands.component';
     CommandsComponent,
     StoreComponent,
     AlgoListComponent,
-    AlgoEditComponent
+    AlgoEditComponent,
+    AlgoDetailsComponent
   ],
   providers: []
 })
