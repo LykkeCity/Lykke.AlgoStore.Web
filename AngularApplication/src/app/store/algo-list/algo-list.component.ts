@@ -33,6 +33,9 @@ export class AlgoListComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngOnInit() {
     this.subscriptions.add(this.storeService.algoGetAll().subscribe(this.onDataObtained));
+    this.subscriptions.add(this.eventService.algoTestStarted.subscribe(this.onAlgoStatusChanged));
+    this.subscriptions.add(this.eventService.algoTestStopped.subscribe(this.onAlgoStatusChanged));
+    this.subscriptions.add(this.eventService.algoDeleteDone.subscribe(this.onAlgoStatusChanged));
   }
 
   ngAfterViewInit() {
@@ -59,6 +62,7 @@ export class AlgoListComponent implements OnInit, AfterViewInit, OnDestroy {
   onDataObtained = (result) => {
     this.dataSource.data = result;
     this.showAlgoList = result.length > 0 ? true : false;
+
   }
 
   onDataError = (result) => {

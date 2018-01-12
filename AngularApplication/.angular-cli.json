@@ -35,6 +35,7 @@
         "../node_modules/ace-builds/src-min/ace.js",
         "../node_modules/ace-builds/src-min/mode-java.js",
         "../node_modules/ace-builds/src-min/theme-eclipse.js",
+        "../node_modules/ace-builds/src-min/ext-language_tools.js",
         "../node_modules/qrious/dist/qrious.min.js",
         "../node_modules/simple-scrollbar/simple-scrollbar.min.js",
         "../node_modules/moment/min/moment.min.js",

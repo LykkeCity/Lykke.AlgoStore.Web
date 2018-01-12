@@ -1,0 +1,38 @@
+@import "colors";
+.design-placeholder {
+  h2 {
+    font-size: 1rem;
+    padding: 5px 0;
+  }
+  .sidebar {
+    h2 {
+      
+      border-top: 1px solid $lightGray;
+      border-bottom: 1px solid $lightGray;
+    }
+
+    .available-endpoints {
+        padding: 10px;
+        min-height: 200px;
+
+        input {
+            width: 100%;
+            padding: 0 5px;
+        }
+    }
+
+    .resources {
+        padding: 10px;
+        ul {
+            list-style: none;
+            padding-left: 0;
+        }
+    }
+  }
+
+  .code {
+      .ace_editor {
+          border: 2px solid $dark;
+      }
+  }
+}

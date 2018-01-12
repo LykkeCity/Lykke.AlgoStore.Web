@@ -33,7 +33,12 @@ export class AlgoDetailsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.subscriptions.add(this.eventService.algoTestStarted.subscribe(this.onAlgoStatusChanged));
+    this.subscriptions.add(this.eventService.algoTestStopped.subscribe(this.onAlgoStatusChanged));
+    this.subscriptions.add(this.eventService.algoDeleteDone.subscribe(this.onDeleteDone));
+    this.subscriptions.add(this.eventService.algoTaillogError.subscribe(this.onAlgoLogError));
 
+    this.subscribeToLogTailData = this.storeService.algoGetTailLog(this.algo.Id, 1000).subscribe(this.onAlgoLogDone);
   }
 
   ngOnDestroy() {

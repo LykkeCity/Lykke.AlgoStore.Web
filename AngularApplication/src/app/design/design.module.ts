@@ -1,18 +1,18 @@
 import { NgModule } from '@angular/core';
+import { SharedModule } from '../shared/shared.module';
+import { AceEditorModule } from 'ng2-ace-editor';
 
 // ROUTING
 import { DesignRouting } from './design-routing.module';
 
 // COMPONENTS
 import { DesignComponent } from './design.component';
-import { SharedModule } from '../shared/shared.module';
-
-// SERVICES
 
 
 @NgModule({
   imports: [
     DesignRouting,
+    AceEditorModule,
     SharedModule
   ],
   declarations: [
