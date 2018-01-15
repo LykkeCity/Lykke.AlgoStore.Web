@@ -4,7 +4,6 @@ import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { TerminalComponent } from '../components/terminal/terminal.component';
 import { PopupComponent } from '../components/popup/popup.component';
-import { TerminalComponent } from '../components/terminal/terminal.component';
 
 
 @NgModule({
