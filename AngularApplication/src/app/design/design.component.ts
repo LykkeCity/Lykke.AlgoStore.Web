@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef, AfterViewInit, OnDestroy } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { PopupConfig } from '../models/popup.interface';
 import { EventService } from '../services/event.service';
 import { Subscription } from 'rxjs/Subscription';
@@ -38,11 +38,11 @@ export class DesignComponent implements OnInit, AfterViewInit, OnDestroy {
   private subscriptions: Subscription[] = [];
   log: string;
 
-  constructor(private eventService: EventService, private storeService: StoreService) {
-  this.store = storeService;
+  constructor(private eventService: EventService, private storeService: StoreService, private ref: ChangeDetectorRef){
+    this.store = storeService;
   }
 
-  ngOnInit() {
+  ngOnInit(){
     this.subscriptions.push(
       this.eventService.popupConfirm.subscribe(this.onPopupConfirm),
       this.eventService.popupCancel.subscribe(this.onPopupCancel)
@@ -51,7 +51,7 @@ export class DesignComponent implements OnInit, AfterViewInit, OnDestroy {
     this.subscribeToGet = this.storeService.algoGet(this.storeService.activeAlgo.Id).subscribe(this.onAlgoGetDone);
   }
 
-  ngAfterViewInit() {
+  ngAfterViewInit(){
     this.editor.setTheme('eclipse');
 
     this.editor.getEditor().setOptions({
@@ -63,15 +63,16 @@ export class DesignComponent implements OnInit, AfterViewInit, OnDestroy {
     this.editor.getEditor().commands.addCommand({
       name: 'showOtherCompletions',
       bindKey: 'Ctrl-.',
-      exec: function (editor) {}
+      exec: function (editor){
+      }
     });
   }
 
-  ngOnDestroy() {
+  ngOnDestroy(){
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
-  downloadProjectTemplate() {
+  downloadProjectTemplate(){
     const popupConfig: PopupConfig = {
       hideIcon: true,
       name: 'downloadProjectTemplateInfo',
@@ -86,30 +87,31 @@ export class DesignComponent implements OnInit, AfterViewInit, OnDestroy {
     this.eventService.popupOpen.next(popupConfig);
   }
 
-  onPopupConfirm = (popupData) => {
+  onPopupConfirm = (popupData) =>{
     switch(popupData.name) {
-      case  "downloadProjectTemplateInfo":
+      case  'downloadProjectTemplateInfo':
         this.eventService.popupClose.next();
         break;
     }
-  }
-  onPopupCancel = (popupData) => {
+  };
+  onPopupCancel = (popupData) =>{
     switch(popupData.name) {
-      case  "downloadProjectTemplateInfo":
+      case  'downloadProjectTemplateInfo':
         this.eventService.popupClose.next();
         break;
     }
-  }
+  };
 
-  onAlgoGetDone = (response) => {
+  onAlgoGetDone = (response) =>{
     this.text = response.Data;
     this.subscribeToGet.unsubscribe();
-  }
+    this.ref.detectChanges();
+  };
 
-  onAlgoSaveDone = (status) => {
+  onAlgoSaveDone = (status) =>{
     console.log(status);
     this.subscribeToSave.unsubscribe();
-  }
+  };
 
   save(){
     this.subscribeToSave = this.storeService.algoSave(this.storeService.activeAlgo.Id, this.text).subscribe(this.onAlgoSaveDone);
