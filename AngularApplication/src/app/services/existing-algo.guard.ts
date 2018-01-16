@@ -1,16 +1,16 @@
-import {CanActivate, Router} from '@angular/router';
-import {Injectable} from '@angular/core';
-import {StoreService} from './store.service';
+import { CanActivate, Router } from '@angular/router';
+import { Injectable } from '@angular/core';
+import { StoreService } from './store.service';
 
 
 @Injectable()
 export class ExistingAlgoGuard implements CanActivate {
 
 
-  constructor(private storeService: StoreService, private router: Router) {
+  constructor(private storeService: StoreService, private router: Router){
   }
 
-  canActivate(params) {
+  canActivate(params){
     if (this.storeService.activeAlgo) {
       return true;
     } else {
