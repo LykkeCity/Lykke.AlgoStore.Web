@@ -1,5 +1,5 @@
 export enum Language {
-    NET,
-    Java,
-    Python
+  NET,
+  Java,
+  Python
 }

@@ -38,11 +38,11 @@ export class DesignComponent implements OnInit, AfterViewInit, OnDestroy {
   private subscriptions: Subscription[] = [];
   log: string;
 
-  constructor(private eventService: EventService, private storeService: StoreService, private ref: ChangeDetectorRef){
+  constructor(private eventService: EventService, private storeService: StoreService, private ref: ChangeDetectorRef) {
     this.store = storeService;
   }
 
-  ngOnInit(){
+  ngOnInit() {
     this.subscriptions.push(
       this.eventService.popupConfirm.subscribe(this.onPopupConfirm),
       this.eventService.popupCancel.subscribe(this.onPopupCancel)
@@ -51,7 +51,7 @@ export class DesignComponent implements OnInit, AfterViewInit, OnDestroy {
     this.subscribeToGet = this.storeService.algoGet(this.storeService.activeAlgo.Id).subscribe(this.onAlgoGetDone);
   }
 
-  ngAfterViewInit(){
+  ngAfterViewInit() {
     this.editor.setTheme('eclipse');
 
     this.editor.getEditor().setOptions({
@@ -63,23 +63,24 @@ export class DesignComponent implements OnInit, AfterViewInit, OnDestroy {
     this.editor.getEditor().commands.addCommand({
       name: 'showOtherCompletions',
       bindKey: 'Ctrl-.',
-      exec: function (editor){
+      exec: function (editor) {
       }
     });
   }
 
-  ngOnDestroy(){
+  ngOnDestroy() {
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
-  downloadProjectTemplate(){
+  downloadProjectTemplate() {
     const popupConfig: PopupConfig = {
       hideIcon: true,
       name: 'downloadProjectTemplateInfo',
       width: 370,
       title: 'Download algo',
       textClass: 'text-center',
-      text: 'Download project for local development. You will get a basic architecture of the trading algo together with REST API consumer for the HFT API.',
+      text: 'Download project for local development. You will get a basic architecture ' +
+      'of the trading algo together with REST API consumer for the HFT API.',
       btnCancelText: 'Cancel',
       btnConfirmText: 'Yes, download the template'
     };
@@ -87,33 +88,34 @@ export class DesignComponent implements OnInit, AfterViewInit, OnDestroy {
     this.eventService.popupOpen.next(popupConfig);
   }
 
-  onPopupConfirm = (popupData) =>{
-    switch(popupData.name) {
+  onPopupConfirm = (popupData) => {
+    switch (popupData.name) {
       case  'downloadProjectTemplateInfo':
         this.eventService.popupClose.next();
         break;
     }
-  };
-  onPopupCancel = (popupData) =>{
-    switch(popupData.name) {
-      case  'downloadProjectTemplateInfo':
-        this.eventService.popupClose.next();
-        break;
-    }
-  };
+  }
 
-  onAlgoGetDone = (response) =>{
+  onPopupCancel = (popupData) => {
+    switch (popupData.name) {
+      case  'downloadProjectTemplateInfo':
+        this.eventService.popupClose.next();
+        break;
+    }
+  }
+
+  onAlgoGetDone = (response) => {
     this.text = response.Data;
     this.subscribeToGet.unsubscribe();
     this.ref.detectChanges();
-  };
+  }
 
-  onAlgoSaveDone = (status) =>{
+  onAlgoSaveDone = (status) => {
     console.log(status);
     this.subscribeToSave.unsubscribe();
-  };
+  }
 
-  save(){
+  save() {
     this.subscribeToSave = this.storeService.algoSave(this.storeService.activeAlgo.Id, this.text).subscribe(this.onAlgoSaveDone);
   }
 

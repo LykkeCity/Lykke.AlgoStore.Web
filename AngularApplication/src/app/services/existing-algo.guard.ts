@@ -7,10 +7,10 @@ import { StoreService } from './store.service';
 export class ExistingAlgoGuard implements CanActivate {
 
 
-  constructor(private storeService: StoreService, private router: Router){
+  constructor(private storeService: StoreService, private router: Router) {
   }
 
-  canActivate(params){
+  canActivate(params) {
     if (this.storeService.activeAlgo) {
       return true;
     } else {
