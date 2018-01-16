@@ -1,8 +1,8 @@
-import { Component, OnInit, ViewChild, ElementRef, AfterViewInit, OnDestroy } from '@angular/core';
-import { PopupConfig } from '../models/popup.interface';
-import { EventService } from '../services/event.service';
-import { Subscription } from 'rxjs/Subscription';
-import { StoreService } from '../services/store.service';
+import {AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {PopupConfig} from '../models/popup.interface';
+import {EventService} from '../services/event.service';
+import {Subscription} from 'rxjs/Subscription';
+import {StoreService} from '../services/store.service';
 
 @Component({
   selector: 'app-design',
@@ -38,8 +38,8 @@ export class DesignComponent implements OnInit, AfterViewInit, OnDestroy {
   private subscriptions: Subscription[] = [];
   log: string;
 
-  constructor(private eventService: EventService, private storeService: StoreService) {
-  this.store = storeService;
+  constructor(private eventService: EventService, private storeService: StoreService, private ref: ChangeDetectorRef) {
+    this.store = storeService;
   }
 
   ngOnInit() {
@@ -63,7 +63,8 @@ export class DesignComponent implements OnInit, AfterViewInit, OnDestroy {
     this.editor.getEditor().commands.addCommand({
       name: 'showOtherCompletions',
       bindKey: 'Ctrl-.',
-      exec: function (editor) {}
+      exec: function (editor) {
+      }
     });
   }
 
@@ -87,31 +88,32 @@ export class DesignComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   onPopupConfirm = (popupData) => {
-    switch(popupData.name) {
-      case  "downloadProjectTemplateInfo":
+    switch (popupData.name) {
+      case  'downloadProjectTemplateInfo':
         this.eventService.popupClose.next();
         break;
     }
-  }
+  };
   onPopupCancel = (popupData) => {
-    switch(popupData.name) {
-      case  "downloadProjectTemplateInfo":
+    switch (popupData.name) {
+      case  'downloadProjectTemplateInfo':
         this.eventService.popupClose.next();
         break;
     }
-  }
+  };
 
   onAlgoGetDone = (response) => {
     this.text = response.Data;
     this.subscribeToGet.unsubscribe();
-  }
+    this.ref.detectChanges();
+  };
 
   onAlgoSaveDone = (status) => {
     console.log(status);
     this.subscribeToSave.unsubscribe();
-  }
+  };
 
-  save(){
+  save() {
     this.subscribeToSave = this.storeService.algoSave(this.storeService.activeAlgo.Id, this.text).subscribe(this.onAlgoSaveDone);
   }
 

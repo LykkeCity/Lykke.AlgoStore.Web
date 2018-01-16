@@ -7,6 +7,7 @@ import { DesignRouting } from './design-routing.module';
 
 // COMPONENTS
 import { DesignComponent } from './design.component';
+import {ExistingAlgoGuard} from '../services/existing-algo.guard';
 
 
 @NgModule({
@@ -18,6 +19,6 @@ import { DesignComponent } from './design.component';
   declarations: [
     DesignComponent
   ],
-  providers: []
+  providers: [ExistingAlgoGuard]
 })
 export class DesignModule {}
