@@ -1,11 +1,9 @@
 import { Injectable } from '@angular/core';
 import { CrudService } from './crud.service';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Observable } from 'rxjs/Observable';
 import { NotificationsService } from 'angular2-notifications';
 import { Algo } from '../models/algo.interface';
-import { EventService } from './event.service';
 
 @Injectable()
 export class StoreService extends CrudService {
@@ -20,8 +18,7 @@ export class StoreService extends CrudService {
 
   constructor(
     http: HttpClient,
-    notificationService: NotificationsService,
-    private eventService: EventService) {
+    notificationService: NotificationsService) {
     super(http, notificationService);
 
     this.algosStore = [];

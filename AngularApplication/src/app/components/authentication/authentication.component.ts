@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 
@@ -9,7 +9,7 @@ import { AuthService } from '../../services/auth.service';
   templateUrl: './authentication.component.html',
   styleUrls: ['./authentication.component.scss']
 })
-export class AuthenticationComponent implements OnInit, OnDestroy {
+export class AuthenticationComponent implements OnDestroy {
 
   private subscriptions: Subscription[] = [];
 
@@ -34,9 +34,6 @@ export class AuthenticationComponent implements OnInit, OnDestroy {
         }
       })
     );
-  }
-
-  ngOnInit() {
   }
 
   ngOnDestroy() {

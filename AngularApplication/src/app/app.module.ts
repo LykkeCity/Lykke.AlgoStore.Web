@@ -27,7 +27,6 @@ import { TokenInterceptor } from './services/token-interceptor.service';
 
 // 3RD PARTY MODULES
 import { SimpleNotificationsModule } from 'angular2-notifications';
-import { MomentModule } from 'angular2-moment'; // moment-style pipes for date formatting
 import { NgIdleKeepaliveModule } from '@ng-idle/keepalive';
 
 // APP MODULES
@@ -54,7 +53,7 @@ import { SharedModule } from './shared/shared.module';
     SharedModule,
     HttpClientModule,
     SimpleNotificationsModule.forRoot(),
-    MomentModule,
+    // MomentModule,
     NgIdleKeepaliveModule.forRoot()
   ],
  providers: [

@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { NotificationsService } from 'angular2-notifications';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
@@ -6,7 +6,6 @@ import { Subscription } from 'rxjs/Subscription';
 import { StoreService } from '../../services/store.service';
 import { Algo } from '../../models/algo.interface';
 import { EventService } from '../../services/event.service';
-import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-algo-detail',
@@ -20,11 +19,10 @@ export class AlgoDetailsComponent implements OnInit, OnDestroy {
   logInterval;
   private subscribeToLogTailData: any;
 
-  constructor(
-    private storeService: StoreService,
-    private eventService: EventService,
-    private router: Router,
-    private notificationService: NotificationsService) {
+  constructor(private storeService: StoreService,
+              private eventService: EventService,
+              private router: Router,
+              private notificationService: NotificationsService) {
 
     this.algo = this.storeService.activeAlgo;
 
@@ -46,23 +44,23 @@ export class AlgoDetailsComponent implements OnInit, OnDestroy {
     this.subscriptions.unsubscribe();
   }
 
-  onAlgoLogDone = (log: {Log: string}) => {
+  onAlgoLogDone = (log: { Log: string }) => {
 
     this.log += log.Log;
     this.subscribeToLogTailData.unsubscribe();
     this.subscribeToLogTailData = this.storeService.algoGetTailLog(this.algo.Id, 1000).subscribe(this.onAlgoLogDone);
-  }
+  };
 
   onAlgoLogError = (error: { message: string }) => {
     this.notificationService.error('Error', error.message);
-  }
+  };
 
   onDeleteDone = () => {
     this.router.navigate(['store/algo-list']);
-  }
+  };
 
   onAlgoStatusChanged = () => {
     this.storeService.algoGetTailLog(this.algo.Id, 1000);
-  }
+  };
 
 }

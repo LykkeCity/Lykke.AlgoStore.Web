@@ -5,7 +5,6 @@ import { NotFoundComponent } from './components/not-found/not-found.component';
 import { AuthenticationComponent } from './components/authentication/authentication.component';
 import { AuthGuard } from './services/auth-guard.service';
 import { HomeComponent } from './components/home/home.component';
-import { AppComponent } from './app.component';
 import { SiteLayoutComponent } from './layout/site-layout/site-layout.component';
 
 

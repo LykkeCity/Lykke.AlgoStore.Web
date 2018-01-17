@@ -37,13 +37,13 @@ export class PopupComponent implements OnInit, OnDestroy {
     this.popupConfig = data;
     this.popupConfig.textClass = data.textClass ? data.textClass : 'text-left';
     this.elementBody.classList.add('blur-popup');
-  }
+  };
 
   onPopupClose = (data) => {
     this.showPopup = false;
     this.popupConfig = null;
     this.elementBody.classList.remove('blur-popup');
-  }
+  };
 
   onPopupCancel() {
     this.eventService.popupCancel.next(this.popupConfig);

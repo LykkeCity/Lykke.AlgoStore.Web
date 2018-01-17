@@ -1,8 +1,5 @@
 import { Injectable } from '@angular/core';
-import { RequestOptions, Headers } from '@angular/http';
-import { HttpClient, HttpParams/*, HttpHeaders*/ } from '@angular/common/http';
-
-import { NotificationsService } from 'angular2-notifications';
+import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { Router } from '@angular/router';
 
@@ -15,7 +12,6 @@ export class AuthService {
   authenticationUrl: string;
 
   constructor(private http: HttpClient,
-    private notificationService: NotificationsService,
     private router: Router) {
 
     this._isAuthenticated = false;

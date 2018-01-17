@@ -7,7 +7,6 @@ import { Subscription } from 'rxjs/Subscription';
 import { StoreService } from '../services/store.service';
 import { Algo } from '../models/algo.interface';
 import { Language } from '../models/language.enum';
-import { EventService } from '../services/event.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { NotificationsService } from 'angular2-notifications';
 
@@ -18,7 +17,6 @@ import { NotificationsService } from 'angular2-notifications';
 })
 export class StoreComponent implements OnInit, OnDestroy {
   algos: Array<Algo>;
-  isLinear = false;
   secondFormGroup: FormGroup;
   updateFormGroup: FormGroup;
   hasErrors: Boolean;
@@ -30,7 +28,6 @@ export class StoreComponent implements OnInit, OnDestroy {
   private subscriptions = new Subscription();
 
   constructor(private storeService: StoreService,
-    private eventService: EventService,
     private router: Router,
     private notificationsService: NotificationsService,
     private formBuilder: FormBuilder) { }

@@ -4,7 +4,6 @@ import { Subscription } from 'rxjs/Subscription';
 
 import { StoreService } from '../../services/store.service';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
-import { EventService } from '../../services/event.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { NotificationsService } from 'angular2-notifications';
 
@@ -21,7 +20,6 @@ export class AlgoEditComponent implements OnInit, OnDestroy {
 
   constructor(
     private storeService: StoreService,
-    private eventService: EventService,
     private router: Router,
     private notificationService: NotificationsService,
     private formBuilder: FormBuilder) { }
@@ -47,7 +45,7 @@ export class AlgoEditComponent implements OnInit, OnDestroy {
 
   onAlgoUpdated = () => {
     this.router.navigate(['store/algo-list']);
-  }
+  };
 
   onAlgoUpdatedError = (err: HttpErrorResponse) => {
     if (err.error instanceof Error) {
@@ -56,7 +54,7 @@ export class AlgoEditComponent implements OnInit, OnDestroy {
       this.notificationService.error('Error', 'Something went wrong!');
       console.log(`Backend returned code ${err.status}, body was: ${err.error}`);
     }
-  }
+  };
 
   update() {
     if (this.updateFormGroup.controls.name.value) {

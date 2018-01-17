@@ -109,27 +109,27 @@ export class CommandsComponent implements OnInit, OnDestroy {
     this.algo.Status = Status.STARTED;
     this.eventService.algoTestStarted.next(Status.STARTED);
     this.unsubscribe();
-  }
+  };
 
   onAlgoTestStopped = () => {
     this.algo.Status = Status.STOPPED;
     this.eventService.algoTestStopped.next(Status.STOPPED);
     this.unsubscribe();
-  }
+  };
 
   onAlgoDeleteDone = () => {
     this.eventService.algoDeleteDone.next();
-  }
+  };
 
   onAlgoDeleteError = (err: HttpErrorResponse) => {
     this.notificationService.error('Error', 'Some error occured!');
     this.unsubscribe();
-  }
+  };
 
   onAlgoTestError = (err: HttpErrorResponse) => {
     this.notificationService.error('Error', 'Some error occured!');
     this.unsubscribe();
-  }
+  };
 
   unsubscribe() {
     if (this.subscribeToStart) {
@@ -180,9 +180,9 @@ export class CommandsComponent implements OnInit, OnDestroy {
         }
         break;
     }
-  }
+  };
 
   onPopupCancel = (popupData) => {
     this.eventService.popupClose.next();
-  }
+  };
 }

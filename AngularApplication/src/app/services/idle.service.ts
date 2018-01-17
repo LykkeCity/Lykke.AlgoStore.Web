@@ -1,17 +1,15 @@
 import { Injectable } from '@angular/core';
 import { EventService } from './event.service';
-import {Idle, DEFAULT_INTERRUPTSOURCES} from '@ng-idle/core';
+import { DEFAULT_INTERRUPTSOURCES, Idle } from '@ng-idle/core';
 import { environment } from '../../environments/environment';
 import { AuthService } from './auth.service';
 import { PopupConfig } from '../models/popup.interface';
-import { Router } from '@angular/router';
 
 @Injectable()
 export class IdleService {
 
   constructor(private idle: Idle,
               private authService: AuthService,
-              private router: Router,
               private eventService: EventService) {
     this.idle.setIdle(environment.idleTime);
     this.idle.setTimeout(environment.idleTimeout);
@@ -34,7 +32,7 @@ export class IdleService {
       this.authService.logout(false);
     });
 
-    this.idle.onTimeoutWarning.subscribe((countdown) =>  {
+    this.idle.onTimeoutWarning.subscribe((countdown) => {
       const popupConfig: PopupConfig = {
         name: 'sessionWarning',
         width: 370,
@@ -65,7 +63,7 @@ export class IdleService {
         this.authService.login();
         break;
     }
-  }
+  };
   onPopupCancel = (popupData) => {
     switch (popupData.name) {
       case 'sessionWarning':
@@ -77,5 +75,5 @@ export class IdleService {
         this.authService.login();
         break;
     }
-  }
+  };
 }

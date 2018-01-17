@@ -94,7 +94,7 @@ export class DesignComponent implements OnInit, AfterViewInit, OnDestroy {
         this.eventService.popupClose.next();
         break;
     }
-  }
+  };
 
   onPopupCancel = (popupData) => {
     switch (popupData.name) {
@@ -102,18 +102,18 @@ export class DesignComponent implements OnInit, AfterViewInit, OnDestroy {
         this.eventService.popupClose.next();
         break;
     }
-  }
+  };
 
   onAlgoGetDone = (response) => {
     this.text = response.Data;
     this.subscribeToGet.unsubscribe();
     this.ref.detectChanges();
-  }
+  };
 
   onAlgoSaveDone = (status) => {
     console.log(status);
     this.subscribeToSave.unsubscribe();
-  }
+  };
 
   save() {
     this.subscribeToSave = this.storeService.algoSave(this.storeService.activeAlgo.Id, this.text).subscribe(this.onAlgoSaveDone);

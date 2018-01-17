@@ -1,4 +1,4 @@
-import {Component, ViewChild, OnInit, ChangeDetectorRef, OnDestroy, AfterViewInit} from '@angular/core';
+import {Component, ViewChild, OnInit, OnDestroy, AfterViewInit} from '@angular/core';
 import {MatPaginator, MatTableDataSource} from '@angular/material';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
@@ -6,7 +6,6 @@ import { Subscription } from 'rxjs/Subscription';
 import { StoreService } from '../../services/store.service';
 import { Algo } from '../../models/algo.interface';
 import { EventService } from '../../services/event.service';
-import { Status } from '../../models/status.enum';
 
 
 @Component({
@@ -61,15 +60,15 @@ export class AlgoListComponent implements OnInit, AfterViewInit, OnDestroy {
 
   onDataObtained = (result) => {
     this.dataSource.data = result;
-    this.showAlgoList = result.length > 0 ? true : false;
+    this.showAlgoList = result.length > 0;
 
-  }
+  };
 
   onDataError = (result) => {
     console.log(result);
-  }
+  };
 
   onAlgoStatusChanged = () => {
     this.subscriptions.add(this.storeService.algoGetAll().subscribe(this.onDataObtained, this.onDataError));
-  }
+  };
 }
