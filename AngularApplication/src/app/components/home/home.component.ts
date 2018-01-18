@@ -11,7 +11,7 @@ export class HomeComponent {
 
   constructor(private authService:AuthService) { }
 
-  openAnAccount() {
+  openAnAccount(): void {
     this.authService.login();
   }
 }

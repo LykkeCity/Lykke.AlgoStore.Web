@@ -16,7 +16,7 @@ export class IdleService {
     this.idle.setInterrupts(DEFAULT_INTERRUPTSOURCES);
   }
 
-  init() {
+  init(): void {
     this.startWatch();
     this.idle.onTimeout.subscribe(() => {
       const popupConfig: PopupConfig = {
@@ -48,7 +48,7 @@ export class IdleService {
     this.eventService.popupCancel.subscribe(this.onPopupCancel);
   }
 
-  startWatch() {
+  startWatch(): void {
     this.idle.watch();
   }
 

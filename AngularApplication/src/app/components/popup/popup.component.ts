@@ -12,7 +12,7 @@ import { PopupConfig } from '../../models/popup.interface';
 export class PopupComponent implements OnInit, OnDestroy {
   showPopup: boolean;
   popupConfig: PopupConfig;
-  elementBody: any;
+  elementBody: HTMLBodyElement;
 
   private subscriptions: Subscription[] = [];
 
@@ -45,11 +45,11 @@ export class PopupComponent implements OnInit, OnDestroy {
     this.elementBody.classList.remove('blur-popup');
   };
 
-  onPopupCancel() {
+  onPopupCancel(): void {
     this.eventService.popupCancel.next(this.popupConfig);
   }
 
-  onPopupConfirm() {
+  onPopupConfirm(): void {
     this.eventService.popupConfirm.next(this.popupConfig);
   }
 

@@ -20,8 +20,7 @@ export class StoreComponent implements OnInit, OnDestroy {
   secondFormGroup: FormGroup;
   updateFormGroup: FormGroup;
   hasErrors: Boolean;
-  Language: any = Language;
-  activeAlgo: Algo;
+  Language = Language;
 
   @ViewChild('stepper') stepper: MatStepper;
 
@@ -58,7 +57,7 @@ export class StoreComponent implements OnInit, OnDestroy {
       }));
 
       this.subscriptions.add(
-        this.storeService.algos.subscribe(result => {
+        this.storeService.algos.subscribe((result: Algo[]) => {
           this.algos = result;
 
           if (this.storeService.mode !== 'create' && this.algos.length > 0) {
@@ -72,7 +71,7 @@ export class StoreComponent implements OnInit, OnDestroy {
     this.subscriptions.unsubscribe();
   }
 
-  setLanguage(language: Language) {
+  setLanguage(language: Language): void {
     switch (language) {
       case Language.NET:
         console.log('NET');
@@ -90,14 +89,14 @@ export class StoreComponent implements OnInit, OnDestroy {
   }
 
   // Set state for 'Next' button on 'update' tab
-  isAlgoDetailsButtonDisabled() {
+  isAlgoDetailsButtonDisabled(): boolean {
     if (!this.updateFormGroup.valid) {
       return true;
     }
   }
 
   // Button 'Next' on 'update' tab click method
-  update() {
+  update(): boolean {
     this.stepper.selectedIndex = 2;
 
     this.stepper.next();
@@ -128,7 +127,7 @@ export class StoreComponent implements OnInit, OnDestroy {
     return false;
   }
 
-  openDesigner() {
+  openDesigner(): void {
     this.router.navigate(['design']);
   }
 }

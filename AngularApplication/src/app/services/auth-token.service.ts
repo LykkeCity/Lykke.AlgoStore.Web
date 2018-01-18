@@ -3,6 +3,7 @@ import { environment } from '../../environments/environment';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { tap } from 'rxjs/operators';
 import { HttpClient, HttpParams } from '@angular/common/http';
+import { Observable } from 'rxjs/Observable';
 
 @Injectable()
 export class AuthTokenService implements OnDestroy {
@@ -20,7 +21,7 @@ export class AuthTokenService implements OnDestroy {
     );
   }
 
-  fetchToken(code: string) {
+  fetchToken(code: string): Observable<Object> {
     return this.http.get(environment.authUrl, { params: new HttpParams().append('code', code)}).pipe(
       tap(
         next => { this.getWalletToken(next).subscribe(); }
@@ -28,7 +29,7 @@ export class AuthTokenService implements OnDestroy {
     );
   }
 
-  getWalletToken(data) {
+  getWalletToken(data): Observable<Object> {
     const headers = {
       'application_id': environment.applicationId,
       'Authorization': data.token_type + ' ' + data.access_token
@@ -45,7 +46,7 @@ export class AuthTokenService implements OnDestroy {
     );
   }
 
-  private setToken(token) {
+  private setToken(token): void {
     if (token) {
       localStorage.setItem(this.tokenName, token);
     } else {
@@ -53,11 +54,11 @@ export class AuthTokenService implements OnDestroy {
     }
   }
 
-  private getToken() {
+  private getToken(): string {
     return localStorage.getItem(this.tokenName);
   }
 
-  isAuthenticated() {
+  isAuthenticated(): boolean {
     return !!localStorage.getItem(this.tokenName);
   }
 

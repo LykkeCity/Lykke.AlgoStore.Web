@@ -6,6 +6,7 @@ import { Subscription } from 'rxjs/Subscription';
 import { StoreService } from '../../services/store.service';
 import { Algo } from '../../models/algo.interface';
 import { EventService } from '../../services/event.service';
+import { AlgoLog } from '../../models/algo-log.interface';
 
 @Component({
   selector: 'app-algo-detail',
@@ -16,8 +17,8 @@ export class AlgoDetailsComponent implements OnInit, OnDestroy {
   algo: Algo;
   log: string;
   private subscriptions = new Subscription();
-  logInterval;
-  private subscribeToLogTailData: any;
+  logInterval: number;
+  private subscribeToLogTailData: Subscription;
 
   constructor(private storeService: StoreService,
               private eventService: EventService,
@@ -44,7 +45,7 @@ export class AlgoDetailsComponent implements OnInit, OnDestroy {
     this.subscriptions.unsubscribe();
   }
 
-  onAlgoLogDone = (log: { Log: string }) => {
+  onAlgoLogDone = (log: AlgoLog) => {
 
     this.log += log.Log;
     this.subscribeToLogTailData.unsubscribe();

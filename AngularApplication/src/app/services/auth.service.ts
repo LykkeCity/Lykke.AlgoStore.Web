@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
-import { Router } from '@angular/router';
 
 @Injectable()
 export class AuthService {
@@ -11,8 +10,7 @@ export class AuthService {
   redirectUri: string;
   authenticationUrl: string;
 
-  constructor(private http: HttpClient,
-    private router: Router) {
+  constructor(private http: HttpClient) {
 
     this._isAuthenticated = false;
     this.redirectUri = environment.redirectUrl;
@@ -24,12 +22,12 @@ export class AuthService {
       '&redirect_uri=' + encodeURIComponent(environment.redirectUrl);
   }
 
-  login() {
+  login(): void {
     localStorage.setItem('returnUrl', window.location.pathname);
     window.location.replace(this.authenticationUrl);
   }
 
-  logout(redirectFlag = true) {
+  logout(redirectFlag:boolean = true): void {
 
     const headers = {'Authorization': 'Bearer ' + localStorage.getItem('token')};
 

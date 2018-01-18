@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { AuthTokenService } from './auth-token.service';
 import { catchError } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { NotificationsService } from 'angular2-notifications';
 import { environment } from '../../environments/environment';
+import { ErrorObservable } from 'rxjs/observable/ErrorObservable';
 
 @Injectable()
 export class AuthRequestService {
@@ -58,7 +59,7 @@ export class AuthRequestService {
     );
   }
 
-  private handleError(error) {
+  private handleError(error: HttpErrorResponse): ErrorObservable {
     if (error.status === 401) {
       this.router.navigateByUrl('');
       this.authToken.tokenStream.next(null);

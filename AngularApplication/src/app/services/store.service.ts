@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Algo } from '../models/algo.interface';
 import { AuthRequestService } from './auth-request.service';
+import { Observable } from 'rxjs/Observable';
+import { AlgoLog } from '../models/algo-log.interface';
 
 @Injectable()
 export class StoreService {
@@ -19,47 +21,47 @@ export class StoreService {
     this.algosStore = [];
   }
 
-  algoGetAll() {
+  algoGetAll(): Observable<Algo[]> {
     return this.authRequestService.get('/v1/clientData/metadata');
   }
 
-  algoCreateDetails(algo: Algo) {
+  algoCreateDetails(algo: Algo): Observable<Algo> {
     return this.authRequestService.post('/v1/clientData/metadata', algo);
   }
 
-  algoGet(algoId) {
+  algoGet(algoId: string): Observable<Algo> {
     return this.authRequestService.get(`/v1/clientData/imageData/upload/string?AlgoId=${algoId}`);
   }
 
-  algoSave(algoId, data) {
+  algoSave(algoId: string, data: string): Observable<Algo> {
     return this.authRequestService.post(`/v1/clientData/imageData/upload/string?AlgoId=${algoId}&Data=${data}`, null);
   }
 
-  algoUpload(formData: FormData) {
+  algoUpload(formData: FormData): Observable<Algo> {
     return this.authRequestService.post('/v1/clientData/imageData/upload/binary', formData);
   }
 
-  algoDeploy(data: any) {
-    return this.authRequestService.post('/v1/management/deploy/binary', { AlgoId: data.Id });
+  algoDeploy(algoId: string): Observable<Algo> {
+    return this.authRequestService.post('/v1/management/deploy/binary', { AlgoId: algoId});
   }
 
-  algoStart(algoId) {
+  algoStart(algoId: string): Observable<Algo> {
     return this.authRequestService.post('/v1/management/test/start', { AlgoId: algoId });
   }
 
-  algoStop(algoId) {
+  algoStop(algoId: string): Observable<Algo> {
     return this.authRequestService.post('/v1/management/test/stop', { AlgoId: algoId });
   }
 
-  algoDelete(algo: Algo) {
+  algoDelete(algo: Algo): Observable<Algo> {
     return this.authRequestService.post('/v1/clientData/metadata/cascadeDelete', algo);
   }
 
-  algoGetLog(algoId) {
+  algoGetLog(algoId: string): Observable<Algo> {
     return this.authRequestService.get(`/v1/management/test/log?AlgoId=${algoId}`);
   }
 
-  algoGetTailLog(algoId, tail) {
+  algoGetTailLog(algoId: string, tail:number): Observable<AlgoLog> {
     return this.authRequestService.get(`/v1/management/test/tailLog?AlgoId=${algoId}&Tail=${tail}`);
   }
 }

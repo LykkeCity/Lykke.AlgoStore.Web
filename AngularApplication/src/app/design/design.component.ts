@@ -11,10 +11,10 @@ import { StoreService } from '../services/store.service';
 })
 export class DesignComponent implements OnInit, AfterViewInit, OnDestroy {
 
-  store: any;
+  store: StoreService;
 
-  subscribeToSave: any;
-  subscribeToGet: any;
+  subscribeToSave: Subscription;
+  subscribeToGet: Subscription;
 
   @ViewChild('editor') editor;
 
@@ -63,7 +63,7 @@ export class DesignComponent implements OnInit, AfterViewInit, OnDestroy {
     this.editor.getEditor().commands.addCommand({
       name: 'showOtherCompletions',
       bindKey: 'Ctrl-.',
-      exec: function (editor) {
+      exec: function () {
       }
     });
   }
@@ -72,7 +72,7 @@ export class DesignComponent implements OnInit, AfterViewInit, OnDestroy {
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
-  downloadProjectTemplate() {
+  downloadProjectTemplate(): void {
     const popupConfig: PopupConfig = {
       hideIcon: true,
       name: 'downloadProjectTemplateInfo',
@@ -115,7 +115,7 @@ export class DesignComponent implements OnInit, AfterViewInit, OnDestroy {
     this.subscribeToSave.unsubscribe();
   };
 
-  save() {
+  save(): void {
     this.subscribeToSave = this.storeService.algoSave(this.storeService.activeAlgo.Id, this.text).subscribe(this.onAlgoSaveDone);
   }
 

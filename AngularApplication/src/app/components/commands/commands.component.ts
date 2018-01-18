@@ -20,14 +20,14 @@ export class CommandsComponent implements OnInit, OnDestroy {
 
   @Input() algo: Algo;
 
-  Command: any = Command;
-  Status: any = Status;
+  Command = Command;
+  Status = Status;
 
   private subscriptions = new Subscription();
 
-  subscribeToStart: any;
-  subscribeToStop: any;
-  subscribeToDelete: any;
+  subscribeToStart: Subscription;
+  subscribeToStop: Subscription;
+  subscribeToDelete: Subscription;
 
   constructor(private storeService: StoreService,
               private eventService: EventService,
@@ -44,7 +44,7 @@ export class CommandsComponent implements OnInit, OnDestroy {
     this.subscriptions.unsubscribe();
   }
 
-  doCommand(command?: Command) {
+  doCommand(command?: Command): boolean {
     if (!command) {
       if (this.algo.Status === Status.DEPLOYED || this.algo.Status === Status.UNKNOWN || this.algo.Status === Status.STOPPED) {
         const popupConfig: PopupConfig = {
@@ -131,7 +131,7 @@ export class CommandsComponent implements OnInit, OnDestroy {
     this.unsubscribe();
   };
 
-  unsubscribe() {
+  unsubscribe(): void {
     if (this.subscribeToStart) {
       this.subscribeToStart.unsubscribe();
     }

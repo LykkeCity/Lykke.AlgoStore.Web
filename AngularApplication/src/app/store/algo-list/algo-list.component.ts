@@ -15,9 +15,9 @@ import { EventService } from '../../services/event.service';
 })
 export class AlgoListComponent implements OnInit, AfterViewInit, OnDestroy {
 
-  displayedColumns = ['Name', 'Description', 'Status', 'Actions'];
-  dataSource = new MatTableDataSource<Algo>();
-  showAlgoList = false;
+  displayedColumns: string[] = ['Name', 'Description', 'Status', 'Actions'];
+  dataSource: MatTableDataSource<Algo> = new MatTableDataSource<Algo>();
+  showAlgoList: boolean = false;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
@@ -45,14 +45,14 @@ export class AlgoListComponent implements OnInit, AfterViewInit, OnDestroy {
     this.subscriptions.unsubscribe();
   }
 
-  createNewAlgo() {
+  createNewAlgo(): void {
     this.storeService.activeAlgo = null;
     this.storeService.mode = 'create';
     this.storeService._algos.next([]);
     this.router.navigate(['store']);
   }
 
-  details(algo: Algo) {
+  details(algo: Algo): boolean {
     this.storeService.activeAlgo = algo;
     this.router.navigate(['store/algo-details']);
     return false;

@@ -6,6 +6,7 @@ import { StoreService } from '../../services/store.service';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { HttpErrorResponse } from '@angular/common/http';
 import { NotificationsService } from 'angular2-notifications';
+import { Algo } from '../../models/algo.interface';
 
 @Component({
   selector: 'app-algo-edit',
@@ -59,7 +60,7 @@ export class AlgoEditComponent implements OnInit, OnDestroy {
   update() {
     if (this.updateFormGroup.controls.name.value) {
 
-      const algo = {
+      const algo: Algo = {
         Id: this.storeService.activeAlgo.Id,
         Name: this.updateFormGroup.controls.name.value,
         Description: this.updateFormGroup.controls.description.value
