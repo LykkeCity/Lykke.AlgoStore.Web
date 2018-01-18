@@ -1,12 +1,10 @@
 import { Injectable } from '@angular/core';
-import { CrudService } from './crud.service';
-import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { NotificationsService } from 'angular2-notifications';
 import { Algo } from '../models/algo.interface';
+import { AuthRequestService } from './auth-request.service';
 
 @Injectable()
-export class StoreService extends CrudService {
+export class StoreService {
 
   _algos = new BehaviorSubject<Array<Algo>>([]);
   algosStore: Array<any>;
@@ -16,55 +14,52 @@ export class StoreService extends CrudService {
   public activeAlgo: Algo;
   public mode: string;
 
-  constructor(
-    http: HttpClient,
-    notificationService: NotificationsService) {
-    super(http, notificationService);
+  constructor(private authRequestService: AuthRequestService) {
 
     this.algosStore = [];
   }
 
   algoGetAll() {
-    return this.get('/v1/clientData/metadata');
+    return this.authRequestService.get('/v1/clientData/metadata');
   }
 
   algoCreateDetails(algo: Algo) {
-    return this.post('/v1/clientData/metadata', algo);
+    return this.authRequestService.post('/v1/clientData/metadata', algo);
   }
 
   algoGet(algoId) {
-    return this.get(`/v1/clientData/imageData/upload/string?AlgoId=${algoId}`);
+    return this.authRequestService.get(`/v1/clientData/imageData/upload/string?AlgoId=${algoId}`);
   }
 
   algoSave(algoId, data) {
-    return this.post(`/v1/clientData/imageData/upload/string?AlgoId=${algoId}&Data=${data}`, null);
+    return this.authRequestService.post(`/v1/clientData/imageData/upload/string?AlgoId=${algoId}&Data=${data}`, null);
   }
 
   algoUpload(formData: FormData) {
-    return this.post('/v1/clientData/imageData/upload/binary', formData);
+    return this.authRequestService.post('/v1/clientData/imageData/upload/binary', formData);
   }
 
   algoDeploy(data: any) {
-    return this.post('/v1/management/deploy/binary', { AlgoId: data.Id });
+    return this.authRequestService.post('/v1/management/deploy/binary', { AlgoId: data.Id });
   }
 
   algoStart(algoId) {
-    return this.post('/v1/management/test/start', { AlgoId: algoId });
+    return this.authRequestService.post('/v1/management/test/start', { AlgoId: algoId });
   }
 
   algoStop(algoId) {
-    return this.post('/v1/management/test/stop', { AlgoId: algoId });
+    return this.authRequestService.post('/v1/management/test/stop', { AlgoId: algoId });
   }
 
   algoDelete(algo: Algo) {
-    return this.post('/v1/clientData/metadata/cascadeDelete', algo);
+    return this.authRequestService.post('/v1/clientData/metadata/cascadeDelete', algo);
   }
 
   algoGetLog(algoId) {
-    return this.get(`/v1/management/test/log?AlgoId=${algoId}`);
+    return this.authRequestService.get(`/v1/management/test/log?AlgoId=${algoId}`);
   }
 
   algoGetTailLog(algoId, tail) {
-    return this.get(`/v1/management/test/tailLog?AlgoId=${algoId}&Tail=${tail}`);
+    return this.authRequestService.get(`/v1/management/test/tailLog?AlgoId=${algoId}&Tail=${tail}`);
   }
 }
