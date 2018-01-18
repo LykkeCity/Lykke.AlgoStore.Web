@@ -6,7 +6,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 // Components
 import { AppComponent } from './app.component';
-import { AuthenticationComponent } from './components/authentication/authentication.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
 import { SiteLayoutComponent } from './layout/site-layout/site-layout.component';
 import { HomeComponent } from './components/home/home.component';
@@ -39,7 +38,6 @@ import { SharedModule } from './shared/shared.module';
   declarations: [
     AppComponent,
     SiteLayoutComponent,
-    AuthenticationComponent,
     NotFoundComponent,
     HomeComponent,
     HeaderComponent,
