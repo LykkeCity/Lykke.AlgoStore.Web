@@ -2,14 +2,15 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
 import { NotFoundComponent } from './components/not-found/not-found.component';
-import { AuthenticationComponent } from './components/authentication/authentication.component';
-import { AuthGuard } from './services/auth-guard.service';
 import { HomeComponent } from './components/home/home.component';
 import { SiteLayoutComponent } from './layout/site-layout/site-layout.component';
+import { LoginRedirectGuard } from './services/login-redirect.guard';
+import { AuthGuard } from './services/auth-guard';
+import { NonAuthenticatedGuard } from './services/non-authenticated.guard';
 
 
 const routes: Routes = [
-  { path: '', component: AuthenticationComponent },
+  { path: '', component: HomeComponent, canActivate: [LoginRedirectGuard, NonAuthenticatedGuard] },
   {
     path: '',
     component: SiteLayoutComponent,

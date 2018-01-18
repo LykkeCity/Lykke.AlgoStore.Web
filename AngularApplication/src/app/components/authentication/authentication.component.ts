@@ -23,7 +23,7 @@ export class AuthenticationComponent implements OnDestroy {
         const redirectUrl = localStorage.getItem('returnUrl');
 
         if (params && params.code && redirectUrl) {
-          this.authService.getAccessToken(params.code);
+          // this.authService.getAccessToken(params.code);
         } else if (!this.authService._isAuthenticated) {
           // TODO return to SSO
           if (['/', '/home'].includes(this.router.url)) {

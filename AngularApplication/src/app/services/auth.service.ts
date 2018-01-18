@@ -24,26 +24,6 @@ export class AuthService {
       '&redirect_uri=' + encodeURIComponent(environment.redirectUrl);
   }
 
-  getAccessToken(code) {
-    const queryParams = {
-      code
-    };
-
-    this.http.get(this.localAuthUrl, { params: queryParams })
-      .subscribe((response: Response) => this.getWalletToken(response));
-  }
-
-  authenticate(data) {
-    this.setToken(data);
-    this._isAuthenticated = true;
-
-    const returnUrl = localStorage.getItem('returnUrl');
-    if (returnUrl) {
-      localStorage.removeItem('returnUrl');
-      this.router.navigate([returnUrl]);
-    }
-  }
-
   login() {
     localStorage.setItem('returnUrl', window.location.pathname);
     window.location.replace(this.authenticationUrl);
@@ -61,24 +41,5 @@ export class AuthService {
         this.login();
       }
     });
-  }
-
-  getWalletToken(data) {
-
-    const headers = {
-      'application_id': environment.applicationId,
-      'Authorization': data.token_type + ' ' + data.access_token
-    };
-
-    this.http.get(environment.apiAuthUrl + '/getlykkewallettoken', { headers })
-      .subscribe((response: Response) => this.authenticate(response));
-  }
-
-  setToken(data) {
-    localStorage.setItem('token', data.token);
-  }
-
-  isAuthenticated() {
-    return this._isAuthenticated;
   }
 }

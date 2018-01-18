@@ -1,8 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { AppRoutingModule } from './app-routing.module';
-import { HttpModule } from '@angular/http';
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 // Components
@@ -18,12 +17,15 @@ import { UserProfileComponent } from './components/header/user-profile/user-prof
 
 // Services
 import { AuthService } from './services/auth.service';
-import { AuthGuard } from './services/auth-guard.service';
 import { EventService } from './services/event.service';
 import { UserService } from './services/user.service';
 import { IdleService } from './services/idle.service';
 import { StoreService } from './services/store.service';
-import { TokenInterceptor } from './services/token-interceptor.service';
+import { AuthRequestService } from './services/auth-request.service';
+import { AuthTokenService } from './services/auth-token.service';
+import { LoginRedirectGuard } from './services/login-redirect.guard';
+import { AuthGuard } from './services/auth-guard';
+import { NonAuthenticatedGuard } from './services/non-authenticated.guard';
 
 // 3RD PARTY MODULES
 import { SimpleNotificationsModule } from 'angular2-notifications';
@@ -49,11 +51,9 @@ import { SharedModule } from './shared/shared.module';
     BrowserModule,
     BrowserAnimationsModule,
     AppRoutingModule,
-    HttpModule,
     SharedModule,
     HttpClientModule,
     SimpleNotificationsModule.forRoot(),
-    // MomentModule,
     NgIdleKeepaliveModule.forRoot()
   ],
  providers: [
@@ -63,11 +63,10 @@ import { SharedModule } from './shared/shared.module';
     IdleService,
     UserService,
     StoreService,
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: TokenInterceptor,
-      multi: true
-    }
+    AuthRequestService,
+    AuthTokenService,
+    LoginRedirectGuard,
+    NonAuthenticatedGuard
   ],
   bootstrap: [AppComponent]
 })
