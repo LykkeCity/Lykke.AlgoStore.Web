@@ -20,7 +20,6 @@ const routes: Routes = [
       { path: '404', component: NotFoundComponent },
     ]
   },
-  { path: 'home', component: HomeComponent },
   { path: '**', redirectTo: '404' }
 ];
 
