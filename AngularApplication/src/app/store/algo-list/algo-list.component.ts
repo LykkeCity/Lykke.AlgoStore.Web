@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 
@@ -6,6 +6,7 @@ import { StoreService } from '../../services/store.service';
 import { Algo } from '../../models/algo.interface';
 import { EventService } from '../../services/event.service';
 import { Subject } from 'rxjs/Subject';
+import { DataTableDirective } from 'angular-datatables';
 
 
 @Component({
@@ -14,6 +15,10 @@ import { Subject } from 'rxjs/Subject';
   styleUrls: ['./algo-list.component.scss']
 })
 export class AlgoListComponent implements OnInit, OnDestroy {
+
+  @ViewChild(DataTableDirective)
+  datatableElement: DataTableDirective;
+  dtInstance: any;
 
   dtOptions: DataTables.Settings = {};
   dtTrigger: Subject<Algo> = new Subject();
@@ -58,9 +63,17 @@ export class AlgoListComponent implements OnInit, OnDestroy {
   }
 
   onDataObtained = (result) => {
+    if(this.dtInstance) {
+      this.dtInstance.destroy();
+    }
+
     this.dataSource = result;
     this.showAlgoList = result.length > 0;
     this.dtTrigger.next();
+
+    this.datatableElement.dtInstance.then(inst => {
+      this.dtInstance = inst;
+    });
   };
 
   onDataError = (result) => {
