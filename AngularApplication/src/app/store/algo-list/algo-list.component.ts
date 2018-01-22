@@ -5,6 +5,7 @@ import { Subscription } from 'rxjs/Subscription';
 import { StoreService } from '../../services/store.service';
 import { Algo } from '../../models/algo.interface';
 import { EventService } from '../../services/event.service';
+import { Subject } from 'rxjs/Subject';
 
 
 @Component({
@@ -14,7 +15,9 @@ import { EventService } from '../../services/event.service';
 })
 export class AlgoListComponent implements OnInit, OnDestroy {
 
-  dataSource: Algo[];
+  dtOptions: DataTables.Settings = {};
+  dtTrigger: Subject<Algo> = new Subject();
+  dataSource: Algo[] = [];
   showAlgoList: boolean = false;
 
   private subscriptions = new Subscription();
@@ -23,6 +26,11 @@ export class AlgoListComponent implements OnInit, OnDestroy {
     private storeService: StoreService,
     private eventService: EventService,
     private router: Router) {
+
+    this.dtOptions = {
+      pagingType: 'full_numbers',
+      pageLength: 10
+    };
 
   }
 
@@ -53,7 +61,7 @@ export class AlgoListComponent implements OnInit, OnDestroy {
   onDataObtained = (result) => {
     this.dataSource = result;
     this.showAlgoList = result.length > 0;
-
+    this.dtTrigger.next();
   };
 
   onDataError = (result) => {

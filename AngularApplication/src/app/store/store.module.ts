@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { SharedModule } from '../shared/shared.module';
 import { ArchwizardModule } from 'ng2-archwizard';
+import { DataTablesModule } from 'angular-datatables';
 
 // ROUTING
 import { StoreRouting } from './store-routing.module';
@@ -20,7 +21,8 @@ import { AlgoDetailsComponent } from './algo-details/algo-details.component';
     FormsModule,
     ReactiveFormsModule,
     SharedModule,
-    ArchwizardModule
+    ArchwizardModule,
+    DataTablesModule
   ],
   declarations: [
     CommandsComponent,
