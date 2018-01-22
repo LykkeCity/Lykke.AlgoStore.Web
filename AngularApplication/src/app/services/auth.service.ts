@@ -27,9 +27,9 @@ export class AuthService {
     window.location.replace(this.authenticationUrl);
   }
 
-  logout(redirectFlag:boolean = true): void {
+  logout(redirectFlag: boolean = true): void {
 
-    const headers = {'Authorization': 'Bearer ' + localStorage.getItem('token')};
+    const headers = { 'Authorization': 'Bearer ' + localStorage.getItem('token') };
 
 
     this.http.post(environment.apiUrl + '/Auth/LogOut', '', { headers }).subscribe(response => {

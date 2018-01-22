@@ -42,7 +42,7 @@ export class StoreService {
   }
 
   algoDeploy(algoId: string): Observable<Algo> {
-    return this.authRequestService.post('/v1/management/deploy/binary', { AlgoId: algoId});
+    return this.authRequestService.post('/v1/management/deploy/binary', { AlgoId: algoId });
   }
 
   algoStart(algoId: string): Observable<Algo> {
@@ -61,7 +61,7 @@ export class StoreService {
     return this.authRequestService.get(`/v1/management/test/log?AlgoId=${algoId}`);
   }
 
-  algoGetTailLog(algoId: string, tail:number): Observable<AlgoLog> {
+  algoGetTailLog(algoId: string, tail: number): Observable<AlgoLog> {
     return this.authRequestService.get(`/v1/management/test/tailLog?AlgoId=${algoId}&Tail=${tail}`);
   }
 }

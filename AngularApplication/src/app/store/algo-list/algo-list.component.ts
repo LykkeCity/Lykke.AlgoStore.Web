@@ -1,4 +1,4 @@
-import {Component, ViewChild, OnInit, OnDestroy, AfterViewInit} from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 
@@ -18,14 +18,13 @@ export class AlgoListComponent implements OnInit, OnDestroy {
   dtOptions: DataTables.Settings = {};
   dtTrigger: Subject<Algo> = new Subject();
   dataSource: Algo[] = [];
-  showAlgoList: boolean = false;
+  showAlgoList = false;
 
   private subscriptions = new Subscription();
 
-  constructor(
-    private storeService: StoreService,
-    private eventService: EventService,
-    private router: Router) {
+  constructor(private storeService: StoreService,
+              private eventService: EventService,
+              private router: Router) {
 
     this.dtOptions = {
       pagingType: 'full_numbers',

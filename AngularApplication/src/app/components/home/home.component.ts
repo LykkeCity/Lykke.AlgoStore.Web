@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 
 @Component({
@@ -9,7 +8,8 @@ import { AuthService } from '../../services/auth.service';
 })
 export class HomeComponent {
 
-  constructor(private authService:AuthService) { }
+  constructor(private authService: AuthService) {
+  }
 
   openAnAccount(): void {
     this.authService.login();
