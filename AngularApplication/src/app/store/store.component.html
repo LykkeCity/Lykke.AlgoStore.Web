@@ -112,7 +112,7 @@ MARGIN=&lt;THE MARGINE WITH WHICH YOU WANT TO SELL, e.g 1.1&gt;
             <h1 class="heading-sm text-center mt-40 mb-60">Add algo details</h1>
             <form [formGroup]="updateFormGroup">
               <div class="row">
-                <div class="col-xs-6">
+                <div class="col-xs-offset-3 col-xs-6 text-center">
                   <div class="form-group">
                     <label for="name">Algo name</label>
                     <input type="text" class="form-control" placeholder="Algo name" formControlName="name" id="name" required>
@@ -120,7 +120,7 @@ MARGIN=&lt;THE MARGINE WITH WHICH YOU WANT TO SELL, e.g 1.1&gt;
                 </div>
               </div>
               <div class="row">
-                <div class="col-xs-6">
+                <div class="col-xs-offset-3 col-xs-6 text-center">
                   <div class="form-group">
                     <label for="descr">Algo Description</label>
                     <textarea rows="5" class="form-control" placeholder="Algo description" formControlName="name" id="descr" required></textarea>
@@ -128,7 +128,7 @@ MARGIN=&lt;THE MARGINE WITH WHICH YOU WANT TO SELL, e.g 1.1&gt;
                 </div>
               </div>
               <div class="row">
-                <div class="col-xs-6">
+                <div class="col-xs-offset-3 col-xs-6 text-center">
                   <div class="form-group">
                     <button class="button button-blue" (click)="update()" [disabled]="isAlgoDetailsButtonDisabled()" nextStep>Next</button>
                   </div>
