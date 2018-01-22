@@ -2,43 +2,38 @@
   <div class="row">
     <div class="col-xs-12">
       <div class="stepper">
-        <mat-horizontal-stepper [linear]="true" #stepper>
-
-          <mat-step>
+        <wizard #wizard navBarLayout="large-empty-symbols" navigationMode="strict">
+          <wizard-step stepTitle="Language" navigationSymbol="1">
             <div class="step-one-language">
-              <ng-template matStepLabel>language</ng-template>
-
-              <h1 class="heading-sm text-center mt-40 mb-60">Choose Langage for the Algo:</h1>
+              <h1 class="heading-sm text-center mt-40 mb-60">Choose Language for the Algo:</h1>
               <div class="row">
                 <div class="col-md-4 text-center">
-                  <div class="language-button net disabled" (click)="setLanguage(Language.NET)">
+                  <div class="language-button net disabled" (click)="setLanguage(Language.NET)" nextStep>
                     <img src="assets/img/store/Microsoft.Net_logo.svg" alt="">
                     <p class="text-center">.NET</p>
                   </div>
                 </div>
                 <div class="col-md-4 text-center">
 
-                  <div class="language-button java active" (click)="setLanguage(Language.Java)">
+                  <div class="language-button java active" (click)="setLanguage(Language.Java)" nextStep>
                     <img src="assets/img/store/java_logo.svg" alt="">
                     <p class="text-center">Java</p>
                   </div>
 
                 </div>
                 <div class="col-md-4 text-center">
-                  <div class="language-button python disabled" (click)="setLanguage(Language.Python)">
+                  <div class="language-button python disabled" (click)="setLanguage(Language.Python)" nextStep>
                     <img src="assets/img/store/python_logo.svg" alt="">
                     <p class="text-center">Python</p>
                   </div>
                 </div>
               </div>
             </div>
-          </mat-step>
-
-          <mat-step>
+          </wizard-step>
+          <wizard-step stepTitle="Setup" navigationSymbol="2">
             <div class="step-two-setup">
-              <ng-template matStepLabel>setup</ng-template>
               <div class="row">
-                  <h1 class="heading-sm text-center mt-40 mb-60">Set up your custom algorithm</h1>
+                <h1 class="heading-sm text-center mt-40 mb-60">Set up your custom algorithm</h1>
               </div>
               <div class="row">
                 <div class="col-md-1"></div>
@@ -47,7 +42,7 @@
                     Java maven Algo Archetype. In order to generate an algo you may use the Lykke Algo java archetype
                   </p>
 
-                    <pre class="code pt-25">
+                  <pre class="code pt-25">
 mvn org.apache.maven.plugins:maven-archetype-plugin:2.4:generate \
 -DarchetypeGroupId=com.lykke.algos \
 -DarchetypeArtifactId=algos-archetype \
@@ -58,17 +53,17 @@ mvn org.apache.maven.plugins:maven-archetype-plugin:2.4:generate \
 -DarchetypeCatalog=https://oss.sonatype.org/content/repositories/snapshots
                     </pre>
 
-                    <p class="plain text-lgb text-left">
-                        This will create a java maven project for you with groupId com.algo, artifact id myalgo in directory myalgo in your current folder.
-                        Please go inside and review the contentns.
-                    </p>
-                    <pre class="code pt-20 pb-20">cd myalgo</pre>
+                  <p class="plain text-lgb text-left">
+                    This will create a java maven project for you with groupId com.algo, artifact id myalgo in directory myalgo in your current folder.
+                    Please go inside and review the contentns.
+                  </p>
+                  <pre class="code pt-20 pb-20">cd myalgo</pre>
 
-                    <p class="plain text-lgb text-left">
-                        In order to make your algo to work please create a file called hft.properties with the following
-                        content in myalgo/src/main/resources
-                    </p>
-                    <pre class="code pt-25">
+                  <p class="plain text-lgb text-left">
+                    In order to make your algo to work please create a file called hft.properties with the following
+                    content in myalgo/src/main/resources
+                  </p>
+                  <pre class="code pt-25">
 HFT_API_BASE_PATH=&lt;LYKKE HFT API trading endpoint, e.g https://hft-service-dev.lykkex.net&gt;
 HFT_KEY=&lt;YOUR HFT API client key&gt;
 WALLET_KEY=&lt;YOUR WALLET KEY&gt;
@@ -78,90 +73,88 @@ VOLUME=&lt;THE VOLUME YOU WANT TO BUY, e.g 0.001&gt;
 MARGIN=&lt;THE MARGINE WITH WHICH YOU WANT TO SELL, e.g 1.1&gt;
                     </pre>
 
-                    <p class="plain text-lgb text-left">
-                        Once you are ready with that you may package your algo
-                    </p>
-                    <pre class="code pt-20 pb-20">mvn clean package</pre>
+                  <p class="plain text-lgb text-left">
+                    Once you are ready with that you may package your algo
+                  </p>
+                  <pre class="code pt-20 pb-20">mvn clean package</pre>
 
-                    <p class="plain text-lgb text-left">
-                        This will generate an executable jar with dependencies file in your target folder.
-                    </p>
-                    <pre class="code pt-20 pb-20">target/myalgo-1.0-SNAPSHOT-jar-with-dependencies.jar</pre>
+                  <p class="plain text-lgb text-left">
+                    This will generate an executable jar with dependencies file in your target folder.
+                  </p>
+                  <pre class="code pt-20 pb-20">target/myalgo-1.0-SNAPSHOT-jar-with-dependencies.jar</pre>
 
-                    <p class="plain text-lgb text-left">
-                        In order to verify it you may execute:
-                    </p>
-                    <pre class="code pt-20 pb-20">java -jar myalgo/target/myalgo-1.0-SNAPSHOT-jar-with-dependencies.jar</pre>
+                  <p class="plain text-lgb text-left">
+                    In order to verify it you may execute:
+                  </p>
+                  <pre class="code pt-20 pb-20">java -jar myalgo/target/myalgo-1.0-SNAPSHOT-jar-with-dependencies.jar</pre>
 
-                    <p class="plain text-lgb text-left">
-                        If you see an output like
-                    </p>
-                    <pre class="code pt-25">
+                  <p class="plain text-lgb text-left">
+                    If you see an output like
+                  </p>
+                  <pre class="code pt-25">
 ——————Check wallet!!!——————
 ——————Buy some coins on the market price!——————
 ——————Selling XXX coins with some profit on YYY price!!!——————
                     </pre>
 
-                    <p class="plain text-lgb text-left">
-                        Then your algo is working and you are ready to deploy it in AlgoStore. For the purpose upload your jar-with-dependencies.jar file there.
-                    </p>
+                  <p class="plain text-lgb text-left">
+                    Then your algo is working and you are ready to deploy it in AlgoStore. For the purpose upload your jar-with-dependencies.jar file there.
+                  </p>
                 </div>
                 <div class="col-md-1"></div>
               </div>
               <div class="text-center">
-                <button class="button button-blue" mat-button matStepperNext>Next</button>
+                <button class="button button-blue" nextStep>Next</button>
               </div>
             </div>
-          </mat-step>
-
-          <mat-step [stepControl]="updateFormGroup">
+          </wizard-step>
+          <wizard-step stepTitle="Details" navigationSymbol="3">
             <h1 class="heading-sm text-center mt-40 mb-60">Add algo details</h1>
             <form [formGroup]="updateFormGroup">
-              <ng-template matStepLabel>details</ng-template>
-              <div class="col-md-3"></div>
-              <div class="col-md-6 text-center">
-
-                <div class="step-two-setup-metadata">
-                  <p class="error"></p>
-                  <mat-form-field>
-                    <input matInput placeholder="Algo name" formControlName="name" required>
-                  </mat-form-field>
-                  <br>
-                  <mat-form-field>
-                    <textarea matInput placeholder="Description" matTextareaAutosize matAutosizeMinRows="2" matAutosizeMaxRows="5" formControlName="description"></textarea>
-                  </mat-form-field>
-                  <div>
-                    <button class="button button-blue" mat-button matStepperNext (click)="update()" [disabled]="isAlgoDetailsButtonDisabled()">Next</button>
+              <div class="row">
+                <div class="col-xs-6">
+                  <div class="form-group">
+                    <label for="name">Algo name</label>
+                    <input type="text" class="form-control" placeholder="Algo name" formControlName="name" id="name" required>
                   </div>
                 </div>
-
               </div>
-              <div class="col-md-3"></div>
+              <div class="row">
+                <div class="col-xs-6">
+                  <div class="form-group">
+                    <label for="descr">Algo Description</label>
+                    <textarea rows="5" class="form-control" placeholder="Algo description" formControlName="name" id="descr" required></textarea>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-xs-6">
+                  <div class="form-group">
+                    <button class="button button-blue" (click)="update()" [disabled]="isAlgoDetailsButtonDisabled()" nextStep>Next</button>
+                  </div>
+                </div>
+              </div>
             </form>
-          </mat-step>
-
-          <mat-step>
-            <ng-template matStepLabel>done</ng-template>
+          </wizard-step>
+          <wizard-step stepTitle="Done" navigationSymbol="4">
             <div class="step-four-deploy text-center mt-100">
 
               <div *ngIf="!hasErrors" class="mt-100">
                 <h3>All done! Let's code the algo...</h3>
                 <div class="mt-100">
-                  <button class="button button-blue" mat-button matStepperPrevious (click)="openDesigner()">Code</button>
+                  <button class="button button-blue" (click)="openDesigner()">Code</button>
                 </div>
               </div>
 
               <div *ngIf="hasErrors" class="mt-100">
                 <h3>There is a problem with your algo</h3>
                 <div class="mt-100">
-                  <button class="button button-blue" mat-button matStepperPrevious>Back</button>
+                  <button class="button button-blue">Back</button>
                 </div>
               </div>
-
             </div>
-          </mat-step>
-
-        </mat-horizontal-stepper>
+          </wizard-step>
+        </wizard>
       </div>
     </div>
   </div>

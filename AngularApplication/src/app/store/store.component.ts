@@ -1,6 +1,5 @@
 import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { MatStepper } from '@angular/material';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 
@@ -21,8 +20,6 @@ export class StoreComponent implements OnInit, OnDestroy {
   updateFormGroup: FormGroup;
   hasErrors: Boolean;
   Language = Language;
-
-  @ViewChild('stepper') stepper: MatStepper;
 
   private subscriptions = new Subscription();
 
@@ -84,8 +81,6 @@ export class StoreComponent implements OnInit, OnDestroy {
         console.log('Java');
         break;
     }
-
-    this.stepper.next();
   }
 
   // Set state for 'Next' button on 'update' tab
@@ -97,9 +92,6 @@ export class StoreComponent implements OnInit, OnDestroy {
 
   // Button 'Next' on 'update' tab click method
   update(): boolean {
-    this.stepper.selectedIndex = 2;
-
-    this.stepper.next();
 
     if (this.updateFormGroup.controls.name.value) {
 

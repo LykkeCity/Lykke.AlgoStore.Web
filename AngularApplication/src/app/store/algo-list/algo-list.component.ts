@@ -1,5 +1,4 @@
 import {Component, ViewChild, OnInit, OnDestroy, AfterViewInit} from '@angular/core';
-import {MatPaginator, MatTableDataSource} from '@angular/material';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 
@@ -13,13 +12,10 @@ import { EventService } from '../../services/event.service';
   templateUrl: './algo-list.component.html',
   styleUrls: ['./algo-list.component.scss']
 })
-export class AlgoListComponent implements OnInit, AfterViewInit, OnDestroy {
+export class AlgoListComponent implements OnInit, OnDestroy {
 
-  displayedColumns: string[] = ['Name', 'Description', 'Status', 'Actions'];
-  dataSource: MatTableDataSource<Algo> = new MatTableDataSource<Algo>();
+  dataSource: Algo[];
   showAlgoList: boolean = false;
-
-  @ViewChild(MatPaginator) paginator: MatPaginator;
 
   private subscriptions = new Subscription();
 
@@ -35,10 +31,6 @@ export class AlgoListComponent implements OnInit, AfterViewInit, OnDestroy {
     this.subscriptions.add(this.eventService.algoTestStarted.subscribe(this.onAlgoStatusChanged));
     this.subscriptions.add(this.eventService.algoTestStopped.subscribe(this.onAlgoStatusChanged));
     this.subscriptions.add(this.eventService.algoDeleteDone.subscribe(this.onAlgoStatusChanged));
-  }
-
-  ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
   }
 
   ngOnDestroy() {
@@ -59,7 +51,7 @@ export class AlgoListComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   onDataObtained = (result) => {
-    this.dataSource.data = result;
+    this.dataSource = result;
     this.showAlgoList = result.length > 0;
 
   };

@@ -5,19 +5,26 @@
     </div>
   </div>
   <div class="row">
-    <div class="col-md-3"></div>
     <div class="col-xs-6 text-center">
       <form [formGroup]="updateFormGroup">
-        <mat-form-field>
-          <input matInput placeholder="Algo name" formControlName="name" required>
-        </mat-form-field>
-        <br>
-        <mat-form-field>
-          <textarea matInput placeholder="Description" matTextareaAutosize matAutosizeMinRows="2" matAutosizeMaxRows="5" formControlName="description"></textarea>
-        </mat-form-field>
+        <div class="row">
+          <div class="col-xs-12">
+            <div class="form-group">
+              <label for="algo-name">Algo name:</label>
+              <input type="text" class="form-control" id="algo-name" formControlName="name" required>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-xs-12">
+            <div class="form-group">
+              <label for="algo-descr">Algo Description:</label>
+              <textarea rows="5" class="form-control" id="algo-descr" formControlName="description" required></textarea>
+            </div>
+          </div>
+        </div>
       </form>
     </div>
-    <div class="col-md-3"></div>
   </div>
 
   <div class="row mt-60">
