@@ -34,7 +34,7 @@ export class StoreService {
   }
 
   algoSave(algoId: string, data: string): Observable<Algo> {
-    return this.authRequestService.post(`/v1/clientData/imageData/upload/string?AlgoId=${algoId}&Data=${data}`, null);
+    return this.authRequestService.post(`/v1/clientData/imageData/upload/string`, { AlgoId: algoId, Data: data });
   }
 
   algoUpload(formData: FormData): Observable<Algo> {
