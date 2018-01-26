@@ -11,23 +11,29 @@
         <thead>
         <tr>
           <th>Name</th>
-          <th>Author</th>
-          <th>Rating</th>
-          <th>Usage</th>
+          <th>Description</th>
+          <th>Status</th>
+          <th>Actions</th>
         </tr>
         </thead>
         <tbody>
           <tr *ngFor="let algo of dataSource">
-            <td><a href="#" (click)="details(algo)"> <span tooltip="{{algo.Description}}">{{algo.Name}}</span> </a></td>
-            <td>{{algo.Author}}</td>
-            <td><star-rating-comp [rating]="algo.Rating" [starType]="'svg'" [numOfStars]="6" [showHalfStars]="true" [staticColor]="'default'" [readOnly]="true"></star-rating-comp><span [hidden]="true">{{algo.Rating}}</span></td>
-            <td>{{algo.UsersCount}}</td>
+            <td><a href="#" (click)="details(algo)"> {{algo.Name}} </a></td>
+            <td>{{algo.Description}}</td>
+            <td>{{algo.Status}}</td>
+            <td><app-commands [algo]="algo"></app-commands></td>
           </tr>
           <tr *ngIf="dataSource?.length == 0">
             <td colspan="3" class="no-data-available">No data!</td>
           </tr>
         </tbody>
       </table>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-12">
+      <button class="button button-blue" (click)="createNewAlgo()">Create new Algo</button>
     </div>
   </div>
 </div>

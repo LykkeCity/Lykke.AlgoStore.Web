@@ -5,12 +5,10 @@ import { AlgoListComponent } from './algo-list/algo-list.component';
 import { AlgoEditComponent } from './algo-edit/algo-edit.component';
 import { AlgoDetailsComponent } from './algo-details/algo-details.component';
 import { AuthGuard } from '../services/auth-guard';
-import { AlgoListMyAlgosComponent } from './algo-list-my-algos/algo-list-my-algos.component';
 
 const routes: Routes = [
   { path: '', component: StoreComponent },
   { path: 'algo-list', component: AlgoListComponent, canActivate: [AuthGuard] },
-  { path: 'algo-list-private', component: AlgoListMyAlgosComponent, canActivate: [AuthGuard] },
   { path: 'algo-edit', component: AlgoEditComponent, canActivate: [AuthGuard] },
   { path: 'algo-details', component: AlgoDetailsComponent, canActivate: [AuthGuard] },
 ];
