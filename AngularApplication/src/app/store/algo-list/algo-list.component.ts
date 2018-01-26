@@ -39,7 +39,7 @@ export class AlgoListComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.subscriptions.add(this.storeService.getAllPublicAlgos().subscribe(this.onDataObtained));
+    this.subscriptions.add(this.storeService.algoGetAll().subscribe(this.onDataObtained));
     this.subscriptions.add(this.eventService.algoTestStarted.subscribe(this.onAlgoStatusChanged));
     this.subscriptions.add(this.eventService.algoTestStopped.subscribe(this.onAlgoStatusChanged));
     this.subscriptions.add(this.eventService.algoDeleteDone.subscribe(this.onAlgoStatusChanged));
@@ -47,6 +47,13 @@ export class AlgoListComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.subscriptions.unsubscribe();
+  }
+
+  createNewAlgo(): void {
+    this.storeService.activeAlgo = null;
+    this.storeService.mode = 'create';
+    this.storeService._algos.next([]);
+    this.router.navigate(['store']);
   }
 
   details(algo: Algo): boolean {
