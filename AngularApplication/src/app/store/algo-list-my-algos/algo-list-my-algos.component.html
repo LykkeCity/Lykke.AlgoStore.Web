@@ -1,7 +1,10 @@
 <div class="container algo-list-placeholder pt-10 pb-30">
   <div class="row">
-    <div class="col-md-12">
+    <div class="col-md-8">
       <h2 class="heading-lg pt-10 pb-10">My Algos</h2>
+    </div>
+    <div class="col-md-4 pull-right add-button-row">
+      <button class="button button-blue" (click)="createNewAlgo()">Create new Algo</button>
     </div>
   </div>
 
@@ -11,17 +14,17 @@
         <thead>
         <tr>
           <th>Name</th>
-          <th>Author</th>
-          <th>Rating</th>
-          <th>Usage</th>
+          <th>Description</th>
+          <th>Status</th>
+          <th>Actions</th>
         </tr>
         </thead>
         <tbody>
         <tr *ngFor="let algo of dataSource">
-          <td><a href="#" (click)="details(algo)"> <span tooltip="{{algo.Description}}">{{algo.Name}}</span> </a></td>
-          <td>{{algo.Author}}</td>
-          <td><star-rating-comp [rating]="algo.Rating" [starType]="'svg'" [numOfStars]="6" [showHalfStars]="true" [staticColor]="'default'" [readOnly]="true"></star-rating-comp><span [hidden]="true">{{algo.Rating}}</span></td>
-          <td>{{algo.UsersCount}}</td>
+          <td><a href="#" (click)="details(algo)"> {{algo.Name}} </a></td>
+          <td>{{algo.Description}}</td>
+          <td>{{algo.Status}}</td>
+          <td><app-commands [algo]="algo"></app-commands></td>
         </tr>
         <tr *ngIf="dataSource?.length == 0">
           <td colspan="3" class="no-data-available">No data!</td>
