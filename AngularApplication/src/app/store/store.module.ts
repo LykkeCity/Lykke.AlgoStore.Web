@@ -15,6 +15,7 @@ import { AlgoListComponent } from './algo-list/algo-list.component';
 import { AlgoEditComponent } from './algo-edit/algo-edit.component';
 import { CommandsComponent } from '../components/commands/commands.component';
 import { AlgoDetailsComponent } from './algo-details/algo-details.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
 import { AlgoListMyAlgosComponent } from './algo-list-my-algos/algo-list-my-algos.component';
 
 // SERVICES
@@ -35,6 +36,7 @@ import { AlgoListMyAlgosComponent } from './algo-list-my-algos/algo-list-my-algo
     AlgoListComponent,
     AlgoEditComponent,
     AlgoDetailsComponent,
+    DashboardComponent,
     AlgoListMyAlgosComponent
   ],
   providers: []

@@ -33,7 +33,8 @@ export class AlgoListComponent implements OnInit, OnDestroy {
 
     this.dtOptions = {
       pagingType: 'full_numbers',
-      pageLength: 10
+      pageLength: 10,
+      autoWidth: false
     };
 
   }
