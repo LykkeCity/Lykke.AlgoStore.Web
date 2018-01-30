@@ -32,7 +32,7 @@
     "angular-datatables": "^5.0.0",
     "angular2-notifications": "^0.9.6",
     "angular-star-rating": "^3.0.8",
-    "bootstrap-sass": "^3.3.7",
+    "bootstrap": "^4.0.0",
     "core-js": "^2.4.1",
     "datatables.net": "^1.10.16",
     "datatables.net-dt": "^1.10.16",
