@@ -1,19 +1,26 @@
-.header-placeholder {
-    a {text-decoration: none;}
-    .navbar {
-      min-height: 80px;
-      line-height: 80px;
-      .header-page-title {
-        display: inline-block;
-        margin: 0;
-        font-size: 28px;
-        line-height: 40px;
-        letter-spacing: -0.5px;
-        vertical-align: middle;
-        color: #333333;
-        strong {
-          font-family: "Proxima Nova Semibold";
-        }
-      }
+@import "~scss/reuse";
+
+.navbar {
+  box-shadow: 2px -2px 5px rgba(0, 0, 0, 0.5);
+  height: $navbar-height;
+}
+
+@include media-breakpoint-up(xs) {
+  .navbar .algo-store-logo {
+    height: $navbar-logo-height-xs;
+  }
+}
+
+@include media-breakpoint-up(sm) {
+  .navbar {
+    .algo-store-logo {
+      height: $navbar-logo-height-md;
     }
   }
+}
+
+@include media-breakpoint-up(md) {
+  .navbar {
+    height: $navbar-height-md;
+  }
+}
