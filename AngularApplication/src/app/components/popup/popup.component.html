@@ -1,6 +1,6 @@
 <div class="popup-wrapper" *ngIf="showPopup && popupConfig" [ngStyle]="{'width.px': popupConfig.width}">
   <div class="popup-container text-center">
-    <img src="/assets/img/attention.svg" alt="attention image" *ngIf="!popupConfig.hideIcon" />
+    <img src="/assets/images/attention.svg" alt="attention image" *ngIf="!popupConfig.hideIcon" />
     <h1 class="mt-30 mb-30 heading-md gray-dark bold {{popupConfig.textClass}}">{{popupConfig.title}}</h1>
     <p class="mb-40 text-lg {{popupConfig.textClass}}">{{popupConfig.text}}</p>
     <div class="row">
