@@ -29,6 +29,7 @@ import { NonAuthenticatedGuard } from './services/non-authenticated.guard';
 // 3RD PARTY MODULES
 import { SimpleNotificationsModule } from 'angular2-notifications';
 import { NgIdleKeepaliveModule } from '@ng-idle/keepalive';
+import { PopoverModule } from 'ngx-bootstrap';
 
 // APP MODULES
 import { SharedModule } from './shared/shared.module';
@@ -52,7 +53,8 @@ import { SharedModule } from './shared/shared.module';
     SharedModule,
     HttpClientModule,
     SimpleNotificationsModule.forRoot(),
-    NgIdleKeepaliveModule.forRoot()
+    NgIdleKeepaliveModule.forRoot(),
+    PopoverModule.forRoot()
   ],
  providers: [
     AuthGuard,
