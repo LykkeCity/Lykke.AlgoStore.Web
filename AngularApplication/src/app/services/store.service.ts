@@ -21,6 +21,10 @@ export class StoreService {
     this.algosStore = [];
   }
 
+  getAllPublicAlgos(): Observable<Algo[]> {
+    return this.authRequestService.get('/v1/clientData/getAllAlgos');
+  }
+
   algoGetAll(): Observable<Algo[]> {
     return this.authRequestService.get('/v1/clientData/metadata');
   }
