@@ -1,21 +1,10 @@
-<div class="user-profile-wrapper pull-right" *ngIf="userData">
-  <div class="dropdown-hover">
-    <span class="header-img-profile-wrapper">
-      <img src="assets/img/user_default.svg" alt="">
-    </span>
-    <!-- <span class="text-lg gray-dark">{{userData.FullName}}</span> -->
-    <span class="text-lg gray-dark">User</span>
-  </div>
-  <div class="dropdown-container">
-    <div class="wallet-dropdown-items-container">
-      <ul class="actions-list">
-        <li class="list-item">
-          <a class="wallet-dropdown-link" href="javascript:;" (click)="logout(true)">
-            Logout
-          </a>
-        </li>
-      </ul>
-    </div>
-  </div>
+<div class="user-profile-wrapper pull-right">
+  <button class="profile-nav" [popover]="navTemplate" [outsideClick]="true" placement="bottom"></button>
 </div>
+
+<ng-template #navTemplate>
+  <div>
+    <a class="profile-nav-link" href="javascript:;" (click)="logout()">Log out</a>
+  </div>
+</ng-template>
 

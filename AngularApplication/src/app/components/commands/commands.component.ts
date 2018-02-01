@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnDestroy } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { NotificationsService } from 'angular2-notifications';
 import { Subscription } from 'rxjs/Subscription';
@@ -20,20 +20,20 @@ export class CommandsComponent implements OnInit, OnDestroy {
 
   @Input() algo: Algo;
 
-  Command: any = Command;
-  Status: any = Status;
+  Command = Command;
+  Status = Status;
 
   private subscriptions = new Subscription();
 
-  subscribeToStart: any;
-  subscribeToStop: any;
-  subscribeToDelete: any;
+  subscribeToStart: Subscription;
+  subscribeToStop: Subscription;
+  subscribeToDelete: Subscription;
 
-  constructor(
-    private storeService: StoreService,
-    private eventService: EventService,
-    private notificationService: NotificationsService,
-    private router: Router) { }
+  constructor(private storeService: StoreService,
+              private eventService: EventService,
+              private notificationService: NotificationsService,
+              private router: Router) {
+  }
 
   ngOnInit() {
     this.subscriptions.add(this.eventService.popupConfirm.subscribe(this.onPopupConfirm));
@@ -44,7 +44,7 @@ export class CommandsComponent implements OnInit, OnDestroy {
     this.subscriptions.unsubscribe();
   }
 
-  doCommand(command?: Command) {
+  doCommand(command?: Command): boolean {
     if (!command) {
       if (this.algo.Status === Status.DEPLOYED || this.algo.Status === Status.UNKNOWN || this.algo.Status === Status.STOPPED) {
         const popupConfig: PopupConfig = {
@@ -109,72 +109,80 @@ export class CommandsComponent implements OnInit, OnDestroy {
     this.algo.Status = Status.STARTED;
     this.eventService.algoTestStarted.next(Status.STARTED);
     this.unsubscribe();
-  }
+  };
 
   onAlgoTestStopped = () => {
     this.algo.Status = Status.STOPPED;
     this.eventService.algoTestStopped.next(Status.STOPPED);
     this.unsubscribe();
-  }
+  };
 
   onAlgoDeleteDone = () => {
     this.eventService.algoDeleteDone.next();
-  }
+  };
 
   onAlgoDeleteError = (err: HttpErrorResponse) => {
     this.notificationService.error('Error', 'Some error occured!');
     this.unsubscribe();
-  }
+  };
 
   onAlgoTestError = (err: HttpErrorResponse) => {
     this.notificationService.error('Error', 'Some error occured!');
     this.unsubscribe();
-  }
+  };
 
-  unsubscribe() {
-    if (this.subscribeToStart) this.subscribeToStart.unsubscribe();
-    if (this.subscribeToStop) this.subscribeToStop.unsubscribe();
-    if (this.subscribeToDelete) this.subscribeToDelete.unsubscribe();
+  unsubscribe(): void {
+    if (this.subscribeToStart) {
+      this.subscribeToStart.unsubscribe();
+    }
+
+    if (this.subscribeToStop) {
+      this.subscribeToStop.unsubscribe();
+    }
+
+    if (this.subscribeToDelete) {
+      this.subscribeToDelete.unsubscribe();
+    }
   }
 
   onPopupConfirm = (popupData) => {
     switch (popupData.name) {
-      case "startAlgoWarning":
-        if (popupData.data.algoId == this.algo.Id) {
+      case 'startAlgoWarning':
+        if (popupData.data.algoId === this.algo.Id) {
           this.subscribeToStart = this.storeService.algoStart(this.algo.Id)
             .subscribe(
-            this.onAlgoTestStarted,
-            this.onAlgoTestError);
+              this.onAlgoTestStarted,
+              this.onAlgoTestError);
 
           this.eventService.popupClose.next();
         }
         break;
 
-      case "stopAlgoWarning":
-        if (popupData.data.algoId == this.algo.Id) {
+      case 'stopAlgoWarning':
+        if (popupData.data.algoId === this.algo.Id) {
           this.subscribeToStop = this.storeService.algoStop(this.algo.Id)
             .subscribe(
-            this.onAlgoTestStopped,
-            this.onAlgoTestError);
+              this.onAlgoTestStopped,
+              this.onAlgoTestError);
 
           this.eventService.popupClose.next();
         }
         break;
 
-      case "deleteAlgoWarning":
-        if (popupData.data.algoId == this.algo.Id) {
+      case 'deleteAlgoWarning':
+        if (popupData.data.algoId === this.algo.Id) {
           this.subscribeToDelete = this.storeService.algoDelete(this.algo)
             .subscribe(
-            this.onAlgoDeleteDone,
-            this.onAlgoDeleteError
+              this.onAlgoDeleteDone,
+              this.onAlgoDeleteError
             );
           this.eventService.popupClose.next();
         }
         break;
     }
-  }
+  };
 
   onPopupCancel = (popupData) => {
     this.eventService.popupClose.next();
-  }
+  };
 }

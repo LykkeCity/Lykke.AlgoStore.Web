@@ -1,20 +1,18 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { Subscription } from 'rxjs/Subscription';
-
-import { StoreService } from '../../services/store.service';
 import { Algo } from '../../models/algo.interface';
-import { EventService } from '../../services/event.service';
 import { Subject } from 'rxjs/Subject';
+import { Subscription } from 'rxjs/Subscription';
 import { DataTableDirective } from 'angular-datatables';
-
+import { StoreService } from '../../services/store.service';
+import { EventService } from '../../services/event.service';
 
 @Component({
-  selector: 'app-algo-list',
-  templateUrl: './algo-list.component.html',
-  styleUrls: ['./algo-list.component.scss']
+  selector: 'app-algo-list-my-algos',
+  templateUrl: './algo-list-my-algos.component.html',
+  styleUrls: ['./algo-list-my-algos.component.scss']
 })
-export class AlgoListComponent implements OnInit, OnDestroy {
+export class AlgoListMyAlgosComponent implements OnInit, OnDestroy {
 
   @ViewChild(DataTableDirective)
   datatableElement: DataTableDirective;
@@ -40,7 +38,7 @@ export class AlgoListComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.subscriptions.add(this.storeService.getAllPublicAlgos().subscribe(this.onDataObtained));
+    this.subscriptions.add(this.storeService.algoGetAll().subscribe(this.onDataObtained));
     this.subscriptions.add(this.eventService.algoTestStarted.subscribe(this.onAlgoStatusChanged));
     this.subscriptions.add(this.eventService.algoTestStopped.subscribe(this.onAlgoStatusChanged));
     this.subscriptions.add(this.eventService.algoDeleteDone.subscribe(this.onAlgoStatusChanged));
@@ -48,6 +46,13 @@ export class AlgoListComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.subscriptions.unsubscribe();
+  }
+
+  createNewAlgo(): void {
+    this.storeService.activeAlgo = null;
+    this.storeService.mode = 'create';
+    this.storeService._algos.next([]);
+    this.router.navigate(['store']);
   }
 
   details(algo: Algo): boolean {
@@ -77,4 +82,5 @@ export class AlgoListComponent implements OnInit, OnDestroy {
   onAlgoStatusChanged = () => {
     this.subscriptions.add(this.storeService.algoGetAll().subscribe(this.onDataObtained, this.onDataError));
   };
+
 }

@@ -6,6 +6,7 @@
     left: 0;
     width: 100%;
     background: $gray;
+    z-index: 10;
     .container {
       width: 1170px;
       padding: 35px 0;
@@ -55,4 +56,3 @@
       }
     }
   }
-  

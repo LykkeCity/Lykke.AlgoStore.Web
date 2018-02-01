@@ -1,10 +1,6 @@
 import { Injectable } from '@angular/core';
-import { RequestOptions, Headers } from '@angular/http';
-import { HttpClient, HttpParams/*, HttpHeaders*/ } from '@angular/common/http';
-
-import { NotificationsService } from 'angular2-notifications';
+import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
-import { Router } from '@angular/router';
 
 @Injectable()
 export class AuthService {
@@ -14,9 +10,7 @@ export class AuthService {
   redirectUri: string;
   authenticationUrl: string;
 
-  constructor(private http: HttpClient,
-    private notificationService: NotificationsService,
-    private router: Router) {
+  constructor(private http: HttpClient) {
 
     this._isAuthenticated = false;
     this.redirectUri = environment.redirectUrl;
@@ -28,34 +22,14 @@ export class AuthService {
       '&redirect_uri=' + encodeURIComponent(environment.redirectUrl);
   }
 
-  getAccessToken(code) {
-    const queryParams = {
-      code
-    };
-
-    this.http.get(this.localAuthUrl, { params: queryParams })
-      .subscribe((response: Response) => this.getWalletToken(response));
-  }
-
-  authenticate(data) {
-    this.setToken(data);
-    this._isAuthenticated = true;
-
-    const returnUrl = localStorage.getItem('returnUrl');
-    if (returnUrl) {
-      localStorage.removeItem('returnUrl');
-      this.router.navigate([returnUrl]);
-    }
-  }
-
-  login() {
+  login(): void {
     localStorage.setItem('returnUrl', window.location.pathname);
     window.location.replace(this.authenticationUrl);
   }
 
-  logout(redirectFlag = true) {
+  logout(redirectFlag: boolean = true): void {
 
-    const headers = {'Authorization': 'Bearer ' + localStorage.getItem('token')};
+    const headers = { 'Authorization': 'Bearer ' + localStorage.getItem('token') };
 
 
     this.http.post(environment.apiUrl + '/Auth/LogOut', '', { headers }).subscribe(response => {
@@ -65,24 +39,5 @@ export class AuthService {
         this.login();
       }
     });
-  }
-
-  getWalletToken(data) {
-
-    const headers = {
-      'application_id': environment.applicationId,
-      'Authorization': data.token_type + ' ' + data.access_token
-    };
-
-    this.http.get(environment.apiAuthUrl + '/getlykkewallettoken', { headers })
-      .subscribe((response: Response) => this.authenticate(response));
-  }
-
-  setToken(data) {
-    localStorage.setItem('token', data.token);
-  }
-
-  isAuthenticated() {
-    return this._isAuthenticated;
   }
 }

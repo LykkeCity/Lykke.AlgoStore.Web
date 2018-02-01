@@ -1,7 +1,7 @@
 {
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
   "project": {
-    "name": "lykke-angular-app"
+    "name": "lykke-algo-store"
   },
   "apps": [
     {
@@ -24,10 +24,8 @@
         ]
       },
       "styles": [
-        "../node_modules/simple-scrollbar/simple-scrollbar.css",
-        "styles.scss",
-        "../node_modules/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css",
-        "../node_modules/font-awesome/scss/font-awesome.scss"
+        "../node_modules/datatables.net-dt/css/jquery.dataTables.css",
+        "styles.scss"
       ],
       "scripts": [
         "../node_modules/jquery/dist/jquery.min.js",
@@ -36,12 +34,7 @@
         "../node_modules/ace-builds/src-min/mode-java.js",
         "../node_modules/ace-builds/src-min/theme-eclipse.js",
         "../node_modules/ace-builds/src-min/ext-language_tools.js",
-        "../node_modules/qrious/dist/qrious.min.js",
-        "../node_modules/simple-scrollbar/simple-scrollbar.min.js",
-        "../node_modules/moment/min/moment.min.js",
-        "../node_modules/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js",
-        "assets/js/charting_library-master/charting_library/charting_library.min.js",
-        "assets/js/charting_library-master/charting_library/datafeed/udf/datafeed.js"
+        "../node_modules/datatables.net/js/jquery.dataTables.js"
       ],
       "environmentSource": "environments/environment.ts",
       "environments": {

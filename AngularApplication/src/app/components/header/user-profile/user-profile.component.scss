@@ -28,3 +28,15 @@
       }
     }
   }
+
+.profile-nav {
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  outline: none;
+  width: 2.3rem;
+  height: 2.3rem;
+  margin-top: 20px;
+  background-size: contain;
+  background-image: url(../../../../assets/img/user_default_gray.svg);
+}

@@ -1,14 +1,12 @@
 import { Injectable } from '@angular/core';
-import { CrudService } from './crud.service';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Observable } from 'rxjs/Observable';
-import { NotificationsService } from 'angular2-notifications';
 import { Algo } from '../models/algo.interface';
-import { EventService } from './event.service';
+import { AuthRequestService } from './auth-request.service';
+import { Observable } from 'rxjs/Observable';
+import { AlgoLog } from '../models/algo-log.interface';
 
 @Injectable()
-export class StoreService extends CrudService {
+export class StoreService {
 
   _algos = new BehaviorSubject<Array<Algo>>([]);
   algosStore: Array<any>;
@@ -18,56 +16,56 @@ export class StoreService extends CrudService {
   public activeAlgo: Algo;
   public mode: string;
 
-  constructor(
-    http: HttpClient,
-    notificationService: NotificationsService,
-    private eventService: EventService) {
-    super(http, notificationService);
+  constructor(private authRequestService: AuthRequestService) {
 
     this.algosStore = [];
   }
 
-  algoGetAll() {
-    return this.get('/v1/clientData/metadata');
+  getAllPublicAlgos(): Observable<Algo[]> {
+    return this.authRequestService.get('/v1/clientData/getAllAlgos');
   }
 
-  algoCreateDetails(algo: Algo) {
-    return this.post('/v1/clientData/metadata', algo);
+  algoGetAll(): Observable<Algo[]> {
+    return this.authRequestService.get('/v1/clientData/metadata');
   }
 
-  algoGet(algoId) {
-    return this.get(`/v1/clientData/imageData/upload/string?AlgoId=${algoId}`);
+  algoCreateDetails(algo: Algo): Observable<Algo> {
+    return this.authRequestService.post('/v1/clientData/metadata', algo);
   }
 
-  algoSave(algoId, data) {
-    return this.post(`/v1/clientData/imageData/upload/string?AlgoId=${algoId}&Data=${data}`, null);
+  algoGet(algoId: string): Observable<Algo> {
+    return this.authRequestService.get(`/v1/clientData/imageData/upload/string?AlgoId=${algoId}`);
   }
 
-  algoUpload(formData: FormData) {
-    return this.post('/v1/clientData/imageData/upload/binary', formData);
+  algoSave(algoId: string, data: string): Observable<Algo> {
+    return this.authRequestService.post(`/v1/clientData/imageData/upload/string`, { AlgoId: algoId, Data: data });
   }
 
-  algoDeploy(data: any) {
-    return this.post('/v1/management/deploy/binary', { AlgoId: data.Id });
+  algoUpload(formData: FormData): Observable<Algo> {
+    return this.authRequestService.post('/v1/clientData/imageData/upload/binary', formData);
   }
 
-  algoStart(algoId) {
-    return this.post('/v1/management/test/start', { AlgoId: algoId });
+  algoDeploy(algoId: string): Observable<Algo> {
+    return this.authRequestService.post('/v1/management/deploy/binary', { AlgoId: algoId });
   }
 
-  algoStop(algoId) {
-    return this.post('/v1/management/test/stop', { AlgoId: algoId });
+  algoStart(algoId: string): Observable<Algo> {
+    return this.authRequestService.post('/v1/management/test/start', { AlgoId: algoId });
   }
 
-  algoDelete(algo: Algo) {
-    return this.post('/v1/clientData/metadata/cascadeDelete', algo);
+  algoStop(algoId: string): Observable<Algo> {
+    return this.authRequestService.post('/v1/management/test/stop', { AlgoId: algoId });
   }
 
-  algoGetLog(algoId) {
-    return this.get(`/v1/management/test/log?AlgoId=${algoId}`);
+  algoDelete(algo: Algo): Observable<Algo> {
+    return this.authRequestService.post('/v1/clientData/metadata/cascadeDelete', algo);
   }
 
-  algoGetTailLog(algoId, tail) {
-    return this.get(`/v1/management/test/tailLog?AlgoId=${algoId}&Tail=${tail}`);
-  }  
+  algoGetLog(algoId: string): Observable<Algo> {
+    return this.authRequestService.get(`/v1/management/test/log?AlgoId=${algoId}`);
+  }
+
+  algoGetTailLog(algoId: string, tail: number): Observable<AlgoLog> {
+    return this.authRequestService.get(`/v1/management/test/tailLog?AlgoId=${algoId}&Tail=${tail}`);
+  }
 }

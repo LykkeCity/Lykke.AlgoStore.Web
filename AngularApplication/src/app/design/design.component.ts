@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef, AfterViewInit, OnDestroy } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { PopupConfig } from '../models/popup.interface';
 import { EventService } from '../services/event.service';
 import { Subscription } from 'rxjs/Subscription';
@@ -11,10 +11,10 @@ import { StoreService } from '../services/store.service';
 })
 export class DesignComponent implements OnInit, AfterViewInit, OnDestroy {
 
-  store: any;
+  store: StoreService;
 
-  subscribeToSave: any;
-  subscribeToGet: any;
+  subscribeToSave: Subscription;
+  subscribeToGet: Subscription;
 
   @ViewChild('editor') editor;
 
@@ -38,8 +38,8 @@ export class DesignComponent implements OnInit, AfterViewInit, OnDestroy {
   private subscriptions: Subscription[] = [];
   log: string;
 
-  constructor(private eventService: EventService, private storeService: StoreService) { 
-  this.store = storeService;
+  constructor(private eventService: EventService, private storeService: StoreService, private ref: ChangeDetectorRef) {
+    this.store = storeService;
   }
 
   ngOnInit() {
@@ -63,7 +63,8 @@ export class DesignComponent implements OnInit, AfterViewInit, OnDestroy {
     this.editor.getEditor().commands.addCommand({
       name: 'showOtherCompletions',
       bindKey: 'Ctrl-.',
-      exec: function (editor) {}
+      exec: function () {
+      }
     });
   }
 
@@ -71,47 +72,50 @@ export class DesignComponent implements OnInit, AfterViewInit, OnDestroy {
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
-  downloadProjectTemplate() {
+  downloadProjectTemplate(): void {
     const popupConfig: PopupConfig = {
       hideIcon: true,
       name: 'downloadProjectTemplateInfo',
       width: 370,
       title: 'Download algo',
       textClass: 'text-center',
-      text: 'Download project for local development. You will get a basic architecture of the trading algo together with REST API consumer for the HFT API.',
+      text: 'Download project for local development. You will get a basic architecture ' +
+      'of the trading algo together with REST API consumer for the HFT API.',
       btnCancelText: 'Cancel',
       btnConfirmText: 'Yes, download the template'
     };
-    
+
     this.eventService.popupOpen.next(popupConfig);
   }
 
   onPopupConfirm = (popupData) => {
-    switch(popupData.name) {
-      case  "downloadProjectTemplateInfo":
+    switch (popupData.name) {
+      case  'downloadProjectTemplateInfo':
         this.eventService.popupClose.next();
         break;
     }
-  }
+  };
+
   onPopupCancel = (popupData) => {
-    switch(popupData.name) {
-      case  "downloadProjectTemplateInfo":
+    switch (popupData.name) {
+      case  'downloadProjectTemplateInfo':
         this.eventService.popupClose.next();
         break;
     }
-  }
+  };
 
   onAlgoGetDone = (response) => {
     this.text = response.Data;
     this.subscribeToGet.unsubscribe();
-  }
+    this.ref.detectChanges();
+  };
 
   onAlgoSaveDone = (status) => {
     console.log(status);
     this.subscribeToSave.unsubscribe();
-  }
+  };
 
-  save(){
+  save(): void {
     this.subscribeToSave = this.storeService.algoSave(this.storeService.activeAlgo.Id, this.text).subscribe(this.onAlgoSaveDone);
   }
 

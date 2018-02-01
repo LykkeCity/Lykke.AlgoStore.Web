@@ -1,5 +1,4 @@
 // COMMON
-@import "~@angular/material/prebuilt-themes/indigo-pink.css";
 @import "bootstrap_variables";
 @import "../node_modules/bootstrap-sass/assets/stylesheets/bootstrap";
 @import "colors";
@@ -13,3 +12,6 @@
 
 // LAYOUTS
 @import "general";
+
+// 3RD PARTY
+@import "../node_modules/angular-star-rating/assets/scss/star-rating";

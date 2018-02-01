@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 
 import { EventService } from '../../services/event.service';
@@ -12,7 +12,7 @@ import { PopupConfig } from '../../models/popup.interface';
 export class PopupComponent implements OnInit, OnDestroy {
   showPopup: boolean;
   popupConfig: PopupConfig;
-  elementBody: any;
+  elementBody: HTMLBodyElement;
 
   private subscriptions: Subscription[] = [];
 
@@ -34,22 +34,22 @@ export class PopupComponent implements OnInit, OnDestroy {
 
   onPopupOpen = (data: PopupConfig) => {
     this.showPopup = true;
-    
     this.popupConfig = data;
     this.popupConfig.textClass = data.textClass ? data.textClass : 'text-left';
     this.elementBody.classList.add('blur-popup');
-  }
+  };
 
   onPopupClose = (data) => {
     this.showPopup = false;
     this.popupConfig = null;
     this.elementBody.classList.remove('blur-popup');
-  }
+  };
 
-  onPopupCancel() {
+  onPopupCancel(): void {
     this.eventService.popupCancel.next(this.popupConfig);
   }
-  onPopupConfirm() {
+
+  onPopupConfirm(): void {
     this.eventService.popupConfirm.next(this.popupConfig);
   }
 

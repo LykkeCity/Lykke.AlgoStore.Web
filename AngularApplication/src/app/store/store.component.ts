@@ -1,13 +1,11 @@
-import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { MatStepper } from '@angular/material';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 
 import { StoreService } from '../services/store.service';
 import { Algo } from '../models/algo.interface';
 import { Language } from '../models/language.enum';
-import { EventService } from '../services/event.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { NotificationsService } from 'angular2-notifications';
 
@@ -18,19 +16,14 @@ import { NotificationsService } from 'angular2-notifications';
 })
 export class StoreComponent implements OnInit, OnDestroy {
   algos: Array<Algo>;
-  isLinear = false;
   secondFormGroup: FormGroup;
   updateFormGroup: FormGroup;
   hasErrors: Boolean;
-  Language: any = Language;
-  activeAlgo: Algo;
-
-  @ViewChild('stepper') stepper: MatStepper;
+  Language = Language;
 
   private subscriptions = new Subscription();
 
   constructor(private storeService: StoreService,
-    private eventService: EventService,
     private router: Router,
     private notificationsService: NotificationsService,
     private formBuilder: FormBuilder) { }
@@ -61,9 +54,9 @@ export class StoreComponent implements OnInit, OnDestroy {
       }));
 
       this.subscriptions.add(
-        this.storeService.algos.subscribe(result => {
+        this.storeService.algos.subscribe((result: Algo[]) => {
           this.algos = result;
-  
+
           if (this.storeService.mode !== 'create' && this.algos.length > 0) {
             this.router.navigate(['store/algo-list']);
           }
@@ -75,7 +68,7 @@ export class StoreComponent implements OnInit, OnDestroy {
     this.subscriptions.unsubscribe();
   }
 
-  setLanguage(language: Language) {
+  setLanguage(language: Language): void {
     switch (language) {
       case Language.NET:
         console.log('NET');
@@ -88,22 +81,17 @@ export class StoreComponent implements OnInit, OnDestroy {
         console.log('Java');
         break;
     }
-
-    this.stepper.next();
   }
 
   // Set state for 'Next' button on 'update' tab
-  isAlgoDetailsButtonDisabled() {
+  isAlgoDetailsButtonDisabled(): boolean {
     if (!this.updateFormGroup.valid) {
       return true;
     }
   }
 
   // Button 'Next' on 'update' tab click method
-  update() {
-    this.stepper.selectedIndex = 2;
-
-    this.stepper.next();
+  update(): boolean {
 
     if (this.updateFormGroup.controls.name.value) {
 
@@ -131,7 +119,7 @@ export class StoreComponent implements OnInit, OnDestroy {
     return false;
   }
 
-  openDesigner() {
+  openDesigner(): void {
     this.router.navigate(['design']);
   }
 }

@@ -6,13 +6,12 @@ import { Component, Input, OnInit } from '@angular/core';
   styleUrls: ['./terminal.component.scss']
 })
 export class TerminalComponent implements OnInit {
-  
 
-  @Input("title") title: string;
+  @Input('title') title: string;
   @Input() model: string;
 
-  constructor() { 
-    
+  constructor() {
+
   }
 
   ngOnInit(): void {

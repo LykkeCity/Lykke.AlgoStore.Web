@@ -87,10 +87,10 @@
           color: $code;
           position: relative;
           background: transparent;
-  
+
           font-family: "Proxima Nova";
           font-size:.9rem;
-  
+
           &:after {
             position: absolute;
             content: '';
@@ -119,4 +119,7 @@
       }
     }
   }
-  
+
+button[disabled] {
+  cursor: not-allowed;
+}
