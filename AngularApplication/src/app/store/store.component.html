@@ -104,7 +104,7 @@ MARGIN=&lt;THE MARGINE WITH WHICH YOU WANT TO SELL, e.g 1.1&gt;
                 <div class="col-md-1"></div>
               </div>
               <div class="text-center">
-                <button class="button button-blue" nextStep>Next</button>
+                <button class="btn btn-primary" nextStep>Next</button>
               </div>
             </div>
           </wizard-step>
@@ -130,7 +130,7 @@ MARGIN=&lt;THE MARGINE WITH WHICH YOU WANT TO SELL, e.g 1.1&gt;
               <div class="row">
                 <div class="col-xs-offset-3 col-xs-6 text-center">
                   <div class="form-group">
-                    <button class="button button-blue" (click)="update()" [disabled]="isAlgoDetailsButtonDisabled()" nextStep>Next</button>
+                    <button class="btn btn-primary" (click)="update()" [disabled]="isAlgoDetailsButtonDisabled()" nextStep>Next</button>
                   </div>
                 </div>
               </div>
@@ -142,14 +142,14 @@ MARGIN=&lt;THE MARGINE WITH WHICH YOU WANT TO SELL, e.g 1.1&gt;
               <div *ngIf="!hasErrors" class="mt-100">
                 <h3>All done! Let's code the algo...</h3>
                 <div class="mt-100">
-                  <button class="button button-blue" (click)="openDesigner()">Code</button>
+                  <button class="btn btn-primary" (click)="openDesigner()">Code</button>
                 </div>
               </div>
 
               <div *ngIf="hasErrors" class="mt-100">
                 <h3>There is a problem with your algo</h3>
                 <div class="mt-100">
-                  <button class="button button-blue">Back</button>
+                  <button class="btn btn-primary">Back</button>
                 </div>
               </div>
             </div>

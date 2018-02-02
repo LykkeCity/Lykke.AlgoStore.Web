@@ -1,5 +1,12 @@
 @import '~scss/reuse';
 
+:host {
+  position: absolute;
+  bottom: -120px;
+  left: 0;
+  width: 100%;
+}
+
 .footer {
   padding-top: 30px;
   padding-bottom: 50px;

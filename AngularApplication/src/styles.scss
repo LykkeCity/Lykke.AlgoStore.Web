@@ -1,7 +1,15 @@
 @import './scss/bootstrap';
+@import './scss/custom-mixins';
 @import './scss/fonts';
 @import './scss/icons';
+@import './scss/typography';
+@import './scss/curtain';
 
+html,
+body {
+  height: 100%;
+  min-height: 100%;
+}
 
 //// COMMON
 //@import "bootstrap_variables";

@@ -97,7 +97,9 @@ $theme-colors: map-merge((
   "light":         $light,
   "dark":          $dark,
   "pale-grey-two": $pale-grey-two,
-  "cool-grey":     $cool-grey
+  "cool-grey":     $cool-grey,
+  "azure":         $azure,
+  "slate":         $slate
 ), $theme-colors);
 // stylelint-enable
 
@@ -166,8 +168,8 @@ $body-color:                $gray-900 !default;
 
 $link-color:                theme-color("primary") !default;
 $link-decoration:           none !default;
-$link-hover-color:          darken($link-color, 15%) !default;
-$link-hover-decoration:     underline !default;
+$link-hover-color:          $slate !default;
+$link-hover-decoration:     none !default;
 
 // Paragraphs
 //
@@ -248,23 +250,24 @@ $font-family-monospace:       SFMono-Regular, Menlo, Monaco, Consolas, "Liberati
 $font-family-base:            $font-family-sans-serif !default;
 // stylelint-enable value-keyword-case
 
-$font-size-base:              1rem !default; // Assumes the browser default, typically `16px`
+$font-size-base:              1.125rem !default; // Assumes the browser default, typically `16px`
 $font-size-lg:                ($font-size-base * 1.25) !default;
 $font-size-sm:                ($font-size-base * .875) !default;
 
 $font-weight-light:           300 !default;
 $font-weight-normal:          400 !default;
+$font-weight-semibold:        600 !default;
 $font-weight-bold:            700 !default;
 
 $font-weight-base:            $font-weight-normal !default;
 $line-height-base:            1.5 !default;
 
-$h1-font-size:                $font-size-base * 2.5 !default;
-$h2-font-size:                $font-size-base * 2 !default;
-$h3-font-size:                $font-size-base * 1.75 !default;
-$h4-font-size:                $font-size-base * 1.5 !default;
-$h5-font-size:                $font-size-base * 1.25 !default;
-$h6-font-size:                $font-size-base !default;
+$h1-font-size:                $font-size-base * 2.777777778 !default;
+$h2-font-size:                $font-size-base * 2.222222222 !default;
+$h3-font-size:                $font-size-base * 1.555555556 !default;
+$h4-font-size:                $font-size-base * 1           !default;
+$h5-font-size:                $font-size-base * 1.166666667 !default;
+$h6-font-size:                $font-size-base * 1           !default;
 
 $headings-margin-bottom:      ($spacer / 2) !default;
 $headings-font-family:        inherit !default;
@@ -339,8 +342,8 @@ $table-dark-color:            $body-bg !default;
 //
 // Shared variables that are reassigned to `$input-` and `$btn-` specific variables.
 
-$input-btn-padding-y:         .375rem !default;
-$input-btn-padding-x:         .75rem !default;
+$input-btn-padding-y:         .657rem !default;
+$input-btn-padding-x:         3.5rem !default;
 $input-btn-line-height:       $line-height-base !default;
 
 $input-btn-focus-width:       .2rem !default;
@@ -388,7 +391,7 @@ $btn-link-disabled-color:     $gray-600 !default;
 $btn-block-spacing-y:         .5rem !default;
 
 // Allows for customizing button radius independently from global border radius
-$btn-border-radius:           $border-radius !default;
+$btn-border-radius:           $input-btn-line-height + 2 * $input-btn-padding-y !default;
 $btn-border-radius-lg:        $border-radius-lg !default;
 $btn-border-radius-sm:        $border-radius-sm !default;
 

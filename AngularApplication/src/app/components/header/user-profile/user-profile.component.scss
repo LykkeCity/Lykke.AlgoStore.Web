@@ -1,34 +1,3 @@
-.user-profile-wrapper {
-    position: relative;
-    -webkit-border-radius: 100%;
-    -moz-border-radius: 100%;
-    border-radius: 100%;
-    display: inline-block;
-    line-height: 40px;
-    background: #f5f6f7;
-    height: 40px;
-    width: 40px;
-    margin-right: 10px;
-    img {
-      width: 100%;
-    }
-    .wallet-dropdown-items-container {
-      &:before {
-        content: "";
-        display: block;
-        width: 0;
-        height: 0;
-        border-style: solid;
-        border-width: 0 7.5px 10px 7.5px;
-        border-color: transparent transparent #ffffff transparent;
-        position: absolute;
-        top: -10px;
-        left: 50%;
-        transform: translate(-50%, 0);
-      }
-    }
-  }
-
 .profile-nav {
   border: none;
   border-radius: 50%;

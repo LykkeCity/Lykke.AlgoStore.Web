@@ -1,20 +1,6 @@
-
-@import "bootstrap_variables";
-
 .home-placeholder {
     background-image: url('/assets/images/home/landing_page_background.jpg');
     background-repeat: no-repeat;
     background-size: cover;
-
     height: 100%;
-    margin-bottom: 0;
-
-    font-size: $font-size-large;
-
-    .row {
-        vertical-align: middle;
-        a {
-            text-decoration: none;
-        }
-    }
 }
