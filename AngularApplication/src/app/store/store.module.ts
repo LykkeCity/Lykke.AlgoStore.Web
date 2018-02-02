@@ -4,6 +4,7 @@ import { ArchwizardModule } from 'ng2-archwizard';
 import { DataTablesModule } from 'angular-datatables';
 import { TooltipModule } from 'ngx-bootstrap';
 import { StarRatingModule } from 'angular-star-rating';
+import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 
 // ROUTING
 import { StoreRouting } from './store-routing.module';
@@ -27,6 +28,7 @@ import { AlgoListMyAlgosComponent } from './algo-list-my-algos/algo-list-my-algo
     SharedModule,
     ArchwizardModule,
     DataTablesModule,
+    NgxDatatableModule,
     TooltipModule.forRoot(),
     StarRatingModule.forRoot()
   ],
