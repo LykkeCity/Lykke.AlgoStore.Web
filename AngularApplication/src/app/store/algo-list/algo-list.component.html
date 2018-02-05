@@ -11,10 +11,11 @@
         class="algo-table"
         columnMode="flex"
         [limit]="10"
+        [reorderable]="false"
         [loadingIndicator]="loadingIndicator"
-        [headerHeight]="50"
-        [footerHeight]="50"
-        [rowHeight]="'auto'"
+        [headerHeight]="'auto'"
+        [footerHeight]="'auto'"
+        [rowHeight]="60"
         [rows]="dataSource">
 
         <ngx-datatable-column [resizeable]="false" name="Name" prop="Name" [flexGrow]="2">
@@ -35,8 +36,7 @@
             </star-rating-comp>
           </ng-template>
         </ngx-datatable-column>
-        <ngx-datatable-column [resizeable]="false" name="Usage" prop="UsersCount" [flexGrow]="1"></ngx-datatable-column>
-
+        <ngx-datatable-column [resizeable]="false" name="Usage" prop="UsersCount" [flexGrow]="1.2"></ngx-datatable-column>
       </ngx-datatable>
     </div>
   </div>

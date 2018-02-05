@@ -103,7 +103,7 @@
 
     .datatable-header-cell {
       text-align: left;
-      padding: .9rem 1.2rem;
+      padding: .66rem 1.2rem;
       font-weight: 600;
       color: $black;
       vertical-align: bottom;
@@ -165,6 +165,7 @@
     }
 
 	  .datatable-body-row {
+      border-bottom: 1px solid $pale-grey;
 	    .datatable-body-cell {
 	      text-align: left;
 	      padding: .9rem 1.2rem;
@@ -173,6 +174,10 @@
         color: $slate;
 	      transition: width 0.3s ease;
         font-weight: 400;
+
+        .datatable-body-cell-label {
+          display: inline-block;
+        }
 
         // cell active class
         // &.active {
@@ -234,31 +239,28 @@
 	 * Footer Styles
 	 */
 	.datatable-footer {
-		border-top: 1px solid rgba(0, 0, 0, 0.12);
-		font-size: 12px;
-    font-weight: 400;
-    color: rgba(0,0,0,.54);
+    color: $cool-grey-two;
+    margin-top: 50px;
 
 		.page-count{
 			line-height: 50px;
 			height:50px;
 			padding: 0 1.2rem;
+      display: none;
 		}
 
 		.datatable-pager {
-			margin: 0 10px;
+      text-align: center;
 
 			li {
 	    	vertical-align: middle;
 
 				&.disabled a {
-					color:rgba(0, 0, 0, 0.26) !important;
-					background-color: transparent !important;
+					color: $cool-grey-two !important;
 				}
 
 				&.active a {
-					background-color: rgba(158,158,158,0.2);
-					font-weight: bold;
+          color: $black;
 				}
 			}
 
@@ -271,13 +273,12 @@
 				margin: 6px 3px;
 				text-align: center;
 				vertical-align: top;
-				color: rgba(0,0,0,.54);
+				color: $cool-grey-two;
 				text-decoration: none;
 		    vertical-align: bottom;
 
 				&:hover {
-					color: rgba(0,0,0,.75);
-					background-color: rgba(158,158,158,0.2);
+					color: $black;
 				}
 			}
 
@@ -285,6 +286,7 @@
 			.datatable-icon-skip,
 			.datatable-icon-right,
 			.datatable-icon-prev{
+        color: $battleship-grey;
 				font-size:20px;
 				line-height: 20px;
 				padding:0 3px;
