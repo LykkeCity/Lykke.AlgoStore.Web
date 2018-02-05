@@ -1,17 +1,18 @@
-// COMMON
-@import "bootstrap_variables";
-@import "../node_modules/bootstrap-sass/assets/stylesheets/bootstrap";
-@import "colors";
-@import "fonts";
-@import "icons";
-@import "mixins";
-
-// COMPONENTS
-@import "buttons";
-@import "typings";
-
-// LAYOUTS
-@import "general";
+@import './scss/bootstrap';
+@import './scss/custom-mixins';
+@import './scss/fonts';
+@import './scss/icons';
+@import './scss/typography';
+@import './scss/curtain';
+@import './scss/ngx-datatable-theme';
+@import './scss/custom-variables';
 
 // 3RD PARTY
-@import "../node_modules/angular-star-rating/assets/scss/star-rating";
+@import "~angular-star-rating/assets/scss/star-rating";
+@import '~@swimlane/ngx-datatable/release/assets/icons.css';
+
+html,
+body {
+  height: 100%;
+  min-height: 100%;
+}

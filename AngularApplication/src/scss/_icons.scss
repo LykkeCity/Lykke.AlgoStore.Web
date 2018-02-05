@@ -1,0 +1,189 @@
+@font-face {
+  font-family: 'fontello';
+  src: url('assets/fonts/fontello.eot');
+  src: url('assets/fonts/fontello.eot') format('embedded-opentype'),
+  url('assets/fonts/fontello.ttf') format('truetype'),
+  url('assets/fonts/fontello.woff') format('woff'),
+  url('assets/fonts/fontello.svg') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+[class^="icon--"], [class*=" icon--"] {
+  /* use !important to prevent issues with browser extensions that change fonts */
+  font-family: 'fontello' !important;
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+  display: inline-block;
+  position: relative;
+  top: -1px;
+  margin-right: 6px;
+  vertical-align: middle;
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-size: 20px;
+  font-size: 1.25rem;
+  margin-right: 6px;
+  margin-right: 0.375rem;
+
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon--plus:before {
+  content: '\e800';
+}
+
+.icon--arrow:before {
+  content: '\e801';
+}
+
+.icon--email:before {
+  content: "\e802";
+}
+
+.icon--facebook:before {
+  content: '\e803';
+}
+
+.icon--instagram:before {
+  content: '\e804';
+}
+
+.icon--linkedin:before {
+  content: '\e805';
+}
+
+.icon--name:before {
+  content: "\e806";
+}
+
+.icon--user:before {
+  content: '\e807';
+}
+
+.icon--reddit:before {
+  content: '\e808';
+}
+
+.icon--slack:before {
+  content: '\e809';
+}
+
+.icon--telegram:before {
+  content: '\e80a';
+}
+
+.icon--phone:before {
+  content: "\e80b";
+}
+
+.icon--twitter:before {
+  content: '\e80c';
+}
+
+.icon--youtube:before {
+  content: '\e80d';
+}
+
+.icon--spin:before {
+  content: '\e834';
+}
+
+/*
+   Icons Animation for spinners
+*/
+.animate-spin {
+  -moz-animation: spin 2s infinite linear;
+  -o-animation: spin 2s infinite linear;
+  -webkit-animation: spin 2s infinite linear;
+  animation: spin 2s infinite linear;
+  display: inline-block;
+}
+
+@-moz-keyframes spin {
+  0% {
+    -moz-transform: rotate(0deg);
+    -o-transform: rotate(0deg);
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+
+  100% {
+    -moz-transform: rotate(359deg);
+    -o-transform: rotate(359deg);
+    -webkit-transform: rotate(359deg);
+    transform: rotate(359deg);
+  }
+}
+
+@-webkit-keyframes spin {
+  0% {
+    -moz-transform: rotate(0deg);
+    -o-transform: rotate(0deg);
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+
+  100% {
+    -moz-transform: rotate(359deg);
+    -o-transform: rotate(359deg);
+    -webkit-transform: rotate(359deg);
+    transform: rotate(359deg);
+  }
+}
+
+@-o-keyframes spin {
+  0% {
+    -moz-transform: rotate(0deg);
+    -o-transform: rotate(0deg);
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+
+  100% {
+    -moz-transform: rotate(359deg);
+    -o-transform: rotate(359deg);
+    -webkit-transform: rotate(359deg);
+    transform: rotate(359deg);
+  }
+}
+
+@-ms-keyframes spin {
+  0% {
+    -moz-transform: rotate(0deg);
+    -o-transform: rotate(0deg);
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+
+  100% {
+    -moz-transform: rotate(359deg);
+    -o-transform: rotate(359deg);
+    -webkit-transform: rotate(359deg);
+    transform: rotate(359deg);
+  }
+}
+
+@keyframes spin {
+  0% {
+    -moz-transform: rotate(0deg);
+    -o-transform: rotate(0deg);
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+
+  100% {
+    -moz-transform: rotate(359deg);
+    -o-transform: rotate(359deg);
+    -webkit-transform: rotate(359deg);
+    transform: rotate(359deg);
+  }
+}
+

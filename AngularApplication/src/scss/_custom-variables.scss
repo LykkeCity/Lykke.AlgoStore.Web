@@ -1,0 +1,14 @@
+@import 'variables';
+
+$navbar-height: 60px;
+$navbar-height-md: 90px;
+
+$navbar-logo-height: 30px;
+$navbar-logo-height-md: 40px;
+$navbar-logo-height-sm: 33px;
+$navbar-logo-height-xs: 25px;
+
+// angular-star-rating overrides
+$color-default-rating: $mango;
+$default-star-width: 14px;
+$default-star-height: 14px;

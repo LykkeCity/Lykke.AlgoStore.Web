@@ -1,0 +1,27 @@
+.font-weight-semibold {
+  font-weight: $font-weight-semibold;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: $black;
+  font-weight: $font-weight-semibold;
+}
+
+p { color: $slate }
+
+h1 {
+  line-height: 1.2;
+}
+
+h2 {
+  line-height: 1.25;
+}
+h3 {
+  line-height: 1.428571429;
+}
+h4 {
+  line-height: 1.777777778;
+}
+h5, h6 {
+  line-height: 1.666666667;
+}

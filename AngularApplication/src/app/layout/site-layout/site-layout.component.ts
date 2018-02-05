@@ -1,11 +1,10 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { IdleService } from '../../services/idle.service';
 
 @Component({
   selector: 'app-site-layout',
   templateUrl: './site-layout.component.html',
-  styleUrls: ['./site-layout.component.scss'],
-  encapsulation: ViewEncapsulation.None
+  styleUrls: ['./site-layout.component.scss']
 })
 export class SiteLayoutComponent implements OnInit {
 
