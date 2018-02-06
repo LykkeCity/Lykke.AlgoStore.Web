@@ -2,14 +2,15 @@ import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { NotificationsService } from 'angular2-notifications';
 import { Subscription } from 'rxjs/Subscription';
+import { BsModalService } from 'ngx-bootstrap/modal';
 
 import { StoreService } from '../../services/store.service';
 import { Command } from '../../models/command.enum';
 import { Status } from '../../models/status.enum';
 import { Algo } from '../../models/algo.interface';
 import { EventService } from '../../services/event.service';
-import { PopupConfig } from '../../models/popup.interface';
 import { HttpErrorResponse } from '@angular/common/http';
+import { PopupComponent } from '../popup/popup.component';
 
 @Component({
   selector: 'app-commands',
@@ -21,7 +22,6 @@ export class CommandsComponent implements OnInit, OnDestroy {
   @Input() algo: Algo;
 
   Command = Command;
-  Status = Status;
 
   private subscriptions = new Subscription();
 
@@ -32,12 +32,12 @@ export class CommandsComponent implements OnInit, OnDestroy {
   constructor(private storeService: StoreService,
               private eventService: EventService,
               private notificationService: NotificationsService,
-              private router: Router) {
+              private router: Router,
+              private modalService: BsModalService) {
   }
 
   ngOnInit() {
     this.subscriptions.add(this.eventService.popupConfirm.subscribe(this.onPopupConfirm));
-    this.subscriptions.add(this.eventService.popupCancel.subscribe(this.onPopupCancel));
   }
 
   ngOnDestroy() {
@@ -47,31 +47,35 @@ export class CommandsComponent implements OnInit, OnDestroy {
   doCommand(command?: Command): boolean {
     if (!command) {
       if (this.algo.Status === Status.DEPLOYED || this.algo.Status === Status.UNKNOWN || this.algo.Status === Status.STOPPED) {
-        const popupConfig: PopupConfig = {
-          hideIcon: true,
-          data: { algoId: this.algo.Id },
-          name: 'startAlgoWarning',
-          width: 370,
-          title: 'Start Algo?',
-          text: 'Are you sure you want to start running the Algo?',
-          btnCancelText: 'No, I don’t want',
-          btnConfirmText: 'Yes, Start Algo'
+        const initialState = {
+          popupConfig: {
+            hideIcon: true,
+            data: { algoId: this.algo.Id },
+            name: 'startAlgoWarning',
+            title: 'Start Algo?',
+            text: 'Are you sure you want to start running the Algo?',
+            btnCancelText: 'No, I don’t want',
+            btnConfirmText: 'Yes, Start Algo',
+            successCallback: this.onAlgoTestStarted
+          }
         };
 
-        this.eventService.popupOpen.next(popupConfig);
+        this.modalService.show(PopupComponent, { initialState, class: 'modal-sm' });
       } else {
-        const popupConfig: PopupConfig = {
-          hideIcon: true,
-          data: { algoId: this.algo.Id },
-          name: 'stopAlgoWarning',
-          width: 370,
-          title: 'Stop Algo?',
-          text: 'Are you sure you want to stop running the Algo?',
-          btnCancelText: 'No, I don’t want',
-          btnConfirmText: 'Yes, Stop Algo'
+        const initialState = {
+          popupConfig: {
+            hideIcon: true,
+            data: { algoId: this.algo.Id },
+            name: 'stopAlgoWarning',
+            title: 'Stop Algo?',
+            text: 'Are you sure you want to stop running the Algo?',
+            btnCancelText: 'No, I don’t want',
+            btnConfirmText: 'Yes, Stop Algo',
+            successCallback: this.onAlgoTestStopped
+          }
         };
 
-        this.eventService.popupOpen.next(popupConfig);
+        this.modalService.show(PopupComponent, { initialState, class: 'modal-sm' });
       }
     } else {
       switch (command) {
@@ -83,21 +87,21 @@ export class CommandsComponent implements OnInit, OnDestroy {
 
         case Command.Delete:
 
-          const popupConfig: PopupConfig = {
-            hideIcon: true,
-            data: { algoId: this.algo.Id },
-            name: 'deleteAlgoWarning',
-            width: 370,
-            title: 'Delete Algo?',
-            text: 'Are you sure you want to delete this Algo from your list?',
-            btnCancelText: 'No, I don’t want',
-            btnConfirmText: 'Yes, Delete Algo'
+          const initialState = {
+            popupConfig: {
+              hideIcon: true,
+              data: { algoId: this.algo.Id },
+              name: 'deleteAlgoWarning',
+              width: 370,
+              title: 'Delete Algo?',
+              text: 'Are you sure you want to delete this Algo from your list?',
+              btnCancelText: 'No, I don’t want',
+              btnConfirmText: 'Yes, Delete Algo',
+              successCallback: this.onAlgoDeleteDone
+            }
           };
 
-          this.eventService.popupOpen.next(popupConfig);
-          break;
-
-        default:
+          this.modalService.show(PopupComponent, { initialState, class: 'modal-sm' });
           break;
       }
     }
@@ -180,9 +184,5 @@ export class CommandsComponent implements OnInit, OnDestroy {
         }
         break;
     }
-  };
-
-  onPopupCancel = (popupData) => {
-    this.eventService.popupClose.next();
   };
 }

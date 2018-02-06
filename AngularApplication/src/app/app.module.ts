@@ -29,10 +29,11 @@ import { NonAuthenticatedGuard } from './services/non-authenticated.guard';
 // 3RD PARTY MODULES
 import { SimpleNotificationsModule } from 'angular2-notifications';
 import { NgIdleKeepaliveModule } from '@ng-idle/keepalive';
-import { PopoverModule } from 'ngx-bootstrap';
+import { BsModalRef, PopoverModule } from 'ngx-bootstrap';
 
 // APP MODULES
 import { SharedModule } from './shared/shared.module';
+import { PopupComponent } from './components/popup/popup.component';
 
 
 @NgModule({
@@ -44,7 +45,7 @@ import { SharedModule } from './shared/shared.module';
     HeaderComponent,
     NotificationsComponent,
     FooterComponent,
-    UserProfileComponent
+    UserProfileComponent,
   ],
   imports: [
     BrowserModule,
@@ -66,8 +67,10 @@ import { SharedModule } from './shared/shared.module';
     AuthRequestService,
     AuthTokenService,
     LoginRedirectGuard,
-    NonAuthenticatedGuard
+    NonAuthenticatedGuard,
+   BsModalRef
   ],
+  entryComponents: [PopupComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

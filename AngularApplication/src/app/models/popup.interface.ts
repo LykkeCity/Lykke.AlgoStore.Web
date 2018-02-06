@@ -8,4 +8,6 @@ export interface PopupConfig {
   textClass?: string;
   btnCancelText?: string;
   btnConfirmText?: string;
+  successCallback?: Function;
+  errorCallback?: Function;
 }

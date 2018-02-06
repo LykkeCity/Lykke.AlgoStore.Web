@@ -1,56 +1,49 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Subscription } from 'rxjs/Subscription';
+import { Component, OnInit } from '@angular/core';
 
-import { EventService } from '../../services/event.service';
 import { PopupConfig } from '../../models/popup.interface';
+import { BsModalRef } from 'ngx-bootstrap';
 
 @Component({
   selector: 'app-popup',
   templateUrl: './popup.component.html',
   styleUrls: ['./popup.component.scss']
 })
-export class PopupComponent implements OnInit, OnDestroy {
-  showPopup: boolean;
+export class PopupComponent implements OnInit {
   popupConfig: PopupConfig;
   elementBody: HTMLBodyElement;
 
-  private subscriptions: Subscription[] = [];
-
-  constructor(private eventService: EventService) {
+  constructor(public bsModalRef: BsModalRef) {
     this.elementBody = document.querySelector('body');
-    this.showPopup = false;
   }
 
   ngOnInit() {
-    this.subscriptions.push(
-      this.eventService.popupOpen.subscribe(this.onPopupOpen),
-      this.eventService.popupClose.subscribe(this.onPopupClose),
-    );
-  }
-
-  ngOnDestroy() {
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
+    this.onPopupOpen(this.popupConfig);
   }
 
   onPopupOpen = (data: PopupConfig) => {
-    this.showPopup = true;
     this.popupConfig = data;
     this.popupConfig.textClass = data.textClass ? data.textClass : 'text-left';
     this.elementBody.classList.add('blur-popup');
   };
 
-  onPopupClose = (data) => {
-    this.showPopup = false;
-    this.popupConfig = null;
+  onPopupClose = () => {
     this.elementBody.classList.remove('blur-popup');
+    this.bsModalRef.hide();
+    this.popupConfig = null;
   };
 
   onPopupCancel(): void {
-    this.eventService.popupCancel.next(this.popupConfig);
+    if(this.popupConfig.errorCallback)
+      this.popupConfig.errorCallback();
+
+    this.bsModalRef.hide();
   }
 
   onPopupConfirm(): void {
-    this.eventService.popupConfirm.next(this.popupConfig);
+    if(this.popupConfig.successCallback)
+      this.popupConfig.successCallback();
+
+    this.bsModalRef.hide();
   }
 
 }
