@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { Router } from '@angular/router';
 import { NotificationsService } from 'angular2-notifications';
 import { Subscription } from 'rxjs/Subscription';
@@ -17,13 +17,11 @@ import { PopupComponent } from '../popup/popup.component';
   templateUrl: './commands.component.html',
   styleUrls: ['./commands.component.scss']
 })
-export class CommandsComponent implements OnInit, OnDestroy {
+export class CommandsComponent {
 
   @Input() algo: Algo;
 
   Command = Command;
-
-  private subscriptions = new Subscription();
 
   subscribeToStart: Subscription;
   subscribeToStop: Subscription;
@@ -34,14 +32,6 @@ export class CommandsComponent implements OnInit, OnDestroy {
               private notificationService: NotificationsService,
               private router: Router,
               private modalService: BsModalService) {
-  }
-
-  ngOnInit() {
-    this.subscriptions.add(this.eventService.popupConfirm.subscribe(this.onPopupConfirm));
-  }
-
-  ngOnDestroy() {
-    this.subscriptions.unsubscribe();
   }
 
   doCommand(command?: Command): boolean {
@@ -56,11 +46,11 @@ export class CommandsComponent implements OnInit, OnDestroy {
             text: 'Are you sure you want to start running the Algo?',
             btnCancelText: 'No, I don’t want',
             btnConfirmText: 'Yes, Start Algo',
-            successCallback: this.onAlgoTestStarted
+            successCallback: this.startAlgo.bind(this)
           }
         };
 
-        this.modalService.show(PopupComponent, { initialState, class: 'modal-sm' });
+        this.modalService.show(PopupComponent, { initialState, class: 'modal-sm custom-popup' });
       } else {
         const initialState = {
           popupConfig: {
@@ -71,11 +61,11 @@ export class CommandsComponent implements OnInit, OnDestroy {
             text: 'Are you sure you want to stop running the Algo?',
             btnCancelText: 'No, I don’t want',
             btnConfirmText: 'Yes, Stop Algo',
-            successCallback: this.onAlgoTestStopped
+            successCallback: this.stopAlgo.bind(this)
           }
         };
 
-        this.modalService.show(PopupComponent, { initialState, class: 'modal-sm' });
+        this.modalService.show(PopupComponent, { initialState, class: 'modal-sm custom-popup' });
       }
     } else {
       switch (command) {
@@ -97,11 +87,11 @@ export class CommandsComponent implements OnInit, OnDestroy {
               text: 'Are you sure you want to delete this Algo from your list?',
               btnCancelText: 'No, I don’t want',
               btnConfirmText: 'Yes, Delete Algo',
-              successCallback: this.onAlgoDeleteDone
+              successCallback: this.deleteAlgo.bind(this)
             }
           };
 
-          this.modalService.show(PopupComponent, { initialState, class: 'modal-sm' });
+          this.modalService.show(PopupComponent, { initialState, class: 'modal-sm custom-popup' });
           break;
       }
     }
@@ -109,20 +99,42 @@ export class CommandsComponent implements OnInit, OnDestroy {
     return false;
   }
 
+  deleteAlgo(): void {
+    this.subscribeToDelete = this.storeService.algoDelete(this.algo)
+      .subscribe(
+        this.onAlgoDeleteDone,
+        this.onAlgoDeleteError
+      );
+  }
+
+  startAlgo(): void {
+    this.subscribeToStart = this.storeService.algoStart(this.algo.Id).subscribe(this.onAlgoTestStarted,
+      this.onAlgoTestError);
+  }
+
+  stopAlgo(): void {
+    this.subscribeToStop = this.storeService.algoStop(this.algo.Id)
+      .subscribe(
+        this.onAlgoTestStopped,
+        this.onAlgoTestError);
+  }
+
   onAlgoTestStarted = () => {
     this.algo.Status = Status.STARTED;
     this.eventService.algoTestStarted.next(Status.STARTED);
-    this.unsubscribe();
+
+    this.subscribeToStart.unsubscribe();
   };
 
   onAlgoTestStopped = () => {
     this.algo.Status = Status.STOPPED;
     this.eventService.algoTestStopped.next(Status.STOPPED);
-    this.unsubscribe();
+    this.subscribeToStop.unsubscribe();
   };
 
   onAlgoDeleteDone = () => {
     this.eventService.algoDeleteDone.next();
+    this.router.navigate(['store/algo-list']);
   };
 
   onAlgoDeleteError = (err: HttpErrorResponse) => {
@@ -148,41 +160,4 @@ export class CommandsComponent implements OnInit, OnDestroy {
       this.subscribeToDelete.unsubscribe();
     }
   }
-
-  onPopupConfirm = (popupData) => {
-    switch (popupData.name) {
-      case 'startAlgoWarning':
-        if (popupData.data.algoId === this.algo.Id) {
-          this.subscribeToStart = this.storeService.algoStart(this.algo.Id)
-            .subscribe(
-              this.onAlgoTestStarted,
-              this.onAlgoTestError);
-
-          this.eventService.popupClose.next();
-        }
-        break;
-
-      case 'stopAlgoWarning':
-        if (popupData.data.algoId === this.algo.Id) {
-          this.subscribeToStop = this.storeService.algoStop(this.algo.Id)
-            .subscribe(
-              this.onAlgoTestStopped,
-              this.onAlgoTestError);
-
-          this.eventService.popupClose.next();
-        }
-        break;
-
-      case 'deleteAlgoWarning':
-        if (popupData.data.algoId === this.algo.Id) {
-          this.subscribeToDelete = this.storeService.algoDelete(this.algo)
-            .subscribe(
-              this.onAlgoDeleteDone,
-              this.onAlgoDeleteError
-            );
-          this.eventService.popupClose.next();
-        }
-        break;
-    }
-  };
 }

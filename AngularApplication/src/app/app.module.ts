@@ -34,6 +34,7 @@ import { BsModalRef, PopoverModule } from 'ngx-bootstrap';
 // APP MODULES
 import { SharedModule } from './shared/shared.module';
 import { PopupComponent } from './components/popup/popup.component';
+import { IdlePopupComponent } from './components/popup/idle-popup/idle-popup.component';
 
 
 @NgModule({
@@ -46,6 +47,7 @@ import { PopupComponent } from './components/popup/popup.component';
     NotificationsComponent,
     FooterComponent,
     UserProfileComponent,
+    IdlePopupComponent,
   ],
   imports: [
     BrowserModule,
@@ -70,7 +72,7 @@ import { PopupComponent } from './components/popup/popup.component';
     NonAuthenticatedGuard,
    BsModalRef
   ],
-  entryComponents: [PopupComponent],
+  entryComponents: [PopupComponent, IdlePopupComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

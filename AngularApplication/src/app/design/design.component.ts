@@ -78,13 +78,13 @@ export class DesignComponent implements OnInit, AfterViewInit {
       }
     };
 
-    this.modalService.show(PopupComponent, { initialState, class: 'modal-sm' });
+    this.modalService.show(PopupComponent, { initialState, class: 'modal-sm custom-popup' });
   }
 
   onPopupConfirm = (popupData) => {
     switch (popupData.name) {
       case  'downloadProjectTemplateInfo':
-        this.eventService.popupClose.next();
+        console.log('diownload');
         break;
     }
   };

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 
 import { PopupConfig } from '../../models/popup.interface';
 import { BsModalRef } from 'ngx-bootstrap';
@@ -8,7 +8,7 @@ import { BsModalRef } from 'ngx-bootstrap';
   templateUrl: './popup.component.html',
   styleUrls: ['./popup.component.scss']
 })
-export class PopupComponent implements OnInit {
+export class PopupComponent implements OnInit, OnDestroy {
   popupConfig: PopupConfig;
   elementBody: HTMLBodyElement;
 
@@ -17,20 +17,13 @@ export class PopupComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.onPopupOpen(this.popupConfig);
+    this.popupConfig.textClass = this.popupConfig.textClass ? this.popupConfig.textClass : 'text-left';
+    this.elementBody.classList.add('blur-popup');
   }
 
-  onPopupOpen = (data: PopupConfig) => {
-    this.popupConfig = data;
-    this.popupConfig.textClass = data.textClass ? data.textClass : 'text-left';
-    this.elementBody.classList.add('blur-popup');
-  };
-
-  onPopupClose = () => {
+  ngOnDestroy() {
     this.elementBody.classList.remove('blur-popup');
-    this.bsModalRef.hide();
-    this.popupConfig = null;
-  };
+  }
 
   onPopupCancel(): void {
     if(this.popupConfig.errorCallback)
