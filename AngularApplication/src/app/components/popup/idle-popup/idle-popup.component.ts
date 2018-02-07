@@ -31,6 +31,7 @@ export class IdlePopupComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.onTimeoutSubscription.unsubscribe();
+    this.onExpiredSessionSubscription.unsubscribe();
   }
 
   login(): void {

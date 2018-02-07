@@ -14,7 +14,6 @@ export class ExistingAlgoGuard implements CanActivate {
   canActivate(next: ActivatedRouteSnapshot,
               state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
 
-
     if (this.storeService.activeAlgo) {
       return true;
     } else {

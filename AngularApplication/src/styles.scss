@@ -4,6 +4,7 @@
 @import './scss/icons';
 @import './scss/typography';
 @import './scss/curtain';
+@import "./scss/modals";
 @import './scss/ngx-datatable-theme';
 @import './scss/custom-variables';
 
@@ -15,8 +16,4 @@ html,
 body {
   height: 100%;
   min-height: 100%;
-}
-
-.modal-sm.session-modal .modal-content, .modal-sm.custom-popup .modal-content{
-  width: 370px;
 }

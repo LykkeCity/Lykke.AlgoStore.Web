@@ -12,8 +12,6 @@ import { BsModalService } from 'ngx-bootstrap';
 })
 export class DesignComponent implements OnInit, AfterViewInit {
 
-  store: StoreService;
-
   subscribeToSave: Subscription;
   subscribeToGet: Subscription;
 
@@ -38,7 +36,6 @@ export class DesignComponent implements OnInit, AfterViewInit {
   log: string;
 
   constructor(private eventService: EventService, private storeService: StoreService, private ref: ChangeDetectorRef, private modalService: BsModalService) {
-    this.store = storeService;
   }
 
   ngOnInit() {
@@ -84,7 +81,7 @@ export class DesignComponent implements OnInit, AfterViewInit {
   onPopupConfirm = (popupData) => {
     switch (popupData.name) {
       case  'downloadProjectTemplateInfo':
-        console.log('diownload');
+        console.log('download');
         break;
     }
   };
