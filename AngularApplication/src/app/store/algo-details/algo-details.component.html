@@ -1,20 +1,90 @@
-<div class="container algo-details-placeholder pt-10 pb-30">
-  <div class="row">
+<div class="container">
+  <div class="details-holder">
+    <div class="row mb-2">
+      <div class="col-8 text-left">
+        <h3>{{algo.Name || 'Test Name'}}</h3>
+      </div>
+      <div class="col-4 text-right">
+        <button class="btn btn-default" (click)="tryAlgo()">Try Algo</button>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-4">
+        <span class="text-muted">Author:</span> <span>{{algo.Author || 'Test Author'}}</span>
+      </div>
+      <div class="col-4">
+        <span class="text-muted">Users:</span> <span>{{algo.UsersCount || "Test Count"}}</span>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-4">
+        <span class="text-muted">Popularity rating:</span>
+        <span class="d-inline-flex">
+          <star-rating-comp [rating]="algo.Rating"
+                            [starType]="'svg'"
+                            [numOfStars]="6"
+                            [showHalfStars]="true"
+                            [staticColor]="'default'"
+                            [readOnly]="true">
+          </star-rating-comp>
+        </span>
+      </div>
+      <div class="col-4">
+        <span class="text-muted">Description:</span> <span>{{algo.Description || "Test descr"}}</span>
+      </div>
+    </div>
+  </div>
+  <hr>
+  <div class="main-content">
+    <div class="row">
+      <div class="col-8">
+        <div class="code-holder mb-3">
+          <div class="row">
+            <div class="col-10 text-left">
+              <h5>Source code</h5>
+            </div>
+            <div class="col-2 text-right">
+              <span><ui-switch size="small" (click)="onThemeChange()"></ui-switch></span>
+            </div>
+          </div>
+          <ace-editor [(text)]="text" [mode]="'java'" #editor style="min-height:50vh;"></ace-editor>
+        </div>
+        <div class="rating-holder">
+          <span>Rate Algo:</span>
+          <span class="d-inline-flex">
+            <star-rating-comp [rating]="algo.Rating"
+                              [starType]="'svg'"
+                              [numOfStars]="6"
+                              [showHalfStars]="true"
+                              [staticColor]="'default'" >
+          </star-rating-comp>
+          </span>
+        </div>
+        <div class="comments-section">
 
-    <div class="algo-details">
-      <div class="col-xs-3">
-        <span class="heading-sm">{{algo.Name}}</span>
+        </div>
       </div>
-      <div class="col-xs-4">
-        <span class="text-lg">{{algo.Description}}</span>
-      </div>
-      <div class="col-xs-5 text-right">
-        <app-commands [algo]="algo"></app-commands>
+      <div class="col-4">
+        <div class="metadata-holder">
+          <div class="row">
+            <div class="col-8 text-left">
+              <h5>Metadata Attributes</h5>
+            </div>
+            <div class="col-4 text-right">
+              <span><a href="javascript:;">Show all</a></span>
+            </div>
+          </div>
+          <div class="row meta-row" *ngFor="let meta of metadata">
+            <div class="col-8 metadata-name">
+              <div>{{meta.Name}}</div>
+              <div class="text-muted metadata-value">{{meta.Value}}</div>
+            </div>
+            <div class="col-4 text-right cursor-pointer">
+              <span class="text-muted" (click)="highlight(meta)">Find</span>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 </div>
-
-
-
-<app-terminal [model]="log" [title]="'Terminal'"></app-terminal>

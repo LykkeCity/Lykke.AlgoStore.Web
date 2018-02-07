@@ -38,7 +38,7 @@ export class AlgoListComponent implements OnInit, OnDestroy {
 
   details(algo: Algo): boolean {
     this.storeService.activeAlgo = algo;
-    this.router.navigate(['store/algo-details']);
+    this.router.navigate([`store/algo-details/${algo.Id}`]);
     return false;
   }
 

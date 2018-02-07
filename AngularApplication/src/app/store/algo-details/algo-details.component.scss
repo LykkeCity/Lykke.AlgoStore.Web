@@ -1,10 +1,22 @@
-.terminal {
-    textarea {
-      resize: vertical;
-      width: 100%;
-      min-height: 35vh;
-      outline: none;
-      border: none;
-    }
+@import "colors";
+.details-holder {
+  margin-top: 60px;
+}
+
+.ace_editor {
+  border: 1px solid #ebedef;
+}
+
+.meta-row {
+  padding: 10px 0;
+  border-top: solid 1px #ebedf0;
+  align-items: center;
+
+  .metadata-name {
+    padding-left: 0;
   }
-  
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
