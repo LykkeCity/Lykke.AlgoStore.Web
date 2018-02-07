@@ -27,11 +27,6 @@ export class EventService {
   algoDeploymentDone = new Subject<void>();
   algoDeploymentError = new Subject<{ message: string }>();
 
-  popupOpen = new Subject<PopupConfig>();
-  popupClose = new Subject<PopupConfig>();
-  popupCancel = new Subject<PopupConfig>();
-  popupConfirm = new Subject<PopupConfig>();
-
   successShow = new Subject<SuccessMessageConfig>();
   successHide = new Subject<void>();
 }

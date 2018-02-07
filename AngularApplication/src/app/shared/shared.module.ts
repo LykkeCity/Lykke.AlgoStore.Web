@@ -4,13 +4,15 @@ import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { TerminalComponent } from '../components/terminal/terminal.component';
 import { PopupComponent } from '../components/popup/popup.component';
+import { ModalModule } from 'ngx-bootstrap';
 
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
-    RouterModule
+    RouterModule,
+    ModalModule.forRoot()
   ],
   providers: [],
   declarations: [

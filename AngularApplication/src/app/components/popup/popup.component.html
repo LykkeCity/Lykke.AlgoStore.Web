@@ -1,13 +1,20 @@
-<div class="popup-wrapper" *ngIf="showPopup && popupConfig" [ngStyle]="{'width.px': popupConfig.width}">
-  <div class="popup-container text-center">
-    <img src="/assets/images/attention.svg" alt="attention image" *ngIf="!popupConfig.hideIcon" />
-    <h3 class="mt-30 mb-30 heading-md gray-dark {{popupConfig.textClass}}">{{popupConfig.title}}</h3>
-    <p class="mb-40 text-lg {{popupConfig.textClass}}">{{popupConfig.text}}</p>
-    <div class="row">
-      <button class="btn btn-primary btn-block mb-10" (click)="onPopupCancel()">{{popupConfig.btnCancelText}}</button>
-      <button class="btn btn-link btn-block" (click)="onPopupConfirm()">{{popupConfig.btnConfirmText}}</button>
+<div class="modal-body text-center">
+  <div class="row mt-2 mb-2">
+    <div class="col-8 offset-2">
+      <h2>{{popupConfig?.title}}</h2>
     </div>
   </div>
-</div>
-<div class="curtain" *ngIf="showPopup && popupConfig" [ngClass]="{show: showPopup}" (click)="onPopupConfirm()">
+  <div class="row mt-2 mb-2">
+    <div class="col-8 offset-2 text-muted">
+      <p class="{{popupConfig?.textClass}}">{{popupConfig?.text}}</p>
+    </div>
+  </div>
+  <div class="row mt-2 mb-2">
+    <div class="col-12 mb-3">
+      <button class="btn btn-primary" (click)="onPopupCancel()">{{popupConfig?.btnCancelText}}</button>
+    </div>
+    <div class="col-12 mb-2">
+      <a href="javascript:;" (click)="onPopupConfirm()">{{popupConfig?.btnConfirmText}}</a>
+    </div>
+  </div>
 </div>

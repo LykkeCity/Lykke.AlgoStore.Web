@@ -1,17 +1,16 @@
-import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { PopupConfig } from '../models/popup.interface';
+import { AfterViewInit, ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { EventService } from '../services/event.service';
 import { Subscription } from 'rxjs/Subscription';
 import { StoreService } from '../services/store.service';
+import { PopupComponent } from '../components/popup/popup.component';
+import { BsModalService } from 'ngx-bootstrap';
 
 @Component({
   selector: 'app-design',
   templateUrl: './design.component.html',
   styleUrls: ['./design.component.scss']
 })
-export class DesignComponent implements OnInit, AfterViewInit, OnDestroy {
-
-  store: StoreService;
+export class DesignComponent implements OnInit, AfterViewInit {
 
   subscribeToSave: Subscription;
   subscribeToGet: Subscription;
@@ -34,20 +33,12 @@ export class DesignComponent implements OnInit, AfterViewInit, OnDestroy {
     }
  }
   `;
-
-  private subscriptions: Subscription[] = [];
   log: string;
 
-  constructor(private eventService: EventService, private storeService: StoreService, private ref: ChangeDetectorRef) {
-    this.store = storeService;
+  constructor(private eventService: EventService, private storeService: StoreService, private ref: ChangeDetectorRef, private modalService: BsModalService) {
   }
 
   ngOnInit() {
-    this.subscriptions.push(
-      this.eventService.popupConfirm.subscribe(this.onPopupConfirm),
-      this.eventService.popupCancel.subscribe(this.onPopupCancel)
-    );
-
     this.subscribeToGet = this.storeService.algoGet(this.storeService.activeAlgo.Id).subscribe(this.onAlgoGetDone);
   }
 
@@ -68,38 +59,29 @@ export class DesignComponent implements OnInit, AfterViewInit, OnDestroy {
     });
   }
 
-  ngOnDestroy() {
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
-  }
-
   downloadProjectTemplate(): void {
-    const popupConfig: PopupConfig = {
-      hideIcon: true,
-      name: 'downloadProjectTemplateInfo',
-      width: 370,
-      title: 'Download algo',
-      textClass: 'text-center',
-      text: 'Download project for local development. You will get a basic architecture ' +
-      'of the trading algo together with REST API consumer for the HFT API.',
-      btnCancelText: 'Cancel',
-      btnConfirmText: 'Yes, download the template'
+    const initialState = {
+      popupConfig: {
+        hideIcon: true,
+        name: 'downloadProjectTemplateInfo',
+        width: 370,
+        title: 'Download algo',
+        textClass: 'text-center',
+        text: 'Download project for local development. You will get a basic architecture ' +
+        'of the trading algo together with REST API consumer for the HFT API.',
+        btnCancelText: 'Cancel',
+        btnConfirmText: 'Yes, download the template',
+        successCallback: this.onPopupConfirm,
+      }
     };
 
-    this.eventService.popupOpen.next(popupConfig);
+    this.modalService.show(PopupComponent, { initialState, class: 'modal-sm custom-popup' });
   }
 
   onPopupConfirm = (popupData) => {
     switch (popupData.name) {
       case  'downloadProjectTemplateInfo':
-        this.eventService.popupClose.next();
-        break;
-    }
-  };
-
-  onPopupCancel = (popupData) => {
-    switch (popupData.name) {
-      case  'downloadProjectTemplateInfo':
-        this.eventService.popupClose.next();
+        console.log('download');
         break;
     }
   };
