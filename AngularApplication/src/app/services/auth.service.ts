@@ -23,7 +23,7 @@ export class AuthService {
   }
 
   login(): void {
-    localStorage.setItem('returnUrl', window.location.pathname);
+    localStorage.setItem('lpp-return-url', window.location.pathname);
     window.location.replace(this.authenticationUrl);
   }
 

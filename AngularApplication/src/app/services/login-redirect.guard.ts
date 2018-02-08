@@ -18,7 +18,7 @@ export class LoginRedirectGuard implements CanActivate {
     const code = next.queryParamMap.get('code');
 
     if (code) {
-      const returnUrl = localStorage.getItem('lpp-return-url') || '/';
+      const returnUrl = localStorage.getItem('lpp-return-url') || '/store/algo-list';
       this.authToken.fetchToken(code).subscribe(
         res => {
           this.router.navigate([returnUrl]);
