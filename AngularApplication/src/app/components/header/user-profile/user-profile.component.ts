@@ -30,8 +30,8 @@ export class UserProfileComponent implements OnInit, OnDestroy {
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
-  logout(redirect: boolean): void {
-    this.authService.logout(redirect);
+  logout(): void {
+    this.authService.logout();
   }
 
 }

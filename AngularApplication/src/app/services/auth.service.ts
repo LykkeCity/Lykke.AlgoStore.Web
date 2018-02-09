@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Router } from '@angular/router';
 import { environment } from '../../environments/environment';
+import { AuthTokenService } from './auth-token.service';
 
 @Injectable()
 export class AuthService {
@@ -10,7 +12,9 @@ export class AuthService {
   redirectUri: string;
   authenticationUrl: string;
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient,
+              private authToken: AuthTokenService,
+              private router: Router) {
 
     this._isAuthenticated = false;
     this.redirectUri = environment.redirectUrl;
@@ -23,21 +27,18 @@ export class AuthService {
   }
 
   login(): void {
-    localStorage.setItem('returnUrl', window.location.pathname);
+    localStorage.setItem('lpp-return-url', window.location.pathname);
     window.location.replace(this.authenticationUrl);
   }
 
   logout(redirectFlag: boolean = true): void {
 
-    const headers = { 'Authorization': 'Bearer ' + localStorage.getItem('token') };
+    const headers = { 'Authorization': 'Bearer ' + localStorage.getItem('algo-token') };
 
 
     this.http.post(environment.apiUrl + '/Auth/LogOut', '', { headers }).subscribe(response => {
-      localStorage.removeItem('token');
-      this._isAuthenticated = false;
-      if (redirectFlag) {
-        this.login();
-      }
+      this.authToken.tokenStream.next(null);
+      this.router.navigateByUrl('');
     });
   }
 }

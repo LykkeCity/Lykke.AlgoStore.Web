@@ -39,6 +39,7 @@ export class IdlePopupComponent implements OnInit, OnDestroy {
   }
 
   logout(): void {
+    this.bsModalRef.hide();
     this.authService.logout();
   }
 

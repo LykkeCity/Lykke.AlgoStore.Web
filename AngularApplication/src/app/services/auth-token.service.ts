@@ -1,7 +1,7 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { tap } from 'rxjs/operators';
+import { tap, mergeMap } from 'rxjs/operators';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 
@@ -23,8 +23,8 @@ export class AuthTokenService implements OnDestroy {
 
   fetchToken(code: string): Observable<Object> {
     return this.http.get(environment.authUrl, { params: new HttpParams().append('code', code)}).pipe(
-      tap(
-        next => { this.getWalletToken(next).subscribe(); }
+      mergeMap(
+        next => this.getWalletToken(next)
       )
     );
   }
