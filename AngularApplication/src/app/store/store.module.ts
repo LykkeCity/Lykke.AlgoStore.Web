@@ -20,6 +20,7 @@ import { AlgoDetailsComponent } from './algo-details/algo-details.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { AlgoListMyAlgosComponent } from './algo-list-my-algos/algo-list-my-algos.component';
 import { AceEditorModule } from 'ng2-ace-editor';
+import { AlgoMetadataComponent } from './algo-details/algo-metadata/algo-metadata.component';
 
 // SERVICES
 @NgModule({
@@ -43,7 +44,8 @@ import { AceEditorModule } from 'ng2-ace-editor';
     AlgoEditComponent,
     AlgoDetailsComponent,
     DashboardComponent,
-    AlgoListMyAlgosComponent
+    AlgoListMyAlgosComponent,
+    AlgoMetadataComponent
   ],
   providers: []
 })

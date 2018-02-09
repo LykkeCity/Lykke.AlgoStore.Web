@@ -47,7 +47,9 @@
               <span><ui-switch size="small" (click)="onThemeChange()"></ui-switch></span>
             </div>
           </div>
-          <ace-editor [(text)]="text" [mode]="'java'" #editor style="min-height:50vh;"></ace-editor>
+          <div>
+            <ace-editor [(text)]="text" [mode]="'java'" [readOnly]="true" #editor style="min-height:50vh;" id="editor"></ace-editor>
+          </div>
         </div>
         <div class="rating-holder">
           <span>Rate Algo:</span>
@@ -66,23 +68,7 @@
       </div>
       <div class="col-4">
         <div class="metadata-holder">
-          <div class="row">
-            <div class="col-8 text-left">
-              <h5>Metadata Attributes</h5>
-            </div>
-            <div class="col-4 text-right">
-              <span><a href="javascript:;">Show all</a></span>
-            </div>
-          </div>
-          <div class="row meta-row" *ngFor="let meta of metadata">
-            <div class="col-8 metadata-name">
-              <div>{{meta.Name}}</div>
-              <div class="text-muted metadata-value">{{meta.Value}}</div>
-            </div>
-            <div class="col-4 text-right cursor-pointer">
-              <span class="text-muted" (click)="highlight(meta)">Find</span>
-            </div>
-          </div>
+          <app-algo-metadata [metadata]="metadata" (onHighlight)="highlight($event)"></app-algo-metadata>
         </div>
       </div>
     </div>
