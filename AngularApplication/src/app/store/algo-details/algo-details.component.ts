@@ -15,7 +15,6 @@ declare var ace;
 export class AlgoDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
 
   algo: Algo = {};
-  sourceCode: string;
   getAlgoSubscription: Subscription;
   getAlgoSourceSubscription: Subscription;
   routeParamsSubscription: Subscription;
@@ -29,11 +28,11 @@ export class AlgoDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
     this.routeParamsSubscription = this.route.params.subscribe(params => {
       const id = params['id'];
       this.getAlgoSubscription = this.storeService.getAlgoById(id).subscribe(algo => {
-        this.algo = algo;
+        this.algo = Object.assign(this.algo, this.algo, algo);
       });
 
       this.getAlgoSourceSubscription = this.storeService.algoGet(id).subscribe(algoSource => {
-        this.sourceCode = algoSource.Data;
+        this.algo = Object.assign(this.algo, this.algo, algoSource);
       });
     });
   }
