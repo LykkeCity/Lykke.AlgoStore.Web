@@ -33,6 +33,10 @@ export class StoreService {
     return this.authRequestService.post('/v1/clientData/metadata', algo);
   }
 
+  getAlgoById(algoId: string): Observable<Algo> {
+    return this.authRequestService.get(`/v1/clientData/algoMetadata?algoId=${algoId}`);
+  }
+
   algoGet(algoId: string): Observable<Algo> {
     return this.authRequestService.get(`/v1/clientData/imageData/upload/string?AlgoId=${algoId}`);
   }

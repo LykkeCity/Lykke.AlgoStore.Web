@@ -1,3 +1,5 @@
+import { AlgoMetadata } from '../store/models/algo-metadata.model';
+
 export interface Algo {
     Id?: string;
     Name: string;
@@ -7,4 +9,5 @@ export interface Algo {
     Author?: string;
     UsersCount?: string;
     Rating?: string;
+    AlgoMetaDataInformation?: AlgoMetadata;
 }

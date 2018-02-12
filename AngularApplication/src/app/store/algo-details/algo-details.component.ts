@@ -1,8 +1,8 @@
-import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
 import { Algo } from '../../models/algo.interface';
 import { StoreService } from '../../services/store.service';
 import { ActivatedRoute } from '@angular/router';
-import { AlgoMetadata, getDefaultMetaData } from '../models/algo-metadata.model';
+import { getDefaultMetaData } from '../models/algo-metadata.model';
 import { Subscription } from 'rxjs/Subscription';
 import { BaseAlgoParam } from '../models/base-algo-param.model';
 
@@ -16,7 +16,6 @@ declare var ace;
 export class AlgoDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
 
   algo: Algo;
-  metadata: AlgoMetadata;
   getAlgoSubscription: Subscription;
   routeParamsSubscription: Subscription;
   editor: any;
@@ -46,17 +45,16 @@ export class AlgoDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
       Description: 'The best Algo ever',
       Rating: '5.67',
       UsersCount: '676',
-      Author: 'Todor Ivanov'
+      Author: 'Todor Ivanov',
+      AlgoMetaDataInformation: getDefaultMetaData()// TODO get from API
     };
-
-    this.metadata = getDefaultMetaData(); // TODO get from API
   }
 
   ngOnInit() {
     this.routeParamsSubscription = this.route.params.subscribe(params => {
       const id = params['id'];
 
-      this.getAlgoSubscription = this.storeService.algoGet(id).subscribe(algo => {
+      this.getAlgoSubscription = this.storeService.getAlgoById(id).subscribe(algo => {
         // TODO get algo here
       })
     });

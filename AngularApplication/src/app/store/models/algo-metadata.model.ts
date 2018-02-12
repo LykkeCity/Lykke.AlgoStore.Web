@@ -2,61 +2,68 @@ import { BaseAlgoParam } from './base-algo-param.model';
 import { BaseFunctionParam } from './base-function-param';
 
 export interface AlgoMetadata {
-  Params?: BaseAlgoParam[];
+  Parameters?: BaseAlgoParam[];
   Functions?: BaseFunctionParam[];
 }
 
 
 export function getDefaultMetaData(): AlgoMetadata {
   return {
-    "Params": [
+    "Parameters": [
       {
         "Key": "AssetPair",
         "Value": "USDBTC",
-        "Type": "String"
+        "Type": "String",
+        "FunctionType": "Lykke.AlgoStore.CSharp.Funct.SimpleMovingAverage"
       },
       {
         "Key": "meta2",
         "Value": "Val 1",
-        "Type": "String"
+        "Type": "String",
+        "FunctionType": "Lykke.AlgoStore.CSharp.Funct.SimpleMovingAverage"
       },
       {
         "Key": "MY_VAR",
         "Value": "Val 1",
-        "Type": "String"
+        "Type": "String",
+        "FunctionType": "Lykke.AlgoStore.CSharp.Funct.SimpleMovingAverage"
       }
     ],
 
     "Functions": [
       {
-        "_type": "Lykke.AlgoStore.CSharp.Funct.SimpleMovingAverage",
-        "id": "SMA_Short",
-        "Params": [
+        "Type":"Lykke.AlgoStore.CSharp.Funct.SimpleMovingAverage",
+        "Id": "SMA_Short",
+        "Parameters": [
           {
             "Key": "StartingFrom",
             "Value": "2011-05-10",
-            "Type": "DateTime"
+            "Type": "DateTime",
+            "FunctionType": "Lykke.AlgoStore.CSharp.Funct.SimpleMovingAverage"
           },
           {
             "Key": "CandlePeriod",
             "Value": "5",
-            "Type": "int"
+            "Type": "int",
+            "FunctionType": "Lykke.AlgoStore.CSharp.Funct.SimpleMovingAverage"
           }
         ]
       },
       {
-        "_type": "Lykke.AlgoStore.CSharp.Funct.SimpleMovingAverage",
-        "id": "SMA_Long",
-        "Params": [
+        "Type": "Lykke.AlgoStore.CSharp.Funct.SimpleMovingAverage",
+        "Id": "SMA_Long",
+        "Parameters": [
           {
             "Key": "StartingFrom",
             "Value": "2001-05-10",
-            "Type": "String"
+            "Type": "String",
+            "FunctionType": "Lykke.AlgoStore.CSharp.Funct.SimpleMovingAverage"
           },
           {
             "Key": "CandlePeriod",
             "Value": "Min",
-            "Type": "String"
+            "Type": "String",
+            "FunctionType": "Lykke.AlgoStore.CSharp.Funct.SimpleMovingAverage"
           }
         ]
       }
