@@ -7,7 +7,7 @@ import { BsModalService } from 'ngx-bootstrap/modal';
 import { StoreService } from '../../services/store.service';
 import { Command } from '../../models/command.enum';
 import { Status } from '../../models/status.enum';
-import { Algo } from '../../models/algo.interface';
+import { Algo } from '../../store/models/algo.interface';
 import { EventService } from '../../services/event.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { PopupComponent } from '../popup/popup.component';

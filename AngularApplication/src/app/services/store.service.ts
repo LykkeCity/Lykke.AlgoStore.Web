@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Algo } from '../models/algo.interface';
+import { Algo } from '../store/models/algo.interface';
 import { AuthRequestService } from './auth-request.service';
 import { Observable } from 'rxjs/Observable';
-import { AlgoLog } from '../models/algo-log.interface';
+import { AlgoLog } from '../store/models/algo-log.interface';
 
 @Injectable()
 export class StoreService {

@@ -2,24 +2,24 @@
   <div class="details-holder">
     <div class="row mb-2">
       <div class="col-8 text-left">
-        <h3>{{algo.Name || 'Test Name'}}</h3>
+        <h3>{{algo.Name}}</h3>
       </div>
       <div class="col-4 text-right">
-        <button class="btn btn-default" (click)="tryAlgo()">Try Algo</button>
+        <button class="btn btn-primary" (click)="tryAlgo()">Try Algo</button>
       </div>
     </div>
-    <div class="row">
+    <div class="row mb-2">
       <div class="col-4">
-        <span class="text-muted">Author:</span> <span>{{algo.Author || 'Test Author'}}</span>
+        <span class="text-muted">Author:</span> <span class="ml-3">{{algo.Author}}</span>
       </div>
       <div class="col-4">
-        <span class="text-muted">Users:</span> <span>{{algo.UsersCount || "Test Count"}}</span>
+        <span class="text-muted">Users:</span> <span class="ml-3">{{algo.UsersCount}}</span>
       </div>
     </div>
     <div class="row">
       <div class="col-4">
         <span class="text-muted">Popularity rating:</span>
-        <span class="d-inline-flex">
+        <span class="d-inline-flex ml-3">
           <star-rating-comp [rating]="algo.Rating"
                             [starType]="'svg'"
                             [numOfStars]="6"
@@ -30,7 +30,7 @@
         </span>
       </div>
       <div class="col-4">
-        <span class="text-muted">Description:</span> <span>{{algo.Description || "Test descr"}}</span>
+        <span class="text-muted">Description:</span> <span class="ml-3">{{algo.Description}}</span>
       </div>
     </div>
   </div>
@@ -48,22 +48,8 @@
             </div>
           </div>
           <div>
-            <ace-editor [(text)]="text" [mode]="'java'" [readOnly]="true" #editor style="min-height:50vh;" id="editor"></ace-editor>
+            <ace-editor [(text)]="sourceCode" [mode]="'java'" [readOnly]="true" #editor style="min-height:50vh;" id="editor"></ace-editor>
           </div>
-        </div>
-        <div class="rating-holder">
-          <span>Rate Algo:</span>
-          <span class="d-inline-flex">
-            <star-rating-comp [rating]="algo.Rating"
-                              [starType]="'svg'"
-                              [numOfStars]="6"
-                              [showHalfStars]="true"
-                              [staticColor]="'default'" >
-          </star-rating-comp>
-          </span>
-        </div>
-        <div class="comments-section">
-
         </div>
       </div>
       <div class="col-4">

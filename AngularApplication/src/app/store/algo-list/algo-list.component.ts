@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 
 import { StoreService } from '../../services/store.service';
-import { Algo } from '../../models/algo.interface';
+import { Algo } from '../models/algo.interface';
 import { EventService } from '../../services/event.service';
 
 

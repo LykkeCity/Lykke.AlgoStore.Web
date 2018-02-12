@@ -1,8 +1,7 @@
 import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
-import { Algo } from '../../models/algo.interface';
+import { Algo } from '../models/algo.interface';
 import { StoreService } from '../../services/store.service';
 import { ActivatedRoute } from '@angular/router';
-import { getDefaultMetaData } from '../models/algo-metadata.model';
 import { Subscription } from 'rxjs/Subscription';
 import { BaseAlgoParam } from '../models/base-algo-param.model';
 
@@ -15,72 +14,44 @@ declare var ace;
 })
 export class AlgoDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
 
-  algo: Algo;
+  algo: Algo = {};
+  sourceCode: string;
   getAlgoSubscription: Subscription;
+  getAlgoSourceSubscription: Subscription;
   routeParamsSubscription: Subscription;
   editor: any;
 
-  text = `
-  public class Dog {
-    String breed;
-    int age;
-    String color;
-
-    void barking() {
-      IntegerBTC AssetPair = assetBTC;
-    }
-
-    void hungry() {
-      Integer meta2 = meta2Value;
-    }
-
-    void sleeping() {
-    }
- }
-  `;
-
   constructor(private storeService: StoreService, private route: ActivatedRoute) {
-    this.algo = { //TODO delete this
-      Name: 'My test Algo',
-      Description: 'The best Algo ever',
-      Rating: '5.67',
-      UsersCount: '676',
-      Author: 'Todor Ivanov',
-      AlgoMetaDataInformation: getDefaultMetaData()// TODO get from API
-    };
+
   }
 
   ngOnInit() {
     this.routeParamsSubscription = this.route.params.subscribe(params => {
       const id = params['id'];
-
       this.getAlgoSubscription = this.storeService.getAlgoById(id).subscribe(algo => {
-        // TODO get algo here
-      })
+        this.algo = algo;
+      });
+
+      this.getAlgoSourceSubscription = this.storeService.algoGet(id).subscribe(algoSource => {
+        this.sourceCode = algoSource.Data;
+      });
     });
   }
 
   ngAfterViewInit() {
     this.editor = ace.edit('editor');
     this.editor.setTheme('ace/theme/eclipse');
+    this.editor.setHighlightActiveLine(false);
 
-    this.editor.setOptions({
-      enableSnippets: true,
-      enableBasicAutocompletion: true,
-      enableLiveAutocompletion: true
-    });
-
-    this.editor.commands.addCommand({
-      name: 'showOtherCompletions',
-      bindKey: 'Ctrl-.',
-      exec: function () {
-      }
+    this.editor.session.selection.on('changeCursor', (e) => {
+      this.editor.setHighlightActiveLine(false);
     });
   }
 
   ngOnDestroy() {
     this.routeParamsSubscription.unsubscribe();
     this.getAlgoSubscription.unsubscribe();
+    this.getAlgoSourceSubscription.unsubscribe();
   }
 
   tryAlgo(): void {
@@ -89,6 +60,7 @@ export class AlgoDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
 
   highlight(meta: BaseAlgoParam): void {
     this.editor.find(meta.Key);
+    this.editor.setHighlightActiveLine(true);
   }
 
   onThemeChange(): void {

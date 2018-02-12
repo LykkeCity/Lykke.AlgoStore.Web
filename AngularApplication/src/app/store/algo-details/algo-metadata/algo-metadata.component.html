@@ -3,10 +3,10 @@
     <h5>Metadata Attributes</h5>
   </div>
   <div class="col-4 text-right">
-    <span><a href="javascript:;">Show all</a></span>
+    <span class="show-all-button"><a href="javascript:;">Show all</a></span>
   </div>
 </div>
-<div class="row meta-row" *ngFor="let param of metadata.Parameters">
+<div class="row meta-row" *ngFor="let param of metadata?.Parameters">
   <div class="col-8 metadata-name">
     <div>{{param.Key}}</div>
     <div class="text-muted metadata-value">{{param.Value}}</div>
@@ -15,7 +15,7 @@
     <span class="text-muted" (click)="highlight(param)">Find</span>
   </div>
 </div>
-<div class="row" *ngFor="let func of metadata.Functions">
+<div class="row" *ngFor="let func of metadata?.Functions">
   <div *ngFor="let param of func.Parameters" class="col-12">
     <div class="row meta-row">
       <div class="col-8 metadata-name">

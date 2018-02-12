@@ -3,11 +3,16 @@
   border-top: solid 1px #ebedf0;
   align-items: center;
 
-  .metadata-name {
-    padding-left: 0;
+  &:hover {
+    background-color: #f5f6f7;
   }
 }
 
 .cursor-pointer {
   cursor: pointer;
+}
+
+.show-all-button {
+  font-size: 1.125rem;
+  font-weight: 600;
 }
