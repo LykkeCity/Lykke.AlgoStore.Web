@@ -1,18 +1,14 @@
+@import '~scss/reuse';
 .meta-row {
   padding: 10px 0;
-  border-top: solid 1px #ebedf0;
+  border-top: solid 1px $pale-grey;
   align-items: center;
 
   &:hover {
-    background-color: #f5f6f7;
+    background-color: $pale-grey-two;
   }
-}
-
-.cursor-pointer {
-  cursor: pointer;
 }
 
 .show-all-button {
   font-size: 1.125rem;
-  font-weight: 600;
 }

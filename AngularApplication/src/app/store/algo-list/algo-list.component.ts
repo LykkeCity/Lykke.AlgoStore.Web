@@ -1,5 +1,4 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 
 import { StoreService } from '../../services/store.service';
@@ -20,8 +19,7 @@ export class AlgoListComponent implements OnInit, OnDestroy {
   private subscriptions = new Subscription();
 
   constructor(private storeService: StoreService,
-              private eventService: EventService,
-              private router: Router) {
+              private eventService: EventService) {
   }
 
   ngOnInit() {
@@ -34,12 +32,6 @@ export class AlgoListComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.subscriptions.unsubscribe();
-  }
-
-  details(algo: Algo): boolean {
-    this.storeService.activeAlgo = algo;
-    this.router.navigate([`store/algo-details/${algo.Id}`]);
-    return false;
   }
 
   onDataObtained = (result) => {
