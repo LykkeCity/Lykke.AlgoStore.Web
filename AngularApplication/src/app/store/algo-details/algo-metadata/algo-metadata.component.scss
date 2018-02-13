@@ -1,0 +1,14 @@
+@import '~scss/reuse';
+.meta-row {
+  padding: 10px 0;
+  border-top: solid 1px $pale-grey;
+  align-items: center;
+
+  &:hover {
+    background-color: $pale-grey-two;
+  }
+}
+
+.show-all-button {
+  font-size: 1.125rem;
+}

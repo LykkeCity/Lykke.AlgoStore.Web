@@ -1,67 +1,67 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { NotificationsService } from 'angular2-notifications';
-import { Router } from '@angular/router';
-import { Subscription } from 'rxjs/Subscription';
-
+import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
+import { Algo } from '../models/algo.interface';
 import { StoreService } from '../../services/store.service';
-import { Algo } from '../../models/algo.interface';
-import { EventService } from '../../services/event.service';
-import { AlgoLog } from '../../models/algo-log.interface';
+import { ActivatedRoute } from '@angular/router';
+import { Subscription } from 'rxjs/Subscription';
+import { BaseAlgoParam } from '../models/base-algo-param.model';
+
+declare var ace;
 
 @Component({
   selector: 'app-algo-detail',
   templateUrl: './algo-details.component.html',
   styleUrls: ['./algo-details.component.scss']
 })
-export class AlgoDetailsComponent implements OnInit, OnDestroy {
-  algo: Algo;
-  log: string;
-  private subscriptions = new Subscription();
-  logInterval: number;
-  private subscribeToLogTailData: Subscription;
+export class AlgoDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
 
-  constructor(private storeService: StoreService,
-              private eventService: EventService,
-              private router: Router,
-              private notificationService: NotificationsService) {
+  algo: Algo = {};
+  getAlgoSubscription: Subscription;
+  routeParamsSubscription: Subscription;
+  editor: any;
 
-    this.algo = this.storeService.activeAlgo;
-
-    this.logInterval = null;
+  constructor(private storeService: StoreService, private route: ActivatedRoute) {
 
   }
 
   ngOnInit() {
-    this.subscriptions.add(this.eventService.algoTestStarted.subscribe(this.onAlgoStatusChanged));
-    this.subscriptions.add(this.eventService.algoTestStopped.subscribe(this.onAlgoStatusChanged));
-    this.subscriptions.add(this.eventService.algoDeleteDone.subscribe(this.onDeleteDone));
-    this.subscriptions.add(this.eventService.algoTaillogError.subscribe(this.onAlgoLogError));
+    this.routeParamsSubscription = this.route.params.subscribe(params => {
+      const id = params['id'];
+      this.getAlgoSubscription = this.storeService.getAlgoById(id).subscribe(algo => {
+        this.algo = algo;
+      });
+    });
+  }
 
-    this.subscribeToLogTailData = this.storeService.algoGetTailLog(this.algo.Id, 1000).subscribe(this.onAlgoLogDone);
+  ngAfterViewInit() {
+    this.editor = ace.edit('editor');
+    this.editor.setTheme('ace/theme/eclipse');
+    this.editor.setHighlightActiveLine(false);
+
+    this.editor.session.selection.on('changeCursor', (e) => {
+      this.editor.setHighlightActiveLine(false);
+    });
   }
 
   ngOnDestroy() {
-    clearInterval(this.logInterval);
-    this.subscriptions.unsubscribe();
+    this.routeParamsSubscription.unsubscribe();
+    this.getAlgoSubscription.unsubscribe();
   }
 
-  onAlgoLogDone = (log: AlgoLog) => {
+  tryAlgo(): void {
+    console.log(this.algo);
+  }
 
-    this.log += log.Log;
-    this.subscribeToLogTailData.unsubscribe();
-    this.subscribeToLogTailData = this.storeService.algoGetTailLog(this.algo.Id, 1000).subscribe(this.onAlgoLogDone);
-  };
+  highlight(meta: BaseAlgoParam): void {
+    this.editor.find(meta.Key);
+    this.editor.setHighlightActiveLine(true);
+  }
 
-  onAlgoLogError = (error: { message: string }) => {
-    this.notificationService.error('Error', error.message);
-  };
-
-  onDeleteDone = () => {
-    this.router.navigate(['store/algo-list']);
-  };
-
-  onAlgoStatusChanged = () => {
-    this.storeService.algoGetTailLog(this.algo.Id, 1000);
-  };
+  onThemeChange(): void {
+    if (this.editor.renderer.$themeId.indexOf('eclipse') !== -1) {
+      this.editor.setTheme('ace/theme/monokai');
+    } else {
+      this.editor.setTheme('ace/theme/eclipse');
+    }
+  }
 
 }

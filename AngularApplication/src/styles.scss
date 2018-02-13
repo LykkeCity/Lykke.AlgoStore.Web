@@ -5,6 +5,7 @@
 @import './scss/typography';
 @import './scss/curtain';
 @import "./scss/modals";
+@import "./scss/editor";
 @import './scss/ngx-datatable-theme';
 @import './scss/custom-variables';
 
@@ -16,4 +17,8 @@ html,
 body {
   height: 100%;
   min-height: 100%;
+}
+
+.cursor-pointer {
+  cursor: pointer;
 }

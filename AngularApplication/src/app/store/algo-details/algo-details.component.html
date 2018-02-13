@@ -1,20 +1,62 @@
-<div class="container algo-details-placeholder pt-10 pb-30">
-  <div class="row">
-
-    <div class="algo-details">
-      <div class="col-xs-3">
-        <span class="heading-sm">{{algo.Name}}</span>
+<div class="container">
+  <div class="details-holder mt-60">
+    <div class="row mb-2">
+      <div class="col-8 text-left">
+        <h3>{{algo.Name}}</h3>
       </div>
-      <div class="col-xs-4">
-        <span class="text-lg">{{algo.Description}}</span>
+      <div class="col-4 text-right">
+        <button class="btn btn-primary" (click)="tryAlgo()">Try Algo</button>
       </div>
-      <div class="col-xs-5 text-right">
-        <app-commands [algo]="algo"></app-commands>
+    </div>
+    <div class="row mb-2">
+      <div class="col-4">
+        <span class="text-muted">Author:</span> <span class="ml-3">{{algo.Author}}</span>
+      </div>
+      <div class="col-4">
+        <span class="text-muted">Users:</span> <span class="ml-3">{{algo.UsersCount}}</span>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-4">
+        <span class="text-muted">Popularity rating:</span>
+        <span class="d-inline-flex ml-3">
+          <star-rating-comp [rating]="algo.Rating"
+                            [starType]="'svg'"
+                            [numOfStars]="6"
+                            [showHalfStars]="true"
+                            [staticColor]="'default'"
+                            [readOnly]="true">
+          </star-rating-comp>
+        </span>
+      </div>
+      <div class="col-4">
+        <span class="text-muted">Description:</span> <span class="ml-3">{{algo.Description}}</span>
+      </div>
+    </div>
+  </div>
+  <hr>
+  <div class="main-content">
+    <div class="row">
+      <div class="col-8">
+        <div class="code-holder mb-3">
+          <div class="row">
+            <div class="col-10 text-left">
+              <h5>Source code</h5>
+            </div>
+            <div class="col-2 text-right">
+              <span><ui-switch size="small" (click)="onThemeChange()"></ui-switch></span>
+            </div>
+          </div>
+          <div>
+            <ace-editor [(text)]="algo.Data" [mode]="'java'" [readOnly]="true" id="editor"></ace-editor>
+          </div>
+        </div>
+      </div>
+      <div class="col-4">
+        <div class="metadata-holder">
+          <app-algo-metadata [metadata]="algo.AlgoMetaDataInformation" (onHighlight)="highlight($event)"></app-algo-metadata>
+        </div>
       </div>
     </div>
   </div>
 </div>
-
-
-
-<app-terminal [model]="log" [title]="'Terminal'"></app-terminal>

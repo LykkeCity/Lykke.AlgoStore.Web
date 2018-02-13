@@ -6,7 +6,7 @@ import { StoreService } from '../../services/store.service';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { HttpErrorResponse } from '@angular/common/http';
 import { NotificationsService } from 'angular2-notifications';
-import { Algo } from '../../models/algo.interface';
+import { Algo } from '../models/algo.interface';
 
 @Component({
   selector: 'app-algo-edit',

@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 
 import { StoreService } from '../services/store.service';
-import { Algo } from '../models/algo.interface';
+import { Algo } from './models/algo.interface';
 import { Language } from '../models/language.enum';
 import { HttpErrorResponse } from '@angular/common/http';
 import { NotificationsService } from 'angular2-notifications';

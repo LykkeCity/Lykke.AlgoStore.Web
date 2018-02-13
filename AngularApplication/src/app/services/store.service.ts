@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Algo } from '../models/algo.interface';
+import { Algo } from '../store/models/algo.interface';
 import { AuthRequestService } from './auth-request.service';
 import { Observable } from 'rxjs/Observable';
-import { AlgoLog } from '../models/algo-log.interface';
+import { AlgoLog } from '../store/models/algo-log.interface';
+import { forkJoin } from 'rxjs/observable/forkJoin';
 
 @Injectable()
 export class StoreService {
@@ -31,6 +32,13 @@ export class StoreService {
 
   algoCreateDetails(algo: Algo): Observable<Algo> {
     return this.authRequestService.post('/v1/clientData/metadata', algo);
+  }
+
+  getAlgoById(algoId: string): Observable<Algo> {
+    return forkJoin(
+      this.authRequestService.get(`/v1/clientData/algoMetadata?algoId=${algoId}`),
+      this.algoGet(algoId)
+    ).map( res => ({...res[0], ...res[1]}) );
   }
 
   algoGet(algoId: string): Observable<Algo> {

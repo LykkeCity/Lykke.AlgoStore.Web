@@ -1,0 +1,19 @@
+#editor {
+  min-height:50vh;
+}
+
+.ace_editor {
+  border: 1px solid #ebedef !important;
+}
+
+.ace-eclipse  {
+  .ace_active-line {
+    background: rgb(194, 222, 255) !important;
+  }
+}
+
+.ace-monokai {
+  .ace_active-line, .ace_selection {
+    background: #69693a !important;
+  }
+}

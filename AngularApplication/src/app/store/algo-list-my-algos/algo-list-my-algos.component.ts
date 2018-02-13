@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { Algo } from '../../models/algo.interface';
+import { Algo } from '../models/algo.interface';
 import { Subject } from 'rxjs/Subject';
 import { Subscription } from 'rxjs/Subscription';
 import { DataTableDirective } from 'angular-datatables';
