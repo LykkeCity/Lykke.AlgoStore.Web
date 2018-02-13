@@ -4,6 +4,7 @@ import { Algo } from '../store/models/algo.interface';
 import { AuthRequestService } from './auth-request.service';
 import { Observable } from 'rxjs/Observable';
 import { AlgoLog } from '../store/models/algo-log.interface';
+import { forkJoin } from 'rxjs/observable/forkJoin';
 
 @Injectable()
 export class StoreService {
@@ -34,7 +35,10 @@ export class StoreService {
   }
 
   getAlgoById(algoId: string): Observable<Algo> {
-    return this.authRequestService.get(`/v1/clientData/algoMetadata?algoId=${algoId}`);
+    return forkJoin(
+      this.authRequestService.get(`/v1/clientData/algoMetadata?algoId=${algoId}`),
+      this.algoGet(algoId)
+    ).map( res => ({...res[0], ...res[1]}) );
   }
 
   algoGet(algoId: string): Observable<Algo> {

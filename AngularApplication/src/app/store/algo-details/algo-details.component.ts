@@ -16,7 +16,6 @@ export class AlgoDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
 
   algo: Algo = {};
   getAlgoSubscription: Subscription;
-  getAlgoSourceSubscription: Subscription;
   routeParamsSubscription: Subscription;
   editor: any;
 
@@ -28,11 +27,7 @@ export class AlgoDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
     this.routeParamsSubscription = this.route.params.subscribe(params => {
       const id = params['id'];
       this.getAlgoSubscription = this.storeService.getAlgoById(id).subscribe(algo => {
-        this.algo = Object.assign(this.algo, this.algo, algo);
-      });
-
-      this.getAlgoSourceSubscription = this.storeService.algoGet(id).subscribe(algoSource => {
-        this.algo = Object.assign(this.algo, this.algo, algoSource);
+        this.algo = algo;
       });
     });
   }
@@ -50,7 +45,6 @@ export class AlgoDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
   ngOnDestroy() {
     this.routeParamsSubscription.unsubscribe();
     this.getAlgoSubscription.unsubscribe();
-    this.getAlgoSourceSubscription.unsubscribe();
   }
 
   tryAlgo(): void {
