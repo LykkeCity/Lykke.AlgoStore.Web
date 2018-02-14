@@ -5,7 +5,7 @@ import { DataTablesModule } from 'angular-datatables';
 import { TooltipModule } from 'ngx-bootstrap';
 import { StarRatingModule } from 'angular-star-rating';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
-import { UiSwitchModule } from 'angular2-ui-switch'
+import { UiSwitchModule } from 'ngx-ui-switch';
 
 // ROUTING
 import { StoreRouting } from './store-routing.module';
