@@ -14,7 +14,7 @@ const routes: Routes = [
   { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] },
   { path: 'algo-list', component: AlgoListComponent, canActivate: [AuthGuard] },
   { path: 'algo-list-private', component: AlgoListMyAlgosComponent, canActivate: [AuthGuard] },
-  { path: 'algo-edit', component: AlgoEditComponent, canActivate: [AuthGuard] },
+  { path: 'algo-edit/:id', component: AlgoEditComponent, canActivate: [AuthGuard] },
   { path: 'algo-details/:clientId/:algoId', component: AlgoDetailsComponent, canActivate: [AuthGuard] },
 ];
 
