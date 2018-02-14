@@ -71,7 +71,7 @@ export class CommandsComponent {
       switch (command) {
 
         case Command.Edit:
-          this.router.navigate(['store/algo-edit']);
+          this.router.navigate(['store/algo-edit', this.algo.Id]);
           break;
 
         case Command.Delete:

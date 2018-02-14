@@ -29,9 +29,9 @@ export class AlgoEditComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.updateFormGroup = this.formBuilder.group({
-      id: [''],
-      name: ['', Validators.required],
-      description: ['']
+      Id: [''],
+      Name: ['', Validators.required],
+      Description: ['']
     });
 
     this.route.params.subscribe(params => {
@@ -41,9 +41,9 @@ export class AlgoEditComponent implements OnInit, OnDestroy {
         this.algo = algo;
 
         this.updateFormGroup.setValue({
-          id: this.algo.Id,
-          name: this.algo.Name,
-          description: this.algo.Description
+          Id: this.algo.Id,
+          Name: this.algo.Name,
+          Description: this.algo.Description
         });
       });
     });
