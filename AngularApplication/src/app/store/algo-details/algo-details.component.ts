@@ -25,8 +25,9 @@ export class AlgoDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngOnInit() {
     this.routeParamsSubscription = this.route.params.subscribe(params => {
-      const id = params['id'];
-      this.getAlgoSubscription = this.storeService.getAlgoById(id).subscribe(algo => {
+      const algoId = params['algoId'];
+      const clientId = params['clientId'];
+      this.getAlgoSubscription = this.storeService.getAlgoById(clientId, algoId).subscribe(algo => {
         this.algo = algo;
       });
     });
