@@ -1,0 +1,13 @@
+<div class="code-holder mb-3">
+  <div class="row">
+    <div class="col-10 text-left">
+      <h5>Source code</h5>
+    </div>
+    <div class="col-2 text-right">
+      <span><ui-switch size="small" (click)="onThemeChange()"></ui-switch></span>
+    </div>
+  </div>
+  <div>
+    <ace-editor [(text)]="config.sourceCode" [mode]="config.mode" [readOnly]="config.readOnly" id="editor"></ace-editor>
+  </div>
+</div>

@@ -71,7 +71,7 @@ export class CommandsComponent {
       switch (command) {
 
         case Command.Edit:
-          this.storeService.activeAlgo = this.algo;
+          // this.storeService.activeAlgo = this.algo;
           this.router.navigate(['store/algo-edit']);
           break;
 

@@ -1,6 +1,6 @@
 <div class="container store-placeholder">
   <div class="row">
-    <div class="col-xs-12">
+    <div class="col-12">
       <div class="stepper">
         <wizard #wizard navBarLayout="large-empty-symbols" navigationMode="strict">
           <wizard-step stepTitle="Language" navigationSymbol="1">
@@ -112,25 +112,25 @@ MARGIN=&lt;THE MARGINE WITH WHICH YOU WANT TO SELL, e.g 1.1&gt;
             <h1 class="heading-sm text-center mt-40 mb-60">Add algo details</h1>
             <form [formGroup]="updateFormGroup">
               <div class="row">
-                <div class="col-xs-offset-3 col-xs-6 text-center">
+                <div class="col-offset-3 col-6 text-center">
                   <div class="form-group">
                     <label for="name">Algo name</label>
-                    <input type="text" class="form-control" placeholder="Algo name" formControlName="name" id="name" required>
+                    <input type="text" class="form-control" placeholder="Algo name" formControlName="Name" id="name" required>
                   </div>
                 </div>
               </div>
               <div class="row">
-                <div class="col-xs-offset-3 col-xs-6 text-center">
+                <div class="col-offset-3 col-6 text-center">
                   <div class="form-group">
                     <label for="descr">Algo Description</label>
-                    <textarea rows="5" class="form-control" placeholder="Algo description" formControlName="description" id="descr" required></textarea>
+                    <textarea rows="5" class="form-control" placeholder="Algo description" formControlName="Description" id="descr" required></textarea>
                   </div>
                 </div>
               </div>
               <div class="row">
-                <div class="col-xs-offset-3 col-xs-6 text-center">
+                <div class="col-offset-3 col-6 text-center">
                   <div class="form-group">
-                    <button class="btn btn-primary" (click)="update()" [disabled]="isAlgoDetailsButtonDisabled()" nextStep>Next</button>
+                    <button class="btn btn-primary" (click)="update()" [disabled]="!updateFormGroup.valid" nextStep>Next</button>
                   </div>
                 </div>
               </div>
@@ -139,17 +139,10 @@ MARGIN=&lt;THE MARGINE WITH WHICH YOU WANT TO SELL, e.g 1.1&gt;
           <wizard-step stepTitle="Done" navigationSymbol="4">
             <div class="step-four-deploy text-center mt-100">
 
-              <div *ngIf="!hasErrors" class="mt-100">
+              <div *ngIf="success" class="mt-100">
                 <h3>All done! Let's code the algo...</h3>
                 <div class="mt-100">
-                  <button class="btn btn-primary" (click)="openDesigner()">Code</button>
-                </div>
-              </div>
-
-              <div *ngIf="hasErrors" class="mt-100">
-                <h3>There is a problem with your algo</h3>
-                <div class="mt-100">
-                  <button class="btn btn-primary">Back</button>
+                  <button class="btn btn-primary" [routerLink]="['/design', id]">Code</button>
                 </div>
               </div>
             </div>

@@ -14,7 +14,8 @@ export class ExistingAlgoGuard implements CanActivate {
   canActivate(next: ActivatedRouteSnapshot,
               state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
 
-    if (this.storeService.activeAlgo) {
+    const id = next.params['id'];
+    if (id) {
       return true;
     } else {
       this.router.navigateByUrl('/store/algo-list'); // TODO probably change redirect to dashboard when ready

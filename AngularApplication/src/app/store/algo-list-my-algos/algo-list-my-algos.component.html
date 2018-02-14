@@ -4,7 +4,7 @@
       <h2 class="heading-lg pt-10 pb-10">My Algos</h2>
     </div>
     <div class="col-md-4 pull-right add-button-row">
-      <button class="btn btn-primary" (click)="createNewAlgo()">Create new Algo</button>
+      <button class="btn btn-primary" routerLink="/store">Create new Algo</button>
     </div>
   </div>
 
@@ -21,7 +21,7 @@
         </thead>
         <tbody>
         <tr *ngFor="let algo of dataSource">
-          <td><a href="#" (click)="details(algo)"> {{algo.Name}} </a></td>
+          <td><a href="#" [routerLink]="['/store/algo-details', id]"> {{algo.Name}} </a></td>
           <td>{{algo.Description}}</td>
           <td>{{algo.Status}}</td>
           <td><app-commands [algo]="algo"></app-commands></td>

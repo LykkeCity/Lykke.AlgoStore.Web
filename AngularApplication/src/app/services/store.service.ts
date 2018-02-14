@@ -9,18 +9,7 @@ import { forkJoin } from 'rxjs/observable/forkJoin';
 @Injectable()
 export class StoreService {
 
-  _algos = new BehaviorSubject<Array<Algo>>([]);
-  algosStore: Array<any>;
-
-  public algos = this._algos.asObservable();
-
-  public activeAlgo: Algo;
-  public mode: string;
-
-  constructor(private authRequestService: AuthRequestService) {
-
-    this.algosStore = [];
-  }
+  constructor(private authRequestService: AuthRequestService) {  }
 
   getAllPublicAlgos(): Observable<Algo[]> {
     return this.authRequestService.get('/v1/clientData/getAllAlgos');

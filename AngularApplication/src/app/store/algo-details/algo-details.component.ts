@@ -1,18 +1,16 @@
-import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Algo } from '../models/algo.interface';
 import { StoreService } from '../../services/store.service';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 import { BaseAlgoParam } from '../models/base-algo-param.model';
 
-declare var ace;
-
 @Component({
   selector: 'app-algo-detail',
   templateUrl: './algo-details.component.html',
   styleUrls: ['./algo-details.component.scss']
 })
-export class AlgoDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
+export class AlgoDetailsComponent implements OnInit, OnDestroy {
 
   algo: Algo = {};
   getAlgoSubscription: Subscription;
@@ -33,16 +31,6 @@ export class AlgoDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
     });
   }
 
-  ngAfterViewInit() {
-    this.editor = ace.edit('editor');
-    this.editor.setTheme('ace/theme/eclipse');
-    this.editor.setHighlightActiveLine(false);
-
-    this.editor.session.selection.on('changeCursor', (e) => {
-      this.editor.setHighlightActiveLine(false);
-    });
-  }
-
   ngOnDestroy() {
     this.routeParamsSubscription.unsubscribe();
     this.getAlgoSubscription.unsubscribe();
@@ -57,12 +45,8 @@ export class AlgoDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
     this.editor.setHighlightActiveLine(true);
   }
 
-  onThemeChange(): void {
-    if (this.editor.renderer.$themeId.indexOf('eclipse') !== -1) {
-      this.editor.setTheme('ace/theme/monokai');
-    } else {
-      this.editor.setTheme('ace/theme/eclipse');
-    }
+  onEditorCreated(editor: any): void {
+    this.editor = editor;
   }
 
 }

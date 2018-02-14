@@ -1,12 +1,10 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 
 import { StoreService } from '../services/store.service';
-import { Algo } from './models/algo.interface';
 import { Language } from '../models/language.enum';
-import { HttpErrorResponse } from '@angular/common/http';
 import { NotificationsService } from 'angular2-notifications';
 
 @Component({
@@ -15,57 +13,30 @@ import { NotificationsService } from 'angular2-notifications';
   styleUrls: ['./store.component.scss']
 })
 export class StoreComponent implements OnInit, OnDestroy {
-  algos: Array<Algo>;
-  secondFormGroup: FormGroup;
   updateFormGroup: FormGroup;
-  hasErrors: Boolean;
+  success = false;
   Language = Language;
+  id: string;
 
-  private subscriptions = new Subscription();
+  algoCreateSubscription: Subscription;
 
   constructor(private storeService: StoreService,
-    private router: Router,
-    private notificationsService: NotificationsService,
-    private formBuilder: FormBuilder) { }
+              private router: Router,
+              private notificationsService: NotificationsService,
+              private formBuilder: FormBuilder) {
+  }
 
   ngOnInit() {
-
-    this.secondFormGroup = this.formBuilder.group({
-      secondCtrl: ['', Validators.required]
-    });
-
     this.updateFormGroup = this.formBuilder.group({
-      name: ['', Validators.required],
-      description: ['']
+      Name: ['', Validators.required],
+      Description: ['']
     });
-
-    this.subscriptions.add(this.storeService.algoGetAll()
-      .subscribe((data: Algo[]) => {
-
-        this.storeService.algosStore = data;
-        this.storeService._algos.next([...data]);
-      }, (err: HttpErrorResponse) => {
-        if (err.error instanceof Error) {
-          this.notificationsService.error('Error', 'An error occurred!');
-        } else {
-          this.storeService.algosStore = [];
-          this.storeService._algos.next([]);
-        }
-      }));
-
-      this.subscriptions.add(
-        this.storeService.algos.subscribe((result: Algo[]) => {
-          this.algos = result;
-
-          if (this.storeService.mode !== 'create' && this.algos.length > 0) {
-            this.router.navigate(['store/algo-list']);
-          }
-        })
-      );
   }
 
   ngOnDestroy() {
-    this.subscriptions.unsubscribe();
+    if(this.algoCreateSubscription) {
+      this.algoCreateSubscription.unsubscribe();
+    }
   }
 
   setLanguage(language: Language): void {
@@ -83,43 +54,15 @@ export class StoreComponent implements OnInit, OnDestroy {
     }
   }
 
-  // Set state for 'Next' button on 'update' tab
-  isAlgoDetailsButtonDisabled(): boolean {
-    if (!this.updateFormGroup.valid) {
-      return true;
-    }
-  }
-
   // Button 'Next' on 'update' tab click method
-  update(): boolean {
-
-    if (this.updateFormGroup.controls.name.value) {
-
-      const algo = {
-        Name: this.updateFormGroup.controls.name.value,
-        Description: this.updateFormGroup.controls.description.value
-      };
-
-      this.storeService.algoCreateDetails(algo)
-        .subscribe((data: any) => {
-          this.storeService.algosStore = data;
-          this.storeService._algos.next([data]);
-
-          this.storeService.activeAlgo = data;
-        },
-        (err: HttpErrorResponse) => {
-          if (err.error instanceof Error) {
-            console.log('An error occurred:', err.error.message);
-          } else {
-            this.storeService.algosStore = [];
-            this.storeService._algos.next([]);
-          }
-        });
+  update(): void {
+    if (!this.updateFormGroup.valid) {
+      return;
     }
-    return false;
-  }
 
-  openDesigner(): void {
-    this.router.navigate(['design']);
+    this.algoCreateSubscription = this.storeService.algoCreateDetails(this.updateFormGroup.value).subscribe((algo) => {
+      this.id = algo.Id;
+      this.success = true;
+    });
   }
 }

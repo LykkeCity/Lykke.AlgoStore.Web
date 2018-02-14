@@ -1,65 +1,37 @@
-import { AfterViewInit, ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
-import { EventService } from '../services/event.service';
+import { Component, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 import { StoreService } from '../services/store.service';
 import { PopupComponent } from '../components/popup/popup.component';
 import { BsModalService } from 'ngx-bootstrap';
+import { ActivatedRoute } from '@angular/router';
+import { Algo } from '../store/models/algo.interface';
 
 @Component({
   selector: 'app-design',
   templateUrl: './design.component.html',
   styleUrls: ['./design.component.scss']
 })
-export class DesignComponent implements OnInit, AfterViewInit {
+export class DesignComponent implements OnDestroy {
 
-  store: StoreService;
-
+  algo: Algo = {};
   subscribeToSave: Subscription;
   subscribeToGet: Subscription;
+  routerSubscription: Subscription;
 
-  @ViewChild('editor') editor;
+  constructor(private storeService: StoreService, private modalService: BsModalService, private route: ActivatedRoute) {
+    this.routerSubscription = this.route.params.subscribe(params => {
+      const id = params['id'];
 
-  text = `
-  public class Dog {
-    String breed;
-    int age;
-    String color;
-
-    void barking() {
-    }
-
-    void hungry() {
-    }
-
-    void sleeping() {
-    }
- }
-  `;
-  log: string;
-
-  constructor(private eventService: EventService, private storeService: StoreService, private ref: ChangeDetectorRef, private modalService: BsModalService) {
-    this.store = storeService;
+      this.subscribeToGet = this.storeService.getAlgoById(id).subscribe((algo) => {
+        this.algo = algo;
+      });
+    });
   }
 
-  ngOnInit() {
-    this.subscribeToGet = this.storeService.algoGet(this.storeService.activeAlgo.ClientId, this.storeService.activeAlgo.Id).subscribe(this.onAlgoGetDone);
-  }
-
-  ngAfterViewInit() {
-    this.editor.setTheme('eclipse');
-
-    this.editor.getEditor().setOptions({
-      enableSnippets: true,
-      enableBasicAutocompletion: true,
-      enableLiveAutocompletion: true
-    });
-
-    this.editor.getEditor().commands.addCommand({
-      name: 'showOtherCompletions',
-      bindKey: 'Ctrl-.',
-      exec: function () {
-      }
-    });
+  ngOnDestroy() {
+    this.routerSubscription.unsubscribe();
+    this.subscribeToGet.unsubscribe();
+    this.subscribeToSave.unsubscribe();
   }
 
   downloadProjectTemplate(): void {
@@ -89,19 +61,7 @@ export class DesignComponent implements OnInit, AfterViewInit {
     }
   };
 
-  onAlgoGetDone = (response) => {
-    this.text = response.Data;
-    this.subscribeToGet.unsubscribe();
-    this.ref.detectChanges();
-  };
-
-  onAlgoSaveDone = (status) => {
-    console.log(status);
-    this.subscribeToSave.unsubscribe();
-  };
-
   save(): void {
-    this.subscribeToSave = this.storeService.algoSave(this.storeService.activeAlgo.Id, this.text).subscribe(this.onAlgoSaveDone);
+    this.subscribeToSave = this.storeService.algoSave(this.algo.Id, this.algo.Data).subscribe();
   }
-
 }

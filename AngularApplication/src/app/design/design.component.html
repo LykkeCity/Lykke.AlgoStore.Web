@@ -29,7 +29,7 @@
       <div class="col-md-9 code">
         <div class="row">
           <div class="col-md-6">
-            <h2 class="pull-left">Algo name: {{store.activeAlgo.Name}}</h2>
+            <h2 class="pull-left">Algo name: {{algo.Name ? algo.Name : ''}}</h2>
           </div>
           <div class="col-md-6 text-right pt-5 pb-5">
             <a href="javascript:void(0)" (click)="save()">Save</a>
@@ -37,11 +37,8 @@
             <span>Status: Draft</span>
           </div>
         </div>
-        <ace-editor [(text)]="text" [mode]="'java'" #editor style="min-height:50vh;"></ace-editor>
+        <app-code-editor [config]="{readOnly: false, sourceCode: algo.Data}"></app-code-editor>
       </div>
     </div>
   </div>
-
-
-  <app-terminal [model]="log" [title]="'Console'"></app-terminal>
 </div>
