@@ -25,7 +25,7 @@ export class CodeEditorComponent implements AfterViewInit {
 
   ngOnChanges(simpleChanges: SimpleChanges) {
     if(simpleChanges['config'] && simpleChanges['config'].currentValue) {
-      this.config = Object.assign(this.defaultData, simpleChanges['config'].currentValue);
+      this.config = { ...this.defaultData, ...simpleChanges['config'].currentValue };
     }
   }
 

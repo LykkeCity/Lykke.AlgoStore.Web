@@ -21,7 +21,7 @@
         </thead>
         <tbody>
         <tr *ngFor="let algo of dataSource">
-          <td><a href="#" [routerLink]="['/store/algo-details', id]"> {{algo.Name}} </a></td>
+          <td><a href="#" [routerLink]="['/store/algo-details', algo.ClientId, algo.Id]"> {{algo.Name}} </a></td>
           <td>{{algo.Description}}</td>
           <td>{{algo.Status}}</td>
           <td><app-commands [algo]="algo"></app-commands></td>

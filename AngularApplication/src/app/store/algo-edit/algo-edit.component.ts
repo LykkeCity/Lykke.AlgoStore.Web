@@ -1,10 +1,9 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 
 import { StoreService } from '../../services/store.service';
-import { FormBuilder, Validators, FormGroup } from '@angular/forms';
-import { HttpErrorResponse } from '@angular/common/http';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NotificationsService } from 'angular2-notifications';
 import { Algo } from '../models/algo.interface';
 
@@ -20,12 +19,12 @@ export class AlgoEditComponent implements OnInit, OnDestroy {
 
   private subscriptions = new Subscription();
 
-  constructor(
-    private storeService: StoreService,
-    private router: Router,
-    private route: ActivatedRoute,
-    private notificationService: NotificationsService,
-    private formBuilder: FormBuilder) { }
+  constructor(private storeService: StoreService,
+              private router: Router,
+              private route: ActivatedRoute,
+              private notificationService: NotificationsService,
+              private formBuilder: FormBuilder) {
+  }
 
   ngOnInit() {
     this.updateFormGroup = this.formBuilder.group({
@@ -35,9 +34,10 @@ export class AlgoEditComponent implements OnInit, OnDestroy {
     });
 
     this.route.params.subscribe(params => {
-      const algoId = params['id'];
+      const algoId = params['algoId'];
+      const clientId = params['clientId'];
 
-      this.storeService.getAlgoById(algoId).subscribe(algo => {
+      this.storeService.getAlgoById(clientId, algoId).subscribe(algo => {
         this.algo = algo;
 
         this.updateFormGroup.setValue({

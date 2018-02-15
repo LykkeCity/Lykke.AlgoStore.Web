@@ -1,13 +1,12 @@
 import { ModuleWithProviders } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { DesignComponent } from './design.component';
-import { ExistingAlgoGuard } from '../services/existing-algo.guard';
 
 
 
 const routes: Routes = [
   { path: '', redirectTo: '/', pathMatch: 'full' },
-  { path: ':id', component: DesignComponent, canActivate: [ExistingAlgoGuard] }
+  { path: ':id', component: DesignComponent }
 ];
 
 
