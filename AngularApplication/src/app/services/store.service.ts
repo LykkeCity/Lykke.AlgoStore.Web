@@ -34,15 +34,17 @@ export class StoreService {
     return this.authRequestService.post('/v1/clientData/metadata', algo);
   }
 
-  getAlgoById(algoId: string): Observable<Algo> {
+  getAlgoById(clientId: string, algoId: string): Observable<Algo> {
+    const params = { clientId, algoId };
     return forkJoin(
-      this.authRequestService.get(`/v1/clientData/algoMetadata?algoId=${algoId}`),
-      this.algoGet(algoId)
+      this.authRequestService.get('/v1/clientData/algoMetadata', { params }),
+      this.algoGet(clientId, algoId)
     ).map( res => ({...res[0], ...res[1]}) );
   }
 
-  algoGet(algoId: string): Observable<Algo> {
-    return this.authRequestService.get(`/v1/clientData/imageData/upload/string?AlgoId=${algoId}`);
+  algoGet(clientId: string, algoId: string): Observable<Algo> {
+    const params = { clientId, algoId };
+    return this.authRequestService.get('/v1/clientData/imageData/upload/string', { params });
   }
 
   algoSave(algoId: string, data: string): Observable<Algo> {

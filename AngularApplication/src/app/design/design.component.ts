@@ -42,7 +42,7 @@ export class DesignComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit() {
-    this.subscribeToGet = this.storeService.algoGet(this.storeService.activeAlgo.Id).subscribe(this.onAlgoGetDone);
+    this.subscribeToGet = this.storeService.algoGet(this.storeService.activeAlgo.ClientId, this.storeService.activeAlgo.Id).subscribe(this.onAlgoGetDone);
   }
 
   ngAfterViewInit() {
