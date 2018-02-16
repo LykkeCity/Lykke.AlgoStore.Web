@@ -12,7 +12,7 @@ import { Algo } from '../models/algo.interface';
 })
 export class AlgoRunComponent implements OnInit {
 
-  algo: Algo;
+  algo: Algo = {};
   instancesArray: AlgoInstance[];
   routerSubscription: Subscription;
 
@@ -41,6 +41,7 @@ export class AlgoRunComponent implements OnInit {
 
       this.storeService.getAlgoWithSource(algoId, clientId).subscribe(algo => {
         this.algo = algo;
+        this.algo.ClientId = clientId;
       });
     });
   }
@@ -57,6 +58,14 @@ export class AlgoRunComponent implements OnInit {
   }
 
   goLive(): void {
+
+  }
+
+  resetDefault(): void {
+
+  }
+
+  deleteInstance(): void {
 
   }
 

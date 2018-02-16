@@ -27,6 +27,7 @@ export class AlgoDetailsComponent implements OnInit, OnDestroy {
       const clientId = params['clientId'];
       this.getAlgoSubscription = this.storeService.getAlgoWithSource(algoId, clientId).subscribe(algo => {
         this.algo = algo;
+        this.algo.ClientId = clientId;
       });
     });
   }
