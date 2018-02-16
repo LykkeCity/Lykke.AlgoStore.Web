@@ -5,7 +5,7 @@
         <h3>{{algo.Name}}</h3>
       </div>
       <div class="col-4 text-right">
-        <button class="btn btn-primary" (click)="tryAlgo()">Try Algo</button>
+        <button class="btn btn-primary" [routerLink]="['store/algo-run', algo.ClientId, algo.Id]">Try Algo</button>
       </div>
     </div>
     <div class="row mb-2">

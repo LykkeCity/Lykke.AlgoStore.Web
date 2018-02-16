@@ -1,0 +1,112 @@
+<div class="container">
+  <div class="details-holder mt-60">
+    <div class="row mb-2">
+      <div class="col-8 text-left">
+        <h3>{{algo.Name}}</h3>
+      </div>
+      <div class="col-4 text-right">
+        <a class="cursor-pointer" (click)="runDemo()">Run demo</a>
+        <a class="cursor-pointer" (click)="backtest()">Backtest</a>
+        <a class="cursor-pointer" (click)="goLive()">Go Live</a>
+      </div>
+    </div>
+    <div class="row mb-2">
+      <div class="col-12">
+        <span class="cursor-pointer">View Public profile</span> | <span class="cursor-pointer">Reset to Default Values</span>
+      </div>
+    </div>
+  </div>
+  <hr>
+  <div class="main-content">
+    <div class="row">
+      <div class="col-8">
+        <app-code-editor [config]="{sourceCode: algo.Data}"></app-code-editor>
+      </div>
+      <div class="col-4">
+        <div class="row">
+          <div class="col-12">
+            <div class="metadata-holder">
+              <div class="row">
+                <div class="col-8 text-left">
+                  <h5>Metadata Attributes</h5>
+                </div>
+                <div class="col-4 text-right">
+                  <span class="show-all-button font-weight-semibold"><a href="javascript:;">Show all</a></span>
+                </div>
+              </div>
+              <div class="row meta-row" *ngFor="let param of metadata?.Parameters">
+                <div class="col-8 metadata-name">
+                  <div><label for="{{param.Key}}">{{param.Key}}</label></div>
+
+                  <div *ngIf="param.Type === 'string'">
+                    <input type="text" [(ngModel)]="param.Value" id="{{param.Key}}">
+                  </div>
+
+                  <div *ngIf="param.Type === 'number'">
+                    <input type="number" [(ngModel)]="param.Value" id="{{param.Key}}">
+                  </div>
+
+                  <div *ngIf="param.Type === 'enum'">
+                    <select type="number" [(ngModel)]="param.Value" id="{{param.Key}}">
+                      <option>1</option>
+                      <option>2</option>
+                      <option>3</option>
+                    </select>
+                  </div>
+
+                </div>
+              </div>
+              <div class="row" *ngFor="let func of metadata?.Functions">
+                <div *ngFor="let param of func.Parameters" class="col-12">
+                  <div class="row meta-row">
+                    <div class="col-8 metadata-name">
+                      <div>{{func.Id}}.{{param.Key}}</div>
+                      <div><label for="{{param.Key}}">{{param.Key}}</label></div>
+
+                      <div *ngIf="param.Type === 'string'">
+                        <input type="text" [(ngModel)]="param.Value" id="{{param.Key}}">
+                      </div>
+
+                      <div *ngIf="param.Type === 'number'">
+                        <input type="number" [(ngModel)]="param.Value" id="{{param.Key}}">
+                      </div>
+
+                      <div *ngIf="param.Type === 'enum'">
+                        <select type="number" [(ngModel)]="param.Value" id="{{param.Key}}">
+                          <option>1</option>
+                          <option>2</option>
+                          <option>3</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+          </div>
+          <div class="col-12">
+            <div class="instances-holder">
+              <div class="row">
+                <div class="col-8 text-left">
+                  <h5>Running instances</h5>
+                </div>
+                <div class="col-4 text-right">
+                  <span class="show-all-button font-weight-semibold"><a href="javascript:;">Show all</a></span>
+                </div>
+              </div>
+              <div class="row instances-row" *ngFor="let instance of instancesArray">
+                <div class="col-8">
+                  <div class="instance-date">{{instance.Name}}</div>
+                  <div>{{instance.Type}} - {{instance.Status}}</div>
+                </div>
+                <div class="col-4">
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

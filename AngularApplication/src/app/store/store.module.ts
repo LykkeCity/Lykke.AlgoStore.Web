@@ -19,6 +19,7 @@ import { AlgoDetailsComponent } from './algo-details/algo-details.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { AlgoListMyAlgosComponent } from './algo-list-my-algos/algo-list-my-algos.component';
 import { AlgoMetadataComponent } from './algo-details/algo-metadata/algo-metadata.component';
+import { AlgoRunComponent } from './algo-run/algo-run.component';
 
 // SERVICES
 @NgModule({
@@ -41,7 +42,8 @@ import { AlgoMetadataComponent } from './algo-details/algo-metadata/algo-metadat
     AlgoDetailsComponent,
     DashboardComponent,
     AlgoListMyAlgosComponent,
-    AlgoMetadataComponent
+    AlgoMetadataComponent,
+    AlgoRunComponent
   ],
   providers: []
 })
