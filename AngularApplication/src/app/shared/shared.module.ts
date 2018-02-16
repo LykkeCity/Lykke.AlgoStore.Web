@@ -6,8 +6,8 @@ import { TerminalComponent } from '../components/terminal/terminal.component';
 import { PopupComponent } from '../components/popup/popup.component';
 import { ModalModule } from 'ngx-bootstrap';
 import { CodeEditorComponent } from './code-editor/code-editor.component';
-import { UiSwitchModule } from 'angular2-ui-switch';
 import { AceEditorModule } from 'ng2-ace-editor';
+import { UiSwitchModule } from 'ngx-ui-switch';
 
 
 @NgModule({
