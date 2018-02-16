@@ -1,10 +1,9 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 
 import { StoreService } from '../../services/store.service';
-import { FormBuilder, Validators, FormGroup } from '@angular/forms';
-import { HttpErrorResponse } from '@angular/common/http';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NotificationsService } from 'angular2-notifications';
 import { Algo } from '../models/algo.interface';
 
@@ -16,26 +15,36 @@ import { Algo } from '../models/algo.interface';
 export class AlgoEditComponent implements OnInit, OnDestroy {
 
   updateFormGroup: FormGroup;
+  algo: Algo;
 
   private subscriptions = new Subscription();
 
-  constructor(
-    private storeService: StoreService,
-    private router: Router,
-    private notificationService: NotificationsService,
-    private formBuilder: FormBuilder) { }
+  constructor(private storeService: StoreService,
+              private router: Router,
+              private route: ActivatedRoute,
+              private notificationService: NotificationsService,
+              private formBuilder: FormBuilder) {
+  }
 
   ngOnInit() {
     this.updateFormGroup = this.formBuilder.group({
-      id: [''],
-      name: ['', Validators.required],
-      description: ['']
+      Id: [''],
+      Name: ['', Validators.required],
+      Description: ['']
     });
 
-    this.updateFormGroup.setValue({
-      id: this.storeService.activeAlgo.Id,
-      name: this.storeService.activeAlgo.Name,
-      description: this.storeService.activeAlgo.Description
+    this.route.params.subscribe(params => {
+      const algoId = params['algoId'];
+
+      this.storeService.getAlgoById(algoId).subscribe(algo => {
+        this.algo = algo;
+
+        this.updateFormGroup.setValue({
+          Id: this.algo['AlgoId'],
+          Name: this.algo.Name,
+          Description: this.algo.Description
+        });
+      });
     });
 
   }
@@ -44,29 +53,11 @@ export class AlgoEditComponent implements OnInit, OnDestroy {
     this.subscriptions.unsubscribe();
   }
 
-  onAlgoUpdated = () => {
-    this.router.navigate(['store/algo-list']);
-  };
-
-  onAlgoUpdatedError = (err: HttpErrorResponse) => {
-    if (err.error instanceof Error) {
-      console.log('An error occurred:', err.error.message);
-    } else {
-      this.notificationService.error('Error', 'Something went wrong!');
-      console.log(`Backend returned code ${err.status}, body was: ${err.error}`);
-    }
-  };
-
   update() {
-    if (this.updateFormGroup.controls.name.value) {
-
-      const algo: Algo = {
-        Id: this.storeService.activeAlgo.Id,
-        Name: this.updateFormGroup.controls.name.value,
-        Description: this.updateFormGroup.controls.description.value
-      };
-
-      this.subscriptions.add(this.storeService.algoCreateDetails(algo).subscribe(this.onAlgoUpdated, this.onAlgoUpdatedError));
+    if (this.updateFormGroup.valid) {
+      this.subscriptions.add(this.storeService.algoCreateDetails(this.updateFormGroup.value).subscribe(() => {
+        this.router.navigate(['store/algo-list']);
+      }));
     }
   }
 }

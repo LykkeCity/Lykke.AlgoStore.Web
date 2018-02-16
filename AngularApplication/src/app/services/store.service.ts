@@ -9,18 +9,7 @@ import { forkJoin } from 'rxjs/observable/forkJoin';
 @Injectable()
 export class StoreService {
 
-  _algos = new BehaviorSubject<Array<Algo>>([]);
-  algosStore: Array<any>;
-
-  public algos = this._algos.asObservable();
-
-  public activeAlgo: Algo;
-  public mode: string;
-
-  constructor(private authRequestService: AuthRequestService) {
-
-    this.algosStore = [];
-  }
+  constructor(private authRequestService: AuthRequestService) {  }
 
   getAllPublicAlgos(): Observable<Algo[]> {
     return this.authRequestService.get('/v1/clientData/getAllAlgos');
@@ -34,16 +23,35 @@ export class StoreService {
     return this.authRequestService.post('/v1/clientData/metadata', algo);
   }
 
-  getAlgoById(clientId: string, algoId: string): Observable<Algo> {
-    const params = { clientId, algoId };
+  getAlgoById(algoId:string, clientId?: string): Observable<Algo> {
+    const params = { algoId };
+
+    if(clientId) {
+      params['clientId'] = clientId;
+    }
+
+     return this.authRequestService.get('/v1/clientData/algoMetadata', { params });
+  }
+
+  getAlgoWithSource(algoId: string, clientId?: string, ): Observable<Algo> {
+    const params = { algoId };
+
+    if(clientId) {
+      params['clientId'] = clientId;
+    }
+
     return forkJoin(
       this.authRequestService.get('/v1/clientData/algoMetadata', { params }),
-      this.algoGet(clientId, algoId)
+      this.algoGet(algoId, clientId)
     ).map( res => ({...res[0], ...res[1]}) );
   }
 
-  algoGet(clientId: string, algoId: string): Observable<Algo> {
-    const params = { clientId, algoId };
+  algoGet(algoId: string, clientId?: string): Observable<Algo> {
+    const params = { algoId };
+
+    if(clientId) {
+      params['clientId'] = clientId;
+    }
     return this.authRequestService.get('/v1/clientData/imageData/upload/string', { params });
   }
 

@@ -5,6 +5,9 @@ import { RouterModule } from '@angular/router';
 import { TerminalComponent } from '../components/terminal/terminal.component';
 import { PopupComponent } from '../components/popup/popup.component';
 import { ModalModule } from 'ngx-bootstrap';
+import { CodeEditorComponent } from './code-editor/code-editor.component';
+import { UiSwitchModule } from 'angular2-ui-switch';
+import { AceEditorModule } from 'ng2-ace-editor';
 
 
 @NgModule({
@@ -12,18 +15,22 @@ import { ModalModule } from 'ngx-bootstrap';
     CommonModule,
     FormsModule,
     RouterModule,
+    UiSwitchModule,
+    AceEditorModule,
     ModalModule.forRoot()
   ],
   providers: [],
   declarations: [
     PopupComponent,
-    TerminalComponent
+    TerminalComponent,
+    CodeEditorComponent
   ],
   exports: [
     CommonModule,
     FormsModule,
     PopupComponent,
-    TerminalComponent
+    TerminalComponent,
+    CodeEditorComponent
   ]
 })
 export class SharedModule {}

@@ -26,8 +26,7 @@ export class AlgoListMyAlgosComponent implements OnInit, OnDestroy {
   private subscriptions = new Subscription();
 
   constructor(private storeService: StoreService,
-              private eventService: EventService,
-              private router: Router) {
+              private eventService: EventService) {
 
     this.dtOptions = {
       pagingType: 'full_numbers',
@@ -46,19 +45,6 @@ export class AlgoListMyAlgosComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.subscriptions.unsubscribe();
-  }
-
-  createNewAlgo(): void {
-    this.storeService.activeAlgo = null;
-    this.storeService.mode = 'create';
-    this.storeService._algos.next([]);
-    this.router.navigate(['store']);
-  }
-
-  details(algo: Algo): boolean {
-    this.storeService.activeAlgo = algo;
-    this.router.navigate(['store/algo-details']);
-    return false;
   }
 
   onDataObtained = (result) => {
