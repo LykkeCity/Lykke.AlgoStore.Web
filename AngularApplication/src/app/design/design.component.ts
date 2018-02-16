@@ -22,7 +22,7 @@ export class DesignComponent implements OnDestroy {
     this.routerSubscription = this.route.params.subscribe(params => {
       const id = params['id'];
 
-      this.subscribeToGet = this.storeService.algoGet('',id).subscribe((algo) => {
+      this.subscribeToGet = this.storeService.getAlgoById(id).subscribe((algo) => {
         this.algo = algo;
       });
     });
@@ -62,6 +62,6 @@ export class DesignComponent implements OnDestroy {
   };
 
   save(): void {
-    this.subscribeToSave = this.storeService.algoSave(this.algo.Id, this.algo.Data).subscribe();
+    this.subscribeToSave = this.storeService.algoSave(this.algo['AlgoId'], this.algo.Data).subscribe();
   }
 }

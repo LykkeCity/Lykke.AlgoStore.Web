@@ -35,13 +35,12 @@ export class AlgoEditComponent implements OnInit, OnDestroy {
 
     this.route.params.subscribe(params => {
       const algoId = params['algoId'];
-      const clientId = params['clientId'];
 
-      this.storeService.getAlgoById(clientId, algoId).subscribe(algo => {
+      this.storeService.getAlgoById(algoId).subscribe(algo => {
         this.algo = algo;
 
         this.updateFormGroup.setValue({
-          Id: this.algo.Id,
+          Id: this.algo['AlgoId'],
           Name: this.algo.Name,
           Description: this.algo.Description
         });
