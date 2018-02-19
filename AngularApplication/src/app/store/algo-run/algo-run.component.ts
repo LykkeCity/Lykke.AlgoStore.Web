@@ -17,40 +17,44 @@ export class AlgoRunComponent implements OnInit {
   algo: Algo = {};
   wallets: Wallet[];
   instancesArray: AlgoInstance[];
-  routerSubscription: Subscription;
+  subscriptions: Subscription[];
 
   constructor(private route: ActivatedRoute, private storeService: StoreService, private userService: UserService) {
     this.instancesArray = [
       {
-        Name: "My Moving Average Cross v1.0",
-        Status: "Running",
-        Type: "Demo"
+        Name: 'My Moving Average Cross v1.0',
+        Status: 'Running',
+        Type: 'Demo'
       },
       {
-        Name: "My Moving Average Cross v2.0",
-        Status: "Stopped",
-        Type: "Live"
+        Name: 'My Moving Average Cross v2.0',
+        Status: 'Stopped',
+        Type: 'Live'
       },
       {
-        Name: "My Moving Average Cross v3.0",
-        Status: "Live",
-        Type: "Running"
+        Name: 'My Moving Average Cross v3.0',
+        Status: 'Live',
+        Type: 'Running'
       },
     ];
 
-    this.routerSubscription = this.route.params.subscribe(params => {
+    this.subscriptions.push(this.route.params.subscribe(params => {
       const clientId = params['clientId'];
       const algoId = params['algoId'];
 
-      this.storeService.getAlgoWithSource(algoId, clientId).subscribe(algo => {
+      this.subscriptions.push(this.storeService.getAlgoWithSource(algoId, clientId).subscribe(algo => {
         this.algo = algo;
         this.algo.ClientId = clientId;
-      });
-    });
+      }));
 
-    this.userService.getUserWallets().subscribe(wallets => {
+      this.subscriptions.push(this.storeService.getAlgoInstances(algoId).subscribe(instances => {
+        // TODO get instances here
+      }));
+    }));
+
+    this.subscriptions.push(this.userService.getUserWallets().subscribe(wallets => {
       this.wallets = wallets;
-    });
+    }));
   }
 
   ngOnInit() {
@@ -72,8 +76,10 @@ export class AlgoRunComponent implements OnInit {
 
   }
 
-  deleteInstance(): void {
-
+  deleteInstance(id: string): void {
+    this.subscriptions.push(this.storeService.deleteAlgoInstance(id).subscribe(() => {
+      //TODO message here
+    }));
   }
 
 }
