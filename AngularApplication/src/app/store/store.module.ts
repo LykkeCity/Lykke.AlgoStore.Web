@@ -5,6 +5,7 @@ import { DataTablesModule } from 'angular-datatables';
 import { TooltipModule } from 'ngx-bootstrap';
 import { StarRatingModule } from 'angular-star-rating';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
+import { BsDropdownModule } from 'ngx-bootstrap';
 
 // ROUTING
 import { StoreRouting } from './store-routing.module';
@@ -32,6 +33,7 @@ import { AlgoRunPopupComponent } from './algo-run/algo-run-popup/algo-run-popup.
     ArchwizardModule,
     DataTablesModule,
     NgxDatatableModule,
+    BsDropdownModule.forRoot(),
     TooltipModule.forRoot(),
     StarRatingModule.forRoot()
   ],

@@ -7,14 +7,19 @@
     background-color: $pale-grey-two;
   }
 
-  .form-control {
-    padding: 0.657rem 1.5rem;
-  }
-
   .metadata-key {
     font-size: 1.125rem;
     font-weight: $font-weight-semibold;
   }
+}
+
+.form-control {
+  padding: 0.657rem 1.5rem;
+}
+
+ul.dropdown-menu {
+  left: 280px !important;
+  top: 60% !important;
 }
 
 .instances-row {

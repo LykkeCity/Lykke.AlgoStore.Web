@@ -13,7 +13,7 @@ export class AlgoRunPopupComponent implements OnInit {
 
   runInstanceForm: FormGroup;
   isDemo: boolean;
-  wallets: Wallet[];
+  wallet: Wallet;
 
 
   constructor(private modalRef: BsModalRef, private storeService: StoreService, private fb: FormBuilder) {
