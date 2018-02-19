@@ -4,6 +4,8 @@ import { ActivatedRoute } from '@angular/router';
 import { StoreService } from '../../services/store.service';
 import { Subscription } from 'rxjs/Subscription';
 import { Algo } from '../models/algo.interface';
+import { Wallet } from '../../models/wallet.model';
+import { UserService } from '../../services/user.service';
 
 @Component({
   selector: 'app-algo-run',
@@ -13,10 +15,11 @@ import { Algo } from '../models/algo.interface';
 export class AlgoRunComponent implements OnInit {
 
   algo: Algo = {};
+  wallets: Wallet[];
   instancesArray: AlgoInstance[];
   routerSubscription: Subscription;
 
-  constructor(private route: ActivatedRoute, private storeService: StoreService) {
+  constructor(private route: ActivatedRoute, private storeService: StoreService, private userService: UserService) {
     this.instancesArray = [
       {
         Name: "My Moving Average Cross v1.0",
@@ -43,6 +46,10 @@ export class AlgoRunComponent implements OnInit {
         this.algo = algo;
         this.algo.ClientId = clientId;
       });
+    });
+
+    this.userService.getUserWallets().subscribe(wallets => {
+      this.wallets = wallets;
     });
   }
 
