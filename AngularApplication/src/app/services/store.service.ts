@@ -88,6 +88,14 @@ export class StoreService {
     return this.authRequestService.get(environment.storeApiUrl + `/v1/management/test/tailLog?AlgoId=${algoId}&Tail=${tail}`);
   }
 
+  createLiveAlgoIntance(data: AlgoInstance): Observable<AlgoInstance> {
+    return this.authRequestService.post(environment.storeApiUrl + '', {data: data}); // TODO add real endpoint
+  }
+
+  createDemoAlgoIntance(data: AlgoInstance): Observable<AlgoInstance> {
+    return this.authRequestService.post(environment.storeApiUrl + '', {data: data}); // TODO add real endpoint
+  }
+
   getAlgoInstances(algoId: string): Observable<AlgoInstance> {
     return this.authRequestService.get(environment.storeApiUrl + ''); //TODO add real endpoint
   }

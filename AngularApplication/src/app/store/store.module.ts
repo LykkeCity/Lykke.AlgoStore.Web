@@ -20,6 +20,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { AlgoListMyAlgosComponent } from './algo-list-my-algos/algo-list-my-algos.component';
 import { AlgoMetadataComponent } from './algo-details/algo-metadata/algo-metadata.component';
 import { AlgoRunComponent } from './algo-run/algo-run.component';
+import { AlgoRunPopupComponent } from './algo-run/algo-run-popup/algo-run-popup.component';
 
 // SERVICES
 @NgModule({
@@ -43,8 +44,10 @@ import { AlgoRunComponent } from './algo-run/algo-run.component';
     DashboardComponent,
     AlgoListMyAlgosComponent,
     AlgoMetadataComponent,
-    AlgoRunComponent
+    AlgoRunComponent,
+    AlgoRunPopupComponent
   ],
-  providers: []
+  providers: [],
+  entryComponents: [AlgoRunPopupComponent]
 })
 export class StoreModule { }

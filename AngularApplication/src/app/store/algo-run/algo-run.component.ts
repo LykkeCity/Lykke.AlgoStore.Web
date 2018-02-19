@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { AlgoInstance } from '../models/algo-instance.model';
 import { ActivatedRoute } from '@angular/router';
 import { StoreService } from '../../services/store.service';
@@ -6,20 +6,22 @@ import { Subscription } from 'rxjs/Subscription';
 import { Algo } from '../models/algo.interface';
 import { Wallet } from '../../models/wallet.model';
 import { UserService } from '../../services/user.service';
+import { BsModalService } from 'ngx-bootstrap';
+import { AlgoRunPopupComponent } from './algo-run-popup/algo-run-popup.component';
 
 @Component({
   selector: 'app-algo-run',
   templateUrl: './algo-run.component.html',
   styleUrls: ['./algo-run.component.scss']
 })
-export class AlgoRunComponent implements OnInit {
+export class AlgoRunComponent implements OnInit, OnDestroy {
 
   algo: Algo = {};
   wallets: Wallet[];
   instancesArray: AlgoInstance[];
-  subscriptions: Subscription[];
+  subscriptions: Subscription[] = [];
 
-  constructor(private route: ActivatedRoute, private storeService: StoreService, private userService: UserService) {
+  constructor(private route: ActivatedRoute, private storeService: StoreService, private userService: UserService, private bsModalService: BsModalService) {
     this.instancesArray = [
       {
         Name: 'My Moving Average Cross v1.0',
@@ -52,7 +54,7 @@ export class AlgoRunComponent implements OnInit {
       }));
     }));
 
-    this.subscriptions.push(this.userService.getUserWallets().subscribe(wallets => {
+    this.subscriptions.push(this.userService.getUserWalletsWithBalances().subscribe(wallets => {
       this.wallets = wallets;
     }));
   }
@@ -60,8 +62,18 @@ export class AlgoRunComponent implements OnInit {
   ngOnInit() {
   }
 
-  runDemo(): void {
+  ngOnDestroy() {
+    this.subscriptions.forEach(sub => {
+      sub.unsubscribe();
+    });
+  }
 
+  runDemo(): void {
+    const initialState = {
+      isDemo: true,
+      wallets: this.wallets
+    };
+    this.bsModalService.show(AlgoRunPopupComponent, {initialState, class: 'modal-sm run-instance-popup'});
   }
 
   backtest(): void {
@@ -69,7 +81,11 @@ export class AlgoRunComponent implements OnInit {
   }
 
   goLive(): void {
-
+    const initialState = {
+      isDemo: false,
+      wallets: this.wallets
+    };
+    this.bsModalService.show(AlgoRunPopupComponent, {initialState, class: 'modal-sm run-instance-popup'});
   }
 
   resetDefault(): void {
