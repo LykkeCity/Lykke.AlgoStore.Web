@@ -21,7 +21,10 @@ export class AlgoRunComponent implements OnInit, OnDestroy {
   instancesArray: AlgoInstance[];
   subscriptions: Subscription[] = [];
 
-  constructor(private route: ActivatedRoute, private storeService: StoreService, private userService: UserService, private bsModalService: BsModalService) {
+  constructor(private route: ActivatedRoute,
+              private storeService: StoreService,
+              private userService: UserService,
+              private bsModalService: BsModalService) {
     this.instancesArray = [
       {
         Name: 'My Moving Average Cross v1.0',
@@ -93,7 +96,7 @@ export class AlgoRunComponent implements OnInit, OnDestroy {
 
   deleteInstance(id: string): void {
     this.subscriptions.push(this.storeService.deleteAlgoInstance(id).subscribe(() => {
-      //TODO message here
+      // TODO message here
     }));
   }
 

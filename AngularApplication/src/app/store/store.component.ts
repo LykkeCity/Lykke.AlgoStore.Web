@@ -1,11 +1,9 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 
 import { StoreService } from '../services/store.service';
 import { Language } from '../models/language.enum';
-import { NotificationsService } from 'angular2-notifications';
 
 @Component({
   selector: 'app-store',
@@ -21,8 +19,6 @@ export class StoreComponent implements OnInit, OnDestroy {
   algoCreateSubscription: Subscription;
 
   constructor(private storeService: StoreService,
-              private router: Router,
-              private notificationsService: NotificationsService,
               private formBuilder: FormBuilder) {
   }
 
@@ -34,7 +30,7 @@ export class StoreComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    if(this.algoCreateSubscription) {
+    if (this.algoCreateSubscription) {
       this.algoCreateSubscription.unsubscribe();
     }
   }

@@ -16,7 +16,7 @@ export class AlgoRunPopupComponent implements OnInit {
   wallet: Wallet;
 
 
-  constructor(private modalRef: BsModalRef, private storeService: StoreService, private fb: FormBuilder) {
+  constructor(public modalRef: BsModalRef, private storeService: StoreService, private fb: FormBuilder) {
     this.runInstanceForm = this.fb.group({
       Name: ['', Validators.required]
     });
@@ -26,11 +26,11 @@ export class AlgoRunPopupComponent implements OnInit {
   }
 
   onSubmit(): void {
-    if(this.runInstanceForm.invalid) {
+    if (this.runInstanceForm.invalid) {
       return;
     }
 
-    if(this.isDemo) {
+    if (this.isDemo) {
       this.storeService.createDemoAlgoIntance(this.runInstanceForm.value).subscribe(() => {
         this.modalRef.hide();
       });

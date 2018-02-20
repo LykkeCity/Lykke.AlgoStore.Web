@@ -26,15 +26,17 @@ export class PopupComponent implements OnInit, OnDestroy {
   }
 
   onPopupCancel(): void {
-    if(this.popupConfig.errorCallback)
+    if (this.popupConfig.errorCallback) {
       this.popupConfig.errorCallback();
+    }
 
     this.bsModalRef.hide();
   }
 
   onPopupConfirm(): void {
-    if(this.popupConfig.successCallback)
+    if (this.popupConfig.successCallback) {
       this.popupConfig.successCallback();
+    }
 
     this.bsModalRef.hide();
   }

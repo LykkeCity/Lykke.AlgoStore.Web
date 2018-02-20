@@ -4,7 +4,6 @@ import { Subscription } from 'rxjs/Subscription';
 
 import { StoreService } from '../../services/store.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { NotificationsService } from 'angular2-notifications';
 import { Algo } from '../models/algo.interface';
 
 @Component({
@@ -22,7 +21,6 @@ export class AlgoEditComponent implements OnInit, OnDestroy {
   constructor(private storeService: StoreService,
               private router: Router,
               private route: ActivatedRoute,
-              private notificationService: NotificationsService,
               private formBuilder: FormBuilder) {
   }
 

@@ -97,10 +97,10 @@ export class StoreService {
   }
 
   getAlgoInstances(algoId: string): Observable<AlgoInstance> {
-    return this.authRequestService.get(environment.storeApiUrl + ''); //TODO add real endpoint
+    return this.authRequestService.get(environment.storeApiUrl + ''); // TODO add real endpoint
   }
 
   deleteAlgoInstance(instanceId: string): Observable<AlgoInstance> {
-    return this.authRequestService.get(environment.storeApiUrl + ''); //TODO add real endpoint
+    return this.authRequestService.get(environment.storeApiUrl + ''); // TODO add real endpoint
   }
 }

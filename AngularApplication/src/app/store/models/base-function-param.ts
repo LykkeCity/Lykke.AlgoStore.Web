@@ -1,7 +1,7 @@
 import { BaseAlgoParam } from './base-algo-param.model';
 
 export interface BaseFunctionParam {
-  Type?:string;
+  Type?: string;
   Id?: string;
   Parameters?: BaseAlgoParam[];
 }
