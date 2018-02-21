@@ -58,3 +58,27 @@
   /* Legacy iOS */ font-style: normal;
   font-weight: 900;
 }
+
+@font-face { font-family: 'Space Mono', monospace;
+  src: url("assets/fonts/SpaceMono-Regular.ttf") format("truetype");
+  /* Legacy iOS */ font-style: normal;
+  font-weight: 400;
+}
+
+@font-face { font-family: 'Space Mono', monospace;
+  src: url("assets/fonts/SpaceMono-Italic.ttf") format("truetype");
+  /* Legacy iOS */ font-style: normal;
+  font-weight: 400;
+}
+
+@font-face { font-family: 'Space Mono', monospace;
+  src: url("assets/fonts/SpaceMono-Bold.ttf") format("truetype");
+  /* Legacy iOS */ font-style: normal;
+  font-weight: 700;
+}
+
+@font-face { font-family: 'Space Mono', monospace;
+  src: url("assets/fonts/SpaceMono-BoldItalic.ttf") format("truetype");
+  /* Legacy iOS */ font-style: normal;
+  font-weight: 700;
+}
