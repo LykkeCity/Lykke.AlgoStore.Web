@@ -38,6 +38,10 @@ export class CodeEditorComponent implements AfterViewInit {
       this.editor.setHighlightActiveLine(false);
     });
 
+    this.editor.renderer.setOptions({
+      showFoldWidgets: false
+    });
+
     if(!this.config.readOnly) {
       this.editor.setOptions({
         enableSnippets: true,
