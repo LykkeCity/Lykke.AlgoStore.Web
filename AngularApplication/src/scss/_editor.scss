@@ -5,30 +5,6 @@
   min-height:50vh;
   font-family: $font-family-monospace !important;
   font-size: 1rem;
-  border-radius: 5px;
-}
-
-.ace_editor {
   border: 1px solid $pale-grey !important;
-
-  &.ace-eclipse  {
-    .ace_active-line {
-      background: rgb(194, 222, 255) !important;
-    }
-
-    .ace-gutter {
-      background-color: #f7f8f9 !important;
-      color: $code !important;
-    }
-  }
-
-  &.ace-monokai {
-    .ace_active-line, .ace_selection {
-      background: #69693a !important;
-    }
-  }
-
-  .ace_scrollbar-v, .ace_scrollbar-h {
-    display: none;
-  }
+  border-radius: 5px;
 }
