@@ -1,23 +1,18 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { map } from 'rxjs/operators';
+import { Observable } from 'rxjs/Observable';
 import { UserData } from '../models/userdata.interface';
 import { AuthRequestService } from './auth-request.service';
 
 @Injectable()
 export class UserService {
 
-  _userData = new BehaviorSubject<UserData>(null);
-  dataStore: UserData;
+  constructor(private authRequestService: AuthRequestService) {  }
 
-  public userData = this._userData.asObservable();
-
-  constructor(private authRequestService: AuthRequestService) {
+  getUserInfo(): Observable<UserData> {
+    return this.authRequestService.get('devapi/PersonalData').pipe(
+      map(res => res['Result'])
+    );
   }
 
-  getUserInfo(): void {
-    this.authRequestService.get<UserData>('/PersonalData ').subscribe(data => {
-      this.dataStore = data;
-      this._userData.next({...this.dataStore});
-    }, error => console.log('Could not load user data.'));
-  }
 }

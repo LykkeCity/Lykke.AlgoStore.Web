@@ -1,5 +1,10 @@
-<div class="user-profile-wrapper pull-right">
-  <button class="profile-nav" [popover]="navTemplate" [outsideClick]="true" placement="bottom"></button>
+<div class="row user-profile-wrapper pull-right cursor-pointer" [popover]="navTemplate" [outsideClick]="true" placement="bottom">
+  <div class="col-3 align-self-center">
+    <button class="profile-nav"></button>
+  </div>
+  <div class="col-9 align-self-center mt-3">
+    <span class="font-weight-semibold">{{userData && userData.FullName}}</span>
+  </div>
 </div>
 
 <ng-template #navTemplate>

@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 
 import { UserService } from '../../../services/user.service';
@@ -13,21 +13,19 @@ import { AuthService } from '../../../services/auth.service';
 export class UserProfileComponent implements OnInit, OnDestroy {
 
   userData: UserData;
-  private subscriptions: Subscription[] = [];
+  private subscription: Subscription;
 
   constructor(private userService: UserService, private authService: AuthService) {
   }
 
   ngOnInit() {
-    this.subscriptions.push(
-      this.userService.userData.subscribe(data => {
-        this.userData = data;
-      })
-    );
+    this.subscription = this.userService.getUserInfo().subscribe(data => {
+      this.userData = data;
+    });
   }
 
   ngOnDestroy() {
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
+    this.subscription.unsubscribe();
   }
 
   logout(): void {
