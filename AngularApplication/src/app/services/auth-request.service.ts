@@ -5,7 +5,6 @@ import { catchError } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { NotificationsService } from 'angular2-notifications';
-import { environment } from '../../environments/environment';
 import { ErrorObservable } from 'rxjs/observable/ErrorObservable';
 
 @Injectable()
@@ -32,7 +31,7 @@ export class AuthRequestService {
     };
     const reqOptions = Object.assign({}, options, {headers});
 
-    return this.http.get(environment.storeApiUrl + url, reqOptions).pipe(
+    return this.http.get(url, reqOptions).pipe(
       catchError( error => this.handleError(error) )
     );
   }
@@ -43,7 +42,7 @@ export class AuthRequestService {
     };
     const reqOptions = Object.assign({}, options, {headers});
 
-    return this.http.post(environment.storeApiUrl + url, body, reqOptions).pipe(
+    return this.http.post(url, body, reqOptions).pipe(
       catchError( error => this.handleError(error) )
     );
   }
@@ -54,7 +53,7 @@ export class AuthRequestService {
     };
     const reqOptions = Object.assign({}, options, {headers});
 
-    return this.http.delete(environment.storeApiUrl + url, reqOptions).pipe(
+    return this.http.delete(url, reqOptions).pipe(
       catchError( error => this.handleError(error) )
     );
   }
