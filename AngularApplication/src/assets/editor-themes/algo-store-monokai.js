@@ -104,6 +104,5 @@ background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAACCAYAAACZgb
   "  }";
 
 var dom = require("ace/lib/dom");
-console.log(dom);
 dom.importCssString(exports.cssText, exports.cssClass);
 });
