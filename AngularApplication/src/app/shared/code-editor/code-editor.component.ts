@@ -30,12 +30,26 @@ export class CodeEditorComponent implements AfterViewInit {
   }
 
   ngAfterViewInit() {
+    ace.config.setModuleUrl(
+      "algo-store-monokai",
+      "../../../assets/editor-themes/algo-store-monokai.js"
+    );
+
+    ace.config.setModuleUrl(
+      "algo-store-eclipse",
+      "../../../assets/editor-themes/algo-store-eclipse.js"
+    );
+
     this.editor = ace.edit('editor');
-    this.editor.setTheme('ace/theme/eclipse');
+    this.editor.setTheme('algo-store-eclipse');
     this.editor.setHighlightActiveLine(false);
 
     this.editor.session.selection.on('changeCursor', (e) => {
       this.editor.setHighlightActiveLine(false);
+    });
+
+    this.editor.renderer.setOptions({
+      showFoldWidgets: false
     });
 
     if(!this.config.readOnly) {
@@ -58,9 +72,9 @@ export class CodeEditorComponent implements AfterViewInit {
 
   onThemeChange(): void {
     if (this.editor.renderer.$themeId.indexOf('eclipse') !== -1) {
-      this.editor.setTheme('ace/theme/monokai');
+      this.editor.setTheme('algo-store-monokai');
     } else {
-      this.editor.setTheme('ace/theme/eclipse');
+      this.editor.setTheme('algo-store-eclipse');
     }
   }
 
