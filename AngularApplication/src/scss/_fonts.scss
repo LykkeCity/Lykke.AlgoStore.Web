@@ -67,7 +67,7 @@
 
 @font-face { font-family: 'Space Mono', monospace;
   src: url("assets/fonts/SpaceMono-Italic.ttf") format("truetype");
-  /* Legacy iOS */ font-style: normal;
+  /* Legacy iOS */ font-style: italic;
   font-weight: 400;
 }
 
@@ -79,6 +79,6 @@
 
 @font-face { font-family: 'Space Mono', monospace;
   src: url("assets/fonts/SpaceMono-BoldItalic.ttf") format("truetype");
-  /* Legacy iOS */ font-style: normal;
+  /* Legacy iOS */ font-style: italic;
   font-weight: 700;
 }
