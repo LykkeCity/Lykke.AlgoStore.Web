@@ -10,8 +10,12 @@ declare var ace;
 export class CodeEditorComponent implements AfterViewInit {
 
   editor: any;
+  timeoutId: any;
+  doneTypingInterval = 500;
+
   @Input() config: EditorConfig;
   @Output() onInitCompleted = new EventEmitter<any>();
+  @Output() onCodeUpdated = new EventEmitter<string>();
 
   defaultData: EditorConfig;
 
@@ -44,7 +48,14 @@ export class CodeEditorComponent implements AfterViewInit {
     this.editor.setTheme('algo-store-eclipse');
     this.editor.setHighlightActiveLine(false);
 
-    this.editor.session.selection.on('changeCursor', (e) => {
+    this.editor.session.on('change', () => {
+      clearTimeout(this.timeoutId);
+      this.timeoutId = setTimeout(() => {
+        this.onCodeUpdated.emit(this.editor.getValue());
+      }, this.doneTypingInterval);
+    });
+
+    this.editor.session.selection.on('changeCursor', () => {
       this.editor.setHighlightActiveLine(false);
     });
 

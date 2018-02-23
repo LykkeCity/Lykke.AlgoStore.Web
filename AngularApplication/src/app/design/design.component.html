@@ -1,44 +1,19 @@
-<div class="design-placeholder">
-
-  <div class="row editor mb-20">
-    <div class="container">
-      <div class="col-md-3 sidebar">
-        <h2>
-          Hight-frequency API
-        </h2>
-        <div class="available-endpoints">
-          <div class="row">
-            <div class="col-md-4">
-              <span>API key: </span>
-            </div>
-            <div class="col-md-8">
-              <input type="text" placeholder="XXXX-XXXX-XXXX-XXXX">
-            </div>
-          </div>
-        </div>
-        <h2>
-          Resources
-        </h2>
-        <div class="resources">
-          <ul>
-            <li>HFT API SDK</li>
-            <li><a href="javascript:void(0)" (click)="downloadProjectTemplate()">Algo project</a></li>
-          </ul>
-        </div>
-      </div>
-      <div class="col-md-9 code">
-        <div class="row">
-          <div class="col-md-6">
-            <h2 class="pull-left">Algo name: {{algo.Name ? algo.Name : ''}}</h2>
-          </div>
-          <div class="col-md-6 text-right pt-5 pb-5">
-            <a href="javascript:void(0)" (click)="save()">Save</a>
-            <span class="ml-5 mr-5">|</span>
-            <span>Status: Draft</span>
-          </div>
-        </div>
-        <app-code-editor [config]="{readOnly: false, sourceCode: algo.Data}"></app-code-editor>
-      </div>
+<div class="container">
+  <div class="row mt-3">
+    <div class="pl-0 col-9 align-self-center">
+      <h3 class="pull-left">Algo name: {{algo.Name ? algo.Name : ''}}</h3>
+    </div>
+    <div class="col-3 align-self-center">
+      <a href="javascript:void(0)" (click)="save()">Save</a>
+      <span class="ml-1 mr-1">|</span>
+      <span>Status: Draft</span>
+    </div>
+  </div>
+  <hr>
+  <div class="row">
+    <div class="col-8">
+      <app-code-editor [config]="{readOnly: false, sourceCode: algo.Data}"
+                       (onCodeUpdated)="onCodeUpdate($event)"></app-code-editor>
     </div>
   </div>
 </div>

@@ -1,10 +1,9 @@
-import { Component, OnDestroy } from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 import { StoreService } from '../services/store.service';
-import { PopupComponent } from '../components/popup/popup.component';
-import { BsModalService } from 'ngx-bootstrap';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Algo } from '../store/models/algo.interface';
+import { NotificationsService } from 'angular2-notifications';
 
 @Component({
   selector: 'app-design',
@@ -14,54 +13,38 @@ import { Algo } from '../store/models/algo.interface';
 export class DesignComponent implements OnDestroy {
 
   algo: Algo = {};
-  subscribeToSave: Subscription;
-  subscribeToGet: Subscription;
-  routerSubscription: Subscription;
+  subscriptions: Subscription[] = [];
 
-  constructor(private storeService: StoreService, private modalService: BsModalService, private route: ActivatedRoute) {
-    this.routerSubscription = this.route.params.subscribe(params => {
+  constructor(private storeService: StoreService,
+              private route: ActivatedRoute,
+              private notificationsService: NotificationsService,
+              private ref: ChangeDetectorRef,
+              private router: Router) {
+
+    this.subscriptions.push(this.route.params.subscribe(params => {
       const id = params['id'];
 
-      this.subscribeToGet = this.storeService.algoGetMetadata(id).subscribe((algo) => {
+      this.subscriptions.push(this.storeService.algoGetMetadata(id).subscribe((algo) => {
         this.algo = algo;
-      });
-    });
+      }));
+    }));
   }
 
   ngOnDestroy() {
-    this.routerSubscription.unsubscribe();
-    this.subscribeToGet.unsubscribe();
-    this.subscribeToSave.unsubscribe();
+    this.subscriptions.forEach(sub => {
+      sub.unsubscribe();
+    });
   }
 
-  downloadProjectTemplate(): void {
-    const initialState = {
-      popupConfig: {
-        hideIcon: true,
-        name: 'downloadProjectTemplateInfo',
-        width: 370,
-        title: 'Download algo',
-        textClass: 'text-center',
-        text: 'Download project for local development. You will get a basic architecture ' +
-        'of the trading algo together with REST API consumer for the HFT API.',
-        btnCancelText: 'Cancel',
-        btnConfirmText: 'Yes, download the template',
-        successCallback: this.onPopupConfirm,
-      }
-    };
-
-    this.modalService.show(PopupComponent, { initialState, class: 'modal-sm custom-popup' });
+  onCodeUpdate(code: string): void {
+    this.algo.Data = code;
+    this.ref.detectChanges();
   }
-
-  onPopupConfirm = (popupData) => {
-    switch (popupData.name) {
-      case  'downloadProjectTemplateInfo':
-        console.log('download');
-        break;
-    }
-  };
 
   save(): void {
-    this.subscribeToSave = this.storeService.algoSave(this.algo['AlgoId'], this.algo.Data).subscribe();
+    this.subscriptions.push(this.storeService.algoSave(this.algo['AlgoId'], this.algo.Data).subscribe(() => {
+      this.notificationsService.success('Success', 'Also source saved');
+      this.router.navigate(['store/algo-list']);
+    }));
   }
 }
