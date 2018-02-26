@@ -43,56 +43,10 @@
                 </div>
               </div>
               <hr class="mt-0">
-              <form>
-                <div class="row meta-row" *ngFor="let param of algo.AlgoMetaDataInformation?.Parameters">
-                  <div class="col-12 metadata-name">
-                    <div class="form-group mb-0">
-                      <div class="metadata-key"><label for="{{param.Key}}">{{param.Key}}</label></div>
-
-                      <div *ngIf="param.Type === 'String'">
-                        <input type="text" class="form-control" [(ngModel)]="param.Value" id="{{param.Key}}" [ngModelOptions]="{standalone: true}">
-                      </div>
-
-                      <div *ngIf="param.Type === 'int'">
-                        <input type="number" class="form-control" [(ngModel)]="param.Value" id="{{param.Key}}" [ngModelOptions]="{standalone: true}">
-                      </div>
-
-                      <div *ngIf="param.Type === 'enum'">
-                        <select type="number" class="form-control" [(ngModel)]="param.Value" id="{{param.Key}}" [ngModelOptions]="{standalone: true}">
-                          <option>1</option>
-                          <option>2</option>
-                          <option>3</option>
-                        </select>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="row" *ngFor="let func of algo.AlgoMetaDataInformation?.Functions">
-                  <div *ngFor="let param of func.Parameters" class="col-12">
-                    <div class="row meta-row">
-                      <div class="col-12 metadata-name">
-                        <div class="form-group mb-0">
-                          <div class="metadata-key"><label for="{{func.Id}}-{{param.Key}}">{{func.Id}}.{{param.Key}}</label></div>
-
-                          <div *ngIf="param.Type === 'String'">
-                            <input type="text" class="form-control" [(ngModel)]="param.Value" id="{{func.Id}}-{{param.Key}}" [ngModelOptions]="{standalone: true}">
-                          </div>
-
-                          <div *ngIf="param.Type === 'int'">
-                            <input type="number" class="form-control" [(ngModel)]="param.Value" id="{{func.Id}}-{{param.Key}}" [ngModelOptions]="{standalone: true}">
-                          </div>
-
-                          <div *ngIf="param.Type === 'enum'">
-                            <select type="number" class="form-control" [(ngModel)]="param.Value" id="{{func.Id}}-{{param.Key}}" [ngModelOptions]="{standalone: true}">
-                              <option>1</option>
-                              <option>2</option>
-                              <option>3</option>
-                            </select>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+              <form *ngIf="showMetadataForm" [formGroup]="metadataForm">
+                <app-edit-metadata-attribute class="meta-row" [form]="metadataForm.controls['Parameters']" [metadataProperty]="param" *ngFor="let param of algo.AlgoMetaDataInformation?.Parameters"></app-edit-metadata-attribute>
+                <div *ngFor="let func of algo.AlgoMetaDataInformation?.Functions">
+                  <app-edit-metadata-attribute class="meta-row" [form]="metadataForm.controls['Functions'].controls[func.Id]" [metadataProperty]="param" *ngFor="let param of func.Parameters"></app-edit-metadata-attribute>
                 </div>
               </form>
             </div>
