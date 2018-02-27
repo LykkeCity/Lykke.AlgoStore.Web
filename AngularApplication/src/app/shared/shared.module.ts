@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { TerminalComponent } from '../components/terminal/terminal.component';
 import { PopupComponent } from '../components/popup/popup.component';
@@ -15,7 +15,7 @@ import { DpDatePickerModule } from 'ng2-date-picker';
 @NgModule({
   imports: [
     CommonModule,
-    FormsModule,
+    ReactiveFormsModule,
     RouterModule,
     UiSwitchModule,
     AceEditorModule,
@@ -31,7 +31,6 @@ import { DpDatePickerModule } from 'ng2-date-picker';
   ],
   exports: [
     CommonModule,
-    FormsModule,
     PopupComponent,
     TerminalComponent,
     CodeEditorComponent,

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { IDatePickerDirectiveConfig } from 'ng2-date-picker';
 
 @Component({
@@ -8,8 +8,11 @@ import { IDatePickerDirectiveConfig } from 'ng2-date-picker';
 })
 export class DateTimePickerComponent implements OnInit {
 
+  @Input() controlName: string;
+  @Input() form: string;
+
   public datePickerConfig: IDatePickerDirectiveConfig = {
-    format: 'DD.MM.YYYY',
+    format: 'YYYY-MM-DD HH:mm',
     monthFormat: 'MMMM YYYY',
     firstDayOfWeek: 'mo',
     showGoToCurrent: false,

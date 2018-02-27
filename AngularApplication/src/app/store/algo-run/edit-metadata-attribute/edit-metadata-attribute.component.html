@@ -10,6 +10,6 @@
     <!-- TODO: try to create metadata property of enum type and work this case out here -->
   </div>
   <div *ngSwitchCase="'DateTime'">
-    <input class="form-control" type="date" [formControlName]="metadataProperty.Key">
+    <app-date-time-picker [form]="form" [controlName]="metadataProperty.Key"></app-date-time-picker>
   </div>
 </div>
