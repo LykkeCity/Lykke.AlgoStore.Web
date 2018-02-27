@@ -133,4 +133,20 @@ export class AlgoRunComponent implements OnInit, OnDestroy {
 
   }
 
+  mapFormToData() {
+    const formValue = this.metadataForm.value;
+
+    this.algo.AlgoMetaDataInformation.Parameters.forEach(
+      param => param.Value = formValue.Parameters[param.Key]
+    );
+
+    this.algo.AlgoMetaDataInformation.Functions.forEach(
+      func => {
+        func.Parameters.forEach(
+          funcParam => funcParam.Value = formValue.Functions[func.Id][funcParam.Key]
+        );
+      }
+    );
+  }
+
 }
