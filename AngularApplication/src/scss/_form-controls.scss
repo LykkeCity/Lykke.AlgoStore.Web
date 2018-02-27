@@ -1,0 +1,18 @@
+@import "colors";
+
+.custom-control-label::before {
+  border: 1px solid $silver;
+
+  &:hover {
+    border-color: 1px solid $cool-grey-two;
+  }
+}
+
+.custom-checkbox .custom-control-input:checked ~ .custom-control-label::before {
+  border: none
+}
+
+.custom-radio .custom-control-input:checked ~ .custom-control-label::before {
+  background-color: $azure;
+  border: none;
+}
