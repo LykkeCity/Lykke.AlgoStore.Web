@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css?family=Space+Mono:400,400i,700,700i&subset=latin-ext');
+
 @font-face { font-family: 'Proxima Nova';
   src: url("assets/fonts/ProximaNovaThin.eot");
   /* IE9 Compat Modes */
@@ -57,28 +59,4 @@
       url("assets/fonts/ProximaNova-Black.svg#5216c1cacb478b35a513d81c80dc8ad7") format("svg");
   /* Legacy iOS */ font-style: normal;
   font-weight: 900;
-}
-
-@font-face { font-family: 'Space Mono', monospace;
-  src: url("assets/fonts/SpaceMono-Regular.ttf") format("truetype");
-  /* Legacy iOS */ font-style: normal;
-  font-weight: 400;
-}
-
-@font-face { font-family: 'Space Mono', monospace;
-  src: url("assets/fonts/SpaceMono-Italic.ttf") format("truetype");
-  /* Legacy iOS */ font-style: italic;
-  font-weight: 400;
-}
-
-@font-face { font-family: 'Space Mono', monospace;
-  src: url("assets/fonts/SpaceMono-Bold.ttf") format("truetype");
-  /* Legacy iOS */ font-style: normal;
-  font-weight: 700;
-}
-
-@font-face { font-family: 'Space Mono', monospace;
-  src: url("assets/fonts/SpaceMono-BoldItalic.ttf") format("truetype");
-  /* Legacy iOS */ font-style: italic;
-  font-weight: 700;
 }
