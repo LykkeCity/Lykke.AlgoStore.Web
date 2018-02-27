@@ -22,6 +22,53 @@ dp-date-picker.#{$theme-name} {
   .dp-calendar-wrapper {
     border: none;
     margin-bottom: 30px;
+
+    .dp-calendar-month {
+      border: none;
+      background: none;
+      margin: 10px;
+
+      &.dp-current-month {
+        background: $azure;
+        border-radius: 4px;
+      }
+    }
+  }
+
+
+  dp-day-time-calendar {
+
+    dp-time-select {
+      border: none;
+      border-top: 1px solid $pale-grey;
+    }
+
+    .dp-time-select-control {
+      width: auto;
+
+      .dp-time-select-control-up,
+      .dp-time-select-control-down {
+        width: 60px;
+        height: 40px;
+
+        &:hover {
+          background-color: $pale-grey;
+        }
+
+        &::before {
+          height: 15px;
+          width: 15px;
+          color: $battleship-grey;
+        }
+      }
+
+      .dp-time-select-display-hours,
+      .dp-time-select-display-minutes,
+      .dp-time-select-display-meridiem {
+        font-size: 1.166rem;
+        font-weight: $font-weight-semibold;
+      }
+    }
   }
 
 }
@@ -37,14 +84,24 @@ dp-calendar-nav.#{$theme-name} {
     margin-bottom: 25px;
   }
   .dp-nav-header {
-    color: red;
     font-size: inherit;
-    font-weight: bold;
     left: 50px;
     right: 50px;
+    top: 38%;
     z-index: 2;
     &[hidden] {
       display: none;
+    }
+
+    &:hover {
+      background-color: $pale-grey;
+    }
+
+    .dp-nav-header-btn {
+      border: none;
+      background: none;
+      font-size: 1.3rem;
+      font-weight: $font-weight-semibold;
     }
   }
   .dp-calendar-nav-container-left {
@@ -58,10 +115,14 @@ dp-calendar-nav.#{$theme-name} {
   .dp-calendar-nav-right {
     background: none;
     border: none;
-    font-size: 42px;
-    color: red;
-    line-height: 1;
-    width: auto;
+    color: $battleship-grey;
+    width: 50px;
+    height: 40px;
+
+    &:hover {
+      background-color: $pale-grey;
+    }
+
     &[hidden] {
       display: initial;
       opacity: 0.3;
@@ -71,20 +132,13 @@ dp-calendar-nav.#{$theme-name} {
 
   .dp-calendar-nav-left::before,
   .dp-calendar-nav-right::before {
-    display: initial;
-    font-family: 'eon-icons';
-    transform: none;
-    border: none;
-    width: auto;
-    height: auto;
+    display: block;
+    width: 20px;
+    height: 18px;
   }
 
   .dp-calendar-nav-left::before {
-    content: '\e821';
-  }
-
-  .dp-calendar-nav-right::before {
-    content: '\e822';
+    margin-left: 10px;
   }
 }
 
@@ -97,29 +151,37 @@ dp-day-calendar.#{$theme-name} {
   }
 
   .dp-weekdays {
-    display: none;
+    font-size: 0.88rem;
+    color: $azure;
+    font-weight: $font-weight-semibold;
+    text-transform: uppercase;
   }
   .dp-calendar-weekday {
     width: 40px;
   }
   .dp-calendar-day {
     box-sizing: border-box;
-    background: #FFFFFF;
-    border-radius: 50%;
+    background: $white;
+    border-radius: 4px;
     border: none;
     font-weight: 500;
-    color: turquoise;
+    color: $black;
     width: 40px;
     height: 40px;
     padding: 0;
+
     &[disabled] {
       color: darkgrey;
       opacity: 0.3;
       cursor: default;
     }
+
+    &:hover {
+      background-color: $pale-grey;
+    }
   }
   .dp-selected {
-    background: red;
+    background: $azure;
     color: white;
   }
   .dp-prev-month,
@@ -142,4 +204,10 @@ dp-day-calendar.#{$theme-name} {
       font-size: 47px;
     }
   }
+}
+
+.dp-time-select-control-up,
+.dp-time-select-control-down {
+  border: none;
+  background: none;
 }
