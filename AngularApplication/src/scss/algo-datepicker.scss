@@ -1,0 +1,145 @@
+// The following styles extend the 'dp-material' theme, provided by the 'ng2-date-picker' package
+
+@import "~scss/reuse"; // Colors and co. are stored here
+
+$theme-name: 'algo-datepicker';
+
+dp-date-picker.#{$theme-name} {
+
+  position: absolute !important;
+  width: 100%;
+  top: 100%;
+  left: 0;
+  font-size: 18px;
+  > div {
+    width: 100%;
+  }
+
+  .dp-popup.#{$theme-name} {
+    text-align: center;
+  }
+
+  .dp-calendar-wrapper {
+    border: none;
+    margin-bottom: 30px;
+  }
+
+}
+dp-calendar-nav.#{$theme-name} {
+
+  .dp-nav-btns-container {
+    left: 5px;
+  }
+
+  .dp-calendar-nav-container {
+    border: none;
+    margin-top: 35px;
+    margin-bottom: 25px;
+  }
+  .dp-nav-header {
+    color: red;
+    font-size: inherit;
+    font-weight: bold;
+    left: 50px;
+    right: 50px;
+    z-index: 2;
+    &[hidden] {
+      display: none;
+    }
+  }
+  .dp-calendar-nav-container-left {
+    float: left;
+  }
+  .dp-calendar-nav-container-right {
+    float: right;
+  }
+
+  .dp-calendar-nav-left,
+  .dp-calendar-nav-right {
+    background: none;
+    border: none;
+    font-size: 42px;
+    color: red;
+    line-height: 1;
+    width: auto;
+    &[hidden] {
+      display: initial;
+      opacity: 0.3;
+      pointer-events: none;
+    }
+  }
+
+  .dp-calendar-nav-left::before,
+  .dp-calendar-nav-right::before {
+    display: initial;
+    font-family: 'eon-icons';
+    transform: none;
+    border: none;
+    width: auto;
+    height: auto;
+  }
+
+  .dp-calendar-nav-left::before {
+    content: '\e821';
+  }
+
+  .dp-calendar-nav-right::before {
+    content: '\e822';
+  }
+}
+
+dp-day-calendar.#{$theme-name} {
+
+  background: white;
+
+  .dp-calendar-weekday {
+    border: none;
+  }
+
+  .dp-weekdays {
+    display: none;
+  }
+  .dp-calendar-weekday {
+    width: 40px;
+  }
+  .dp-calendar-day {
+    box-sizing: border-box;
+    background: #FFFFFF;
+    border-radius: 50%;
+    border: none;
+    font-weight: 500;
+    color: turquoise;
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    &[disabled] {
+      color: darkgrey;
+      opacity: 0.3;
+      cursor: default;
+    }
+  }
+  .dp-selected {
+    background: red;
+    color: white;
+  }
+  .dp-prev-month,
+  .dp-next-month {
+    opacity: 0.3;
+  }
+}
+
+.datepicker-wrapper {
+  position: relative;
+
+  input[type=text] {
+    padding-right: 49px;
+  }
+
+  .eon-icon {
+    position: absolute;
+    right: 0;
+    &::before {
+      font-size: 47px;
+    }
+  }
+}
