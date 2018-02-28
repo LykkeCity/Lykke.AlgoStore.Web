@@ -10,6 +10,7 @@ export class EditMetadataAttributeComponent implements OnInit {
 
   @Input() metadataProperty: any;
   @Input() form: FormGroup;
+  @Input() formName: string;
 
   constructor() { }
 

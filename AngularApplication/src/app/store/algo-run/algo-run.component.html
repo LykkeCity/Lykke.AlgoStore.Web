@@ -46,7 +46,7 @@
               <form *ngIf="showMetadataForm" [formGroup]="metadataForm">
                 <app-edit-metadata-attribute class="meta-row" [form]="metadataForm.controls['Parameters']" [metadataProperty]="param" *ngFor="let param of algo.AlgoMetaDataInformation?.Parameters"></app-edit-metadata-attribute>
                 <div *ngFor="let func of algo.AlgoMetaDataInformation?.Functions">
-                  <app-edit-metadata-attribute class="meta-row" [form]="metadataForm.controls['Functions'].controls[func.Id]" [metadataProperty]="param" *ngFor="let param of func.Parameters"></app-edit-metadata-attribute>
+                  <app-edit-metadata-attribute class="meta-row" [form]="metadataForm.controls['Functions'].controls[func.Id]" [formName]="func.Id" [metadataProperty]="param" *ngFor="let param of func.Parameters"></app-edit-metadata-attribute>
                 </div>
               </form>
             </div>

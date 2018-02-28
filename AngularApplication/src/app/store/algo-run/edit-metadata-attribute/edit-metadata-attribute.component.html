@@ -1,5 +1,7 @@
 <div [ngSwitch]="metadataProperty.Type" [formGroup]="form">
-  <label class="metadata-key">{{ metadataProperty.Key }}</label>
+  <label class="metadata-key">
+    <span *ngIf="formName">{{formName}}.</span>{{ metadataProperty.Key }}
+  </label>
   <div class="form-group" *ngSwitchCase="'String'">
     <input class="form-control" type="text" [formControlName]="metadataProperty.Key">
   </div>
