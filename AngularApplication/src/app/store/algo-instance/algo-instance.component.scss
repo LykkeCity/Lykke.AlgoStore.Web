@@ -1,4 +1,24 @@
 @import '~scss/reuse';
+
 .splitter-wrapper {
   height: calc(100vh - #{$navbar-height-md});
+}
+
+ul.dropdown-menu {
+  left: 130px !important;
+  top: 60% !important;
+}
+
+.action-buttons, .fs-1r {
+  font-size: 1rem;
+}
+
+.instance-type-badge {
+  width: 55px;
+  height: 24px;
+  border-radius: 4px;
+  color: $white;
+  background-color: $azure;
+  padding: 4px 10px;
+  margin-right: 10px;
 }

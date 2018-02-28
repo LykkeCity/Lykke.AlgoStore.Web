@@ -1,17 +1,19 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { StoreService } from '../../services/store.service';
 import { AlgoInstance } from '../models/algo-instance.model';
 import { Subscription } from 'rxjs/Subscription';
 import { Wallet } from '../../models/wallet.model';
 import { Algo } from '../models/algo.interface';
+import { UserService } from '../../services/user.service';
+import { BaseAlgoParam } from '../models/base-algo-param.model';
 
 @Component({
   selector: 'app-algo-instance',
   templateUrl: './algo-instance.component.html',
   styleUrls: ['./algo-instance.component.scss']
 })
-export class AlgoInstanceComponent implements OnInit {
+export class AlgoInstanceComponent implements OnInit, OnDestroy {
 
   instance: AlgoInstance;
   clientId: string;
@@ -21,7 +23,7 @@ export class AlgoInstanceComponent implements OnInit {
   editor: any;
   subscriptions: Subscription[] = [];
 
-  constructor(private route: ActivatedRoute, private storeService: StoreService) {
+  constructor(private route: ActivatedRoute, private storeService: StoreService, private userService: UserService) {
     this.instance = {
       Id: 'aaa',
       Name: "My testing instance",
@@ -41,6 +43,10 @@ export class AlgoInstanceComponent implements OnInit {
         this.algo.ClientId = this.clientId;
       }));
 
+      this.subscriptions.push(this.userService.getUserWalletsWithBalances().subscribe(wallets => {
+        this.wallets = wallets;
+      }));
+
       // this.subscriptions.push(this.storeService.getInstanceById(instanceId).subscribe(instance => {
       //   this.instance = instance;
       // }));
@@ -48,6 +54,12 @@ export class AlgoInstanceComponent implements OnInit {
   }
 
   ngOnInit() {
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.forEach(sub => {
+      sub.unsubscribe();
+    });
   }
 
   onEditorCreated(editor: any): void {
@@ -70,8 +82,9 @@ export class AlgoInstanceComponent implements OnInit {
 
   }
 
-  highlight(event): void {
-
+  highlight(meta: BaseAlgoParam): void {
+    this.editor.find(meta.Key);
+    this.editor.setHighlightActiveLine(true);
   }
 
 }
