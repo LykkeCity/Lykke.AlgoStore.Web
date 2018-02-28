@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs/Subject';
 
-import { PopupConfig } from '../models/popup.interface';
 import { SuccessMessageConfig } from '../models/successConfig.interface';
 import { Status } from '../models/status.enum';
 

@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, EventEmitter, Input, Output, SimpleChanges } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
 import { EditorConfig } from './models/code-editor-config.model';
 
 declare var ace;
@@ -7,7 +7,7 @@ declare var ace;
   templateUrl: './code-editor.component.html',
   styleUrls: ['./code-editor.component.scss']
 })
-export class CodeEditorComponent implements AfterViewInit {
+export class CodeEditorComponent implements AfterViewInit, OnChanges {
 
   editor: any;
   timeoutId: any;
@@ -24,11 +24,11 @@ export class CodeEditorComponent implements AfterViewInit {
       mode: 'java',
       readOnly: true,
       sourceCode: ''
-    }
+    };
   }
 
   ngOnChanges(simpleChanges: SimpleChanges) {
-    if(simpleChanges['config'] && simpleChanges['config'].currentValue) {
+    if (simpleChanges['config'] && simpleChanges['config'].currentValue) {
       this.config = { ...this.defaultData, ...simpleChanges['config'].currentValue };
     }
   }

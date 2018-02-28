@@ -1,5 +1,4 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { Router } from '@angular/router';
 import { Algo } from '../models/algo.interface';
 import { Subject } from 'rxjs/Subject';
 import { Subscription } from 'rxjs/Subscription';
@@ -48,7 +47,7 @@ export class AlgoListMyAlgosComponent implements OnInit, OnDestroy {
   }
 
   onDataObtained = (result) => {
-    if(this.dtInstance) {
+    if (this.dtInstance) {
       this.dtInstance.destroy();
     }
 

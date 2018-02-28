@@ -6,6 +6,7 @@ export const environment = {
   redirectUrl: 'http://localhost:4200/',
 
   storeApiUrl: 'http://algo-store-api.lykke-algo-store.svc.cluster.local/api',
+  apiV2Url: 'https://apiv2-dev.lykkex.net/api/',
   authUrl: 'http://localhost:5000/api/home/authentication',
   tokenUrl: 'https://auth-dev.lykkex.net/getlykkewallettoken',
   idleTime: 300,

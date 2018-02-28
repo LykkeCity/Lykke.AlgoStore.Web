@@ -1,0 +1,221 @@
+// The following styles extend the 'dp-material' theme, provided by the 'ng2-date-picker' package
+
+@import "~scss/reuse"; // Colors and co. are stored here
+
+$theme-name: 'algo-datepicker';
+
+dp-date-picker.#{$theme-name} {
+
+  button {
+    outline: none;
+  }
+
+  position: absolute !important;
+  width: 100%;
+  top: 100%;
+  left: 0;
+  font-size: 1rem;
+  > div {
+    width: 100%;
+  }
+
+  .dp-popup.#{$theme-name} {
+    text-align: center;
+  }
+
+  .dp-calendar-wrapper {
+    border: none;
+    margin-bottom: 30px;
+
+    .dp-calendar-month {
+      border: none;
+      background: none;
+      margin: 10px;
+
+      &.dp-current-month {
+        background: $azure;
+        border-radius: 4px;
+      }
+
+      &:hover {
+        background-color: $pale-grey;
+      }
+    }
+  }
+
+
+  dp-day-time-calendar {
+
+    dp-time-select {
+      border: none;
+      border-top: 1px solid $pale-grey;
+    }
+
+    .dp-time-select-control {
+      width: auto;
+
+      .dp-time-select-control-up,
+      .dp-time-select-control-down {
+        width: 60px;
+        height: 40px;
+
+        &:hover {
+          background-color: $pale-grey;
+        }
+
+        &::before {
+          height: 15px;
+          width: 15px;
+          color: $battleship-grey;
+        }
+      }
+
+      .dp-time-select-display-hours,
+      .dp-time-select-display-minutes,
+      .dp-time-select-display-meridiem {
+        font-size: 1.166rem;
+        font-weight: $font-weight-semibold;
+      }
+    }
+  }
+
+}
+dp-calendar-nav.#{$theme-name} {
+
+  .dp-calendar-nav-container {
+    border: none;
+    margin-top: 35px;
+    margin-bottom: 25px;
+  }
+  .dp-nav-header {
+    top: 38%;
+    z-index: 2;
+    width: 65%;
+    left: 0;
+    &[hidden] {
+      display: none;
+    }
+
+    &:hover {
+      background-color: $pale-grey;
+    }
+
+    .dp-nav-header-btn {
+      float: left;
+      border: none;
+      background: none;
+      font-size: 1.3rem;
+      font-weight: $font-weight-semibold;
+      text-transform: uppercase;
+    }
+  }
+
+  .dp-nav-btns-container {
+    right: 0;
+  }
+
+  .dp-calendar-nav-container-left {
+    float: left;
+  }
+  .dp-calendar-nav-container-right {
+    float: right;
+  }
+
+  .dp-calendar-nav-left,
+  .dp-calendar-nav-right {
+    background: none;
+    border: none;
+    color: $battleship-grey;
+    width: 50px;
+    height: 40px;
+
+    &:hover {
+      background-color: $pale-grey;
+    }
+
+    &[hidden] {
+      display: initial;
+      opacity: 0.3;
+      pointer-events: none;
+    }
+  }
+
+  .dp-calendar-nav-left::before,
+  .dp-calendar-nav-right::before {
+    display: block;
+    width: 15px;
+    height: 13px;
+    margin-left: 10px;
+  }
+}
+
+dp-day-calendar.#{$theme-name} {
+
+  background: $white;
+
+  .dp-calendar-weekday {
+    border: none;
+  }
+
+  .dp-weekdays {
+    font-size: 0.88rem;
+    color: $azure;
+    font-weight: $font-weight-semibold;
+    text-transform: uppercase;
+  }
+
+  .dp-calendar-weekday {
+    width: 40px;
+  }
+  .dp-calendar-day {
+    box-sizing: border-box;
+    background: $white;
+    border-radius: 4px;
+    border: none;
+    font-weight: 500;
+    color: $black;
+    width: 40px;
+    height: 40px;
+    padding: 0;
+
+    &[disabled] {
+      color: darkgrey;
+      opacity: 0.3;
+      cursor: default;
+    }
+
+    &:hover {
+      background-color: $pale-grey;
+    }
+  }
+  .dp-selected {
+    background: $azure;
+    color: $white;
+  }
+  .dp-prev-month,
+  .dp-next-month {
+    opacity: 0.3;
+  }
+}
+
+.datepicker-wrapper {
+  position: relative;
+
+  input[type=text] {
+    padding-right: 49px;
+  }
+
+  .eon-icon {
+    position: absolute;
+    right: 0;
+    &::before {
+      font-size: 2.61rem;
+    }
+  }
+}
+
+.dp-time-select-control-up,
+.dp-time-select-control-down {
+  border: none;
+  background: none;
+}

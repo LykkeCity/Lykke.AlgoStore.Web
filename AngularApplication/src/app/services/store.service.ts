@@ -5,6 +5,7 @@ import { Observable } from 'rxjs/Observable';
 import { AlgoLog } from '../store/models/algo-log.interface';
 import { forkJoin } from 'rxjs/observable/forkJoin';
 import { environment } from '../../environments/environment';
+import { AlgoInstance } from '../store/models/algo-instance.model';
 
 @Injectable()
 export class StoreService {
@@ -85,5 +86,21 @@ export class StoreService {
 
   algoGetTailLog(algoId: string, tail: number): Observable<AlgoLog> {
     return this.authRequestService.get(environment.storeApiUrl + `/v1/management/test/tailLog?AlgoId=${algoId}&Tail=${tail}`);
+  }
+
+  createLiveAlgoIntance(data: AlgoInstance): Observable<AlgoInstance> {
+    return this.authRequestService.post(environment.storeApiUrl + '', {data: data}); // TODO add real endpoint
+  }
+
+  createDemoAlgoIntance(data: AlgoInstance): Observable<AlgoInstance> {
+    return this.authRequestService.post(environment.storeApiUrl + '', {data: data}); // TODO add real endpoint
+  }
+
+  getAlgoInstances(algoId: string): Observable<AlgoInstance> {
+    return this.authRequestService.get(environment.storeApiUrl + ''); // TODO add real endpoint
+  }
+
+  deleteAlgoInstance(instanceId: string): Observable<AlgoInstance> {
+    return this.authRequestService.get(environment.storeApiUrl + ''); // TODO add real endpoint
   }
 }

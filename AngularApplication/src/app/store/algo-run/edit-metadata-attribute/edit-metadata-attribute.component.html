@@ -1,0 +1,17 @@
+<div [ngSwitch]="metadataProperty.Type" [formGroup]="form">
+  <label class="metadata-key">
+    <span *ngIf="formName">{{formName}}.</span>{{ metadataProperty.Key }}
+  </label>
+  <div class="form-group" *ngSwitchCase="'String'">
+    <input class="form-control" type="text" [formControlName]="metadataProperty.Key">
+  </div>
+  <div *ngSwitchCase="'int'">
+    <input class="form-control" type="number" [formControlName]="metadataProperty.Key">
+  </div>
+  <div *ngSwitchCase="'enum'">
+    <!-- TODO: try to create metadata property of enum type and work this case out here -->
+  </div>
+  <div *ngSwitchCase="'DateTime'">
+    <app-date-time-picker [form]="form" [controlName]="metadataProperty.Key"></app-date-time-picker>
+  </div>
+</div>

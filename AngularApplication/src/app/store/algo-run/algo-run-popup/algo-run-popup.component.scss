@@ -1,0 +1,11 @@
+@import '~scss/reuse';
+
+.link-style {
+  font-size: 1.125rem;
+  font-weight: $font-weight-semibold;
+  color: $azure;
+}
+
+.form-control {
+  padding: 0.657rem 1.5rem;
+}

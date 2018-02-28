@@ -1,0 +1,51 @@
+@import '~scss/reuse';
+.meta-row, .instances-row {
+  padding: 10px 0;
+  align-items: center;
+
+  &:hover {
+    background-color: $pale-grey-two;
+  }
+
+  .metadata-key {
+    font-size: 1.125rem;
+    font-weight: $font-weight-semibold;
+  }
+}
+
+.form-control {
+  padding: 0.657rem 1.5rem;
+}
+
+ul.dropdown-menu {
+  left: 280px !important;
+  top: 60% !important;
+}
+
+.instances-row {
+  border-bottom: 1px solid $pale-grey;
+  border-top: 1px solid $pale-grey;
+}
+
+.show-all-button {
+  font-size: 1.125rem;
+}
+
+.delete-icon-holder {
+  background-image: url("../../../assets/images/store/delete-symbol-icon.svg");
+  justify-content: center;
+  display: inline-flex;
+  width: 10px;
+  height: 10px;
+  background-size: contain;
+
+  &:hover {
+    width: 30px;
+    height: 30px;
+    background-image: url("../../../assets/images/store/delete-active-symbol-icon.svg");
+  }
+}
+
+.action-buttons, .fs-1r {
+  font-size: 1rem;
+}
