@@ -6,6 +6,10 @@ $theme-name: 'algo-datepicker';
 
 dp-date-picker.#{$theme-name} {
 
+  button {
+    outline: none;
+  }
+
   position: absolute !important;
   width: 100%;
   top: 100%;
@@ -86,7 +90,7 @@ dp-calendar-nav.#{$theme-name} {
   .dp-nav-header {
     top: 38%;
     z-index: 2;
-    width: 60%;
+    width: 65%;
     left: 0;
     &[hidden] {
       display: none;
