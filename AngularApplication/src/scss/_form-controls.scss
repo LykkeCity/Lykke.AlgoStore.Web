@@ -16,3 +16,18 @@
   background-color: $azure;
   border: none;
 }
+
+.nav-tabs {
+  background-color: $pale-grey-two;
+  border: none;
+
+  .nav-item {
+    border-radius: 4px;
+    margin-right: 5px;
+  }
+
+  .nav-link, .nav-link.active {
+    color: $black;
+    font-weight: $font-weight-semibold;
+  }
+}
