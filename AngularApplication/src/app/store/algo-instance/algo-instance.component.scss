@@ -1,0 +1,4 @@
+@import '~scss/reuse';
+.splitter-wrapper {
+  height: calc(100vh - #{$navbar-height-md});
+}

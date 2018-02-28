@@ -1,27 +1,66 @@
-<div class="container">
-  <div class="details-holder mt-60">
-    <div class="row">
-      <div class="col-8 text-left">
-        <h3>{{instance.Name || 'My test instance'}}</h3>
+<div class="splitter-wrapper">
+  <split direction="vertical">
+    <split-area size="50">
+      <div class="container">
+        <div class="details-holder mt-60">
+          <div class="row">
+            <div class="col-8 text-left">
+              <h3>{{instance.Name || 'My test instance'}}</h3>
+            </div>
+            <div class="col-4 text-right action-buttons">
+              <span class="ml-3 cursor-pointer text-muted" (click)="runDemo()"><img src="../../../assets/images/store/run-demo-icon.svg"> <span>Run demo</span></span>
+              <span class="ml-3 cursor-pointer text-muted" (click)="backtest()"><img src="../../../assets/images/store/backtest-icon.svg"> <span>Backtest</span></span>
+              <span dropdown class="ml-3 cursor-pointer text-muted">
+                <img src="../../../assets/images/store/play-run-icon.svg">
+                <span dropdownToggle>Go Live</span>
+                <ul *dropdownMenu class="dropdown-menu">
+                  <li *ngFor="let wallet of wallets">
+                    <a class="dropdown-item" href="javascript:;" (click)="goLive(wallet)"><img src="../../../assets/images/store/wallet-icon.svg"><span class="ml-1">{{wallet.Name}}</span></a>
+                  </li>
+                </ul>
+              </span>
+            </div>
+          </div>
+          <div class="row mb-2">
+            <div class="col-12 action-buttons">
+              <span class="cursor-pointer" [routerLink]="['/store' , 'algo-details', clientId, instance['AlgoId']]">View Public profile</span> • <span class="cursor-pointer" (click)="resetDefault()">Reset to Default Values</span>
+            </div>
+          </div>
+        </div>
       </div>
-      <div class="col-4 text-right action-buttons">
-        <span class="ml-3 cursor-pointer text-muted" (click)="runDemo()"><img src="../../../assets/images/store/run-demo-icon.svg"> <span>Run demo</span></span>
-        <span class="ml-3 cursor-pointer text-muted" (click)="backtest()"><img src="../../../assets/images/store/backtest-icon.svg"> <span>Backtest</span></span>
-        <span dropdown class="ml-3 cursor-pointer text-muted">
-          <img src="../../../assets/images/store/play-run-icon.svg">
-          <span dropdownToggle>Go Live</span>
-          <ul *dropdownMenu class="dropdown-menu">
-            <li *ngFor="let wallet of wallets">
-              <a class="dropdown-item" href="javascript:;" (click)="goLive(wallet)"><img src="../../../assets/images/store/wallet-icon.svg"><span class="ml-1">{{wallet.Name}}</span></a>
-            </li>
-          </ul>
-        </span>
+    </split-area>
+    <split-area size="50">
+
+      <!-- dummy content - to be replaced -->
+      <div class="container">
+        <div class="details-holder mt-60">
+          <div class="row">
+            <div class="col-8 text-left">
+              <h3>{{instance.Name || 'My test instance'}}</h3>
+            </div>
+            <div class="col-4 text-right action-buttons">
+              <span class="ml-3 cursor-pointer text-muted" (click)="runDemo()"><img src="../../../assets/images/store/run-demo-icon.svg"> <span>Run demo</span></span>
+              <span class="ml-3 cursor-pointer text-muted" (click)="backtest()"><img src="../../../assets/images/store/backtest-icon.svg"> <span>Backtest</span></span>
+              <span dropdown class="ml-3 cursor-pointer text-muted">
+                <img src="../../../assets/images/store/play-run-icon.svg">
+                <span dropdownToggle>Go Live</span>
+                <ul *dropdownMenu class="dropdown-menu">
+                  <li *ngFor="let wallet of wallets">
+                    <a class="dropdown-item" href="javascript:;" (click)="goLive(wallet)"><img src="../../../assets/images/store/wallet-icon.svg"><span class="ml-1">{{wallet.Name}}</span></a>
+                  </li>
+                </ul>
+              </span>
+            </div>
+          </div>
+          <div class="row mb-2">
+            <div class="col-12 action-buttons">
+              <span class="cursor-pointer" [routerLink]="['/store' , 'algo-details', clientId, instance['AlgoId']]">View Public profile</span> • <span class="cursor-pointer" (click)="resetDefault()">Reset to Default Values</span>
+            </div>
+          </div>
+        </div>
       </div>
-    </div>
-    <div class="row mb-2">
-      <div class="col-12 action-buttons">
-        <span class="cursor-pointer" [routerLink]="['/store' , 'algo-details', clientId, instance['AlgoId']]">View Public profile</span> • <span class="cursor-pointer" (click)="resetDefault()">Reset to Default Values</span>
-      </div>
-    </div>
-  </div>
+      <!-- // dummy content - to be replaced -->
+
+    </split-area>
+  </split>
 </div>
