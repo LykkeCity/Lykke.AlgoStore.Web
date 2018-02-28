@@ -19,7 +19,7 @@ const routes: Routes = [
   { path: 'algo-edit/:algoId', component: AlgoEditComponent, canActivate: [AuthGuard] },
   { path: 'algo-details/:clientId/:algoId', component: AlgoDetailsComponent, canActivate: [AuthGuard] },
   { path: 'algo-run/:clientId/:algoId', component: AlgoRunComponent, canActivate: [AuthGuard] },
-  { path: 'algo-instance/:clientId/:instanceId', component: AlgoInstanceComponent, canActivate: [AuthGuard] },
+  { path: 'algo-instance/:clientId/:algoId/:instanceId', component: AlgoInstanceComponent, canActivate: [AuthGuard] },
 ];
 
 export const StoreRouting: ModuleWithProviders = RouterModule.forChild(routes);

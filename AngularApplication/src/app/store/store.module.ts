@@ -7,6 +7,7 @@ import { StarRatingModule } from 'angular-star-rating';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { BsDropdownModule } from 'ngx-bootstrap';
 import { AngularSplitModule } from 'angular-split';
+import { TabsModule } from 'ngx-bootstrap';
 
 // ROUTING
 import { StoreRouting } from './store-routing.module';
@@ -39,6 +40,7 @@ import { AlgoInstanceComponent } from './algo-instance/algo-instance.component';
     BsDropdownModule.forRoot(),
     TooltipModule.forRoot(),
     StarRatingModule.forRoot(),
+    TabsModule.forRoot(),
     AngularSplitModule
   ],
   declarations: [

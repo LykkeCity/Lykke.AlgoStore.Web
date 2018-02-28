@@ -4,4 +4,5 @@ export class AlgoInstance {
   Type?: string;
   Status?: string;
   AlgoId?: string;
+  Date?: string;
 }
