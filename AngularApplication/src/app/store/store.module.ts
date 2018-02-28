@@ -23,6 +23,7 @@ import { AlgoMetadataComponent } from './algo-details/algo-metadata/algo-metadat
 import { AlgoRunComponent } from './algo-run/algo-run.component';
 import { AlgoRunPopupComponent } from './algo-run/algo-run-popup/algo-run-popup.component';
 import { EditMetadataAttributeComponent } from './algo-run/edit-metadata-attribute/edit-metadata-attribute.component';
+import { AlgoInstanceComponent } from './algo-instance/algo-instance.component';
 
 // SERVICES
 @NgModule({
@@ -49,7 +50,8 @@ import { EditMetadataAttributeComponent } from './algo-run/edit-metadata-attribu
     AlgoMetadataComponent,
     AlgoRunComponent,
     AlgoRunPopupComponent,
-    EditMetadataAttributeComponent
+    EditMetadataAttributeComponent,
+    AlgoInstanceComponent
   ],
   providers: [],
   entryComponents: [AlgoRunPopupComponent]
