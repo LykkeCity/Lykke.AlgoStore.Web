@@ -10,7 +10,7 @@ dp-date-picker.#{$theme-name} {
   width: 100%;
   top: 100%;
   left: 0;
-  font-size: 18px;
+  font-size: 1rem;
   > div {
     width: 100%;
   }
@@ -147,7 +147,7 @@ dp-calendar-nav.#{$theme-name} {
 
 dp-day-calendar.#{$theme-name} {
 
-  background: white;
+  background: $white;
 
   .dp-calendar-weekday {
     border: none;
@@ -186,7 +186,7 @@ dp-day-calendar.#{$theme-name} {
   }
   .dp-selected {
     background: $azure;
-    color: white;
+    color: $white;
   }
   .dp-prev-month,
   .dp-next-month {
@@ -205,7 +205,7 @@ dp-day-calendar.#{$theme-name} {
     position: absolute;
     right: 0;
     &::before {
-      font-size: 47px;
+      font-size: 2.61rem;
     }
   }
 }
