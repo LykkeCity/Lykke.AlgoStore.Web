@@ -32,6 +32,10 @@ dp-date-picker.#{$theme-name} {
         background: $azure;
         border-radius: 4px;
       }
+
+      &:hover {
+        background-color: $pale-grey;
+      }
     }
   }
 
@@ -74,21 +78,16 @@ dp-date-picker.#{$theme-name} {
 }
 dp-calendar-nav.#{$theme-name} {
 
-  .dp-nav-btns-container {
-    left: 5px;
-  }
-
   .dp-calendar-nav-container {
     border: none;
     margin-top: 35px;
     margin-bottom: 25px;
   }
   .dp-nav-header {
-    font-size: inherit;
-    left: 50px;
-    right: 50px;
     top: 38%;
     z-index: 2;
+    width: 60%;
+    left: 0;
     &[hidden] {
       display: none;
     }
@@ -98,12 +97,19 @@ dp-calendar-nav.#{$theme-name} {
     }
 
     .dp-nav-header-btn {
+      float: left;
       border: none;
       background: none;
       font-size: 1.3rem;
       font-weight: $font-weight-semibold;
+      text-transform: uppercase;
     }
   }
+
+  .dp-nav-btns-container {
+    right: 0;
+  }
+
   .dp-calendar-nav-container-left {
     float: left;
   }
@@ -133,11 +139,8 @@ dp-calendar-nav.#{$theme-name} {
   .dp-calendar-nav-left::before,
   .dp-calendar-nav-right::before {
     display: block;
-    width: 20px;
-    height: 18px;
-  }
-
-  .dp-calendar-nav-left::before {
+    width: 15px;
+    height: 13px;
     margin-left: 10px;
   }
 }
@@ -156,6 +159,7 @@ dp-day-calendar.#{$theme-name} {
     font-weight: $font-weight-semibold;
     text-transform: uppercase;
   }
+
   .dp-calendar-weekday {
     width: 40px;
   }
