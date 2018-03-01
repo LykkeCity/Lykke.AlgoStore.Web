@@ -35,13 +35,13 @@ export class CodeEditorComponent implements AfterViewInit, OnChanges {
 
   ngAfterViewInit() {
     ace.config.setModuleUrl(
-      "algo-store-monokai",
-      "../../../assets/editor-themes/algo-store-monokai.js"
+      'algo-store-monokai',
+      '../../../assets/editor-themes/algo-store-monokai.js'
     );
 
     ace.config.setModuleUrl(
-      "algo-store-eclipse",
-      "../../../assets/editor-themes/algo-store-eclipse.js"
+      'algo-store-eclipse',
+      '../../../assets/editor-themes/algo-store-eclipse.js'
     );
 
     this.editor = ace.edit('editor');
@@ -63,7 +63,7 @@ export class CodeEditorComponent implements AfterViewInit, OnChanges {
       showFoldWidgets: false
     });
 
-    if(!this.config.readOnly) {
+    if (!this.config.readOnly) {
       this.editor.setOptions({
         enableSnippets: true,
         enableBasicAutocompletion: true,
