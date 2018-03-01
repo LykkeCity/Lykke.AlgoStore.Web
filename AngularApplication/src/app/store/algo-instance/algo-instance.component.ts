@@ -7,6 +7,8 @@ import { Wallet } from '../../models/wallet.model';
 import { Algo } from '../models/algo.interface';
 import { UserService } from '../../services/user.service';
 import { BaseAlgoParam } from '../models/base-algo-param.model';
+import { AlgoInstanceTrade, getTrades } from '../models/algo-instance-trade.model';
+import { getStats, InstanceStatistic } from '../models/algo-instance-statistic.model';
 
 @Component({
   selector: 'app-algo-instance',
@@ -19,11 +21,15 @@ export class AlgoInstanceComponent implements OnInit, OnDestroy {
   clientId: string;
   algo: Algo = {};
   wallets: Wallet[] = [];
+  trades: AlgoInstanceTrade[];
+  stats: InstanceStatistic[];
 
   editor: any;
   subscriptions: Subscription[] = [];
 
   constructor(private route: ActivatedRoute, private storeService: StoreService, private userService: UserService) {
+    this.trades = getTrades();
+    this.stats = getStats();
     this.instance = {
       Id: 'aaa',
       Name: "My testing instance",
