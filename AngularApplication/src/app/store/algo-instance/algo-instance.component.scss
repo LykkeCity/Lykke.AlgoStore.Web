@@ -30,3 +30,29 @@ ul.dropdown-menu {
 .container.tabs {
   padding: 0;
 }
+
+textarea {
+  width: 100%;
+  border: none;
+}
+
+td {
+  font-size: 1rem;
+  color: $cool-grey;
+}
+
+th {
+  font-weight: normal;
+  font-size: 1rem;
+  color: $dark;
+}
+
+.stat-key {
+  font-size: 1rem;
+  color: $cool-grey;
+}
+
+.stat-value {
+  font-size: 1rem;
+  color: $slate;
+}

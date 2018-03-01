@@ -55,13 +55,69 @@
       <div class="container tabs">
         <tabset #instanceTabs>
           <tab heading="Log">
-            Logs
+            <textarea name="algo-instance-log" rows="20">
+              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid debitis provident tempora voluptatem!
+              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid debitis provident tempora voluptatem!
+              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid debitis provident tempora voluptatem!
+              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid debitis provident tempora voluptatem!
+              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid debitis provident tempora voluptatem!
+              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid debitis provident tempora voluptatem!
+              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid debitis provident tempora voluptatem!
+              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid debitis provident tempora voluptatem!
+              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid debitis provident tempora voluptatem!
+              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid debitis provident tempora voluptatem!
+              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid debitis provident tempora voluptatem!
+              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid debitis provident tempora voluptatem!
+              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid debitis provident tempora voluptatem!
+              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid debitis provident tempora voluptatem!
+              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid debitis provident tempora voluptatem!
+              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid debitis provident tempora voluptatem!
+              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid debitis provident tempora voluptatem!
+              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid debitis provident tempora voluptatem!
+              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid debitis provident tempora voluptatem!
+              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid debitis provident tempora voluptatem!
+              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid debitis provident tempora voluptatem!
+              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid debitis provident tempora voluptatem!
+              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid debitis provident tempora voluptatem!
+              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid debitis provident tempora voluptatem!
+              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid debitis provident tempora voluptatem!
+            </textarea>
           </tab>
           <tab heading="Statistics">
-            Statistics
+            <div class="stats-holder">
+              <div class="row">
+                <div class="col-4 mb-2" *ngFor="let stat of stats">
+                  <span class="stat-key">{{stat.Name}}</span> : <span class="stat-value">{{stat.Value}}</span>
+                </div>
+              </div>
+            </div>
           </tab>
           <tab heading="Trades">
-            Trades
+            <table class="table">
+              <thead>
+              <tr>
+                <th>Date</th>
+                <th>Asset</th>
+                <th>Price</th>
+                <th>Type</th>
+                <th>Quantity</th>
+                <th>Operation</th>
+                <th>Status</th>
+              </tr>
+
+              </thead>
+              <tbody>
+              <tr *ngFor="let trade of trades">
+                <td>{{trade.Date}}</td>
+                <td>{{trade.Asset}}</td>
+                <td>{{trade.Price}}</td>
+                <td>{{trade.Type}}</td>
+                <td>{{trade.Quantity}}</td>
+                <td>{{trade.Operation}}</td>
+                <td>{{trade.Status}}</td>
+              </tr>
+              </tbody>
+            </table>
           </tab>
         </tabset>
       </div>
