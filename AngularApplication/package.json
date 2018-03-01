@@ -4,17 +4,12 @@
   "license": "MIT",
   "scripts": {
     "ng": "ng",
-    "start:3000": "ng serve --port 3000 --proxy-config dev.proxy.conf.json",
-    "start:4200": "ng serve --port 4200 --proxy-config dev.proxy.conf.json",
+    "start": "ng serve --proxy-config dev.proxy.conf.json",
     "build:stage": "ng build --env=stage --aot",
     "build": "ng build --aot",
     "test": "ng test",
     "lint": "ng lint --type-check",
-    "e2e": "ng e2e",
-    "start:nginx": "docker-compose up -d --build",
-    "stop:nginx": "docker-compose down ",
-    "start:client": "ng serve --port 80",
-    "start:deploy": "concurrently \"npm run stop:nginx\"  \"npm run build\"  \"npm run start:nginx\""
+    "e2e": "ng e2e"
   },
   "private": true,
   "dependencies": {
@@ -52,7 +47,6 @@
     "@types/datatables.net": "^1.10.8",
     "@types/jquery": "^3.2.18",
     "codelyzer": "~3.1.1",
-    "concurrently": "^3.4.0",
     "jasmine-core": "~2.6.2",
     "jasmine-spec-reporter": "~4.1.0",
     "karma": "~1.7.0",
