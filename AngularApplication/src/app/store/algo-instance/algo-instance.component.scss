@@ -21,6 +21,10 @@ ul.dropdown-menu {
   background-color: $azure;
   padding: 4px 10px;
   margin-right: 10px;
+
+  &.live {
+    background-color: $green;
+  }
 }
 
 .nav-tabs {
@@ -55,4 +59,8 @@ th {
 .stat-value {
   font-size: 1rem;
   color: $slate;
+}
+
+.small-text {
+  font-size: 0.875rem ;
 }

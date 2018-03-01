@@ -10,6 +10,7 @@ import { AceEditorModule } from 'ng2-ace-editor';
 import { UiSwitchModule } from 'ngx-ui-switch';
 import { DateTimePickerComponent } from './date-time-picker/date-time-picker.component';
 import { DpDatePickerModule } from 'ng2-date-picker';
+import { AlertModule } from 'ngx-bootstrap';
 
 
 @NgModule({
@@ -20,7 +21,8 @@ import { DpDatePickerModule } from 'ng2-date-picker';
     UiSwitchModule,
     AceEditorModule,
     DpDatePickerModule,
-    ModalModule.forRoot()
+    ModalModule.forRoot(),
+    AlertModule.forRoot()
   ],
   providers: [],
   declarations: [
@@ -34,7 +36,9 @@ import { DpDatePickerModule } from 'ng2-date-picker';
     PopupComponent,
     TerminalComponent,
     CodeEditorComponent,
-    DateTimePickerComponent
+    DateTimePickerComponent,
+    AlertModule,
+    ModalModule
   ]
 })
 export class SharedModule {}

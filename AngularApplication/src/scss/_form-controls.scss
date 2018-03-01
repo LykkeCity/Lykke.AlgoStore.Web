@@ -31,3 +31,20 @@
     font-weight: $font-weight-semibold;
   }
 }
+
+.alert {
+  color: $white;
+  border-radius: 8px;
+}
+
+.alert-warning {
+  background-color: $mango;
+}
+
+.alert-success {
+  background-color: $green;
+}
+
+.alert-danger {
+  background-color: $orange-red;
+}
