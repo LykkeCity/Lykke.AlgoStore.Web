@@ -23,7 +23,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { AlgoListMyAlgosComponent } from './algo-list-my-algos/algo-list-my-algos.component';
 import { AlgoMetadataComponent } from './algo-details/algo-metadata/algo-metadata.component';
 import { AlgoRunComponent } from './algo-run/algo-run.component';
-import { AlgoRunPopupComponent } from './algo-run/algo-run-popup/algo-run-popup.component';
+import { AlgoInstancePopupComponent } from './algo-run/algo-run-popup/algo-instance-popup.component';
 import { EditMetadataAttributeComponent } from './algo-run/edit-metadata-attribute/edit-metadata-attribute.component';
 import { AlgoInstanceComponent } from './algo-instance/algo-instance.component';
 
@@ -53,11 +53,11 @@ import { AlgoInstanceComponent } from './algo-instance/algo-instance.component';
     AlgoListMyAlgosComponent,
     AlgoMetadataComponent,
     AlgoRunComponent,
-    AlgoRunPopupComponent,
+    AlgoInstancePopupComponent,
     EditMetadataAttributeComponent,
     AlgoInstanceComponent
   ],
   providers: [],
-  entryComponents: [AlgoRunPopupComponent]
+  entryComponents: [AlgoInstancePopupComponent]
 })
 export class StoreModule { }

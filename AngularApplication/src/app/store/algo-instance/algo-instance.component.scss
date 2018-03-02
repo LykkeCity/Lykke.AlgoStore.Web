@@ -64,3 +64,15 @@ th {
 .small-text {
   font-size: 0.875rem ;
 }
+
+.edit-image-holder {
+  visibility: hidden;
+}
+
+.instance-name-holder:hover {
+  background-color: $pale-grey-two;
+
+  .edit-image-holder {
+    visibility: visible;
+  }
+}

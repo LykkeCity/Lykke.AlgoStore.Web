@@ -9,6 +9,9 @@ import { UserService } from '../../services/user.service';
 import { BaseAlgoParam } from '../models/base-algo-param.model';
 import { AlgoInstanceTrade, getTrades } from '../models/algo-instance-trade.model';
 import { getStats, InstanceStatistic } from '../models/algo-instance-statistic.model';
+import { BsModalService } from 'ngx-bootstrap';
+import { AlgoInstancePopupComponent } from '../algo-run/algo-run-popup/algo-instance-popup.component';
+import { NotificationsService } from 'angular2-notifications';
 
 @Component({
   selector: 'app-algo-instance',
@@ -27,7 +30,11 @@ export class AlgoInstanceComponent implements OnInit, OnDestroy {
   editor: any;
   subscriptions: Subscription[] = [];
 
-  constructor(private route: ActivatedRoute, private storeService: StoreService, private userService: UserService) {
+  constructor(private route: ActivatedRoute,
+              private storeService: StoreService,
+              private userService: UserService,
+              private bsModalService: BsModalService,
+              private notificationsService: NotificationsService) {
     this.trades = getTrades();
     this.stats = getStats();
     this.instance = {
@@ -70,6 +77,21 @@ export class AlgoInstanceComponent implements OnInit, OnDestroy {
 
   onEditorCreated(editor: any): void {
     this.editor = editor;
+  }
+
+  edit(): void {
+    const config = {
+      initialState: {
+        type: 'Edit',
+        instanceId: this.instance.Id,
+        onEditSuccess: (name) => {
+          this.instance.Name = name;
+          this.notificationsService.success("Success", "Instance name has been updated.");
+        }
+      },
+      class: 'modal-sm instance-popup'
+    };
+    this.bsModalService.show(AlgoInstancePopupComponent, config);
   }
 
   goLive(wallet: Wallet) {

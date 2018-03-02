@@ -7,7 +7,7 @@ import { Algo } from '../models/algo.interface';
 import { Wallet } from '../../models/wallet.model';
 import { UserService } from '../../services/user.service';
 import { BsModalService } from 'ngx-bootstrap';
-import { AlgoRunPopupComponent } from './algo-run-popup/algo-run-popup.component';
+import { AlgoInstancePopupComponent } from './algo-run-popup/algo-instance-popup.component';
 import { FormControl, FormGroup } from '@angular/forms';
 
 @Component({
@@ -82,9 +82,9 @@ export class AlgoRunComponent implements OnInit, OnDestroy {
 
   runDemo(): void {
     const initialState = {
-      isDemo: true
+      type: "Demo"
     };
-    this.bsModalService.show(AlgoRunPopupComponent, {initialState, class: 'modal-sm run-instance-popup'});
+    this.bsModalService.show(AlgoInstancePopupComponent, {initialState, class: 'modal-sm run-instance-popup'});
   }
 
   backtest(): void {
@@ -93,10 +93,10 @@ export class AlgoRunComponent implements OnInit, OnDestroy {
 
   goLive(wallet: Wallet): void {
     const initialState = {
-      isDemo: false,
+      type: "Live",
       wallet: wallet
     };
-    this.bsModalService.show(AlgoRunPopupComponent, {initialState, class: 'modal-sm run-instance-popup'});
+    this.bsModalService.show(AlgoInstancePopupComponent, {initialState, class: 'modal-sm run-instance-popup'});
   }
 
   resetDefault(): void {

@@ -1,11 +1,18 @@
 <div class="splitter-wrapper">
   <split direction="vertical">
-    <split-area size="50">
+    <split-area size="70">
       <div class="container">
         <div class="details-holder mt-60">
           <div class="row">
-            <div class="col-8 text-left">
-              <h3>{{instance.Name}}</h3>
+            <div class="col-8 text-left instance-name-holder">
+              <div class="row">
+                <div class="col-11 align-self-center">
+                  <h3>{{instance.Name}}</h3>
+                </div>
+                <div class="col-1 text-right align-self-center cursor-pointer edit-image-holder" (click)="edit()"  tooltip="Click to edit." placement="bottom"  container="body">
+                  <img src="../../../assets/images/edit-icon.svg">
+                </div>
+              </div>
             </div>
             <div class="col-4 text-right action-buttons">
               <span dropdown class="ml-3 cursor-pointer text-muted" *ngIf="instance.Type === 'Demo'">
