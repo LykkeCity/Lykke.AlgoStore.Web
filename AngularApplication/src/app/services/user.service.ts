@@ -12,7 +12,7 @@ export class UserService {
   constructor(private authRequestService: AuthRequestService) {  }
 
   getUserInfo(): Observable<UserData> {
-    return this.authRequestService.get('devapi/PersonalData').pipe(
+    return this.authRequestService.get(environment.apiUrl + '/PersonalData').pipe(
       map(res => res['Result'])
     );
   }
