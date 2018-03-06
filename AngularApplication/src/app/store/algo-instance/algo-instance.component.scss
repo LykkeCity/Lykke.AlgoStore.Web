@@ -76,3 +76,11 @@ th {
     visibility: visible;
   }
 }
+
+.splitter-wrapper {
+  overflow-x: hidden;
+
+  split {
+    width: calc(100% + 17px) !important;
+  }
+}
