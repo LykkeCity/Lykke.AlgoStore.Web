@@ -1,5 +1,7 @@
+@import '~scss/reuse';
+
 :host {
   display: block;
-  min-height: calc(100% - 120px);
+  min-height: calc(100% - #{$footer-height});
   position: relative;
 }

@@ -1,7 +1,11 @@
 @import '~scss/reuse';
 
+split-area {
+  display: flex;
+}
+
 .splitter-wrapper {
-  height: calc(100vh - #{$navbar-height-md});
+  height: calc(100vh - #{$navbar-height-md + $footer-height});
 }
 
 ul.dropdown-menu {
@@ -27,17 +31,21 @@ ul.dropdown-menu {
   }
 }
 
-.nav-tabs {
-  background-color: red;
-}
-
-.container.tabs {
-  padding: 0;
-}
-
-textarea {
-  width: 100%;
-  border: none;
+.tab-container {
+  background-color: $pale-grey-two;
+  display: flex;
+  flex: 1;
+  flex-flow: column;
+  ::ng-deep {
+    .nav-tabs {
+      flex: 0 1 auto;
+    }
+    .tab-content {
+      background: $white;
+      flex: 1;
+      overflow: auto;
+    }
+  }
 }
 
 td {
@@ -74,13 +82,5 @@ th {
 
   .edit-image-holder {
     visibility: visible;
-  }
-}
-
-.splitter-wrapper {
-  overflow-x: hidden;
-
-  split {
-    width: calc(100% + 17px) !important;
   }
 }
