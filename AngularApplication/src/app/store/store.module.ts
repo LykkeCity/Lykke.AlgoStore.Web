@@ -6,6 +6,8 @@ import { TooltipModule } from 'ngx-bootstrap';
 import { StarRatingModule } from 'angular-star-rating';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { BsDropdownModule } from 'ngx-bootstrap';
+import { AngularSplitModule } from 'angular-split';
+import { TabsModule } from 'ngx-bootstrap';
 
 // ROUTING
 import { StoreRouting } from './store-routing.module';
@@ -21,8 +23,9 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { AlgoListMyAlgosComponent } from './algo-list-my-algos/algo-list-my-algos.component';
 import { AlgoMetadataComponent } from './algo-details/algo-metadata/algo-metadata.component';
 import { AlgoRunComponent } from './algo-run/algo-run.component';
-import { AlgoRunPopupComponent } from './algo-run/algo-run-popup/algo-run-popup.component';
+import { AlgoInstancePopupComponent } from './algo-run/algo-run-popup/algo-instance-popup.component';
 import { EditMetadataAttributeComponent } from './algo-run/edit-metadata-attribute/edit-metadata-attribute.component';
+import { AlgoInstanceComponent } from './algo-instance/algo-instance.component';
 
 // SERVICES
 @NgModule({
@@ -36,7 +39,9 @@ import { EditMetadataAttributeComponent } from './algo-run/edit-metadata-attribu
     NgxDatatableModule,
     BsDropdownModule.forRoot(),
     TooltipModule.forRoot(),
-    StarRatingModule.forRoot()
+    StarRatingModule.forRoot(),
+    TabsModule.forRoot(),
+    AngularSplitModule
   ],
   declarations: [
     CommandsComponent,
@@ -48,10 +53,11 @@ import { EditMetadataAttributeComponent } from './algo-run/edit-metadata-attribu
     AlgoListMyAlgosComponent,
     AlgoMetadataComponent,
     AlgoRunComponent,
-    AlgoRunPopupComponent,
-    EditMetadataAttributeComponent
+    AlgoInstancePopupComponent,
+    EditMetadataAttributeComponent,
+    AlgoInstanceComponent
   ],
   providers: [],
-  entryComponents: [AlgoRunPopupComponent]
+  entryComponents: [AlgoInstancePopupComponent]
 })
 export class StoreModule { }

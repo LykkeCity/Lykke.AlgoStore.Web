@@ -1,14 +1,17 @@
 <div class="modal-body">
   <div class="row ml-0 mr-0 mt-4">
-    <div class="col-12">
-      <h3>Run {{isDemo ? 'Demo' : "Live"}} Instance</h3>
+    <div class="col-12" [ngSwitch]="type">
+      <h3 *ngSwitchCase="'Demo'">Run Demo Instance</h3>
+      <h3 *ngSwitchCase="'Live'">Run Live Instance</h3>
+      <h3 *ngSwitchCase="'Edit'">Edit name</h3>
     </div>
     <div class="row ml-0 mr-0">
       <div class="col-12">
-        <p>Give a name to the new instance of the algorithm. </p>
+        <p *ngIf="type === 'Demo' || type === 'Live'">Give a name to the new instance of the algorithm. </p>
+        <p *ngIf="type === 'Edit'">You are about to change the name of your running instance. </p>
       </div>
     </div>
-    <form (ngSubmit)="onSubmit()" [formGroup]="runInstanceForm">
+    <form (ngSubmit)="onSubmit()" [formGroup]="algoInstanceForm">
       <div class="row ml-0 mr-0 mb-3">
         <div class="col-12">
           <div class="form-group">
@@ -19,7 +22,8 @@
       </div>
       <div class="row ml-0 mr-0 text-center">
         <div class="col-12 mb-3">
-          <button type="submit" class="btn btn-primary">Run new instance</button>
+          <button *ngIf="type === 'Demo' || type === 'Live'" type="submit" class="btn btn-primary">Run new instance</button>
+          <button *ngIf="type === 'Edit'" type="submit" class="btn btn-primary">Apply change</button>
         </div>
         <div class="col-12">
           <a href="javascript:;" (click)="modalRef.hide()" class="link-style">Cancel</a>

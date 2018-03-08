@@ -8,6 +8,7 @@ import { AuthGuard } from '../services/auth-guard';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { AlgoListMyAlgosComponent } from './algo-list-my-algos/algo-list-my-algos.component';
 import { AlgoRunComponent } from './algo-run/algo-run.component';
+import { AlgoInstanceComponent } from './algo-instance/algo-instance.component';
 
 
 const routes: Routes = [
@@ -18,6 +19,7 @@ const routes: Routes = [
   { path: 'algo-edit/:algoId', component: AlgoEditComponent, canActivate: [AuthGuard] },
   { path: 'algo-details/:clientId/:algoId', component: AlgoDetailsComponent, canActivate: [AuthGuard] },
   { path: 'algo-run/:clientId/:algoId', component: AlgoRunComponent, canActivate: [AuthGuard] },
+  { path: 'algo-instance/:clientId/:algoId/:instanceId', component: AlgoInstanceComponent, canActivate: [AuthGuard] },
 ];
 
 export const StoreRouting: ModuleWithProviders = RouterModule.forChild(routes);

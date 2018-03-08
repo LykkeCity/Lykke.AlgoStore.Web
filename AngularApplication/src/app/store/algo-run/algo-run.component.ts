@@ -7,7 +7,7 @@ import { Algo } from '../models/algo.interface';
 import { Wallet } from '../../models/wallet.model';
 import { UserService } from '../../services/user.service';
 import { BsModalService } from 'ngx-bootstrap';
-import { AlgoRunPopupComponent } from './algo-run-popup/algo-run-popup.component';
+import { AlgoInstancePopupComponent } from './algo-run-popup/algo-instance-popup.component';
 import { FormControl, FormGroup } from '@angular/forms';
 
 @Component({
@@ -23,6 +23,7 @@ export class AlgoRunComponent implements OnInit, OnDestroy {
   subscriptions: Subscription[] = [];
   metadataForm: FormGroup;
   showMetadataForm = false;
+  clientId: string;
 
   constructor(private route: ActivatedRoute,
               private storeService: StoreService,
@@ -30,16 +31,19 @@ export class AlgoRunComponent implements OnInit, OnDestroy {
               private bsModalService: BsModalService) {
     this.instancesArray = [
       {
+        Id: 'fafsdsdafsd',
         Name: 'My Moving Average Cross v1.0',
         Status: 'Running',
         Type: 'Demo'
       },
       {
+        Id: 'aaaaaa',
         Name: 'My Moving Average Cross v2.0',
         Status: 'Stopped',
         Type: 'Live'
       },
       {
+        Id: 'bbbbbb',
         Name: 'My Moving Average Cross v3.0',
         Status: 'Live',
         Type: 'Running'
@@ -47,12 +51,12 @@ export class AlgoRunComponent implements OnInit, OnDestroy {
     ];
 
     this.subscriptions.push(this.route.params.subscribe(params => {
-      const clientId = params['clientId'];
+      this.clientId = params['clientId'];
       const algoId = params['algoId'];
 
-      this.subscriptions.push(this.storeService.getAlgoWithSource(algoId, clientId).subscribe(algo => {
+      this.subscriptions.push(this.storeService.getAlgoWithSource(algoId, this.clientId).subscribe(algo => {
         this.algo = algo;
-        this.algo.ClientId = clientId;
+        this.algo.ClientId = this.clientId;
         this.metadataForm = this.dataToFormGroup();
         this.showMetadataForm = true;
       }));
@@ -78,9 +82,9 @@ export class AlgoRunComponent implements OnInit, OnDestroy {
 
   runDemo(): void {
     const initialState = {
-      isDemo: true
+      type: "Demo"
     };
-    this.bsModalService.show(AlgoRunPopupComponent, {initialState, class: 'modal-sm run-instance-popup'});
+    this.bsModalService.show(AlgoInstancePopupComponent, {initialState, class: 'modal-sm run-instance-popup'});
   }
 
   backtest(): void {
@@ -89,10 +93,10 @@ export class AlgoRunComponent implements OnInit, OnDestroy {
 
   goLive(wallet: Wallet): void {
     const initialState = {
-      isDemo: false,
+      type: "Live",
       wallet: wallet
     };
-    this.bsModalService.show(AlgoRunPopupComponent, {initialState, class: 'modal-sm run-instance-popup'});
+    this.bsModalService.show(AlgoInstancePopupComponent, {initialState, class: 'modal-sm run-instance-popup'});
   }
 
   resetDefault(): void {

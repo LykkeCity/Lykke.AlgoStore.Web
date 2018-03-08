@@ -1,0 +1,86 @@
+@import '~scss/reuse';
+
+split-area {
+  display: flex;
+}
+
+.splitter-wrapper {
+  height: calc(100vh - #{$navbar-height-md + $footer-height});
+}
+
+ul.dropdown-menu {
+  left: 130px !important;
+  top: 60% !important;
+}
+
+.action-buttons, .fs-1r {
+  font-size: 1rem;
+}
+
+.instance-type-badge {
+  width: 55px;
+  height: 24px;
+  border-radius: 4px;
+  color: $white;
+  background-color: $azure;
+  padding: 4px 10px;
+  margin-right: 10px;
+
+  &.live {
+    background-color: $green;
+  }
+}
+
+.tab-container {
+  background-color: $pale-grey-two;
+  display: flex;
+  flex: 1;
+  flex-flow: column;
+  ::ng-deep {
+    .nav-tabs {
+      flex: 0 1 auto;
+    }
+    .tab-content {
+      background: $white;
+      flex: 1;
+      overflow: auto;
+    }
+  }
+}
+
+td {
+  font-size: 1rem;
+  color: $cool-grey;
+}
+
+th {
+  font-weight: normal;
+  font-size: 1rem;
+  color: $dark;
+}
+
+.stat-key {
+  font-size: 1rem;
+  color: $cool-grey;
+}
+
+.stat-value {
+  font-size: 1rem;
+  color: $slate;
+}
+
+.small-text {
+  font-size: 0.875rem ;
+}
+
+.edit-image-holder {
+  visibility: hidden;
+}
+
+.instance-name-holder:hover {
+  background-color: $pale-grey-two;
+
+  .edit-image-holder {
+    visibility: visible;
+  }
+}

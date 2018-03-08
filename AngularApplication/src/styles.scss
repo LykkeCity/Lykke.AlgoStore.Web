@@ -27,3 +27,11 @@ body {
 .bs-popover-bottom .arrow {
   left: calc(50% - 0.8rem) !important;
 }
+
+.splitter-wrapper {
+  .tab-container {
+    .nav-tabs {
+      @extend .container;
+    }
+  }
+}
