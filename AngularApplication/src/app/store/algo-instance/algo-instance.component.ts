@@ -39,10 +39,10 @@ export class AlgoInstanceComponent implements OnInit, OnDestroy {
     this.stats = getStats();
     this.instance = {
       Id: 'aaa',
-      Name: "My testing instance",
-      Status: "Running",
-      Type: "Demo",
-      Date: "Sep 14, 2017 ⋅ 21:01—21:01 CET"
+      Name: 'My testing instance',
+      Status: 'Running',
+      Type: 'Demo',
+      Date: 'Sep 14, 2017 ⋅ 21:01—21:01 CET'
     };
 
 
@@ -86,7 +86,7 @@ export class AlgoInstanceComponent implements OnInit, OnDestroy {
         instanceId: this.instance.Id,
         onEditSuccess: (name) => {
           this.instance.Name = name;
-          this.notificationsService.success("Success", "Instance name has been updated.");
+          this.notificationsService.success('Success', 'Instance name has been updated.');
         }
       },
       class: 'modal-sm instance-popup'

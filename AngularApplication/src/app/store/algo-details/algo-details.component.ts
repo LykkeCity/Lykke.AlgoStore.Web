@@ -1,11 +1,11 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {Algo} from '../models/algo.interface';
-import {StoreService} from '../../services/store.service';
-import {ActivatedRoute} from '@angular/router';
-import {Subscription} from 'rxjs/Subscription';
-import {BaseAlgoParam} from '../models/base-algo-param.model';
-import {AlgoRating} from '../models/algo-rating.model';
-import {NotificationsService} from 'angular2-notifications';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Algo } from '../models/algo.interface';
+import { StoreService } from '../../services/store.service';
+import { ActivatedRoute } from '@angular/router';
+import { Subscription } from 'rxjs/Subscription';
+import { BaseAlgoParam } from '../models/base-algo-param.model';
+import { AlgoRating } from '../models/algo-rating.model';
+import { NotificationsService } from 'angular2-notifications';
 
 @Component({
   selector: 'app-algo-detail',
@@ -15,7 +15,7 @@ import {NotificationsService} from 'angular2-notifications';
 export class AlgoDetailsComponent implements OnInit, OnDestroy {
 
   algo: Algo = {};
-  subsctiptions: Subscription[] = [];
+  subscriptions: Subscription[] = [];
   editor: any;
   myRating: AlgoRating = {};
 
@@ -24,22 +24,22 @@ export class AlgoDetailsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.subsctiptions.push(this.route.params.subscribe(params => {
+    this.subscriptions.push(this.route.params.subscribe(params => {
       const algoId = params['algoId'];
       const clientId = params['clientId'];
-      this.subsctiptions.push(this.storeService.getAlgoWithSource(algoId, clientId).subscribe(algo => {
+      this.subscriptions.push(this.storeService.getAlgoWithSource(algoId, clientId).subscribe(algo => {
         this.algo = algo;
         this.algo.ClientId = clientId;
       }));
 
-      this.subsctiptions.push(this.storeService.getUserAlgoRating(algoId).subscribe(rating => {
+      this.subscriptions.push(this.storeService.getUserAlgoRating(algoId).subscribe(rating => {
         this.myRating = rating;
       }));
     }));
   }
 
   ngOnDestroy() {
-    this.subsctiptions.forEach(sub => {
+    this.subscriptions.forEach(sub => {
       sub.unsubscribe();
     });
   }
