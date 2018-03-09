@@ -58,11 +58,11 @@ export class AlgoDetailsComponent implements OnInit, OnDestroy {
       AlgoId: this.algo['AlgoId'],
       Rating: data.rating
     };
-    this.storeService.saveAlgoRating(ratingData).subscribe((newAlgoRating) => {
+    this.subscriptions.push(this.storeService.saveAlgoRating(ratingData).subscribe((newAlgoRating) => {
       this.notificationsService.success('Success', 'Rating saved.');
       this.algo.Rating = newAlgoRating.Rating;
       this.algo.RatedUsersCount = newAlgoRating.RatedUsersCount;
-    });
+    }));
   }
 
 }
