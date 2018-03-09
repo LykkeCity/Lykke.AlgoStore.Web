@@ -28,6 +28,7 @@
                             [readOnly]="true">
           </star-rating-comp>
         </span>
+        <span class="text-muted rated-users-count">{{algo.RatedUsersCount}}<span> <img src="../../../assets/images/rating-count-avatar-icon.svg"></span></span>
       </div>
       <div class="col-4">
         <span class="text-muted">Description:</span> <span class="ml-3">{{algo.Description}}</span>
@@ -38,11 +39,25 @@
   <div class="main-content">
     <div class="row">
       <div class="col-8">
-        <app-code-editor [config]="{sourceCode: algo.Data}" (onInitCompleted)="onEditorCreated($event)"></app-code-editor>
+        <app-code-editor [config]="{sourceCode: algo.Data}"
+                         (onInitCompleted)="onEditorCreated($event)"></app-code-editor>
+        <div class="rating-holder text-left">
+          <span>Rate algo:</span>
+          <span class="d-inline-flex">
+            <star-rating-comp [rating]="myRating.Rating"
+                              [starType]="'svg'"
+                              [numOfStars]="6"
+                              [showHalfStars]="true"
+                              [staticColor]="'default'"
+                              (onClick)="onRatingChange($event)">
+            </star-rating-comp>
+          </span>
+        </div>
       </div>
       <div class="col-4">
         <div class="metadata-holder">
-          <app-algo-metadata [metadata]="algo.AlgoMetaDataInformation" (onHighlight)="highlight($event)"></app-algo-metadata>
+          <app-algo-metadata [metadata]="algo.AlgoMetaDataInformation"
+                             (onHighlight)="highlight($event)"></app-algo-metadata>
         </div>
       </div>
     </div>

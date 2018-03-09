@@ -6,6 +6,7 @@ import { AlgoLog } from '../store/models/algo-log.interface';
 import { forkJoin } from 'rxjs/observable/forkJoin';
 import { environment } from '../../environments/environment';
 import { AlgoInstance } from '../store/models/algo-instance.model';
+import { AlgoRating } from '../store/models/algo-rating.model';
 
 @Injectable()
 export class StoreService {
@@ -34,7 +35,7 @@ export class StoreService {
     return this.authRequestService.get(environment.storeApiUrl + '/v1/clientData/algoMetadata', { params });
   }
 
-  getAlgoWithSource(algoId: string, clientId?: string, ): Observable<Algo> {
+  getAlgoWithSource(algoId: string, clientId?: string): Observable<Algo> {
     const params = { algoId };
 
     if (clientId) {
@@ -102,5 +103,18 @@ export class StoreService {
 
   deleteAlgoInstance(instanceId: string): Observable<AlgoInstance> {
     return this.authRequestService.get(environment.storeApiUrl + ''); // TODO add real endpoint
+  }
+
+  getUserAlgoRating(AlgoId: string, clientId?: string): Observable<AlgoRating> {
+    const params = { AlgoId };
+
+    if (clientId) {
+      params['ClientId'] = clientId;
+    }
+    return this.authRequestService.get(environment.storeApiUrl + '/v1/clientData/userAlgoRating', { params });
+  }
+
+  saveAlgoRating(ratingData: AlgoRating): Observable<AlgoRating> {
+    return this.authRequestService.post(environment.storeApiUrl + '/v1/clientData/algoRating', ratingData);
   }
 }

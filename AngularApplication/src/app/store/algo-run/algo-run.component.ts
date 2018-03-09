@@ -82,7 +82,7 @@ export class AlgoRunComponent implements OnInit, OnDestroy {
 
   runDemo(): void {
     const initialState = {
-      type: "Demo"
+      type: 'Demo'
     };
     this.bsModalService.show(AlgoInstancePopupComponent, {initialState, class: 'modal-sm run-instance-popup'});
   }
@@ -93,7 +93,7 @@ export class AlgoRunComponent implements OnInit, OnDestroy {
 
   goLive(wallet: Wallet): void {
     const initialState = {
-      type: "Live",
+      type: 'Live',
       wallet: wallet
     };
     this.bsModalService.show(AlgoInstancePopupComponent, {initialState, class: 'modal-sm run-instance-popup'});

@@ -33,17 +33,17 @@ export class AlgoInstancePopupComponent implements OnInit {
     }
 
     switch (this.type) {
-      case "Demo":
+      case 'Demo':
         this.storeService.createDemoAlgoIntance(this.algoInstanceForm.value).subscribe(() => {
           this.modalRef.hide();
         });
         break;
-      case "Live":
+      case 'Live':
         this.storeService.createLiveAlgoIntance(this.algoInstanceForm.value).subscribe(() => {
           this.modalRef.hide();
         });
         break;
-      case "Edit":
+      case 'Edit':
         // this.storeService.editInstance(this.instanceId, this.algoInstanceForm.value).subscribe(() => {
         //   this.modalRef.hide();
         //   this.onEditSuccess(this.algoInstanceForm.value.Name);

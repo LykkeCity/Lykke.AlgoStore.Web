@@ -9,7 +9,8 @@ export interface Algo {
     Status?: string;
     Author?: string;
     UsersCount?: string;
-    Rating?: string;
+    Rating?: number;
+    RatedUsersCount?: number;
     Data?: string;
     AlgoMetaDataInformation?: AlgoMetadata;
 }

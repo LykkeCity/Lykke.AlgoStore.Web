@@ -4,6 +4,8 @@ import { StoreService } from '../../services/store.service';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 import { BaseAlgoParam } from '../models/base-algo-param.model';
+import { AlgoRating } from '../models/algo-rating.model';
+import { NotificationsService } from 'angular2-notifications';
 
 @Component({
   selector: 'app-algo-detail',
@@ -13,32 +15,33 @@ import { BaseAlgoParam } from '../models/base-algo-param.model';
 export class AlgoDetailsComponent implements OnInit, OnDestroy {
 
   algo: Algo = {};
-  getAlgoSubscription: Subscription;
-  routeParamsSubscription: Subscription;
+  subscriptions: Subscription[] = [];
   editor: any;
+  myRating: AlgoRating = {};
 
-  constructor(private storeService: StoreService, private route: ActivatedRoute) {
+  constructor(private storeService: StoreService, private route: ActivatedRoute, private notificationsService: NotificationsService) {
 
   }
 
   ngOnInit() {
-    this.routeParamsSubscription = this.route.params.subscribe(params => {
+    this.subscriptions.push(this.route.params.subscribe(params => {
       const algoId = params['algoId'];
       const clientId = params['clientId'];
-      this.getAlgoSubscription = this.storeService.getAlgoWithSource(algoId, clientId).subscribe(algo => {
+      this.subscriptions.push(this.storeService.getAlgoWithSource(algoId, clientId).subscribe(algo => {
         this.algo = algo;
         this.algo.ClientId = clientId;
-      });
-    });
+      }));
+
+      this.subscriptions.push(this.storeService.getUserAlgoRating(algoId).subscribe(rating => {
+        this.myRating = rating;
+      }));
+    }));
   }
 
   ngOnDestroy() {
-    this.routeParamsSubscription.unsubscribe();
-    this.getAlgoSubscription.unsubscribe();
-  }
-
-  tryAlgo(): void {
-    console.log(this.algo);
+    this.subscriptions.forEach(sub => {
+      sub.unsubscribe();
+    });
   }
 
   highlight(meta: BaseAlgoParam): void {
@@ -48,6 +51,18 @@ export class AlgoDetailsComponent implements OnInit, OnDestroy {
 
   onEditorCreated(editor: any): void {
     this.editor = editor;
+  }
+
+  onRatingChange(data) {
+    const ratingData = {
+      AlgoId: this.algo['AlgoId'],
+      Rating: data.rating
+    };
+    this.subscriptions.push(this.storeService.saveAlgoRating(ratingData).subscribe((newAlgoRating) => {
+      this.notificationsService.success('Success', 'Rating saved.');
+      this.algo.Rating = newAlgoRating.Rating;
+      this.algo.RatedUsersCount = newAlgoRating.RatedUsersCount;
+    }));
   }
 
 }
