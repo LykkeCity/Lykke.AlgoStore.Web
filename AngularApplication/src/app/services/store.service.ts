@@ -114,4 +114,8 @@ export class StoreService {
     }
     return this.authRequestService.get(environment.storeApiUrl + '/v1/clientData/userAlgoRating', { params });
   }
+
+  saveAlgoRating(ratingData: AlgoRating): Observable<AlgoRating> {
+    return this.authRequestService.post(environment.storeApiUrl + '/v1/clientData/algoRating', ratingData);
+  }
 }
