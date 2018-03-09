@@ -1,16 +1,18 @@
-import { Injectable } from '@angular/core';
-import { Algo } from '../store/models/algo.interface';
-import { AuthRequestService } from './auth-request.service';
-import { Observable } from 'rxjs/Observable';
-import { AlgoLog } from '../store/models/algo-log.interface';
-import { forkJoin } from 'rxjs/observable/forkJoin';
-import { environment } from '../../environments/environment';
-import { AlgoInstance } from '../store/models/algo-instance.model';
+import {Injectable} from '@angular/core';
+import {Algo} from '../store/models/algo.interface';
+import {AuthRequestService} from './auth-request.service';
+import {Observable} from 'rxjs/Observable';
+import {AlgoLog} from '../store/models/algo-log.interface';
+import {forkJoin} from 'rxjs/observable/forkJoin';
+import {environment} from '../../environments/environment';
+import {AlgoInstance} from '../store/models/algo-instance.model';
+import {AlgoRating} from '../store/models/algo-rating.model';
 
 @Injectable()
 export class StoreService {
 
-  constructor(private authRequestService: AuthRequestService) {  }
+  constructor(private authRequestService: AuthRequestService) {
+  }
 
   getAllPublicAlgos(): Observable<Algo[]> {
     return this.authRequestService.get(environment.storeApiUrl + '/v1/clientData/getAllAlgos');
@@ -25,39 +27,39 @@ export class StoreService {
   }
 
   algoGetMetadata(algoId: string, clientId?: string): Observable<Algo> {
-    const params = { algoId };
+    const params = {algoId};
 
     if (clientId) {
       params['clientId'] = clientId;
     }
 
-    return this.authRequestService.get(environment.storeApiUrl + '/v1/clientData/algoMetadata', { params });
+    return this.authRequestService.get(environment.storeApiUrl + '/v1/clientData/algoMetadata', {params});
   }
 
-  getAlgoWithSource(algoId: string, clientId?: string, ): Observable<Algo> {
-    const params = { algoId };
+  getAlgoWithSource(algoId: string, clientId?: string,): Observable<Algo> {
+    const params = {algoId};
 
     if (clientId) {
       params['clientId'] = clientId;
     }
 
     return forkJoin(
-      this.authRequestService.get(environment.storeApiUrl + '/v1/clientData/algoMetadata', { params }),
+      this.authRequestService.get(environment.storeApiUrl + '/v1/clientData/algoMetadata', {params}),
       this.algoGetSource(algoId, clientId)
-    ).map( res => ({...res[0], ...res[1]}) );
+    ).map(res => ({...res[0], ...res[1]}));
   }
 
   algoGetSource(algoId: string, clientId?: string): Observable<Algo> {
-    const params = { algoId };
+    const params = {algoId};
 
     if (clientId) {
       params['clientId'] = clientId;
     }
-    return this.authRequestService.get(environment.storeApiUrl + '/v1/clientData/imageData/upload/string', { params });
+    return this.authRequestService.get(environment.storeApiUrl + '/v1/clientData/imageData/upload/string', {params});
   }
 
   algoSave(algoId: string, data: string): Observable<Algo> {
-    return this.authRequestService.post(environment.storeApiUrl + `/v1/clientData/imageData/upload/string`, { AlgoId: algoId, Data: data });
+    return this.authRequestService.post(environment.storeApiUrl + `/v1/clientData/imageData/upload/string`, {AlgoId: algoId, Data: data});
   }
 
   algoUpload(formData: FormData): Observable<Algo> {
@@ -65,15 +67,15 @@ export class StoreService {
   }
 
   algoDeploy(algoId: string): Observable<Algo> {
-    return this.authRequestService.post(environment.storeApiUrl + '/v1/management/deploy/binary', { AlgoId: algoId });
+    return this.authRequestService.post(environment.storeApiUrl + '/v1/management/deploy/binary', {AlgoId: algoId});
   }
 
   algoStart(algoId: string): Observable<Algo> {
-    return this.authRequestService.post(environment.storeApiUrl + '/v1/management/test/start', { AlgoId: algoId });
+    return this.authRequestService.post(environment.storeApiUrl + '/v1/management/test/start', {AlgoId: algoId});
   }
 
   algoStop(algoId: string): Observable<Algo> {
-    return this.authRequestService.post(environment.storeApiUrl + '/v1/management/test/stop', { AlgoId: algoId });
+    return this.authRequestService.post(environment.storeApiUrl + '/v1/management/test/stop', {AlgoId: algoId});
   }
 
   algoDelete(algo: Algo): Observable<Algo> {
@@ -102,5 +104,14 @@ export class StoreService {
 
   deleteAlgoInstance(instanceId: string): Observable<AlgoInstance> {
     return this.authRequestService.get(environment.storeApiUrl + ''); // TODO add real endpoint
+  }
+
+  getUserAlgoRating(AlgoId: string, clientId?: string): Observable<AlgoRating> {
+    const params = { AlgoId };
+
+    if (clientId) {
+      params['ClientId'] = clientId;
+    }
+    return this.authRequestService.get(environment.storeApiUrl + '/v1/clientData/userAlgoRating', { params });
   }
 }

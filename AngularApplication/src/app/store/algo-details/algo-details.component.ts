@@ -1,9 +1,10 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Algo } from '../models/algo.interface';
-import { StoreService } from '../../services/store.service';
-import { ActivatedRoute } from '@angular/router';
-import { Subscription } from 'rxjs/Subscription';
-import { BaseAlgoParam } from '../models/base-algo-param.model';
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Algo} from '../models/algo.interface';
+import {StoreService} from '../../services/store.service';
+import {ActivatedRoute} from '@angular/router';
+import {Subscription} from 'rxjs/Subscription';
+import {BaseAlgoParam} from '../models/base-algo-param.model';
+import {AlgoRating} from '../models/algo-rating.model';
 
 @Component({
   selector: 'app-algo-detail',
@@ -13,28 +14,33 @@ import { BaseAlgoParam } from '../models/base-algo-param.model';
 export class AlgoDetailsComponent implements OnInit, OnDestroy {
 
   algo: Algo = {};
-  getAlgoSubscription: Subscription;
-  routeParamsSubscription: Subscription;
+  subsctiptions: Subscription[] = [];
   editor: any;
+  myRating: AlgoRating;
 
   constructor(private storeService: StoreService, private route: ActivatedRoute) {
 
   }
 
   ngOnInit() {
-    this.routeParamsSubscription = this.route.params.subscribe(params => {
+    this.subsctiptions.push(this.route.params.subscribe(params => {
       const algoId = params['algoId'];
       const clientId = params['clientId'];
-      this.getAlgoSubscription = this.storeService.getAlgoWithSource(algoId, clientId).subscribe(algo => {
+      this.subsctiptions.push(this.storeService.getAlgoWithSource(algoId, clientId).subscribe(algo => {
         this.algo = algo;
         this.algo.ClientId = clientId;
-      });
-    });
+      }));
+
+      this.subsctiptions.push(this.storeService.getUserAlgoRating(algoId).subscribe(rating => {
+        this.myRating = rating;
+      }));
+    }));
   }
 
   ngOnDestroy() {
-    this.routeParamsSubscription.unsubscribe();
-    this.getAlgoSubscription.unsubscribe();
+    this.subsctiptions.forEach(sub => {
+      sub.unsubscribe();
+    });
   }
 
   tryAlgo(): void {
