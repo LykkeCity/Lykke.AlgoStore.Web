@@ -1,12 +1,12 @@
-import {Injectable} from '@angular/core';
-import {Algo} from '../store/models/algo.interface';
-import {AuthRequestService} from './auth-request.service';
-import {Observable} from 'rxjs/Observable';
-import {AlgoLog} from '../store/models/algo-log.interface';
-import {forkJoin} from 'rxjs/observable/forkJoin';
-import {environment} from '../../environments/environment';
-import {AlgoInstance} from '../store/models/algo-instance.model';
-import {AlgoRating} from '../store/models/algo-rating.model';
+import { Injectable } from '@angular/core';
+import { Algo } from '../store/models/algo.interface';
+import { AuthRequestService } from './auth-request.service';
+import { Observable } from 'rxjs/Observable';
+import { AlgoLog } from '../store/models/algo-log.interface';
+import { forkJoin } from 'rxjs/observable/forkJoin';
+import { environment } from '../../environments/environment';
+import { AlgoInstance } from '../store/models/algo-instance.model';
+import { AlgoRating } from '../store/models/algo-rating.model';
 
 @Injectable()
 export class StoreService {
