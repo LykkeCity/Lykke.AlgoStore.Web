@@ -92,9 +92,15 @@ export class AlgoRunComponent implements OnInit, OnDestroy {
   }
 
   goLive(wallet: Wallet): void {
+    this.mapFormToData();
     const initialState = {
       type: 'Live',
-      wallet: wallet
+      algoInstanceData: {
+        walletId: wallet.Id,
+        algoClientId: this.clientId,
+        algoId: this.algo.AlgoId,
+        algoMetadataInformation: this.algo.AlgoMetaDataInformation
+      }
     };
     this.bsModalService.show(AlgoInstancePopupComponent, {initialState, class: 'modal-sm run-instance-popup'});
   }

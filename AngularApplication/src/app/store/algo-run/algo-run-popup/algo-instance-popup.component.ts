@@ -2,7 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { BsModalRef } from 'ngx-bootstrap';
 import { StoreService } from '../../../services/store.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Wallet } from '../../../models/wallet.model';
+
+interface AlgoInstanceData {
+  walletId: string;
+  algoClientId: string;
+  algoId: string;
+  algoMetadataInformation: any;
+}
 
 @Component({
   selector: 'app-algo-run-popup',
@@ -14,13 +20,13 @@ export class AlgoInstancePopupComponent implements OnInit {
   algoInstanceForm: FormGroup;
   instanceId: string;
   type: string;
-  wallet: Wallet;
+  algoInstanceData: AlgoInstanceData;
   onEditSuccess: Function;
 
 
   constructor(public modalRef: BsModalRef, private storeService: StoreService, private fb: FormBuilder) {
     this.algoInstanceForm = this.fb.group({
-      Name: ['', Validators.required]
+      instanceName: ['', Validators.required]
     });
   }
 
@@ -34,12 +40,12 @@ export class AlgoInstancePopupComponent implements OnInit {
 
     switch (this.type) {
       case 'Demo':
-        this.storeService.createDemoAlgoIntance(this.algoInstanceForm.value).subscribe(() => {
+        this.storeService.createDemoAlgoIntance({...this.algoInstanceData, ...this.algoInstanceForm.value}).subscribe(() => {
           this.modalRef.hide();
         });
         break;
       case 'Live':
-        this.storeService.createLiveAlgoIntance(this.algoInstanceForm.value).subscribe(() => {
+        this.storeService.createLiveAlgoIntance({...this.algoInstanceData, ...this.algoInstanceForm.value}).subscribe(() => {
           this.modalRef.hide();
         });
         break;
