@@ -65,8 +65,8 @@ export class StoreService {
     return this.authRequestService.post(environment.storeApiUrl + '/v1/clientData/imageData/upload/binary', formData);
   }
 
-  algoDeploy(algoId: string, instanceId: string): Observable<Algo> {
-    return this.authRequestService.post(environment.storeApiUrl + '/v1/management/deploy/binary', { algoId, instanceId });
+  algoDeploy(algoClientId: string, algoId: string, instanceId: string): Observable<Algo> {
+    return this.authRequestService.post(environment.storeApiUrl + '/v1/management/deploy/binary', { algoClientId, algoId, instanceId });
   }
 
   algoStart(algoId: string): Observable<Algo> {
