@@ -90,9 +90,7 @@ export class StoreService {
   }
 
   createLiveAlgoIntance(data): Observable<AlgoInstance> {
-    return this.authRequestService.post(environment.storeApiUrl + '/v1/clientData/instanceData', data).mergeMap(
-      next => this.algoDeploy(next['AlgoId'], next['InstanceId'])
-    );
+    return this.authRequestService.post(environment.storeApiUrl + '/v1/clientData/instanceData', data);
   }
 
   createDemoAlgoIntance(data: AlgoInstance): Observable<AlgoInstance> {
