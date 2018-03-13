@@ -65,8 +65,8 @@ export class StoreService {
     return this.authRequestService.post(environment.storeApiUrl + '/v1/clientData/imageData/upload/binary', formData);
   }
 
-  algoDeploy(algoId: string): Observable<Algo> {
-    return this.authRequestService.post(environment.storeApiUrl + '/v1/management/deploy/binary', { AlgoId: algoId });
+  algoDeploy(algoClientId: string, algoId: string, instanceId: string): Observable<Algo> {
+    return this.authRequestService.post(environment.storeApiUrl + '/v1/management/deploy/binary', { algoClientId, algoId, instanceId });
   }
 
   algoStart(algoId: string): Observable<Algo> {
@@ -89,8 +89,8 @@ export class StoreService {
     return this.authRequestService.get(environment.storeApiUrl + `/v1/management/test/tailLog?AlgoId=${algoId}&Tail=${tail}`);
   }
 
-  createLiveAlgoIntance(data: AlgoInstance): Observable<AlgoInstance> {
-    return this.authRequestService.post(environment.storeApiUrl + '', {data: data}); // TODO add real endpoint
+  createLiveAlgoIntance(data): Observable<AlgoInstance> {
+    return this.authRequestService.post(environment.storeApiUrl + '/v1/clientData/instanceData', data);
   }
 
   createDemoAlgoIntance(data: AlgoInstance): Observable<AlgoInstance> {

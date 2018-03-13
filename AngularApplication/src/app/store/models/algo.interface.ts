@@ -2,6 +2,7 @@ import { AlgoMetadata } from './algo-metadata.model';
 
 export interface Algo {
     Id?: string;
+    AlgoId?: string;
     ClientId?: string;
     Name?: string;
     Description?: string;

@@ -8,10 +8,18 @@
   <div *ngSwitchCase="'int'">
     <input class="form-control" type="number" [formControlName]="metadataProperty.Key">
   </div>
+  <div *ngSwitchCase="'double'">
+    <input class="form-control" type="number" [formControlName]="metadataProperty.Key">
+  </div>
   <div *ngSwitchCase="'enum'">
     <!-- TODO: try to create metadata property of enum type and work this case out here -->
   </div>
   <div *ngSwitchCase="'DateTime'">
     <app-date-time-picker [form]="form" [controlName]="metadataProperty.Key"></app-date-time-picker>
+  </div>
+  <div *ngSwitchDefault>
+    <select *ngIf="metadataProperty.PredefinedValues" [formControlName]="metadataProperty.Key" class="custom-select">
+      <option [value]="option.Value" *ngFor="let option of metadataProperty.PredefinedValues">{{option.Key}}</option>
+    </select>
   </div>
 </div>
