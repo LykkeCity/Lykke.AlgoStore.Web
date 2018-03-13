@@ -2,12 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { BsModalRef } from 'ngx-bootstrap';
 import { StoreService } from '../../../services/store.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AlgoMetadata } from '../../models/algo-metadata.model';
 
 interface AlgoInstanceData {
   walletId: string;
   algoClientId: string;
   algoId: string;
-  algoMetadataInformation: any;
+  algoMetadataInformation: AlgoMetadata;
 }
 
 @Component({
