@@ -39,7 +39,7 @@ export class AlgoInstanceComponent implements OnInit, OnDestroy {
 
     this.subscriptions.push(this.route.params.subscribe(params => {
       this.subscriptions.push(this.storeService.getAlgoWithSource(params['algoId'], params['clientId']).subscribe(algo => {
-        this.algo = algo;
+        this.algo = {...algo, ClientId: params['clientId']};
       }));
 
       this.subscriptions.push(this.userService.getUserWalletsWithBalances().subscribe(wallets => {
@@ -86,6 +86,12 @@ export class AlgoInstanceComponent implements OnInit, OnDestroy {
   }
 
   stopInstance(): void {
+
+    this.subscriptions.push(
+      this.storeService.algoStop(this.algo.AlgoId, this.instance.InstanceId, this.algo.ClientId).subscribe(() => {
+        this.notificationsService.success('Success', 'Instance has been stopped successfully.');
+      })
+    );
 
   }
 

@@ -73,8 +73,10 @@ export class StoreService {
     return this.authRequestService.post(environment.storeApiUrl + '/v1/management/test/start', { AlgoId: algoId });
   }
 
-  algoStop(algoId: string): Observable<Algo> {
-    return this.authRequestService.post(environment.storeApiUrl + '/v1/management/test/stop', { AlgoId: algoId });
+  algoStop(algoId: string, instanceId: string, algoClientId: string): Observable<Algo> {
+    return this.authRequestService.post(
+      environment.storeApiUrl + '/v1/management/test/stop', { AlgoId: algoId, InstanceId: instanceId, AlgoClientId: algoClientId }
+    );
   }
 
   algoDelete(algo: Algo): Observable<Algo> {
