@@ -1,5 +1,4 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { AlgoInstance } from '../models/algo-instance.model';
 import { ActivatedRoute } from '@angular/router';
 import { StoreService } from '../../services/store.service';
 import { Subscription } from 'rxjs/Subscription';
@@ -19,7 +18,6 @@ export class AlgoRunComponent implements OnInit, OnDestroy {
 
   algo: Algo = {};
   wallets: Wallet[];
-  instancesArray: AlgoInstance[];
   subscriptions: Subscription[] = [];
   metadataForm: FormGroup;
   showMetadataForm = false;
@@ -29,26 +27,6 @@ export class AlgoRunComponent implements OnInit, OnDestroy {
               private storeService: StoreService,
               private userService: UserService,
               private bsModalService: BsModalService) {
-    this.instancesArray = [
-      {
-        Id: 'fafsdsdafsd',
-        Name: 'My Moving Average Cross v1.0',
-        Status: 'Running',
-        Type: 'Demo'
-      },
-      {
-        Id: 'aaaaaa',
-        Name: 'My Moving Average Cross v2.0',
-        Status: 'Stopped',
-        Type: 'Live'
-      },
-      {
-        Id: 'bbbbbb',
-        Name: 'My Moving Average Cross v3.0',
-        Status: 'Live',
-        Type: 'Running'
-      },
-    ];
 
     this.subscriptions.push(this.route.params.subscribe(params => {
       this.clientId = params['clientId'];
@@ -60,10 +38,6 @@ export class AlgoRunComponent implements OnInit, OnDestroy {
         this.metadataForm = this.dataToFormGroup();
         this.showMetadataForm = true;
       }));
-
-      /*this.subscriptions.push(this.storeService.getAlgoInstances(algoId).subscribe(instances => {
-        // TODO get instances here
-      }));*/
     }));
 
     this.subscriptions.push(this.userService.getUserWalletsWithBalances().subscribe(wallets => {
@@ -107,12 +81,6 @@ export class AlgoRunComponent implements OnInit, OnDestroy {
 
   resetDefault(): void {
 
-  }
-
-  deleteInstance(id: string): void {
-    this.subscriptions.push(this.storeService.deleteAlgoInstance(id).subscribe(() => {
-      // TODO message here
-    }));
   }
 
   dataToFormGroup() {

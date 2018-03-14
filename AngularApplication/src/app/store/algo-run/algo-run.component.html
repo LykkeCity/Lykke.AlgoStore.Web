@@ -51,25 +51,7 @@
               </form>
             </div>
             <div class="col-12 pl-0">
-              <div class="instances-holder">
-                <div class="row">
-                  <div class="col-8 text-left">
-                    <h5>Running instances</h5>
-                  </div>
-                  <div class="col-4 text-right">
-                    <span class="show-all-button font-weight-semibold"><a href="javascript:;">Show all</a></span>
-                  </div>
-                </div>
-                <div class="row instances-row" *ngFor="let instance of instancesArray">
-                  <div class="col-9">
-                    <div class="instance-date cursor-pointer" [routerLink]="['/store/algo-instance', clientId, algo['AlgoId'], instance.Id]">{{instance.Name}}</div>
-                    <div class="text-muted fs-1r">{{instance.Type}} • {{instance.Status}}</div>
-                  </div>
-                  <div class="col-3 text-center">
-                    <div class="delete-icon-holder cursor-pointer" (click)="deleteInstance(instance.Id)"></div>
-                  </div>
-                </div>
-              </div>
+              <app-algo-instance-list [algo]="algo"></app-algo-instance-list>
             </div>
           </div>
         </div>
