@@ -9,7 +9,7 @@
   </div>
   <div class="row instances-row" *ngFor="let instance of instancesArray">
     <div class="col-9">
-      <div class="instance-date cursor-pointer" [routerLink]="['/store/algo-instance', clientId, algo['AlgoId'], instance.Id]">{{instance.Name}}</div>
+      <div class="instance-date cursor-pointer" [routerLink]="['/store/algo-instance', clientId, algo['AlgoId'], instance.InstanceId]">{{instance.InstanceName}}</div>
       <div class="text-muted fs-1r">{{instance.Type}} • {{instance.Status}}</div>
     </div>
     <div class="col-3 text-center">

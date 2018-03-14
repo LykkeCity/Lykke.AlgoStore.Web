@@ -18,40 +18,17 @@ export class AlgoInstanceListComponent implements OnInit {
   clientId: string;
 
   constructor(private route: ActivatedRoute, private storeService: StoreService) {
-
-    this.instancesArray = [
-      {
-        Id: 'fafsdsdafsd',
-        Name: 'My Moving Average Cross v1.0',
-        Status: 'Running',
-        Type: 'Demo'
-      },
-      {
-        Id: 'aaaaaa',
-        Name: 'My Moving Average Cross v2.0',
-        Status: 'Stopped',
-        Type: 'Live'
-      },
-      {
-        Id: 'bbbbbb',
-        Name: 'My Moving Average Cross v3.0',
-        Status: 'Live',
-        Type: 'Running'
-      },
-    ];
-
     this.subscriptions.push(this.route.params.subscribe(params => {
       this.clientId = params['clientId'];
     }));
-
-    /*this.subscriptions.push(this.storeService.getAlgoInstances(algoId).subscribe(instances => {
-      // TODO get instances here
-    }));*/
-
   }
 
   ngOnInit() {
-    console.log(this.instancesArray);
+    this.subscriptions.push(this.storeService.getAlgoInstances(this.algo.AlgoId).subscribe(instances => {
+      this.instancesArray = instances
+        .map(instance => ({...instance, Status: 'Running', Type: 'Live', Date: 'Sep 14, 2017 ⋅ 21:01—21:01 CET'}));
+      // TODO: remove hardcoded status, type and date once it's implemented in the backend
+    }));
   }
 
   deleteInstance(id: string): void {

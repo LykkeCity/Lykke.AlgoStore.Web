@@ -16,7 +16,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 })
 export class AlgoRunComponent implements OnInit, OnDestroy {
 
-  algo: Algo = {};
+  algo: Algo;
   wallets: Wallet[];
   subscriptions: Subscription[] = [];
   metadataForm: FormGroup;
