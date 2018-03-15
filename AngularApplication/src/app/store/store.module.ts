@@ -17,10 +17,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { StoreComponent } from './store.component';
 import { AlgoListComponent } from './algo-list/algo-list.component';
 import { AlgoEditComponent } from './algo-edit/algo-edit.component';
-import { CommandsComponent } from '../components/commands/commands.component';
 import { AlgoDetailsComponent } from './algo-details/algo-details.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
-import { AlgoListMyAlgosComponent } from './algo-list-my-algos/algo-list-my-algos.component';
 import { AlgoMetadataComponent } from './algo-details/algo-metadata/algo-metadata.component';
 import { AlgoRunComponent } from './algo-run/algo-run.component';
 import { AlgoInstancePopupComponent } from './algo-run/algo-run-popup/algo-instance-popup.component';
@@ -45,13 +43,11 @@ import { AlgoInstanceListComponent } from './algo-run/algo-instance-list/algo-in
     AngularSplitModule
   ],
   declarations: [
-    CommandsComponent,
     StoreComponent,
     AlgoListComponent,
     AlgoEditComponent,
     AlgoDetailsComponent,
     DashboardComponent,
-    AlgoListMyAlgosComponent,
     AlgoMetadataComponent,
     AlgoRunComponent,
     AlgoInstancePopupComponent,
