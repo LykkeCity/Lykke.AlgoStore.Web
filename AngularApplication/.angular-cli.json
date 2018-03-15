@@ -24,16 +24,13 @@
         ]
       },
       "styles": [
-        "../node_modules/datatables.net-dt/css/jquery.dataTables.css",
         "styles.scss"
       ],
       "scripts": [
-        "../node_modules/jquery/dist/jquery.min.js",
         "../node_modules/ace-builds/src-min/ace.js",
         "../node_modules/ace-builds/src-min/mode-java.js",
         "../node_modules/ace-builds/src-min/theme-eclipse.js",
-        "../node_modules/ace-builds/src-min/ext-language_tools.js",
-        "../node_modules/datatables.net/js/jquery.dataTables.js"
+        "../node_modules/ace-builds/src-min/ext-language_tools.js"
       ],
       "environmentSource": "environments/environment.ts",
       "environments": {

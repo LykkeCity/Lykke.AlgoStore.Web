@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { SharedModule } from '../shared/shared.module';
 import { ArchwizardModule } from 'ng2-archwizard';
-import { DataTablesModule } from 'angular-datatables';
 import { TooltipModule } from 'ngx-bootstrap';
 import { StarRatingModule } from 'angular-star-rating';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
@@ -34,7 +33,6 @@ import { AlgoInstanceListComponent } from './algo-run/algo-instance-list/algo-in
     ReactiveFormsModule,
     SharedModule,
     ArchwizardModule,
-    DataTablesModule,
     NgxDatatableModule,
     BsDropdownModule.forRoot(),
     TooltipModule.forRoot(),

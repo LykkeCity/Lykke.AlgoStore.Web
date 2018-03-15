@@ -31,9 +31,6 @@
     "angular2-notifications": "^0.9.6",
     "bootstrap": "^4.0.0",
     "core-js": "^2.4.1",
-    "datatables.net": "^1.10.16",
-    "datatables.net-dt": "^1.10.16",
-    "jquery": "^3.3.1",
     "ng2-ace-editor": "^0.3.1",
     "ng2-archwizard": "^2.1.0",
     "ng2-date-picker": "^2.7.4",
@@ -45,8 +42,6 @@
   "devDependencies": {
     "@angular/cli": "^1.5.3",
     "@angular/compiler-cli": "^5.0.1",
-    "@types/datatables.net": "^1.10.8",
-    "@types/jquery": "^3.2.18",
     "codelyzer": "~3.1.1",
     "jasmine-core": "~2.6.2",
     "jasmine-spec-reporter": "~4.1.0",
