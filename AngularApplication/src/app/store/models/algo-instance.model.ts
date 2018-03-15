@@ -1,8 +1,9 @@
 export class AlgoInstance {
-  Id?: string;
-  Name?: string;
+  InstanceId?: string;
+  InstanceName?: string;
   Type?: string;
   Status?: string;
   AlgoId?: string;
   Date?: string;
+  AlgoMetaDataInformation?: string;
 }

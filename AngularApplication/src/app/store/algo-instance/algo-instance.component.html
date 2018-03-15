@@ -1,4 +1,4 @@
-<div class="splitter-wrapper">
+<div class="splitter-wrapper" *ngIf="algo && instance">
   <split direction="vertical">
     <split-area size="70">
       <div class="container">
@@ -7,7 +7,7 @@
             <div class="col-8 text-left instance-name-holder">
               <div class="row">
                 <div class="col-11 align-self-center">
-                  <h3>{{instance.Name}}</h3>
+                  <h3>{{instance.InstanceName}}</h3>
                 </div>
                 <div class="col-1 text-right align-self-center cursor-pointer edit-image-holder" (click)="edit()"  tooltip="Click to edit." placement="bottom"  container="body">
                   <img src="../../../assets/images/edit-icon.svg">
@@ -81,7 +81,7 @@
             </div>
             <div class="col-4">
               <div class="metadata-holder">
-                <app-algo-metadata [metadata]="algo.AlgoMetaDataInformation"
+                <app-algo-metadata [metadata]="instance.AlgoMetaDataInformation"
                                    (onHighlight)="highlight($event)"></app-algo-metadata>
               </div>
             </div>

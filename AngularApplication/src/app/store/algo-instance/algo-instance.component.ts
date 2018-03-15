@@ -21,7 +21,6 @@ import { NotificationsService } from 'angular2-notifications';
 export class AlgoInstanceComponent implements OnInit, OnDestroy {
 
   instance: AlgoInstance;
-  clientId: string;
   algo: Algo = {};
   wallets: Wallet[] = [];
   trades: AlgoInstanceTrade[];
@@ -37,32 +36,20 @@ export class AlgoInstanceComponent implements OnInit, OnDestroy {
               private notificationsService: NotificationsService) {
     this.trades = getTrades();
     this.stats = getStats();
-    this.instance = {
-      Id: 'aaa',
-      Name: 'My testing instance',
-      Status: 'Running',
-      Type: 'Demo',
-      Date: 'Sep 14, 2017 ⋅ 21:01—21:01 CET'
-    };
-
 
     this.subscriptions.push(this.route.params.subscribe(params => {
-      this.clientId = params['clientId'];
-      this.algo.Id = params['algoId'];
-      const instanceId = params['instanceId'];
-
-      this.subscriptions.push(this.storeService.getAlgoWithSource(this.algo.Id, this.clientId).subscribe(algo => {
+      this.subscriptions.push(this.storeService.getAlgoWithSource(params['algoId'], params['clientId']).subscribe(algo => {
         this.algo = algo;
-        this.algo.ClientId = this.clientId;
       }));
 
       this.subscriptions.push(this.userService.getUserWalletsWithBalances().subscribe(wallets => {
         this.wallets = wallets;
       }));
 
-      // this.subscriptions.push(this.storeService.getInstanceById(instanceId).subscribe(instance => {
-      //   this.instance = instance;
-      // }));
+      this.subscriptions.push(this.storeService.getAlgoInstance(params['algoId'], params['instanceId']).subscribe(instance => {
+        this.instance = {...instance, Status: 'Running', Type: 'Live', Date: 'Sep 14, 2017 ⋅ 21:01—21:01 CET'};
+        // TODO: remove hardcoded status, type and date once it's implemented in the backend
+      }));
     }));
   }
 
@@ -83,9 +70,9 @@ export class AlgoInstanceComponent implements OnInit, OnDestroy {
     const config = {
       initialState: {
         type: 'Edit',
-        instanceId: this.instance.Id,
+        instanceId: this.instance.InstanceId,
         onEditSuccess: (name) => {
-          this.instance.Name = name;
+          this.instance.InstanceName = name;
           this.notificationsService.success('Success', 'Instance name has been updated.');
         }
       },
