@@ -16,7 +16,6 @@ import { UserProfileComponent } from './components/header/user-profile/user-prof
 
 // Services
 import { AuthService } from './services/auth.service';
-import { EventService } from './services/event.service';
 import { UserService } from './services/user.service';
 import { IdleService } from './services/idle.service';
 import { StoreService } from './services/store.service';
@@ -62,7 +61,6 @@ import { IdlePopupComponent } from './components/popup/idle-popup/idle-popup.com
  providers: [
     AuthGuard,
     AuthService,
-    EventService,
     IdleService,
     UserService,
     StoreService,
