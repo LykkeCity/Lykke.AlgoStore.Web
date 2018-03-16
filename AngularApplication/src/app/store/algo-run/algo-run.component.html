@@ -50,7 +50,7 @@
                 </div>
               </form>
             </div>
-            <div class="col-12 pl-0" *ngIf="instancesArray">
+            <div class="col-12 pl-0" *ngIf="instancesArray && instancesArray.length">
               <app-algo-instance-list [algoId]="algo['AlgoId']" [instancesArray]="instancesArray"></app-algo-instance-list>
             </div>
           </div>
