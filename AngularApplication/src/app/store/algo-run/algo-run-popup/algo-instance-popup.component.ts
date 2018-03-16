@@ -25,6 +25,7 @@ export class AlgoInstancePopupComponent implements OnDestroy {
   type: string;
   algoInstanceData: AlgoInstanceData;
   onEditSuccess: Function;
+  onInstanceCreateSuccess: Function;
   subscriptions: Subscription[] = [];
 
 
@@ -56,17 +57,18 @@ export class AlgoInstancePopupComponent implements OnDestroy {
         break;
       case 'Live':
         this.subscriptions.push(this.storeService.createLiveAlgoIntance({...this.algoInstanceData, ...this.algoInstanceForm.value}).subscribe((data) => {
-          this.subscriptions.push(this.storeService.algoDeploy(this.algoInstanceData.algoClientId, data['AlgoId'], data['InstanceId']).subscribe(() => {
-            this.notificationsService.success('Algo instance created and run successfully.');
-            this.modalRef.hide();
+            this.onInstanceCreateSuccess(data);
+            this.subscriptions.push(this.storeService.algoDeploy(this.algoInstanceData.algoClientId, data['AlgoId'], data['InstanceId']).subscribe(() => {
+                this.notificationsService.success('Algo instance created and run successfully.');
+                this.modalRef.hide();
+              }, () => {
+                this.notificationsService.error('Error', 'There was an error while running your instance.');
+                this.modalRef.hide();
+              }));
           }, () => {
-            this.notificationsService.error('Error', 'There was an error while running your instance.');
+            this.notificationsService.error('Error', 'There was an error while creating your instance.');
             this.modalRef.hide();
           }));
-        }, () => {
-          this.notificationsService.error('Error', 'There was an error while creating your instance.');
-          this.modalRef.hide();
-        }));
         break;
       case 'Edit':
         // this.storeService.editInstance(this.instanceId, this.algoInstanceForm.value).subscribe(() => {
