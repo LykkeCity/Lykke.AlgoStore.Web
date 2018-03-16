@@ -87,8 +87,9 @@ export class StoreService {
     return this.authRequestService.get(environment.storeApiUrl + `/v1/management/test/log?AlgoId=${algoId}`);
   }
 
-  algoGetTailLog(algoId: string, tail: number): Observable<AlgoLog> {
-    return this.authRequestService.get(environment.storeApiUrl + `/v1/management/test/tailLog?AlgoId=${algoId}&Tail=${tail}`);
+  algoGetTailLog(AlgoId: string, InstanceId: string, AlgoClientId: string, Tail: number = 100): Observable<AlgoLog> {
+    const params = { AlgoId, InstanceId, AlgoClientId, Tail };
+    return this.authRequestService.get(environment.storeApiUrl + `/v1/management/test/tailLog`, { params });
   }
 
   createLiveAlgoIntance(data): Observable<AlgoInstance> {

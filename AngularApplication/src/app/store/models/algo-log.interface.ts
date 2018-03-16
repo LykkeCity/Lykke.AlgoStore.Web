@@ -1,3 +1,3 @@
 export interface AlgoLog {
-  Log?: string;
+  Log: Array<string>;
 }

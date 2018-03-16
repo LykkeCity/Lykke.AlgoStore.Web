@@ -12,6 +12,8 @@ import { getStats, InstanceStatistic } from '../models/algo-instance-statistic.m
 import { BsModalService } from 'ngx-bootstrap';
 import { AlgoInstancePopupComponent } from '../algo-run/algo-run-popup/algo-instance-popup.component';
 import { NotificationsService } from 'angular2-notifications';
+import { repeatWhen } from 'rxjs/operators';
+import { timer } from 'rxjs/observable/timer';
 
 @Component({
   selector: 'app-algo-instance',
@@ -25,6 +27,7 @@ export class AlgoInstanceComponent implements OnInit, OnDestroy {
   wallets: Wallet[] = [];
   trades: AlgoInstanceTrade[];
   stats: InstanceStatistic[];
+  log: string;
 
   editor: any;
   subscriptions: Subscription[] = [];
@@ -50,6 +53,16 @@ export class AlgoInstanceComponent implements OnInit, OnDestroy {
         this.instance = {...instance, Status: 'Running', Type: 'Live', Date: 'Sep 14, 2017 ⋅ 21:01—21:01 CET'};
         // TODO: remove hardcoded status, type and date once it's implemented in the backend
       }));
+
+      this.subscriptions.push(
+        this.storeService.algoGetTailLog(params['algoId'], params['instanceId'], params['clientId'])
+        .pipe(
+          repeatWhen(() => timer(10000, 5000))
+        )
+        .subscribe(
+          res => { this.log = res.Log.join('\n'); }
+        )
+      );
     }));
   }
 
