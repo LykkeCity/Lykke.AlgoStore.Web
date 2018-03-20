@@ -10,7 +10,7 @@
   <div class="row instances-row" *ngFor="let instance of instancesArray">
     <div class="col-9">
       <div class="instance-date cursor-pointer" [routerLink]="['/store/algo-instance', clientId, algoId, instance.InstanceId]">{{instance.InstanceName}}</div>
-      <div class="text-muted fs-1r">{{instance.Type}} • {{instance.Status}}</div>
+      <div class="text-muted fs-1r">{{instance.AlgoInstanceType | instanceTypeName}} • {{instance.AlgoInstanceStatus | instanceStatusName}}</div>
     </div>
     <div class="col-3 text-center">
       <div class="delete-icon-holder cursor-pointer" (click)="deleteInstance(instance.Id)"></div>
