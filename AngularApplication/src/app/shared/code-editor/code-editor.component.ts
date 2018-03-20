@@ -59,10 +59,6 @@ export class CodeEditorComponent implements AfterViewInit, OnChanges {
       this.editor.setHighlightActiveLine(false);
     });
 
-    this.editor.renderer.setOptions({
-      showFoldWidgets: false
-    });
-
     if (!this.config.readOnly) {
       this.editor.setOptions({
         enableSnippets: true,
@@ -71,10 +67,18 @@ export class CodeEditorComponent implements AfterViewInit, OnChanges {
       });
 
       this.editor.commands.addCommand({
-        name: 'showOtherCompletions',
-        bindKey: 'Ctrl-.',
-        exec: function () {
+        name: 'showKeyboardShortcuts',
+        bindKey: {win: 'Ctrl-Alt-h', mac: 'Command-Alt-h'},
+        exec: function(currentEditor) {
+          ace.config.loadModule('ace/ext/keybinding_menu', (module) => {
+            module.init(currentEditor);
+            currentEditor.showKeyboardShortcuts();
+          });
         }
+      });
+    } else {
+      this.editor.renderer.setOptions({
+        showFoldWidgets: false
       });
     }
 
