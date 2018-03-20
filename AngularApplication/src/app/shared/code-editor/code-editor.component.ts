@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
 import { EditorConfig } from './models/code-editor-config.model';
 
 declare var ace;
@@ -19,7 +19,7 @@ export class CodeEditorComponent implements AfterViewInit, OnChanges {
 
   defaultData: EditorConfig;
 
-  constructor() {
+  constructor(private ref: ChangeDetectorRef) {
     this.defaultData = {
       mode: 'java',
       readOnly: true,
@@ -30,6 +30,7 @@ export class CodeEditorComponent implements AfterViewInit, OnChanges {
   ngOnChanges(simpleChanges: SimpleChanges) {
     if (simpleChanges['config'] && simpleChanges['config'].currentValue) {
       this.config = { ...this.defaultData, ...simpleChanges['config'].currentValue };
+      this.ref.detectChanges();
     }
   }
 
