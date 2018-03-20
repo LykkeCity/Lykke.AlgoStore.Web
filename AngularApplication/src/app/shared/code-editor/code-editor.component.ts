@@ -21,7 +21,7 @@ export class CodeEditorComponent implements AfterViewInit, OnChanges {
 
   constructor(private ref: ChangeDetectorRef) {
     this.defaultData = {
-      mode: 'java',
+      mode: 'csharp',
       readOnly: true,
       sourceCode: ''
     };
