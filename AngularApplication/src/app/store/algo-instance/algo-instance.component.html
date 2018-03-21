@@ -14,7 +14,10 @@
                 </div>
               </div>
             </div>
-            <div class="col-4 text-right action-buttons">
+            <div *ngIf="instance.AlgoInstanceStatus === iAlgoInstanceStatus.Deploying" class="col-4 text-right">
+              {{instance.AlgoInstanceStatus | instanceStatusName}}...
+            </div>
+            <div *ngIf="instance.AlgoInstanceStatus !== iAlgoInstanceStatus.Deploying" class="col-4 text-right action-buttons">
               <span dropdown class="ml-3 cursor-pointer text-muted" *ngIf="instance.AlgoInstanceType === iAlgoInstanceType.Demo">
                 <img src="../../../assets/images/store/play-run-icon.svg">
                 <span dropdownToggle>Go Live</span>
