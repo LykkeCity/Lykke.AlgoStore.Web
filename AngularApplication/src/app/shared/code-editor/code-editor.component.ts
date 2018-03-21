@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
 import { EditorConfig } from './models/code-editor-config.model';
 
 declare var ace;
@@ -19,9 +19,9 @@ export class CodeEditorComponent implements AfterViewInit, OnChanges {
 
   defaultData: EditorConfig;
 
-  constructor() {
+  constructor(private ref: ChangeDetectorRef) {
     this.defaultData = {
-      mode: 'java',
+      mode: 'csharp',
       readOnly: true,
       sourceCode: ''
     };
@@ -30,6 +30,7 @@ export class CodeEditorComponent implements AfterViewInit, OnChanges {
   ngOnChanges(simpleChanges: SimpleChanges) {
     if (simpleChanges['config'] && simpleChanges['config'].currentValue) {
       this.config = { ...this.defaultData, ...simpleChanges['config'].currentValue };
+      this.ref.detectChanges();
     }
   }
 
@@ -59,10 +60,6 @@ export class CodeEditorComponent implements AfterViewInit, OnChanges {
       this.editor.setHighlightActiveLine(false);
     });
 
-    this.editor.renderer.setOptions({
-      showFoldWidgets: false
-    });
-
     if (!this.config.readOnly) {
       this.editor.setOptions({
         enableSnippets: true,
@@ -71,10 +68,18 @@ export class CodeEditorComponent implements AfterViewInit, OnChanges {
       });
 
       this.editor.commands.addCommand({
-        name: 'showOtherCompletions',
-        bindKey: 'Ctrl-.',
-        exec: function () {
+        name: 'showKeyboardShortcuts',
+        bindKey: {win: 'Ctrl-Alt-h', mac: 'Command-Alt-h'},
+        exec: function(currentEditor) {
+          ace.config.loadModule('ace/ext/keybinding_menu', (module) => {
+            module.init(currentEditor);
+            currentEditor.showKeyboardShortcuts();
+          });
         }
+      });
+    } else {
+      this.editor.renderer.setOptions({
+        showFoldWidgets: false
       });
     }
 

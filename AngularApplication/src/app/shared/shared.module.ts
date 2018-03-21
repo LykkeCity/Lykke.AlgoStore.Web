@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { PopupComponent } from '../components/popup/popup.component';
-import { ModalModule } from 'ngx-bootstrap';
+import { ModalModule, TooltipModule } from 'ngx-bootstrap';
 import { CodeEditorComponent } from './code-editor/code-editor.component';
 import { AceEditorModule } from 'ng2-ace-editor';
 import { UiSwitchModule } from 'ngx-ui-switch';
@@ -21,7 +21,8 @@ import { AlertModule } from 'ngx-bootstrap';
     AceEditorModule,
     DpDatePickerModule,
     ModalModule.forRoot(),
-    AlertModule.forRoot()
+    AlertModule.forRoot(),
+    TooltipModule.forRoot()
   ],
   providers: [],
   declarations: [
