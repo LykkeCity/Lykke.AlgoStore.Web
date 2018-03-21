@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { StoreService } from '../../services/store.service';
-import { AlgoInstance } from '../models/algo-instance.model';
+import { AlgoInstance, IAlgoInstanceStatus, IAlgoInstanceType } from '../models/algo-instance.model';
 import { Subscription } from 'rxjs/Subscription';
 import { Wallet } from '../../models/wallet.model';
 import { Algo } from '../models/algo.interface';
@@ -21,7 +21,8 @@ import { timer } from 'rxjs/observable/timer';
   styleUrls: ['./algo-instance.component.scss']
 })
 export class AlgoInstanceComponent implements OnInit, OnDestroy {
-
+  iAlgoInstanceStatus = IAlgoInstanceStatus;
+  iAlgoInstanceType = IAlgoInstanceType;
   instance: AlgoInstance;
   algo: Algo = {};
   wallets: Wallet[] = [];
@@ -50,7 +51,7 @@ export class AlgoInstanceComponent implements OnInit, OnDestroy {
       }));
 
       this.subscriptions.push(this.storeService.getAlgoInstance(params['algoId'], params['instanceId']).subscribe(instance => {
-        this.instance = {...instance, Status: 'Running', Type: 'Live', Date: 'Sep 14, 2017 ⋅ 21:01—21:01 CET'};
+        this.instance = {...instance, Date: 'Sep 14, 2017 ⋅ 21:01—21:01 CET'};
         // TODO: remove hardcoded status, type and date once it's implemented in the backend
       }));
 

@@ -102,7 +102,7 @@ export class StoreService {
 
   getAlgoInstances(algoId: string): Observable<AlgoInstance[]> {
     const params = { algoId };
-    return this.authRequestService.get(environment.storeApiUrl + '/v1/clientData/instanceData/all', { params });
+    return this.authRequestService.get(environment.storeApiUrl + '/v1/clientData/instanceData/allByAlgoIdAndClientId', { params });
   }
 
   getAlgoInstance(algoId: string, instanceId: string): Observable<AlgoInstance> {

@@ -23,6 +23,8 @@ import { AlgoInstancePopupComponent } from './algo-run/algo-run-popup/algo-insta
 import { EditMetadataAttributeComponent } from './algo-run/edit-metadata-attribute/edit-metadata-attribute.component';
 import { AlgoInstanceComponent } from './algo-instance/algo-instance.component';
 import { AlgoInstanceListComponent } from './algo-run/algo-instance-list/algo-instance-list.component';
+import { InstanceTypeNamePipe } from './pipes/instance-type-name.pipe';
+import { InstanceStatusNamePipe } from './pipes/instance-status-name.pipe';
 
 // SERVICES
 @NgModule({
@@ -49,7 +51,9 @@ import { AlgoInstanceListComponent } from './algo-run/algo-instance-list/algo-in
     AlgoInstancePopupComponent,
     EditMetadataAttributeComponent,
     AlgoInstanceComponent,
-    AlgoInstanceListComponent
+    AlgoInstanceListComponent,
+    InstanceTypeNamePipe,
+    InstanceStatusNamePipe
   ],
   providers: [],
   entryComponents: [AlgoInstancePopupComponent]

@@ -43,8 +43,8 @@ export class AlgoRunComponent implements OnInit, OnDestroy {
 
       this.subscriptions.push(this.storeService.getAlgoInstances(algoId).subscribe(instances => {
         this.instancesArray = instances
-          .map(instance => ({...instance, Status: 'Running', Type: 'Live', Date: 'Sep 14, 2017 ⋅ 21:01—21:01 CET'}));
-        // TODO: remove hardcoded status, type and date once it's implemented in the backend
+          .map(instance => ({...instance, Date: 'Sep 14, 2017 ⋅ 21:01—21:01 CET'}));
+        // TODO: remove hardcoded date once it's implemented in the backend
       }));
     }));
 
@@ -84,8 +84,8 @@ export class AlgoRunComponent implements OnInit, OnDestroy {
         algoMetadataInformation: this.algo.AlgoMetaDataInformation
       },
       onInstanceCreateSuccess: (instance) => {
-        this.instancesArray.push(({...instance, Status: 'Running', Type: 'Live', Date: 'Sep 14, 2017 ⋅ 21:01—21:01 CET'}));
-        // TODO: remove hardcoded status, type and date once it's implemented in the backend
+        this.instancesArray.push(({...instance, Date: 'Sep 14, 2017 ⋅ 21:01—21:01 CET'}));
+        // TODO: remove hardcoded date once it's implemented in the backend
       }
     };
     this.bsModalService.show(AlgoInstancePopupComponent, {initialState, class: 'modal-sm run-instance-popup'});
