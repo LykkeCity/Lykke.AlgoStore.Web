@@ -7,6 +7,7 @@ import { forkJoin } from 'rxjs/observable/forkJoin';
 import { environment } from '../../environments/environment';
 import { AlgoInstance } from '../store/models/algo-instance.model';
 import { AlgoRating } from '../store/models/algo-rating.model';
+import { AlgoComment } from '../models/algo-comment.model';
 
 @Injectable()
 export class StoreService {
@@ -125,5 +126,28 @@ export class StoreService {
 
   saveAlgoRating(ratingData: AlgoRating): Observable<AlgoRating> {
     return this.authRequestService.post(environment.storeApiUrl + '/v1/clientData/algoRating', ratingData);
+  }
+
+  getCommentById(AlgoId: string, CommentId: string): Observable<AlgoComment> {
+    const params = { AlgoId, CommentId };
+    return this.authRequestService.get(environment.storeApiUrl + '/v1/clientData/getCommentById', { params });
+  }
+
+  getAlgoComments(AlgoId: string): Observable<AlgoComment[]> {
+    const params = { AlgoId };
+    return this.authRequestService.get(environment.storeApiUrl + '/v1/clientData/algoComments', { params });
+  }
+
+  saveComment(comment: AlgoComment): Observable<AlgoComment> {
+    return this.authRequestService.post(environment.storeApiUrl + '/v1/clientData/algoComments', comment);
+  }
+
+  editComment(comment: AlgoComment): Observable<AlgoComment> {
+    return this.authRequestService.patch(environment.storeApiUrl + '/v1/clientData/algoComments', comment);
+  }
+
+  deleteComment(AlgoId: string, CommentId: string): Observable<AlgoComment> {
+    const params = { AlgoId, CommentId };
+    return this.authRequestService.delete(environment.storeApiUrl + '/v1/clientData/algoComments', { params });
   }
 }

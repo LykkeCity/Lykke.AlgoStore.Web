@@ -6,6 +6,7 @@ import { Subscription } from 'rxjs/Subscription';
 import { BaseAlgoParam } from '../models/base-algo-param.model';
 import { AlgoRating } from '../models/algo-rating.model';
 import { NotificationsService } from 'angular2-notifications';
+import { AlgoComment } from '../../models/algo-comment.model';
 
 @Component({
   selector: 'app-algo-detail',
@@ -18,6 +19,7 @@ export class AlgoDetailsComponent implements OnInit, OnDestroy {
   subscriptions: Subscription[] = [];
   editor: any;
   myRating: AlgoRating = {};
+  comments: AlgoComment[] = [];
 
   constructor(private storeService: StoreService, private route: ActivatedRoute, private notificationsService: NotificationsService) {
 
@@ -34,6 +36,10 @@ export class AlgoDetailsComponent implements OnInit, OnDestroy {
 
       this.subscriptions.push(this.storeService.getUserAlgoRating(algoId).subscribe(rating => {
         this.myRating = rating;
+      }));
+
+      this.subscriptions.push(this.storeService.getAlgoComments(algoId).subscribe((comments) => {
+        this.comments = comments;
       }));
     }));
   }

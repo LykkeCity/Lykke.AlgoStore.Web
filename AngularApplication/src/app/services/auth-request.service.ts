@@ -47,6 +47,17 @@ export class AuthRequestService {
     );
   }
 
+  public patch<T>(url: string, body: object = {}, options?: object): Observable<T> {
+    const headers = {
+      'Authorization': 'Bearer ' + this.token
+    };
+    const reqOptions = Object.assign({}, options, {headers});
+
+    return this.http.patch(url, body, reqOptions).pipe(
+      catchError( error => this.handleError(error) )
+    );
+  }
+
   public delete<T>(url: string, options?: object): Observable<T> {
     const headers = {
       'Authorization': 'Bearer ' + this.token
