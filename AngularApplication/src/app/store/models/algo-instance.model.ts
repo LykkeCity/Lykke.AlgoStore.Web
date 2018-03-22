@@ -1,3 +1,5 @@
+import { AlgoMetadata } from './algo-metadata.model';
+
 export enum IAlgoInstanceStatus {
   Deploying = 0,
   Running = 1,
@@ -9,12 +11,18 @@ export enum IAlgoInstanceType {
   Test = 2
 }
 
-export class AlgoInstance {
-  InstanceId?: string;
-  InstanceName?: string;
-  AlgoId?: string;
-  Date?: string;
-  AlgoMetaDataInformation?: string;
-  AlgoInstanceStatus?: IAlgoInstanceStatus;
-  AlgoInstanceType?: IAlgoInstanceType;
+export interface AlgoInstanceData {
+  WalletId: string;
+  AlgoClientId: string;
+  AlgoId: string;
+  AlgoMetadataInformation: AlgoMetadata;
+  AlgoInstanceType: IAlgoInstanceType;
+  InstanceName: string;
+  AlgoInstanceRunDate: string | null;
+}
+
+
+export interface AlgoInstance extends AlgoInstanceData {
+  InstanceId: string;
+  AlgoInstanceStatus: IAlgoInstanceStatus;
 }

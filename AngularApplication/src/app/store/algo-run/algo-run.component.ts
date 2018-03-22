@@ -8,7 +8,7 @@ import { UserService } from '../../services/user.service';
 import { BsModalService } from 'ngx-bootstrap';
 import { AlgoInstancePopupComponent } from './algo-run-popup/algo-instance-popup.component';
 import { FormControl, FormGroup } from '@angular/forms';
-import { AlgoInstance } from '../models/algo-instance.model';
+import { AlgoInstance, AlgoInstanceData, IAlgoInstanceType } from '../models/algo-instance.model';
 
 @Component({
   selector: 'app-algo-run',
@@ -42,9 +42,7 @@ export class AlgoRunComponent implements OnInit, OnDestroy {
       }));
 
       this.subscriptions.push(this.storeService.getAlgoInstances(algoId).subscribe(instances => {
-        this.instancesArray = instances
-          .map(instance => ({...instance, Date: 'Sep 14, 2017 ⋅ 21:01—21:01 CET'}));
-        // TODO: remove hardcoded date once it's implemented in the backend
+        this.instancesArray = instances;
       }));
     }));
 
@@ -78,14 +76,14 @@ export class AlgoRunComponent implements OnInit, OnDestroy {
     const initialState = {
       type: 'Live',
       algoInstanceData: {
-        walletId: wallet.Id,
-        algoClientId: this.clientId,
-        algoId: this.algo.AlgoId,
-        algoMetadataInformation: this.algo.AlgoMetaDataInformation
-      },
+        WalletId: wallet.Id,
+        AlgoClientId: this.clientId,
+        AlgoId: this.algo.AlgoId,
+        AlgoMetadataInformation: this.algo.AlgoMetaDataInformation,
+        AlgoInstanceType: IAlgoInstanceType.Live
+      } as AlgoInstanceData,
       onInstanceCreateSuccess: (instance) => {
-        this.instancesArray.push(({...instance, Date: 'Sep 14, 2017 ⋅ 21:01—21:01 CET'}));
-        // TODO: remove hardcoded date once it's implemented in the backend
+        this.instancesArray.push(instance);
       }
     };
     this.bsModalService.show(AlgoInstancePopupComponent, {initialState, class: 'modal-sm run-instance-popup'});

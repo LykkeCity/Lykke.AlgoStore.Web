@@ -4,14 +4,8 @@ import { StoreService } from '../../../services/store.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NotificationsService } from 'angular2-notifications';
 import { Subscription } from 'rxjs/Subscription';
-import { AlgoMetadata } from '../../models/algo-metadata.model';
+import { AlgoInstanceData } from '../../models/algo-instance.model';
 
-interface AlgoInstanceData {
-  walletId: string;
-  algoClientId: string;
-  algoId: string;
-  algoMetadataInformation: AlgoMetadata;
-}
 
 @Component({
   selector: 'app-algo-run-popup',
@@ -58,7 +52,7 @@ export class AlgoInstancePopupComponent implements OnDestroy {
       case 'Live':
         this.subscriptions.push(this.storeService.createLiveAlgoIntance({...this.algoInstanceData, ...this.algoInstanceForm.value}).subscribe((data) => {
             this.onInstanceCreateSuccess(data);
-            this.subscriptions.push(this.storeService.algoDeploy(this.algoInstanceData.algoClientId, data['AlgoId'], data['InstanceId']).subscribe(() => {
+            this.subscriptions.push(this.storeService.algoDeploy(this.algoInstanceData.AlgoClientId, data['AlgoId'], data['InstanceId']).subscribe(() => {
                 this.notificationsService.success('Algo instance created and run successfully.');
                 this.modalRef.hide();
               }, () => {
