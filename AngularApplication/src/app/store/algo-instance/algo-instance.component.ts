@@ -51,8 +51,7 @@ export class AlgoInstanceComponent implements OnInit, OnDestroy {
       }));
 
       this.subscriptions.push(this.storeService.getAlgoInstance(params['algoId'], params['instanceId']).subscribe(instance => {
-        this.instance = {...instance, Date: 'Sep 14, 2017 ⋅ 21:01—21:01 CET'};
-        // TODO: remove hardcoded status, type and date once it's implemented in the backend
+        this.instance = instance;
       }));
 
       this.subscriptions.push(
