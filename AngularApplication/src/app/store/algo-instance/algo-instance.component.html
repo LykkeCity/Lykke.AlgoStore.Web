@@ -28,12 +28,13 @@
                   </li>
                 </ul>
               </span>
-              <span class="ml-3 cursor-pointer text-muted" (click)="stopInstance()"
+              <span class="ml-3 cursor-pointer text-muted" (click)="stopInstancePrompt()"
                     *ngIf="instance.AlgoInstanceStatus === iAlgoInstanceStatus.Running"><img src="../../../assets/images/store/stop-icon.svg"> <span>Stop</span></span>
               <span class="ml-3 cursor-pointer text-muted" (click)="startInstance()"
                     *ngIf="instance.AlgoInstanceStatus === iAlgoInstanceStatus.Stopped"><img
                 src="../../../assets/images/store/play-run-icon.svg"> <span>Start</span></span>
-              <span class="ml-3 cursor-pointer text-muted" (click)="delete()"><img
+              <span class="ml-3 cursor-pointer text-muted" (click)="deleteInstancePrompt()"
+                    *ngIf="instance.AlgoInstanceStatus === iAlgoInstanceStatus.Stopped"><img
                 src="../../../assets/images/store/delete-icon.svg"> <span>Delete</span></span>
             </div>
           </div>
@@ -46,7 +47,7 @@
         </div>
         <hr>
         <div class="main-content">
-          <div class="row justify-content-center">
+          <div *ngIf="false" class="row justify-content-center mt-5">
             <div class="col-9">
               <alert type="warning">
                 <div class="row">
@@ -77,7 +78,7 @@
               </alert>
             </div>
           </div>
-          <div class="row">
+          <div class="row mt-5">
             <div class="col-8">
               <app-code-editor [config]="{sourceCode: algo.Data}"
                                (onInitCompleted)="onEditorCreated($event)"></app-code-editor>

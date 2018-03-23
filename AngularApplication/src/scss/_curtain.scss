@@ -14,21 +14,8 @@
     opacity: 1;
   }
 }
-body.blur {
-  overflow: hidden;
-  .main-header,
-  .main-footer,
-  .container:not(app-aside) {
-    filter: blur(5px);
-  }
-}
-body.blur-popup {
-  overflow: hidden;
-  .main-header,
-  .container,
-  .small-container,
-  .main-footer,
-  app-site-layout >:not(app-popup) {
+body.modal-open{
+  app-root >:not(app-popup) {
     filter: blur(5px);
   }
 }

@@ -13,7 +13,7 @@
       <div class="text-muted fs-1r">{{instance.AlgoInstanceType | instanceTypeName}} • {{instance.AlgoInstanceStatus | instanceStatusName}}</div>
     </div>
     <div class="col-3 text-center">
-      <div class="delete-icon-holder cursor-pointer" (click)="deleteInstance(instance.Id)"></div>
+      <div *ngIf="instance.AlgoInstanceStatus === iAlgoInstanceStatus.Stopped" class="delete-icon-holder cursor-pointer" (click)="deleteInstancePrompt(instance)"></div>
     </div>
   </div>
 </div>

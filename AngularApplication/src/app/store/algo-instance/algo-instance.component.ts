@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { StoreService } from '../../services/store.service';
 import { AlgoInstance, IAlgoInstanceStatus, IAlgoInstanceType } from '../models/algo-instance.model';
 import { Subscription } from 'rxjs/Subscription';
@@ -14,6 +14,8 @@ import { AlgoInstancePopupComponent } from '../algo-run/algo-run-popup/algo-inst
 import { NotificationsService } from 'angular2-notifications';
 import { repeatWhen } from 'rxjs/operators';
 import { timer } from 'rxjs/observable/timer';
+import { PopupComponent } from '../../components/popup/popup.component';
+import { PopupConfig } from '../../models/popup.interface';
 
 @Component({
   selector: 'app-algo-instance',
@@ -34,6 +36,7 @@ export class AlgoInstanceComponent implements OnInit, OnDestroy {
   subscriptions: Subscription[] = [];
 
   constructor(private route: ActivatedRoute,
+              private router: Router,
               private storeService: StoreService,
               private userService: UserService,
               private bsModalService: BsModalService,
@@ -98,10 +101,26 @@ export class AlgoInstanceComponent implements OnInit, OnDestroy {
 
   }
 
+  stopInstancePrompt(): void {
+    const initialState = {
+      popupConfig: {
+        title: 'Stop instance',
+        text: `Are you sure you want to stop ${this.instance.InstanceName}?`,
+        btnCancelText: 'Cancel',
+        btnConfirmText: 'Stop',
+        successCallback: () => {
+          this.stopInstance();
+        }
+      } as PopupConfig
+    };
+    this.bsModalService.show(PopupComponent, {initialState, class: 'modal-sm', keyboard: false, ignoreBackdropClick: true});
+  }
+
   stopInstance(): void {
 
     this.subscriptions.push(
       this.storeService.algoStop(this.algo.AlgoId, this.instance.InstanceId, this.algo.ClientId).subscribe(() => {
+        this.instance.AlgoInstanceStatus = IAlgoInstanceStatus.Stopped;
         this.notificationsService.success('Success', 'Instance has been stopped successfully.');
       })
     );
@@ -112,8 +131,28 @@ export class AlgoInstanceComponent implements OnInit, OnDestroy {
 
   }
 
-  delete(): void {
+  deleteInstancePrompt(): void {
+    const initialState = {
+      popupConfig: {
+        title: 'Delete instance',
+        text: `Are you sure you want to delete ${this.instance.InstanceName}?`,
+        btnCancelText: 'Cancel',
+        btnConfirmText: 'Delete',
+        successCallback: () => {
+          this.deleteInstance();
+        }
+      } as PopupConfig
+    };
+    this.bsModalService.show(PopupComponent, {initialState, class: 'modal-sm', keyboard: false, ignoreBackdropClick: true});
+  }
 
+  deleteInstance(): void {
+    this.storeService.deleteAlgoInstance(this.instance).subscribe(
+      () => {
+        this.notificationsService.success('Success', 'Instance has been deleted successfully.');
+        this.router.navigate(['store/algo-run', this.instance.AlgoClientId, this.instance.AlgoId]);
+      }
+    );
   }
 
   highlight(meta: BaseAlgoParam): void {
