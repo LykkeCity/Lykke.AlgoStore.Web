@@ -27,6 +27,8 @@
         "styles.scss"
       ],
       "scripts": [
+        "../node_modules/quill/dist/quill.js",
+        "../node_modules/quill/dist/quill.core.js",
         "../node_modules/ace-builds/src-min/ace.js",
         "../node_modules/ace-builds/src-min/mode-java.js",
         "../node_modules/ace-builds/src/mode-csharp.js",

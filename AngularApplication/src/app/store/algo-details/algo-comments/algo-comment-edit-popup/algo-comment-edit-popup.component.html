@@ -1,0 +1,22 @@
+<div class="modal-body">
+  <div class="row ml-0 mr-0 mt-4">
+    <div class="col-12">
+      <h3>Edit a comment from {{comment.Author}}</h3>
+    </div>
+    <form (ngSubmit)="onSubmit()" [formGroup]="commentEdit">
+      <div class="row">
+        <div class="col-12">
+          <div class="form-group">
+            <quill-editor [style]="{height: '200px'}" placeholder="Add a public comment here..." formControlName="Content"></quill-editor>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12 text-right">
+          <span class="font-weight-semibold cursor-pointer mr-2" (click)="bsModalRef.hide()">Cancel</span>
+          <button class="btn btn-primary comment-submit-btn ml-2" type="submit">Edit comment</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

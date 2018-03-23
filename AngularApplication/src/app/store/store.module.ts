@@ -6,6 +6,9 @@ import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { BsDropdownModule } from 'ngx-bootstrap';
 import { AngularSplitModule } from 'angular-split';
 import { TabsModule } from 'ngx-bootstrap';
+import { QuillModule } from 'ngx-quill';
+import { MomentModule } from 'angular2-moment';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 // ROUTING
 import { StoreRouting } from './store-routing.module';
@@ -25,6 +28,8 @@ import { AlgoInstanceComponent } from './algo-instance/algo-instance.component';
 import { AlgoInstanceListComponent } from './algo-run/algo-instance-list/algo-instance-list.component';
 import { InstanceTypeNamePipe } from './pipes/instance-type-name.pipe';
 import { InstanceStatusNamePipe } from './pipes/instance-status-name.pipe';
+import { AlgoCommentsComponent } from './algo-details/algo-comments/algo-comments.component';
+import { AlgoCommentEditPopupComponent } from './algo-details/algo-comments/algo-comment-edit-popup/algo-comment-edit-popup.component';
 
 // SERVICES
 @NgModule({
@@ -38,7 +43,10 @@ import { InstanceStatusNamePipe } from './pipes/instance-status-name.pipe';
     BsDropdownModule.forRoot(),
     StarRatingModule.forRoot(),
     TabsModule.forRoot(),
-    AngularSplitModule
+    AngularSplitModule,
+    QuillModule,
+    MomentModule,
+    NgxPaginationModule
   ],
   declarations: [
     StoreComponent,
@@ -53,9 +61,11 @@ import { InstanceStatusNamePipe } from './pipes/instance-status-name.pipe';
     AlgoInstanceComponent,
     AlgoInstanceListComponent,
     InstanceTypeNamePipe,
-    InstanceStatusNamePipe
+    InstanceStatusNamePipe,
+    AlgoCommentsComponent,
+    AlgoCommentEditPopupComponent,
   ],
   providers: [],
-  entryComponents: [AlgoInstancePopupComponent]
+  entryComponents: [AlgoInstancePopupComponent, AlgoCommentEditPopupComponent]
 })
 export class StoreModule { }
