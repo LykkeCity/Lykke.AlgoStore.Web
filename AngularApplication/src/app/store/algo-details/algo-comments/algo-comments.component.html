@@ -3,58 +3,65 @@
     <span class="font-weight-semibold">{{comments.length}} Comments</span>
   </div>
   <div class="col-6 text-right">
-    <span class="text-muted cursor-pointer">Hide Comments</span>
+    <span class="text-muted cursor-pointer" (click)="toggleCollapse()">{{collapse === 'open' ? 'Hide' : 'Show'}} Comments</span>
   </div>
 </div>
-<div class="row mb-3">
-  <div class="col-2">
-    <img src="../../../../assets/images/user_default_gray.svg">
-  </div>
-  <div class="col-10">
-    <form [formGroup]="commentForm" (ngSubmit)="onCommentSubmit()">
-      <div class="row">
-        <div class="col-12">
-          <div class="form-group">
-            <quill-editor [style]="{height: '200px'}" placeholder="Add a public comment here..." formControlName="Content"></quill-editor>
+<div class="collapse show" [@collapse]="collapse">
+  <div class="row mb-3">
+    <div class="col-2">
+      <img src="../../../../assets/images/user_default_gray.svg">
+    </div>
+    <div class="col-10">
+      <form [formGroup]="commentForm" (ngSubmit)="onCommentSubmit()">
+        <div class="row">
+          <div class="col-12">
+            <div class="form-group">
+              <quill-editor [style]="{height: '200px'}" placeholder="Add a public comment here..."
+                            formControlName="Content"></quill-editor>
+            </div>
           </div>
         </div>
-      </div>
-      <div class="row">
-        <div class="col-12 text-right">
-          <span class="font-weight-semibold cursor-pointer mr-2">Cancel</span>
-          <button class="btn btn-primary comment-submit-btn ml-2" type="submit">Comment</button>
+        <div class="row">
+          <div class="col-12 text-right">
+            <span class="font-weight-semibold cursor-pointer mr-2">Cancel</span>
+            <button class="btn btn-primary comment-submit-btn ml-2" type="submit">Comment</button>
+          </div>
         </div>
-      </div>
-    </form>
-  </div>
-</div>
-<div class="row mb-3" *ngFor="let comment of comments | paginate: { itemsPerPage: 5, currentPage: currentPage }; let index = index;">
-  <div class="col-2">
-    <img src="../../../../assets/images/user_default_gray.svg">
-  </div>
-  <div class="col-8">
-    <div class="comment-header">
-      <span class="font-weight-semibold">{{comment.Author}}</span>
-      <span class="font-weight-light"> posted {{comment.CreatedOn | amTimeAgo:true}} ago.</span>
+      </form>
     </div>
-    <div class="comment-body text-muted" [innerHtml]="comment.Content"></div>
-    <span *ngIf="comment.EditedOn" class="text-muted font-weight-light font-italic">Last edited {{comment.EditedOn | amTimeAgo:true}} ago.</span>
   </div>
-  <div class="col-2">
+  <div class="row mb-3"
+       *ngFor="let comment of comments | paginate: { itemsPerPage: 5, currentPage: currentPage }; let index = index;">
+    <div class="col-2">
+      <img src="../../../../assets/images/user_default_gray.svg">
+    </div>
+    <div class="col-8">
+      <div class="comment-header">
+        <span class="font-weight-semibold">{{comment.Author}}</span>
+        <span class="font-weight-light"> posted {{comment.CreatedOn | amTimeAgo:true}} ago.</span>
+      </div>
+      <div class="comment-body text-muted" [innerHtml]="comment.Content"></div>
+      <span *ngIf="comment.EditedOn" class="text-muted font-weight-light font-italic">Last edited {{comment.EditedOn | amTimeAgo:true}} ago.</span>
+    </div>
+    <div class="col-2">
     <span dropdown class="ml-3 cursor-pointer text-muted">
           <span dropdownToggle class="dots">. . .</span>
           <ul *dropdownMenu class="dropdown-menu">
             <li>
-              <a class="dropdown-item" href="javascript:;" (click)="editComment(comment, index)"><img src="../../../../assets/images/edit-icon.svg"><span class="ml-1">Edit</span></a>
-              <a class="dropdown-item" href="javascript:;" (click)="deleteComment(comment, index)"><img src="../../../../assets/images/store/delete-icon.svg"><span class="ml-1">Delete</span></a>
+              <a class="dropdown-item" href="javascript:;" (click)="editComment(comment, index)"><img
+                src="../../../../assets/images/edit-icon.svg"><span class="ml-1">Edit</span></a>
+              <a class="dropdown-item" href="javascript:;" (click)="deleteComment(comment, index)"><img
+                src="../../../../assets/images/store/delete-icon.svg"><span class="ml-1">Delete</span></a>
             </li>
           </ul>
         </span>
+    </div>
   </div>
-</div>
-<div class="row mt-3" *ngIf="comments.length">
-  <div class="col-12 text-center">
-    <pagination-controls (pageChange)="currentPage = $event" [previousLabel]="''" [nextLabel]="''"></pagination-controls>
+  <div class="row mt-3" *ngIf="comments.length">
+    <div class="col-12 text-center">
+      <pagination-controls (pageChange)="currentPage = $event" [previousLabel]="''"
+                           [nextLabel]="''"></pagination-controls>
+    </div>
   </div>
 </div>
 

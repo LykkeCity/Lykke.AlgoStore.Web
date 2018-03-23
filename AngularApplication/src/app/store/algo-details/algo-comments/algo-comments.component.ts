@@ -6,11 +6,28 @@ import { AlgoCommentEditPopupComponent } from './algo-comment-edit-popup/algo-co
 import { StoreService } from '../../../services/store.service';
 import { NotificationsService } from 'angular2-notifications';
 import { PopupComponent } from '../../../components/popup/popup.component';
+import { animate, state, style, transition, trigger } from '@angular/animations';
 
 @Component({
   selector: 'app-algo-comments',
   templateUrl: './algo-comments.component.html',
-  styleUrls: ['./algo-comments.component.scss']
+  styleUrls: ['./algo-comments.component.scss'],
+  animations: [
+    trigger('collapse', [
+      state('open', style({
+        opacity: '1',
+        display: 'block',
+        transform: 'translate3d(0, 0, 0)'
+      })),
+      state('closed',   style({
+        opacity: '0',
+        display: 'none',
+        transform: 'translate3d(0, -10px, 0)'
+      })),
+      transition('closed => open', animate('200ms ease-in')),
+      transition('open => closed', animate('100ms ease-out'))
+    ])
+  ]
 })
 export class AlgoCommentsComponent {
 
@@ -18,6 +35,7 @@ export class AlgoCommentsComponent {
   @Input() algoId: string;
   commentForm: FormGroup;
   currentPage = 1;
+  collapse = 'open';
 
   constructor(private fb: FormBuilder, private bsModalService: BsModalService, private storeService: StoreService, private notificationsService: NotificationsService) {
     this.commentForm = this.fb.group({
@@ -68,6 +86,10 @@ export class AlgoCommentsComponent {
       this.comments.unshift(savedComment);
       this.commentForm.reset();
     });
+  }
+
+  toggleCollapse() {
+    this.collapse = this.collapse === 'open' ? 'closed' : 'open';
   }
 
 }
