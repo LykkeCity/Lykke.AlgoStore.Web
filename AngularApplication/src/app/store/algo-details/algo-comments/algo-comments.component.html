@@ -28,7 +28,7 @@
     </form>
   </div>
 </div>
-<div class="row mb-3" *ngFor="let comment of comments; let index = index;">
+<div class="row mb-3" *ngFor="let comment of comments | paginate: { itemsPerPage: 5, currentPage: currentPage }; let index = index;">
   <div class="col-2">
     <img src="../../../../assets/images/user_default_gray.svg">
   </div>
@@ -50,6 +50,11 @@
             </li>
           </ul>
         </span>
+  </div>
+</div>
+<div class="row mt-3" *ngIf="comments.length">
+  <div class="col-12 text-center">
+    <pagination-controls (pageChange)="currentPage = $event" [previousLabel]="''" [nextLabel]="''"></pagination-controls>
   </div>
 </div>
 

@@ -8,6 +8,7 @@ import { AngularSplitModule } from 'angular-split';
 import { TabsModule } from 'ngx-bootstrap';
 import { QuillModule } from 'ngx-quill';
 import { MomentModule } from 'angular2-moment';
+import {NgxPaginationModule} from 'ngx-pagination';
 
 // ROUTING
 import { StoreRouting } from './store-routing.module';
@@ -44,7 +45,8 @@ import { AlgoCommentEditPopupComponent } from './algo-details/algo-comments/algo
     TabsModule.forRoot(),
     AngularSplitModule,
     QuillModule,
-    MomentModule
+    MomentModule,
+    NgxPaginationModule
   ],
   declarations: [
     StoreComponent,

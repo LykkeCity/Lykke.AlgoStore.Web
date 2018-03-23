@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { AlgoComment } from '../../../models/algo-comment.model';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { BsModalService } from 'ngx-bootstrap';
@@ -12,11 +12,12 @@ import { PopupComponent } from '../../../components/popup/popup.component';
   templateUrl: './algo-comments.component.html',
   styleUrls: ['./algo-comments.component.scss']
 })
-export class AlgoCommentsComponent implements OnInit {
+export class AlgoCommentsComponent {
 
   @Input() comments: AlgoComment[];
   @Input() algoId: string;
   commentForm: FormGroup;
+  currentPage = 1;
 
   constructor(private fb: FormBuilder, private bsModalService: BsModalService, private storeService: StoreService, private notificationsService: NotificationsService) {
     this.commentForm = this.fb.group({
@@ -24,14 +25,10 @@ export class AlgoCommentsComponent implements OnInit {
     });
   }
 
-  ngOnInit() {
-  }
-
   editComment(comment: AlgoComment, index: number): void {
     const initialState = {
       comment: comment,
       onEditSuccess: (editedComment) => {
-        console.log(editedComment);
         this.storeService.editComment(editedComment).subscribe(savedComment => {
           this.notificationsService.success('Success', 'Comment edited successfully.');
           this.comments[index] = savedComment;
@@ -68,7 +65,7 @@ export class AlgoCommentsComponent implements OnInit {
 
     this.storeService.saveComment({ AlgoId: this.algoId, ...this.commentForm.value }).subscribe((savedComment) => {
       this.notificationsService.success('Success', 'Comment added successfully.');
-      this.comments.push(savedComment);
+      this.comments.unshift(savedComment);
     });
   }
 
