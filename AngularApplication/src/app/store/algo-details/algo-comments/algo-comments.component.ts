@@ -19,7 +19,7 @@ import { animate, state, style, transition, trigger } from '@angular/animations'
         display: 'block',
         transform: 'translate3d(0, 0, 0)'
       })),
-      state('closed',   style({
+      state('closed', style({
         opacity: '0',
         display: 'none',
         transform: 'translate3d(0, -10px, 0)'
@@ -37,7 +37,10 @@ export class AlgoCommentsComponent {
   currentPage = 1;
   collapse = 'open';
 
-  constructor(private fb: FormBuilder, private bsModalService: BsModalService, private storeService: StoreService, private notificationsService: NotificationsService) {
+  constructor(private fb: FormBuilder,
+              private bsModalService: BsModalService,
+              private storeService: StoreService,
+              private notificationsService: NotificationsService) {
     this.commentForm = this.fb.group({
       Content: ['', Validators.required]
     });
@@ -54,7 +57,12 @@ export class AlgoCommentsComponent {
       }
     };
 
-    this.bsModalService.show(AlgoCommentEditPopupComponent, { initialState, class: 'modal-sm', keyboard: false, ignoreBackdropClick: true });
+    this.bsModalService.show(AlgoCommentEditPopupComponent, {
+      initialState,
+      class: 'modal-sm',
+      keyboard: false,
+      ignoreBackdropClick: true
+    });
   }
 
   deleteComment(comment: AlgoComment, index: number): void {
