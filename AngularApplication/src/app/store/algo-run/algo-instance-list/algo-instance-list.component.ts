@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { AlgoInstance } from '../../models/algo-instance.model';
+import { AlgoInstance, IAlgoInstanceStatus } from '../../models/algo-instance.model';
 import { Subscription } from 'rxjs/Subscription';
 import { StoreService } from '../../../services/store.service';
 import { ActivatedRoute } from '@angular/router';
@@ -16,6 +16,7 @@ export class AlgoInstanceListComponent {
   @Input() instancesArray: AlgoInstance[];
   subscriptions: Subscription[] = [];
   clientId: string;
+  iAlgoInstanceStatus = IAlgoInstanceStatus;
 
   constructor(
     private route: ActivatedRoute,

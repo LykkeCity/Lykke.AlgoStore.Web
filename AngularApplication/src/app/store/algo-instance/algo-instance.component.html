@@ -33,7 +33,8 @@
               <span class="ml-3 cursor-pointer text-muted" (click)="startInstance()"
                     *ngIf="instance.AlgoInstanceStatus === iAlgoInstanceStatus.Stopped"><img
                 src="../../../assets/images/store/play-run-icon.svg"> <span>Start</span></span>
-              <span class="ml-3 cursor-pointer text-muted" (click)="deleteInstance(instance)"><img
+              <span class="ml-3 cursor-pointer text-muted" (click)="deleteInstance(instance)"
+                    *ngIf="instance.AlgoInstanceStatus === iAlgoInstanceStatus.Stopped"><img
                 src="../../../assets/images/store/delete-icon.svg"> <span>Delete</span></span>
             </div>
           </div>
