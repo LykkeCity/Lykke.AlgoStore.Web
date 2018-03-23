@@ -4,6 +4,9 @@ import { Subscription } from 'rxjs/Subscription';
 import { StoreService } from '../../../services/store.service';
 import { ActivatedRoute } from '@angular/router';
 import { NotificationsService } from 'angular2-notifications';
+import { PopupComponent } from '../../../components/popup/popup.component';
+import { BsModalService } from 'ngx-bootstrap';
+import { PopupConfig } from '../../../models/popup.interface';
 
 @Component({
   selector: 'app-algo-instance-list',
@@ -21,11 +24,27 @@ export class AlgoInstanceListComponent {
   constructor(
     private route: ActivatedRoute,
     private storeService: StoreService,
-    private notificationsService: NotificationsService
+    private notificationsService: NotificationsService,
+    private bsModalService: BsModalService
   ) {
     this.subscriptions.push(this.route.params.subscribe(params => {
       this.clientId = params['clientId'];
     }));
+  }
+
+  deleteInstancePrompt(instance: AlgoInstance): void {
+    const initialState = {
+      popupConfig: {
+        title: 'Delete instance',
+        text: `Are you sure you want to delete ${instance.InstanceName}?`,
+        btnCancelText: 'Cancel',
+        btnConfirmText: 'Delete',
+        successCallback: () => {
+          this.deleteInstance(instance);
+        }
+      } as PopupConfig
+    };
+    this.bsModalService.show(PopupComponent, {initialState, class: 'modal-sm', keyboard: false, ignoreBackdropClick: true});
   }
 
   deleteInstance(instance: AlgoInstance): void {

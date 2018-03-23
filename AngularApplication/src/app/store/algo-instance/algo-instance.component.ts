@@ -14,6 +14,8 @@ import { AlgoInstancePopupComponent } from '../algo-run/algo-run-popup/algo-inst
 import { NotificationsService } from 'angular2-notifications';
 import { repeatWhen } from 'rxjs/operators';
 import { timer } from 'rxjs/observable/timer';
+import { PopupComponent } from '../../components/popup/popup.component';
+import { PopupConfig } from '../../models/popup.interface';
 
 @Component({
   selector: 'app-algo-instance',
@@ -99,6 +101,21 @@ export class AlgoInstanceComponent implements OnInit, OnDestroy {
 
   }
 
+  stopInstancePrompt(): void {
+    const initialState = {
+      popupConfig: {
+        title: 'Stop instance',
+        text: `Are you sure you want to stop ${this.instance.InstanceName}?`,
+        btnCancelText: 'Cancel',
+        btnConfirmText: 'Stop',
+        successCallback: () => {
+          this.stopInstance();
+        }
+      } as PopupConfig
+    };
+    this.bsModalService.show(PopupComponent, {initialState, class: 'modal-sm', keyboard: false, ignoreBackdropClick: true});
+  }
+
   stopInstance(): void {
 
     this.subscriptions.push(
@@ -112,6 +129,21 @@ export class AlgoInstanceComponent implements OnInit, OnDestroy {
 
   startInstance(): void {
 
+  }
+
+  deleteInstancePrompt(): void {
+    const initialState = {
+      popupConfig: {
+        title: 'Delete instance',
+        text: `Are you sure you want to delete ${this.instance.InstanceName}?`,
+        btnCancelText: 'Cancel',
+        btnConfirmText: 'Delete',
+        successCallback: () => {
+          this.deleteInstance();
+        }
+      } as PopupConfig
+    };
+    this.bsModalService.show(PopupComponent, {initialState, class: 'modal-sm', keyboard: false, ignoreBackdropClick: true});
   }
 
   deleteInstance(): void {
