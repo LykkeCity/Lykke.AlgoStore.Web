@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { AlgoComment } from '../../../models/algo-comment.model';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { BsModalService } from 'ngx-bootstrap';
@@ -7,6 +7,7 @@ import { StoreService } from '../../../services/store.service';
 import { NotificationsService } from 'angular2-notifications';
 import { PopupComponent } from '../../../components/popup/popup.component';
 import { animate, state, style, transition, trigger } from '@angular/animations';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-algo-comments',
@@ -29,7 +30,7 @@ import { animate, state, style, transition, trigger } from '@angular/animations'
     ])
   ]
 })
-export class AlgoCommentsComponent {
+export class AlgoCommentsComponent implements OnChanges{
 
   @Input() comments: AlgoComment[];
   @Input() algoId: string;
@@ -40,10 +41,20 @@ export class AlgoCommentsComponent {
   constructor(private fb: FormBuilder,
               private bsModalService: BsModalService,
               private storeService: StoreService,
-              private notificationsService: NotificationsService) {
+              private notificationsService: NotificationsService,
+              private domSanitizer: DomSanitizer) {
     this.commentForm = this.fb.group({
       Content: ['', Validators.required]
     });
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['comments'] && changes['comments'].currentValue) {
+      this.comments = changes['comments'].currentValue.map(comment => {
+        comment.Content = this.domSanitizer.bypassSecurityTrustHtml(comment.Content);
+        return comment;
+      });
+    }
   }
 
   editComment(comment: AlgoComment, index: number): void {
