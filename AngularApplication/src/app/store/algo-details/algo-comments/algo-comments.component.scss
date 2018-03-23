@@ -1,10 +1,18 @@
+@import '~scss/reuse';
+
 .new-comment-input {
   border: none;
   border-bottom: 1px solid darkgray;
 }
 
 .dropdown-menu {
-  top: 25px !important;
+  top: 30px !important;
+
+  .dropdown-item {
+    img {
+      vertical-align: baseline;
+    }
+  }
 }
 
 .comment-submit-btn {
@@ -15,4 +23,9 @@
   li, li:hover {
     border-radius: 4px;
   }
+}
+
+.dots {
+  font-size: 1.5rem;
+  font-weight: $font-weight-semibold;
 }

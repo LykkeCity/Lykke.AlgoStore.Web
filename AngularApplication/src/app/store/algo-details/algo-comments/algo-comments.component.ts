@@ -36,7 +36,7 @@ export class AlgoCommentsComponent {
       }
     };
 
-    this.bsModalService.show(AlgoCommentEditPopupComponent, { initialState, class: 'modal-sm' });
+    this.bsModalService.show(AlgoCommentEditPopupComponent, { initialState, class: 'modal-sm', keyboard: false, ignoreBackdropClick: true });
   }
 
   deleteComment(comment: AlgoComment, index: number): void {
@@ -55,7 +55,7 @@ export class AlgoCommentsComponent {
       }
     };
 
-    this.bsModalService.show(PopupComponent, { initialState, class: 'modal-sm' });
+    this.bsModalService.show(PopupComponent, { initialState, class: 'modal-sm', keyboard: false, ignoreBackdropClick: true });
   }
 
   onCommentSubmit(): void {
@@ -66,6 +66,7 @@ export class AlgoCommentsComponent {
     this.storeService.saveComment({ AlgoId: this.algoId, ...this.commentForm.value }).subscribe((savedComment) => {
       this.notificationsService.success('Success', 'Comment added successfully.');
       this.comments.unshift(savedComment);
+      this.commentForm.reset();
     });
   }
 
