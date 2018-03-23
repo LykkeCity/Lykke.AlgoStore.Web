@@ -111,8 +111,9 @@ export class StoreService {
     return this.authRequestService.get(environment.storeApiUrl + '/v1/clientData/instanceData', { params });
   }
 
-  deleteAlgoInstance(instanceId: string): Observable<AlgoInstance> {
-    return this.authRequestService.get(environment.storeApiUrl + ''); // TODO add real endpoint
+  deleteAlgoInstance(instance: AlgoInstance): Observable<void> {
+    const body = { AlgoId: instance.AlgoId, InstanceId: instance.InstanceId, AlgoClientId: instance.AlgoClientId };
+    return this.authRequestService.delete(environment.storeApiUrl + '/v1/clientData/instanceData', { body });
   }
 
   getUserAlgoRating(AlgoId: string, clientId?: string): Observable<AlgoRating> {

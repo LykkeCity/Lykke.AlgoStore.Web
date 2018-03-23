@@ -3,6 +3,7 @@ import { AlgoInstance } from '../../models/algo-instance.model';
 import { Subscription } from 'rxjs/Subscription';
 import { StoreService } from '../../../services/store.service';
 import { ActivatedRoute } from '@angular/router';
+import { NotificationsService } from 'angular2-notifications';
 
 @Component({
   selector: 'app-algo-instance-list',
@@ -16,15 +17,22 @@ export class AlgoInstanceListComponent {
   subscriptions: Subscription[] = [];
   clientId: string;
 
-  constructor(private route: ActivatedRoute, private storeService: StoreService) {
+  constructor(
+    private route: ActivatedRoute,
+    private storeService: StoreService,
+    private notificationsService: NotificationsService
+  ) {
     this.subscriptions.push(this.route.params.subscribe(params => {
       this.clientId = params['clientId'];
     }));
   }
 
-  deleteInstance(id: string): void {
-    this.subscriptions.push(this.storeService.deleteAlgoInstance(id).subscribe(() => {
-      // TODO message here
+  deleteInstance(instance: AlgoInstance): void {
+    this.subscriptions.push(this.storeService.deleteAlgoInstance(instance).subscribe(() => {
+      this.notificationsService.success('Success', 'Instance has been deleted successfully.');
+      this.instancesArray = this.instancesArray.filter(
+        i => (i.InstanceId !== instance.InstanceId)
+      );
     }));
   }
 

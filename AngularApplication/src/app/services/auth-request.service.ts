@@ -62,9 +62,9 @@ export class AuthRequestService {
     const headers = {
       'Authorization': 'Bearer ' + this.token
     };
-    const reqOptions = Object.assign({}, options, {headers});
+    const reqOptions = { headers, ...options};
 
-    return this.http.delete(url, reqOptions).pipe(
+    return this.http.request('delete', url, reqOptions).pipe(
       catchError( error => this.handleError(error) )
     );
   }

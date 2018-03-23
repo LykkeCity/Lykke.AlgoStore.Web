@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { StoreService } from '../../services/store.service';
 import { AlgoInstance, IAlgoInstanceStatus, IAlgoInstanceType } from '../models/algo-instance.model';
 import { Subscription } from 'rxjs/Subscription';
@@ -34,6 +34,7 @@ export class AlgoInstanceComponent implements OnInit, OnDestroy {
   subscriptions: Subscription[] = [];
 
   constructor(private route: ActivatedRoute,
+              private router: Router,
               private storeService: StoreService,
               private userService: UserService,
               private bsModalService: BsModalService,
@@ -102,6 +103,7 @@ export class AlgoInstanceComponent implements OnInit, OnDestroy {
 
     this.subscriptions.push(
       this.storeService.algoStop(this.algo.AlgoId, this.instance.InstanceId, this.algo.ClientId).subscribe(() => {
+        this.instance.AlgoInstanceStatus = IAlgoInstanceStatus.Stopped;
         this.notificationsService.success('Success', 'Instance has been stopped successfully.');
       })
     );
@@ -112,8 +114,13 @@ export class AlgoInstanceComponent implements OnInit, OnDestroy {
 
   }
 
-  delete(): void {
-
+  deleteInstance(): void {
+    this.storeService.deleteAlgoInstance(this.instance).subscribe(
+      () => {
+        this.notificationsService.success('Success', 'Instance has been deleted successfully.');
+        this.router.navigate(['store/algo-run', this.instance.AlgoClientId, this.instance.AlgoId]);
+      }
+    );
   }
 
   highlight(meta: BaseAlgoParam): void {
