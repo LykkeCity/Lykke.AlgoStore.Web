@@ -57,7 +57,7 @@
         </span>
     </div>
   </div>
-  <div class="row mt-3" *ngIf="comments.length">
+  <div class="row mt-3" *ngIf="comments.length > 5">
     <div class="col-12 text-center">
       <pagination-controls (pageChange)="currentPage = $event" [previousLabel]="''"
                            [nextLabel]="''"></pagination-controls>
