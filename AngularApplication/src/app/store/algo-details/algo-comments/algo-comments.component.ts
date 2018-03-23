@@ -18,12 +18,12 @@ import { DomSanitizer } from '@angular/platform-browser';
       state('open', style({
         opacity: '1',
         display: 'block',
-        transform: 'translate3d(0, 0, 0)'
+        transform: 'translate(0, 0)'
       })),
       state('closed', style({
         opacity: '0',
         display: 'none',
-        transform: 'translate3d(0, -10px, 0)'
+        transform: 'translate(0, -10px)'
       })),
       transition('closed => open', animate('200ms ease-in')),
       transition('open => closed', animate('100ms ease-out'))
@@ -63,6 +63,7 @@ export class AlgoCommentsComponent implements OnChanges{
       onEditSuccess: (editedComment) => {
         this.storeService.editComment(editedComment).subscribe(savedComment => {
           this.notificationsService.success('Success', 'Comment edited successfully.');
+          savedComment.Content = <any>this.domSanitizer.bypassSecurityTrustHtml(savedComment.Content);
           this.comments[index] = savedComment;
         });
       }
@@ -102,6 +103,7 @@ export class AlgoCommentsComponent implements OnChanges{
 
     this.storeService.saveComment({ AlgoId: this.algoId, ...this.commentForm.value }).subscribe((savedComment) => {
       this.notificationsService.success('Success', 'Comment added successfully.');
+      savedComment.Content = <any>this.domSanitizer.bypassSecurityTrustHtml(savedComment.Content);
       this.comments.unshift(savedComment);
       this.commentForm.reset();
     });

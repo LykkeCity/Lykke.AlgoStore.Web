@@ -24,8 +24,6 @@
         ]
       },
       "styles": [
-        "../node_modules/quill/dist/quill.snow.css",
-        "../node_modules/quill/dist/quill.bubble.css",
         "styles.scss"
       ],
       "scripts": [
