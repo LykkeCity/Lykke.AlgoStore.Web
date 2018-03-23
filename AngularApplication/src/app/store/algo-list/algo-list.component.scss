@@ -1,9 +1,9 @@
-@import "colors";
+@import '~scss/reuse';
 
 .algo-list-placeholder {
     .algo-list {
         .mat-header-row {
-            background-color: $gray;
+            background-color: $gray-600;
 
             a {
                 color: $dark;

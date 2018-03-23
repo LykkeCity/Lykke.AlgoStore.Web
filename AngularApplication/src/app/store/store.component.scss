@@ -1,5 +1,4 @@
-@import "mixins";
-@import "colors";
+@import '~scss/reuse';
 
 
 ::ng-deep .store-placeholder {
@@ -28,8 +27,8 @@
           width: 40px;
           height: 40px;
           background-color: transparent;
-          border: 1px solid $darkGray;
-          color: $darkGray;
+          border: 1px solid $gray-800;
+          color: $gray-800;
         }
       }
       .step-one-language {
@@ -40,7 +39,7 @@
           cursor: pointer;
           &:hover,
           &.active {
-            @include language-shadow;
+            // @include language-shadow;
           }
           img {
             position: absolute;
@@ -80,11 +79,11 @@
           color: $dark;
         }
         .code {
-          border-top: 1px solid $darkGray;
-          border-right: 1px solid $darkGray;
-          border-bottom: 1px solid $darkGray;
+          border-top: 1px solid $gray-800;
+          border-right: 1px solid $gray-800;
+          border-bottom: 1px solid $gray-800;
           border-radius: 10px;
-          color: $code;
+          color: $slate;
           position: relative;
           background: transparent;
 
@@ -105,7 +104,7 @@
       .step-two-setup-metadata {
         .file-uploaded {
           padding: 10px;
-          border: 1px solid $gray;
+          border: 1px solid $gray-600;
           &:after {
             clear: both;
             float: none;
