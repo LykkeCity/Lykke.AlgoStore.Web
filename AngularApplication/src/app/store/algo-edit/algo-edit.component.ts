@@ -2,9 +2,9 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 
-import { StoreService } from '../../services/store.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Algo } from '../models/algo.interface';
+import { AlgoService } from '../../services/algo.service';
 
 @Component({
   selector: 'app-algo-edit',
@@ -18,7 +18,7 @@ export class AlgoEditComponent implements OnInit, OnDestroy {
 
   private subscriptions = new Subscription();
 
-  constructor(private storeService: StoreService,
+  constructor(private algoService: AlgoService,
               private router: Router,
               private route: ActivatedRoute,
               private formBuilder: FormBuilder) {
@@ -34,7 +34,7 @@ export class AlgoEditComponent implements OnInit, OnDestroy {
     this.route.params.subscribe(params => {
       const algoId = params['algoId'];
 
-      this.storeService.algoGetMetadata(algoId).subscribe(algo => {
+      this.algoService.algoGetMetadata(algoId).subscribe(algo => {
         this.algo = algo;
 
         this.updateFormGroup.setValue({
@@ -53,7 +53,7 @@ export class AlgoEditComponent implements OnInit, OnDestroy {
 
   update() {
     if (this.updateFormGroup.valid) {
-      this.subscriptions.add(this.storeService.algoCreateDetails(this.updateFormGroup.value).subscribe(() => {
+      this.subscriptions.add(this.algoService.algoCreateDetails(this.updateFormGroup.value).subscribe(() => {
         this.router.navigate(['store/algo-list']);
       }));
     }

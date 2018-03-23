@@ -1,12 +1,14 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Algo } from '../models/algo.interface';
-import { StoreService } from '../../services/store.service';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 import { BaseAlgoParam } from '../models/base-algo-param.model';
 import { AlgoRating } from '../models/algo-rating.model';
 import { NotificationsService } from 'angular2-notifications';
 import { AlgoComment } from '../../models/algo-comment.model';
+import { AlgoService } from '../../services/algo.service';
+import { AlgoRatingService } from '../../services/algo-rating.service';
+import { AlgoCommentService } from '../../services/algo-comment.service';
 
 @Component({
   selector: 'app-algo-detail',
@@ -21,7 +23,12 @@ export class AlgoDetailsComponent implements OnInit, OnDestroy {
   myRating: AlgoRating = {};
   comments: AlgoComment[] = [];
 
-  constructor(private storeService: StoreService, private route: ActivatedRoute, private notificationsService: NotificationsService) {
+  constructor(
+    private algoService: AlgoService,
+    private algoRatingService: AlgoRatingService,
+    private algoCommentService: AlgoCommentService,
+    private route: ActivatedRoute,
+    private notificationsService: NotificationsService) {
 
   }
 
@@ -29,16 +36,16 @@ export class AlgoDetailsComponent implements OnInit, OnDestroy {
     this.subscriptions.push(this.route.params.subscribe(params => {
       const algoId = params['algoId'];
       const clientId = params['clientId'];
-      this.subscriptions.push(this.storeService.getAlgoWithSource(algoId, clientId).subscribe(algo => {
+      this.subscriptions.push(this.algoService.getAlgoWithSource(algoId, clientId).subscribe(algo => {
         this.algo = algo;
         this.algo.ClientId = clientId;
       }));
 
-      this.subscriptions.push(this.storeService.getUserAlgoRating(algoId).subscribe(rating => {
+      this.subscriptions.push(this.algoRatingService.getUserAlgoRating(algoId).subscribe(rating => {
         this.myRating = rating;
       }));
 
-      this.subscriptions.push(this.storeService.getAlgoComments(algoId).subscribe((comments) => {
+      this.subscriptions.push(this.algoCommentService.getAlgoComments(algoId).subscribe((comments) => {
         this.comments = comments;
       }));
     }));
@@ -64,7 +71,7 @@ export class AlgoDetailsComponent implements OnInit, OnDestroy {
       AlgoId: this.algo['AlgoId'],
       Rating: data.rating
     };
-    this.subscriptions.push(this.storeService.saveAlgoRating(ratingData).subscribe((newAlgoRating) => {
+    this.subscriptions.push(this.algoRatingService.saveAlgoRating(ratingData).subscribe((newAlgoRating) => {
       this.notificationsService.success('Success', 'Rating saved.');
       this.algo.Rating = newAlgoRating.Rating;
       this.algo.RatedUsersCount = newAlgoRating.RatedUsersCount;

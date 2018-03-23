@@ -2,8 +2,8 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs/Subscription';
 
-import { StoreService } from '../services/store.service';
 import { Language } from '../models/language.enum';
+import { AlgoService } from '../services/algo.service';
 
 @Component({
   selector: 'app-store',
@@ -18,7 +18,7 @@ export class StoreComponent implements OnInit, OnDestroy {
 
   algoCreateSubscription: Subscription;
 
-  constructor(private storeService: StoreService,
+  constructor(private algoService: AlgoService,
               private formBuilder: FormBuilder) {
   }
 
@@ -56,7 +56,7 @@ export class StoreComponent implements OnInit, OnDestroy {
       return;
     }
 
-    this.algoCreateSubscription = this.storeService.algoCreateDetails(this.updateFormGroup.value).subscribe((algo) => {
+    this.algoCreateSubscription = this.algoService.algoCreateDetails(this.updateFormGroup.value).subscribe((algo) => {
       this.id = algo.Id;
       this.success = true;
     });

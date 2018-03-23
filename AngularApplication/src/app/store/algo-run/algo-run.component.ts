@@ -1,6 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { StoreService } from '../../services/store.service';
 import { Subscription } from 'rxjs/Subscription';
 import { Algo } from '../models/algo.interface';
 import { Wallet } from '../../models/wallet.model';
@@ -9,6 +8,8 @@ import { BsModalService } from 'ngx-bootstrap';
 import { AlgoInstancePopupComponent } from './algo-run-popup/algo-instance-popup.component';
 import { FormControl, FormGroup } from '@angular/forms';
 import { AlgoInstance, AlgoInstanceData, IAlgoInstanceType } from '../models/algo-instance.model';
+import { AlgoService } from '../../services/algo.service';
+import { InstanceService } from '../../services/instance.service';
 
 @Component({
   selector: 'app-algo-run',
@@ -26,7 +27,8 @@ export class AlgoRunComponent implements OnInit, OnDestroy {
   clientId: string;
 
   constructor(private route: ActivatedRoute,
-              private storeService: StoreService,
+              private algoService: AlgoService,
+              private instanceService: InstanceService,
               private userService: UserService,
               private bsModalService: BsModalService) {
 
@@ -34,14 +36,14 @@ export class AlgoRunComponent implements OnInit, OnDestroy {
       this.clientId = params['clientId'];
       const algoId = params['algoId'];
 
-      this.subscriptions.push(this.storeService.getAlgoWithSource(algoId, this.clientId).subscribe(algo => {
+      this.subscriptions.push(this.algoService.getAlgoWithSource(algoId, this.clientId).subscribe(algo => {
         this.algo = algo;
         this.algo.ClientId = this.clientId;
         this.metadataForm = this.dataToFormGroup();
         this.showMetadataForm = true;
       }));
 
-      this.subscriptions.push(this.storeService.getAlgoInstances(algoId).subscribe(instances => {
+      this.subscriptions.push(this.instanceService.getAlgoInstances(algoId).subscribe(instances => {
         this.instancesArray = instances;
       }));
     }));
