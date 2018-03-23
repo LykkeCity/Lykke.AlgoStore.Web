@@ -34,7 +34,7 @@ export class InstanceService {
   }
 
   createLiveAlgoIntance(data): Observable<AlgoInstance> {
-    return this.authRequestService.post(environment.storeApiUrl + '/v1/clientData/instanceData', data);
+    return this.authRequestService.post<AlgoInstance>(environment.storeApiUrl + '/v1/clientData/instanceData', data);
   }
 
   createDemoAlgoIntance(data: AlgoInstance): Observable<AlgoInstance> {

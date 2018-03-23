@@ -4,6 +4,7 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { tap, mergeMap } from 'rxjs/operators';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
+import { ITokenResponse } from '../models/token-response.interface';
 
 @Injectable()
 export class AuthTokenService implements OnDestroy {
@@ -29,17 +30,17 @@ export class AuthTokenService implements OnDestroy {
     );
   }
 
-  getWalletToken(data): Observable<Object> {
+  getWalletToken(data): Observable<ITokenResponse> {
     const headers = {
       'application_id': environment.applicationId,
       'Authorization': data.token_type + ' ' + data.access_token
     };
 
-    return this.http.get(environment.apiAuthUrl + '/getlykkewallettoken', { headers }).pipe(
+    return this.http.get<ITokenResponse>(environment.apiAuthUrl + '/getlykkewallettoken', { headers }).pipe(
       tap(
         next => {
-          if (next['token']) {
-            this.tokenStream.next(next['token']);
+          if (next.token) {
+            this.tokenStream.next(next.token);
           }
         }
       )

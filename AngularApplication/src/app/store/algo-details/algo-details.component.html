@@ -5,7 +5,7 @@
         <h3>{{algo.Name}}</h3>
       </div>
       <div class="col-4 text-right">
-        <a class="btn btn-primary" [routerLink]="['/store', 'algo-run', algo.ClientId, algo['AlgoId']]">Try Algo</a>
+        <a class="btn btn-primary" [routerLink]="['/store', 'algo-run', algo.ClientId, algo.AlgoId]">Try Algo</a>
       </div>
     </div>
     <div class="row mb-2">
@@ -54,7 +54,7 @@
           </span>
         </div>
         <div class="comments-holder mt-5">
-          <app-algo-comments [comments]="comments" [algoId]="algo['AlgoId']"></app-algo-comments>
+          <app-algo-comments [comments]="comments" [algoId]="algo.AlgoId"></app-algo-comments>
         </div>
       </div>
       <div class="col-4">

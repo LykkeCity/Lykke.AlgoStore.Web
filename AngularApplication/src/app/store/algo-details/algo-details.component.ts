@@ -68,7 +68,7 @@ export class AlgoDetailsComponent implements OnInit, OnDestroy {
 
   onRatingChange(data) {
     const ratingData = {
-      AlgoId: this.algo['AlgoId'],
+      AlgoId: this.algo.AlgoId,
       Rating: data.rating
     };
     this.subscriptions.push(this.algoRatingService.saveAlgoRating(ratingData).subscribe((newAlgoRating) => {

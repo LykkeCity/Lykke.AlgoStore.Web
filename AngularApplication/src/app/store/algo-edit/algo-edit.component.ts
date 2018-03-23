@@ -38,7 +38,7 @@ export class AlgoEditComponent implements OnInit, OnDestroy {
         this.algo = algo;
 
         this.updateFormGroup.setValue({
-          Id: this.algo['AlgoId'],
+          Id: this.algo.AlgoId,
           Name: this.algo.Name,
           Description: this.algo.Description
         });

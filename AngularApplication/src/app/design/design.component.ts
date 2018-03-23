@@ -42,7 +42,7 @@ export class DesignComponent implements OnDestroy {
   }
 
   save(): void {
-    this.subscriptions.push(this.algoService.algoSave(this.algo['AlgoId'], this.algo.Data).subscribe(() => {
+    this.subscriptions.push(this.algoService.algoSave(this.algo.AlgoId, this.algo.Data).subscribe(() => {
       this.notificationsService.success('Success', 'Also source saved');
       this.router.navigate(['store/algo-list']);
     }));
