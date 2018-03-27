@@ -22,7 +22,7 @@ export class AlgoCommentEditPopupComponent implements OnInit {
 
   ngOnInit() {
     this.commentEdit.setValue({
-      Content: this.comment.Content
+      Content: this.comment.Content[Object.keys(this.comment.Content)[0]]
     });
   }
 
