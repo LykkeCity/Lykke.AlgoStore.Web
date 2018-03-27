@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { AlgoInstance, IAlgoInstanceStatus, IAlgoInstanceType } from '../models/algo-instance.model';
+import { AlgoInstance, AlgoInstanceData, IAlgoInstanceStatus, IAlgoInstanceType } from '../models/algo-instance.model';
 import { Subscription } from 'rxjs/Subscription';
 import { Wallet } from '../../models/wallet.model';
 import { Algo } from '../models/algo.interface';
@@ -27,6 +27,7 @@ export class AlgoInstanceComponent implements OnInit, OnDestroy {
   iAlgoInstanceStatus = IAlgoInstanceStatus;
   iAlgoInstanceType = IAlgoInstanceType;
   instance: AlgoInstance;
+  clientId: string;
   algo: Algo = {};
   wallets: Wallet[] = [];
   trades: AlgoInstanceTrade[];
@@ -47,6 +48,7 @@ export class AlgoInstanceComponent implements OnInit, OnDestroy {
     this.stats = getStats();
 
     this.subscriptions.push(this.route.params.subscribe(params => {
+      this.clientId = params['clientId'];
       this.subscriptions.push(this.algoService.getAlgoWithSource(params['algoId'], params['clientId']).subscribe(algo => {
         this.algo = {...algo, ClientId: params['clientId']};
       }));
@@ -57,17 +59,19 @@ export class AlgoInstanceComponent implements OnInit, OnDestroy {
 
       this.subscriptions.push(this.instanceService.getAlgoInstance(params['algoId'], params['instanceId']).subscribe(instance => {
         this.instance = instance;
-      }));
 
-      this.subscriptions.push(
-        this.instanceService.algoGetTailLog(params['algoId'], params['instanceId'], params['clientId'])
-        .pipe(
-          repeatWhen(() => timer(10000, 5000))
-        )
-        .subscribe(
-          res => { this.log = res.Log.join('\n'); }
-        )
-      );
+        if (this.instance.AlgoInstanceStatus !== IAlgoInstanceStatus.Deploying) {
+          this.subscriptions.push(
+            this.instanceService.algoGetTailLog(params['algoId'], params['instanceId'], params['clientId'])
+              .pipe(
+                repeatWhen(() => timer(10000, 5000))
+              )
+              .subscribe(
+                res => { this.log = res.Log.join('\n'); }
+              )
+          );
+        }
+      }));
     }));
   }
 
@@ -100,7 +104,20 @@ export class AlgoInstanceComponent implements OnInit, OnDestroy {
   }
 
   goLive(wallet: Wallet) {
-
+    const initialState = {
+      type: 'Live',
+      algoInstanceData: {
+        WalletId: wallet.Id,
+        AlgoClientId: this.clientId,
+        AlgoId: this.algo.AlgoId,
+        AlgoMetadataInformation: this.instance['AlgoMetaDataInformation'],
+        AlgoInstanceType: IAlgoInstanceType.Live
+      } as AlgoInstanceData,
+      onInstanceCreateSuccess: () => {
+        this.router.navigate(['/store/algo-run', this.clientId, this.algo.AlgoId]);
+      }
+    };
+    this.bsModalService.show(AlgoInstancePopupComponent, {initialState, class: 'modal-sm run-instance-popup'});
   }
 
   stopInstancePrompt(): void {
@@ -119,18 +136,15 @@ export class AlgoInstanceComponent implements OnInit, OnDestroy {
   }
 
   stopInstance(): void {
-
     this.subscriptions.push(
       this.instanceService.algoStop(this.algo.AlgoId, this.instance.InstanceId, this.algo.ClientId).subscribe(() => {
         this.instance.AlgoInstanceStatus = IAlgoInstanceStatus.Stopped;
         this.notificationsService.success('Success', 'Instance has been stopped successfully.');
+        this.subscriptions.forEach(sub => {
+          sub.unsubscribe();
+        });
       })
     );
-
-  }
-
-  startInstance(): void {
-
   }
 
   deleteInstancePrompt(): void {
