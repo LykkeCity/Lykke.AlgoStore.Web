@@ -18,7 +18,6 @@ import { UserProfileComponent } from './components/header/user-profile/user-prof
 import { AuthService } from './services/auth.service';
 import { UserService } from './services/user.service';
 import { IdleService } from './services/idle.service';
-import { StoreService } from './services/store.service';
 import { AuthRequestService } from './services/auth-request.service';
 import { AuthTokenService } from './services/auth-token.service';
 import { LoginRedirectGuard } from './services/login-redirect.guard';
@@ -34,6 +33,10 @@ import { BsModalRef, PopoverModule } from 'ngx-bootstrap';
 import { SharedModule } from './shared/shared.module';
 import { PopupComponent } from './components/popup/popup.component';
 import { IdlePopupComponent } from './components/popup/idle-popup/idle-popup.component';
+import { AlgoService } from './services/algo.service';
+import { AlgoCommentService } from './services/algo-comment.service';
+import { AlgoRatingService } from './services/algo-rating.service';
+import { InstanceService } from './services/instance.service';
 
 
 @NgModule({
@@ -58,17 +61,20 @@ import { IdlePopupComponent } from './components/popup/idle-popup/idle-popup.com
     NgIdleKeepaliveModule.forRoot(),
     PopoverModule.forRoot()
   ],
- providers: [
+  providers: [
     AuthGuard,
     AuthService,
     IdleService,
     UserService,
-    StoreService,
     AuthRequestService,
     AuthTokenService,
     LoginRedirectGuard,
     NonAuthenticatedGuard,
-   BsModalRef
+    AlgoService,
+    AlgoCommentService,
+    AlgoRatingService,
+    InstanceService,
+    BsModalRef
   ],
   entryComponents: [PopupComponent, IdlePopupComponent],
   bootstrap: [AppComponent]

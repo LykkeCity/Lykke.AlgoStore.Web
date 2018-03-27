@@ -1,4 +1,4 @@
-export class AlgoInstanceTrade {
+export interface AlgoInstanceTrade {
   Id?: string;
   Date?: string;
   Asset?: string;

@@ -3,11 +3,11 @@ import { AlgoComment } from '../../../models/algo-comment.model';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { BsModalService } from 'ngx-bootstrap';
 import { AlgoCommentEditPopupComponent } from './algo-comment-edit-popup/algo-comment-edit-popup.component';
-import { StoreService } from '../../../services/store.service';
 import { NotificationsService } from 'angular2-notifications';
 import { PopupComponent } from '../../../components/popup/popup.component';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { DomSanitizer } from '@angular/platform-browser';
+import { AlgoCommentService } from '../../../services/algo-comment.service';
 
 @Component({
   selector: 'app-algo-comments',
@@ -40,7 +40,7 @@ export class AlgoCommentsComponent implements OnChanges{
 
   constructor(private fb: FormBuilder,
               private bsModalService: BsModalService,
-              private storeService: StoreService,
+              private algoCommentService: AlgoCommentService,
               private notificationsService: NotificationsService,
               private domSanitizer: DomSanitizer) {
     this.commentForm = this.fb.group({
@@ -61,7 +61,7 @@ export class AlgoCommentsComponent implements OnChanges{
     const initialState = {
       comment: comment,
       onEditSuccess: (editedComment) => {
-        this.storeService.editComment(editedComment).subscribe(savedComment => {
+        this.algoCommentService.editComment(editedComment).subscribe(savedComment => {
           this.notificationsService.success('Success', 'Comment edited successfully.');
           savedComment.Content = <any>this.domSanitizer.bypassSecurityTrustHtml(savedComment.Content);
           this.comments[index] = savedComment;
@@ -85,7 +85,7 @@ export class AlgoCommentsComponent implements OnChanges{
         btnCancelText: 'Cancel',
         btnConfirmText: 'Delete',
         successCallback: () => {
-          this.storeService.deleteComment(this.algoId, comment.CommentId).subscribe(() => {
+          this.algoCommentService.deleteComment(this.algoId, comment.CommentId).subscribe(() => {
             this.comments.splice(index, 1);
             this.notificationsService.success('Success', 'Comment deleted successfully');
           });
@@ -101,7 +101,7 @@ export class AlgoCommentsComponent implements OnChanges{
       return;
     }
 
-    this.storeService.saveComment({ AlgoId: this.algoId, ...this.commentForm.value }).subscribe((savedComment) => {
+    this.algoCommentService.saveComment({ AlgoId: this.algoId, ...this.commentForm.value }).subscribe((savedComment) => {
       this.notificationsService.success('Success', 'Comment added successfully.');
       savedComment.Content = <any>this.domSanitizer.bypassSecurityTrustHtml(savedComment.Content);
       this.comments.unshift(savedComment);

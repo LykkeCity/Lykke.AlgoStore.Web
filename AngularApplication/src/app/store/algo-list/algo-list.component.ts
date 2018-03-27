@@ -1,8 +1,8 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 
-import { StoreService } from '../../services/store.service';
 import { Algo } from '../models/algo.interface';
+import { AlgoService } from '../../services/algo.service';
 
 
 @Component({
@@ -17,12 +17,12 @@ export class AlgoListComponent implements OnInit, OnDestroy {
 
   private subscriptions = new Subscription();
 
-  constructor(private storeService: StoreService) {
+  constructor(private algoService: AlgoService) {
   }
 
   ngOnInit() {
     this.loadingIndicator = true;
-    this.subscriptions.add(this.storeService.getAllPublicAlgos().subscribe(this.onDataObtained));
+    this.subscriptions.add(this.algoService.getAllPublicAlgos().subscribe(this.onDataObtained));
   }
 
   ngOnDestroy() {

@@ -1,12 +1,12 @@
 import { Component, Input } from '@angular/core';
 import { AlgoInstance, IAlgoInstanceStatus } from '../../models/algo-instance.model';
 import { Subscription } from 'rxjs/Subscription';
-import { StoreService } from '../../../services/store.service';
 import { ActivatedRoute } from '@angular/router';
 import { NotificationsService } from 'angular2-notifications';
 import { PopupComponent } from '../../../components/popup/popup.component';
 import { BsModalService } from 'ngx-bootstrap';
 import { PopupConfig } from '../../../models/popup.interface';
+import { InstanceService } from '../../../services/instance.service';
 
 @Component({
   selector: 'app-algo-instance-list',
@@ -23,7 +23,7 @@ export class AlgoInstanceListComponent {
 
   constructor(
     private route: ActivatedRoute,
-    private storeService: StoreService,
+    private instanceService: InstanceService,
     private notificationsService: NotificationsService,
     private bsModalService: BsModalService
   ) {
@@ -48,7 +48,7 @@ export class AlgoInstanceListComponent {
   }
 
   deleteInstance(instance: AlgoInstance): void {
-    this.subscriptions.push(this.storeService.deleteAlgoInstance(instance).subscribe(() => {
+    this.subscriptions.push(this.instanceService.deleteAlgoInstance(instance).subscribe(() => {
       this.notificationsService.success('Success', 'Instance has been deleted successfully.');
       this.instancesArray = this.instancesArray.filter(
         i => (i.InstanceId !== instance.InstanceId)

@@ -1,10 +1,10 @@
 import { Component, OnDestroy } from '@angular/core';
 import { BsModalRef } from 'ngx-bootstrap';
-import { StoreService } from '../../../services/store.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NotificationsService } from 'angular2-notifications';
 import { Subscription } from 'rxjs/Subscription';
 import { AlgoInstanceData } from '../../models/algo-instance.model';
+import { InstanceService } from '../../../services/instance.service';
 
 
 @Component({
@@ -24,7 +24,7 @@ export class AlgoInstancePopupComponent implements OnDestroy {
 
 
   constructor(public modalRef: BsModalRef,
-              private storeService: StoreService,
+              private instanceService: InstanceService,
               private fb: FormBuilder,
               private notificationsService: NotificationsService) {
     this.algoInstanceForm = this.fb.group({
@@ -45,16 +45,16 @@ export class AlgoInstancePopupComponent implements OnDestroy {
 
     switch (this.type) {
       case 'Demo':
-        this.subscriptions.push(this.storeService.createDemoAlgoIntance({...this.algoInstanceData, ...this.algoInstanceForm.value})
+        this.subscriptions.push(this.instanceService.createDemoAlgoIntance({...this.algoInstanceData, ...this.algoInstanceForm.value})
           .subscribe(() => {
           this.modalRef.hide();
         }));
         break;
       case 'Live':
-        this.subscriptions.push(this.storeService.createLiveAlgoIntance({...this.algoInstanceData, ...this.algoInstanceForm.value})
+        this.subscriptions.push(this.instanceService.createLiveAlgoIntance({...this.algoInstanceData, ...this.algoInstanceForm.value})
           .subscribe((data) => {
             this.onInstanceCreateSuccess(data);
-            this.subscriptions.push(this.storeService.algoDeploy(this.algoInstanceData.AlgoClientId, data['AlgoId'], data['InstanceId'])
+            this.subscriptions.push(this.instanceService.algoDeploy(this.algoInstanceData.AlgoClientId, data.AlgoId, data.InstanceId)
               .subscribe(() => {
                 this.notificationsService.success('Algo instance created successfully.');
                 this.modalRef.hide();
@@ -68,7 +68,7 @@ export class AlgoInstancePopupComponent implements OnDestroy {
           }));
         break;
       case 'Edit':
-        // this.storeService.editInstance(this.instanceId, this.algoInstanceForm.value).subscribe(() => {
+        // this.instanceService.editInstance(this.instanceId, this.algoInstanceForm.value).subscribe(() => {
         //   this.modalRef.hide();
         //   this.onEditSuccess(this.algoInstanceForm.value.Name);
         // });

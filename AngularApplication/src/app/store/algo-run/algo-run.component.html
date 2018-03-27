@@ -20,7 +20,7 @@
     </div>
     <div class="row mb-2">
       <div class="col-12 action-buttons">
-        <span class="cursor-pointer" [routerLink]="['/store' , 'algo-details', algo['ClientId'], algo['AlgoId']]">View Public profile</span> • <span class="cursor-pointer" (click)="resetDefault()">Reset to Default Values</span>
+        <span class="cursor-pointer" [routerLink]="['/store' , 'algo-details', algo.ClientId, algo.AlgoId]">View Public profile</span> • <span class="cursor-pointer" (click)="resetDefault()">Reset to Default Values</span>
       </div>
     </div>
   </div>
@@ -51,7 +51,7 @@
               </form>
             </div>
             <div class="col-12 pl-0" *ngIf="instancesArray && instancesArray.length">
-              <app-algo-instance-list [algoId]="algo['AlgoId']" [instancesArray]="instancesArray"></app-algo-instance-list>
+              <app-algo-instance-list [algoId]="algo.AlgoId" [instancesArray]="instancesArray"></app-algo-instance-list>
             </div>
           </div>
         </div>
