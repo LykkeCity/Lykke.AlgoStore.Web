@@ -62,8 +62,8 @@ export class AlgoInstancePopupComponent implements OnDestroy {
                 this.notificationsService.error('Error', 'There was an error while running your instance.');
                 this.modalRef.hide();
               }));
-          }, () => {
-            this.notificationsService.error('Error', 'There was an error while creating your instance.');
+          }, (error) => {
+            this.notificationsService.error('Error', error.DisplayMessage);
             this.modalRef.hide();
           }));
         break;

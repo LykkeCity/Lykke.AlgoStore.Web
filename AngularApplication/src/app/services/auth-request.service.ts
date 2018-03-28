@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { AuthTokenService } from './auth-token.service';
 import { catchError } from 'rxjs/operators';
+import 'rxjs/add/observable/throw';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { NotificationsService } from 'angular2-notifications';
@@ -77,7 +78,7 @@ export class AuthRequestService {
 
     this.notificationsService.error('Error', 'Error occurred.');
     console.error('ApiService::handleError', error);
-    return Observable.throw('Error');
+    return Observable.throw(error.error);
   }
 
 }
