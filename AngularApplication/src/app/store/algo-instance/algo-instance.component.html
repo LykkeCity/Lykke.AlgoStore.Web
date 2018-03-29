@@ -73,7 +73,7 @@
                     </div>
                     <div class="row">
                       <div class="col-12 small-text">
-                        You can go to Metadata Atributes and add more
+                        You can go to Metadata Attributes and add more
                       </div>
                     </div>
                   </div>
@@ -104,12 +104,12 @@
     </split-area>
     <split-area size="30">
       <tabset #instanceTabs>
-        <tab heading="Log" class="ml-3">
+        <tab heading="Log" class="ml-3" (select)="onSelect($event)">
           <div class="container">
               <pre>{{log}}</pre>
           </div>
         </tab>
-        <tab heading="Statistics">
+        <tab heading="Statistics" (select)="onSelect($event)">
           <div class="container">
             <div class="stats-holder">
               <div class="row">
@@ -120,7 +120,7 @@
             </div>
           </div>
         </tab>
-        <tab heading="Trades">
+        <tab heading="Trades" (select)="onSelect($event)">
           <div class="container">
             <table class="table">
               <thead>

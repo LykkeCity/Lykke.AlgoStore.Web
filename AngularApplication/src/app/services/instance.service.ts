@@ -5,6 +5,8 @@ import { Algo } from '../store/models/algo.interface';
 import { AuthRequestService } from './auth-request.service';
 import { AlgoInstance } from '../store/models/algo-instance.model';
 import { AlgoLog } from '../store/models/algo-log.interface';
+import { AlgoInstanceTrade } from '../store/models/algo-instance-trade.model';
+import { InstanceStatistic } from '../store/models/algo-instance-statistic.model';
 
 @Injectable()
 export class InstanceService {
@@ -31,6 +33,16 @@ export class InstanceService {
   algoGetTailLog(AlgoId: string, InstanceId: string, AlgoClientId: string, Tail: number = 100): Observable<AlgoLog> {
     const params = { AlgoId, InstanceId, AlgoClientId, Tail };
     return this.authRequestService.get(environment.storeApiUrl + `/v1/management/test/tailLog`, { params });
+  }
+
+  algoGetTrades(instanceId: string): Observable<AlgoInstanceTrade[]> {
+    const params = { instanceId: instanceId };
+    return this.authRequestService.get(environment.storeApiUrl + '/v1/trades', { params });
+  }
+
+  algoGetStatistics(instanceId: string): Observable<InstanceStatistic[]> {
+    const params = { instanceId: instanceId };
+    return this.authRequestService.get(environment.storeApiUrl + '/v1/statistics', { params });
   }
 
   createLiveAlgoIntance(data): Observable<AlgoInstance> {

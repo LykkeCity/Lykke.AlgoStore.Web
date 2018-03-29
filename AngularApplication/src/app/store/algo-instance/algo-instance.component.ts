@@ -6,7 +6,7 @@ import { Wallet } from '../../models/wallet.model';
 import { Algo } from '../models/algo.interface';
 import { UserService } from '../../services/user.service';
 import { BaseAlgoParam } from '../models/base-algo-param.model';
-import { AlgoInstanceTrade, getTrades } from '../models/algo-instance-trade.model';
+import { AlgoInstanceTrade } from '../models/algo-instance-trade.model';
 import { getStats, InstanceStatistic } from '../models/algo-instance-statistic.model';
 import { BsModalService } from 'ngx-bootstrap';
 import { AlgoInstancePopupComponent } from '../algo-run/algo-run-popup/algo-instance-popup.component';
@@ -23,11 +23,13 @@ import { InstanceService } from '../../services/instance.service';
   templateUrl: './algo-instance.component.html',
   styleUrls: ['./algo-instance.component.scss']
 })
-export class AlgoInstanceComponent implements OnInit, OnDestroy {
+export class AlgoInstanceComponent implements OnDestroy {
   iAlgoInstanceStatus = IAlgoInstanceStatus;
   iAlgoInstanceType = IAlgoInstanceType;
   instance: AlgoInstance;
   clientId: string;
+  instanceId: string;
+  algoId: string;
   algo: Algo = {};
   wallets: Wallet[] = [];
   trades: AlgoInstanceTrade[];
@@ -44,38 +46,29 @@ export class AlgoInstanceComponent implements OnInit, OnDestroy {
               private userService: UserService,
               private bsModalService: BsModalService,
               private notificationsService: NotificationsService) {
-    this.trades = getTrades();
     this.stats = getStats();
 
     this.subscriptions.push(this.route.params.subscribe(params => {
       this.clientId = params['clientId'];
-      this.subscriptions.push(this.algoService.getAlgoWithSource(params['algoId'], params['clientId']).subscribe(algo => {
-        this.algo = {...algo, ClientId: params['clientId']};
+      this.instanceId = params['instanceId'];
+      this.algoId = params['algoId'];
+
+      this.subscriptions.push(this.algoService.getAlgoWithSource(this.algoId, this.clientId ).subscribe(algo => {
+        this.algo = { ...algo, ClientId: this.clientId  };
       }));
 
       this.subscriptions.push(this.userService.getUserWalletsWithBalances().subscribe(wallets => {
         this.wallets = wallets;
       }));
 
-      this.subscriptions.push(this.instanceService.getAlgoInstance(params['algoId'], params['instanceId']).subscribe(instance => {
+      this.subscriptions.push(this.instanceService.getAlgoInstance(this.algoId, this.instanceId).subscribe(instance => {
         this.instance = instance;
 
         if (this.instance.AlgoInstanceStatus !== IAlgoInstanceStatus.Deploying) {
-          this.subscriptions.push(
-            this.instanceService.algoGetTailLog(params['algoId'], params['instanceId'], params['clientId'])
-              .pipe(
-                repeatWhen(() => timer(10000, 5000))
-              )
-              .subscribe(
-                res => { this.log = res.Log.join('\n'); }
-              )
-          );
+          this.subscriptions.push(this.getLogs());
         }
       }));
     }));
-  }
-
-  ngOnInit() {
   }
 
   ngOnDestroy() {
@@ -117,7 +110,7 @@ export class AlgoInstanceComponent implements OnInit, OnDestroy {
         this.router.navigate(['/store/algo-run', this.clientId, this.algo.AlgoId]);
       }
     };
-    this.bsModalService.show(AlgoInstancePopupComponent, {initialState, class: 'modal-sm run-instance-popup'});
+    this.bsModalService.show(AlgoInstancePopupComponent, { initialState, class: 'modal-sm run-instance-popup' });
   }
 
   stopInstancePrompt(): void {
@@ -132,7 +125,7 @@ export class AlgoInstanceComponent implements OnInit, OnDestroy {
         }
       } as PopupConfig
     };
-    this.bsModalService.show(PopupComponent, {initialState, class: 'modal-sm', keyboard: false, ignoreBackdropClick: true});
+    this.bsModalService.show(PopupComponent, { initialState, class: 'modal-sm', keyboard: false, ignoreBackdropClick: true });
   }
 
   stopInstance(): void {
@@ -159,7 +152,7 @@ export class AlgoInstanceComponent implements OnInit, OnDestroy {
         }
       } as PopupConfig
     };
-    this.bsModalService.show(PopupComponent, {initialState, class: 'modal-sm', keyboard: false, ignoreBackdropClick: true});
+    this.bsModalService.show(PopupComponent, { initialState, class: 'modal-sm', keyboard: false, ignoreBackdropClick: true });
   }
 
   deleteInstance(): void {
@@ -176,4 +169,57 @@ export class AlgoInstanceComponent implements OnInit, OnDestroy {
     this.editor.setHighlightActiveLine(true);
   }
 
+  getStatistics(): Subscription {
+    return this.instanceService.algoGetStatistics(this.instanceId)
+      .pipe(
+        repeatWhen(() => timer(10000, 5000))
+      )
+      .subscribe(
+        res => {
+          // this.trades = res;
+        }
+      );
+  }
+
+  getLogs(): Subscription {
+    return this.instanceService.algoGetTailLog(this.algoId, this.instanceId, this.clientId)
+      .pipe(
+        repeatWhen(() => timer(10000, 5000))
+      )
+      .subscribe(
+        res => {
+          this.log = res.Log.join('\n');
+        }
+      );
+  }
+
+  getTrades(): Subscription {
+    return this.instanceService.algoGetTrades(this.instanceId)
+      .pipe(
+        repeatWhen(() => timer(10000, 5000))
+      )
+      .subscribe(
+        res => {
+          this.trades = res;
+        }
+      );
+  }
+
+  onSelect(event) {
+    const heading = event.heading;
+    this.subscriptions.forEach(sub => sub.unsubscribe());
+    this.subscriptions = []; // clear the array so we don't have duplicate subscriptions
+
+    if (heading === 'Statics') {
+      this.subscriptions.push(this.getStatistics());
+    }
+
+    if (heading === 'Log') {
+      this.subscriptions.push(this.getLogs());
+    }
+
+    if (heading === 'Trades') {
+      this.subscriptions.push(this.getTrades());
+    }
+  }
 }
