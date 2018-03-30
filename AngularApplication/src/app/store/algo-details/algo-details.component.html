@@ -20,13 +20,13 @@
       <div class="col-4">
         <span class="text-muted">Popularity rating:</span>
         <span class="d-inline-flex ml-3">
-          <star-rating-comp [rating]="algo.Rating"
+          <app-star-rating-comp [rating]="algo.Rating"
                             [starType]="'svg'"
                             [numOfStars]="6"
                             [showHalfStars]="true"
                             [staticColor]="'default'"
                             [readOnly]="true">
-          </star-rating-comp>
+          </app-star-rating-comp>
         </span>
         <span class="text-muted rated-users-count">{{algo.RatedUsersCount}}<span> <img src="../../../assets/images/rating-count-avatar-icon.svg"></span></span>
       </div>
@@ -44,13 +44,13 @@
         <div class="rating-holder text-left">
           <span>Rate algo:</span>
           <span class="d-inline-flex">
-            <star-rating-comp [rating]="myRating.Rating"
+            <app-star-rating-comp [rating]="myRating.Rating"
                               [starType]="'svg'"
                               [numOfStars]="6"
                               [showHalfStars]="true"
                               [staticColor]="'default'"
                               (onClick)="onRatingChange($event)">
-            </star-rating-comp>
+            </app-star-rating-comp>
           </span>
         </div>
         <div class="comments-holder mt-5">

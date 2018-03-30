@@ -10,6 +10,8 @@ import { UiSwitchModule } from 'ngx-ui-switch';
 import { DateTimePickerComponent } from './date-time-picker/date-time-picker.component';
 import { DpDatePickerModule } from 'ng2-date-picker';
 import { AlertModule } from 'ngx-bootstrap';
+import { StarRatingComponent } from './star-rating/star-rating.component';
+import { StarRatingConfigService } from './star-rating/star-rating-config';
 
 
 @NgModule({
@@ -24,11 +26,12 @@ import { AlertModule } from 'ngx-bootstrap';
     AlertModule.forRoot(),
     TooltipModule.forRoot()
   ],
-  providers: [],
+  providers: [StarRatingConfigService],
   declarations: [
     PopupComponent,
     CodeEditorComponent,
-    DateTimePickerComponent
+    DateTimePickerComponent,
+    StarRatingComponent
   ],
   exports: [
     CommonModule,
@@ -36,7 +39,8 @@ import { AlertModule } from 'ngx-bootstrap';
     CodeEditorComponent,
     DateTimePickerComponent,
     AlertModule,
-    ModalModule
+    ModalModule,
+    StarRatingComponent
   ]
 })
 export class SharedModule {}
