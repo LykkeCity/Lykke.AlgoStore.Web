@@ -126,24 +126,18 @@
               <thead>
               <tr>
                 <th>Date</th>
-                <th>Asset</th>
                 <th>Price</th>
                 <th>Type</th>
                 <th>Quantity</th>
-                <th>Operation</th>
-                <th>Status</th>
               </tr>
 
               </thead>
               <tbody>
               <tr *ngFor="let trade of trades">
-                <td>{{trade.Date}}</td>
-                <td>{{trade.Asset}}</td>
+                <td>{{trade.Id | amLocal | amDateFormat: 'YYYY-MM-DD HH:mm:ss'}}</td>
                 <td>{{trade.Price}}</td>
-                <td>{{trade.Type}}</td>
-                <td>{{trade.Quantity}}</td>
-                <td>{{trade.Operation}}</td>
-                <td>{{trade.Status}}</td>
+                <td>{{trade.IsBuy ? 'Buy' : 'Sell'}}</td>
+                <td>{{trade.Amount}}</td>
               </tr>
               </tbody>
             </table>
