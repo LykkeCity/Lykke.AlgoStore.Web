@@ -206,6 +206,10 @@ export class AlgoInstanceComponent implements OnDestroy {
   }
 
   onSelect(event) {
+    if (this.instance.AlgoInstanceStatus === IAlgoInstanceStatus.Deploying) {
+      return;
+    }
+
     const heading = event.heading;
     this.subscriptions.forEach(sub => sub.unsubscribe());
     this.subscriptions = []; // clear the array so we don't have duplicate subscriptions
