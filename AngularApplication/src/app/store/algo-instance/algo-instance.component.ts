@@ -201,6 +201,9 @@ export class AlgoInstanceComponent implements OnDestroy {
       .subscribe(
         res => {
           this.trades = res;
+          this.trades.map(trade => {
+            trade.Date = trade.Id.split('_')[1];
+          });
         }
       );
   }
@@ -214,7 +217,7 @@ export class AlgoInstanceComponent implements OnDestroy {
     this.subscriptions.forEach(sub => sub.unsubscribe());
     this.subscriptions = []; // clear the array so we don't have duplicate subscriptions
 
-    if (heading === 'Statics') {
+    if (heading === 'Statistics') {
       this.subscriptions.push(this.getStatistics());
     }
 
