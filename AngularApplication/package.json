@@ -27,7 +27,6 @@
     "@swimlane/ngx-datatable": "^11.1.7",
     "angular-datatables": "^5.0.0",
     "angular-split": "^1.0.0-rc.3",
-    "angular-star-rating": "^3.0.8",
     "angular2-moment": "^1.8.0",
     "angular2-notifications": "^0.9.6",
     "bootstrap": "^4.0.0",
