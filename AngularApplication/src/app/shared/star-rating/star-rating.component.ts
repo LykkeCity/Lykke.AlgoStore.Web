@@ -1,3 +1,4 @@
+/* tslint:disable */
 import {Component, OnChanges, EventEmitter, forwardRef} from '@angular/core';
 import {OnClickEvent, OnRatingChangeEven, OnHoverRatingChangeEvent} from './star-rating-struct';
 import {StarRating} from './star-rating';
