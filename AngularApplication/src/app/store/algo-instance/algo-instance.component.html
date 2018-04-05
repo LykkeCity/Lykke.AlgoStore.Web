@@ -113,8 +113,33 @@
           <div class="container">
             <div class="stats-holder">
               <div class="row">
-                <div class="col-4 mb-2" *ngFor="let stat of stats">
-                  <span class="stat-key">{{stat.Name}}</span> : <span class="stat-value">{{stat.Value}}</span>
+                <div class="col-4 mb-2">
+                  <span class="stat-key">Total Trades</span> : <span class="stat-value">{{stats?.TotalNumberOfTrades}}</span>
+                </div>
+                <div class="col-4 mb-2">
+                  <span class="stat-key">Total Starts</span> : <span class="stat-value">{{stats?.TotalNumberOfStarts}}</span>
+                </div>
+                <div class="col-4 mb-2">
+                  <span class="stat-key">Base asset</span> : <span class="stat-value">{{stats?.UserCurrencyBaseAssetId}}</span>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-4 mb-2">
+                  <span class="stat-key">First asset balance</span> : <span class="stat-value">{{stats?.AssetOneBalance}}</span>
+                </div>
+                <div class="col-4 mb-2">
+                  <span class="stat-key">Second asset balance</span> : <span class="stat-value">{{stats?.AssetTwoBalance}}</span>
+                </div>
+                <div class="col-4 mb-2">
+                  <span class="stat-key">Initial wallet balance</span> : <span class="stat-value">{{stats?.InitialWalletBalance}}</span>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-4 mb-2">
+                  <span class="stat-key">Last wallet balance</span> : <span class="stat-value">{{stats?.LastWalletBalance}}</span>
+                </div>
+                <div class="col-4 mb-2">
+                  <span class="stat-key">Net profit</span> : <span class="stat-value">{{stats?.NetProfit}}%</span>
                 </div>
               </div>
             </div>

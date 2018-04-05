@@ -40,7 +40,7 @@ export class InstanceService {
     return this.authRequestService.get(environment.storeApiUrl + '/v1/trades', { params });
   }
 
-  algoGetStatistics(instanceId: string): Observable<InstanceStatistic[]> {
+  algoGetStatistics(instanceId: string): Observable<InstanceStatistic> {
     const params = { instanceId: instanceId };
     return this.authRequestService.get(environment.storeApiUrl + '/v1/statistics', { params });
   }

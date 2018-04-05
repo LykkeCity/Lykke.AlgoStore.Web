@@ -7,7 +7,7 @@ import { Algo } from '../models/algo.interface';
 import { UserService } from '../../services/user.service';
 import { BaseAlgoParam } from '../models/base-algo-param.model';
 import { AlgoInstanceTrade } from '../models/algo-instance-trade.model';
-import { getStats, InstanceStatistic } from '../models/algo-instance-statistic.model';
+import { InstanceStatistic } from '../models/algo-instance-statistic.model';
 import { BsModalService } from 'ngx-bootstrap';
 import { AlgoInstancePopupComponent } from '../algo-run/algo-run-popup/algo-instance-popup.component';
 import { NotificationsService } from 'angular2-notifications';
@@ -33,7 +33,7 @@ export class AlgoInstanceComponent implements OnDestroy {
   algo: Algo = {};
   wallets: Wallet[] = [];
   trades: AlgoInstanceTrade[];
-  stats: InstanceStatistic[];
+  stats: InstanceStatistic;
   log: string;
 
   editor: any;
@@ -46,7 +46,6 @@ export class AlgoInstanceComponent implements OnDestroy {
               private userService: UserService,
               private bsModalService: BsModalService,
               private notificationsService: NotificationsService) {
-    this.stats = getStats();
 
     this.subscriptions.push(this.route.params.subscribe(params => {
       this.clientId = params['clientId'];
@@ -176,7 +175,8 @@ export class AlgoInstanceComponent implements OnDestroy {
       )
       .subscribe(
         res => {
-          // this.trades = res;
+          this.stats = res;
+          this.stats.NetProfit = Number.parseFloat(this.stats.NetProfit).toFixed(2);
         }
       );
   }
