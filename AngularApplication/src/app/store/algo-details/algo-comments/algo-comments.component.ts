@@ -30,7 +30,7 @@ import { AlgoCommentService } from '../../../services/algo-comment.service';
     ])
   ]
 })
-export class AlgoCommentsComponent implements OnChanges{
+export class AlgoCommentsComponent implements OnChanges {
 
   @Input() comments: AlgoComment[];
   @Input() algoId: string;
