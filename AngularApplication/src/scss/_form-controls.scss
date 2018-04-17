@@ -48,3 +48,33 @@
 .alert-danger {
   background-color: $orange-red;
 }
+
+.label {
+  margin: 0 2px;
+  display: inline-block;
+  font-weight: 500;
+  padding: 2px 5px 1px;
+  line-height: 1.5384616;
+  border: 1px solid transparent;
+  text-transform: uppercase;
+  font-size: 10px;
+  letter-spacing: .1px;
+  border-radius: 2px;
+  color: #fff;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: baseline;
+
+  &.label-tiffany {
+    background-color: #64a3d8;
+    border-color: #64a3d8;
+  }
+
+  img {
+    width: 10px;
+    height: 10px;
+    cursor: pointer;
+  }
+}
+
+

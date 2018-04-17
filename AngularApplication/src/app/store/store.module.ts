@@ -34,8 +34,6 @@ import { AlgoCommentEditPopupComponent } from './algo-details/algo-comments/algo
 @NgModule({
   imports: [
     StoreRouting,
-    FormsModule,
-    ReactiveFormsModule,
     SharedModule,
     ArchwizardModule,
     NgxDatatableModule,

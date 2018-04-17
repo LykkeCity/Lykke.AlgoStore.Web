@@ -17,6 +17,7 @@ const routes: Routes = [
     children: [
       { path: 'design', loadChildren: 'app/design/design.module#DesignModule', canActivate: [AuthGuard] },
       { path: 'store', loadChildren: 'app/store/store.module#StoreModule', canActivate: [AuthGuard] },
+      { path: 'users-acl', loadChildren: 'app/acl/acl.module#AclModule', canActivate: [AuthGuard] },
       { path: '404', component: NotFoundComponent },
     ]
   },

@@ -1,0 +1,42 @@
+<div class="container algo-list-placeholder pt-10 pb-30">
+  <div class="row">
+    <div class="col-md-12">
+      <h2 class="mt-20 mb-10">List of roles</h2>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col">
+      <ngx-datatable
+        class="algo-table"
+        columnMode="flex"
+        [limit]="10"
+        [reorderable]="false"
+        [loadingIndicator]="loadingIndicator"
+        [headerHeight]="50"
+        [footerHeight]="'auto'"
+        [rowHeight]="60"
+        [rows]="roles">
+
+        <ngx-datatable-column [resizeable]="false" name="Name" prop="Name" [flexGrow]="2">
+          <ng-template let-value="value" let-row="row" ngx-datatable-cell-template>
+            <a [routerLink]="['/users-acl/roles', row.Id]">{{value}}</a>
+          </ng-template>
+        </ngx-datatable-column>
+        <ngx-datatable-column [resizeable]="false" name="Actions" [flexGrow]="1.5">
+          <ng-template let-value="value" let-row="row" ngx-datatable-cell-template>
+            <span>
+
+            </span>
+            <span>
+              <img src="../../../assets/images/edit-icon.svg" class="cursor-pointer mr-1" (click)="row.CanBeModified ? editRole(row.Id) : null" [tooltip]="!row.CanBeModified ? 'This role cannot be modified.' : ''" [attr.disabled]="!row.CanBeModified">
+            </span>
+            <span>
+              <img src="../../../assets/images/store/delete-icon.svg" class="cursor-pointer mr-1" (click)="deleteRole(row.Id)">
+            </span>
+          </ng-template>
+        </ngx-datatable-column>
+      </ngx-datatable>
+    </div>
+  </div>
+</div>

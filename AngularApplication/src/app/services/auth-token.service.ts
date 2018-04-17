@@ -18,7 +18,10 @@ export class AuthTokenService implements OnDestroy {
 
     this.tokenStream = new BehaviorSubject( this.getToken() );
     this.tokenStream.subscribe(
-      token => { this.setToken(token); }
+      token => {
+        this.setToken(token);
+        this.verifyUserRoles(token);
+      }
     );
   }
 
@@ -45,6 +48,14 @@ export class AuthTokenService implements OnDestroy {
         }
       )
     );
+  }
+
+  verifyUserRoles(token: string): void {
+    const headers = {
+      'Authorization': 'Bearer ' + token
+    };
+
+    this.http.get(environment.storeApiUrl + '/v1/roles/verifyRole', { headers }).subscribe();
   }
 
   private setToken(token): void {

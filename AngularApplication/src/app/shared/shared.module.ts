@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { PopupComponent } from '../components/popup/popup.component';
 import { ModalModule, TooltipModule } from 'ngx-bootstrap';
@@ -17,6 +17,7 @@ import { StarRatingConfigService } from './star-rating/star-rating-config';
 @NgModule({
   imports: [
     CommonModule,
+    FormsModule,
     ReactiveFormsModule,
     RouterModule,
     UiSwitchModule,
@@ -40,7 +41,10 @@ import { StarRatingConfigService } from './star-rating/star-rating-config';
     DateTimePickerComponent,
     AlertModule,
     ModalModule,
-    StarRatingComponent
+    TooltipModule,
+    StarRatingComponent,
+    FormsModule,
+    ReactiveFormsModule,
   ]
 })
 export class SharedModule {}

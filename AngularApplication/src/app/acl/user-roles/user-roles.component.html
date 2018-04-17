@@ -1,0 +1,30 @@
+<div class="profile-holder container" *ngIf="userInfo">
+  <div class="row">
+    <div class="col-2">
+        <img src="../../../assets/images/user_default_gray.svg" width="100px">
+    </div>
+    <div class="col-8">
+      <div class="row">
+        <div class="col-12">
+          <span class="font-weight-semibold">Full Name: </span><span>{{userInfo.FullName}}</span>
+        </div>
+        <div class="col-12">
+          <span class="font-weight-semibold">Email: </span><span>{{userInfo.Email}}</span>
+        </div>
+        <div class="col-12">
+          <span class="font-weight-semibold">User Roles: </span>
+          <span *ngFor="let role of userInfo.Roles">
+            <label class="label label-tiffany">{{role.Name}}</label>
+          </span>
+        </div>
+      </div>
+    </div>
+    <div class="col-2">
+      <button class="btn btn-primary" (click)="openRoleModal()">Assign Role</button>
+    </div>
+  </div>
+</div>
+
+<div class="loader" *ngIf="!userInfo">
+  <img src="../../../assets/images/loader.svg">
+</div>
