@@ -8,7 +8,7 @@
     </div>
   </div>
 </nav>
-<nav class="navbar navbar-expand-lg navbar-light user-navbar container">
+<nav class="navbar navbar-expand-lg navbar-light user-navbar container" *ngIf="permissions.vewRoles || permissions.viewMyAlgos || permissions.viewPublicAlgos">
     <div class="collapse navbar-collapse d-none d-md-none d-lg-flex justify-content-end">
       <ul class="navbar-nav mr-auto d-none d-md-none d-lg-flex">
         <li class="nav-item" dropdown *ngIf="permissions.vewRoles">
