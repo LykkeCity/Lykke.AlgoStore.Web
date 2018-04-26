@@ -1,7 +1,11 @@
 export interface InstanceStatistic {
-  AssetOneBalance?: number;
-  AssetTwoBalance?: number;
+  TradedAssetName?: number;
+  AssetTwoName?: number;
+  LastTradedAssetBalance?: number;
+  LastAssetTwoBalance?: number;
   InitialWalletBalance?: number;
+  InitialTradedAssetBalance?: number;
+  InitialAssetTwoBalance?: number;
   InstanceId?: string;
   LastWalletBalance?: string;
   NetProfit?: string;

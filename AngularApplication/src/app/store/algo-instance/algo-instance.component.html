@@ -120,15 +120,15 @@
                   <span class="stat-key">Total Starts</span> : <span class="stat-value">{{stats?.TotalNumberOfStarts}}</span>
                 </div>
                 <div class="col-4 mb-2">
-                  <span class="stat-key">Base asset</span> : <span class="stat-value">{{stats?.UserCurrencyBaseAssetId}}</span>
+                  <span class="stat-key">Net profit</span> : <span class="stat-value">{{stats?.NetProfit}}%</span>
                 </div>
               </div>
               <div class="row">
                 <div class="col-4 mb-2">
-                  <span class="stat-key">First asset balance</span> : <span class="stat-value">{{stats?.AssetOneBalance}}</span>
+                  <span class="stat-key">{{stats?.TradedAssetName}} balance</span> : <span class="stat-value">{{stats?.LastTradedAssetBalance}}</span>
                 </div>
                 <div class="col-4 mb-2">
-                  <span class="stat-key">Second asset balance</span> : <span class="stat-value">{{stats?.AssetTwoBalance}}</span>
+                  <span class="stat-key">{{stats?.AssetTwoName}} balance</span> : <span class="stat-value">{{stats?.LastAssetTwoBalance}}</span>
                 </div>
                 <div class="col-4 mb-2">
                   <span class="stat-key">Initial wallet balance</span> : <span class="stat-value">{{stats?.InitialWalletBalance}}</span>
@@ -136,10 +136,13 @@
               </div>
               <div class="row">
                 <div class="col-4 mb-2">
-                  <span class="stat-key">Last wallet balance</span> : <span class="stat-value">{{stats?.LastWalletBalance}}</span>
+                  <span class="stat-key">Initial {{stats?.TradedAssetName}} balance</span> : <span class="stat-value">{{stats?.InitialTradedAssetBalance}}</span>
                 </div>
                 <div class="col-4 mb-2">
-                  <span class="stat-key">Net profit</span> : <span class="stat-value">{{stats?.NetProfit}}%</span>
+                  <span class="stat-key">Initial {{stats?.AssetTwoName}} balance</span> : <span class="stat-value">{{stats?.InitialAssetTwoBalance}}</span>
+                </div>
+                <div class="col-4 mb-2">
+                  <span class="stat-key">Last wallet balance</span> : <span class="stat-value">{{stats?.LastWalletBalance}}</span>
                 </div>
               </div>
             </div>
@@ -154,6 +157,7 @@
                 <th>Price</th>
                 <th>Type</th>
                 <th>Quantity</th>
+                <th>Asset Pair</th>
               </tr>
 
               </thead>
@@ -163,6 +167,7 @@
                 <td>{{trade.Price}}</td>
                 <td>{{trade.IsBuy ? 'Buy' : 'Sell'}}</td>
                 <td>{{trade.Amount}}</td>
+                <td>{{assetPair.Value}}</td>
               </tr>
               </tbody>
             </table>
