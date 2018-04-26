@@ -34,8 +34,7 @@ export class RolesListComponent {
       this.permissions = {
         canDeleteRole: AppGlobals.hasPermission('DeleteUserRole'),
         canCreateRole: AppGlobals.hasPermission('CreateUserRole'),
-        // canModifyRole: AppGlobals.hasPermission('GetAllPermissions') && AppGlobals.hasPermission('GetRoleById') && AppGlobals.hasPermission('GetPermissionsByRoleId')
-        canModifyRole: true
+        canModifyRole: AppGlobals.hasPermission('GetAllPermissions') && AppGlobals.hasPermission('GetRoleById') && AppGlobals.hasPermission('GetPermissionsByRoleId')
       };
     }));
 

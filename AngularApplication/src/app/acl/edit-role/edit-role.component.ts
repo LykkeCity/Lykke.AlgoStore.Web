@@ -30,9 +30,8 @@ export class EditRoleComponent implements OnDestroy {
               private notificationsService: NotificationsService) {
     this.subscriptions.push(AppGlobals.loggedUserSubject.subscribe(() => {
       this.permissions = {
-        // canEditRole: AppGlobals.hasPermission('UpdateUserRole') && AppGlobals.hasPermission('CreateUserRole')
-        // && AppGlobals.hasPermission('AssignMultiplePermissionToRole') && AppGlobals.hasPermission('RevokeMultiplePermissions')
-        canEditRole: true
+        canEditRole: AppGlobals.hasPermission('UpdateUserRole') && AppGlobals.hasPermission('CreateUserRole')
+        && AppGlobals.hasPermission('AssignMultiplePermissionToRole') && AppGlobals.hasPermission('RevokeMultiplePermissions')
       };
     }));
 

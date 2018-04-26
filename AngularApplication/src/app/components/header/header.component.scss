@@ -1,12 +1,11 @@
 @import "~scss/reuse";
 
-.navbar {
+.navbar, .user-navbar {
   height: $navbar-height;
 }
 
 .user-navbar {
   background-color: $gray-200;
-  height: $navbar-height;
 }
 
 @include media-breakpoint-up(xs) {
