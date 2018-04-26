@@ -81,7 +81,7 @@ export class AlgoRunComponent implements OnInit, OnDestroy {
         WalletId: wallet.Id,
         AlgoClientId: this.clientId,
         AlgoId: this.algo.AlgoId,
-        AlgoMetadataInformation: this.algo.AlgoMetaDataInformation,
+        AlgoMetaDataInformation: this.algo.AlgoMetaDataInformation,
         AlgoInstanceType: IAlgoInstanceType.Live
       } as AlgoInstanceData,
       onInstanceCreateSuccess: (instance) => {

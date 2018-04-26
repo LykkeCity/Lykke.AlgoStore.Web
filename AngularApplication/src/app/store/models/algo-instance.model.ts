@@ -15,7 +15,7 @@ export interface AlgoInstanceData {
   WalletId: string;
   AlgoClientId: string;
   AlgoId: string;
-  AlgoMetadataInformation: AlgoMetadata;
+  AlgoMetaDataInformation: AlgoMetadata;
   AlgoInstanceType: IAlgoInstanceType;
   InstanceName: string;
   AlgoInstanceRunDate: string | null;
