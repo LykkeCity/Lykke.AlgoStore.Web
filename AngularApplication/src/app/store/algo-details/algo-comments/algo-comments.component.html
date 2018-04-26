@@ -43,7 +43,7 @@
       <div class="comment-body text-muted" [innerHtml]="comment.Content"></div>
       <span *ngIf="comment.EditedOn" class="text-muted font-weight-light font-italic">Last edited {{comment.EditedOn | amTimeAgo:true}} ago.</span>
     </div>
-    <div class="col-2" *ngIf="permissions.canEditComment && permissions.canDeleteComment">
+    <div class="col-2" *ngIf="permissions.canEditComment || permissions.canDeleteComment">
     <span dropdown class="ml-3 cursor-pointer text-muted">
           <span dropdownToggle class="dots">. . .</span>
           <ul *dropdownMenu class="dropdown-menu">

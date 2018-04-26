@@ -54,13 +54,11 @@ export class AlgoCommentsComponent implements OnChanges {
       Content: ['', Validators.required]
     });
 
-    AppGlobals.loggedUserSubject.subscribe(() => {
       this.permissions = {
         canCreateComment: AppGlobals.hasPermission('CreateComment'),
         canEditComment: AppGlobals.hasPermission('EditComment'),
         canDeleteComment: AppGlobals.hasPermission('DeleteComment')
       };
-    });
   }
 
   ngOnChanges(changes: SimpleChanges) {
