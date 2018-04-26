@@ -8,3 +8,26 @@
     </div>
   </div>
 </nav>
+<nav class="navbar navbar-expand-lg navbar-light user-navbar container">
+    <div class="collapse navbar-collapse d-none d-md-none d-lg-flex justify-content-end">
+      <ul class="navbar-nav mr-auto d-none d-md-none d-lg-flex">
+        <li class="nav-item" dropdown *ngIf="permissions.vewRoles">
+          <a class="nav-link cursor-pointer" routerLinkActive="active" dropdownToggle>USER ROLES</a>
+          <ul *dropdownMenu class="dropdown-menu">
+            <li>
+              <a class="dropdown-item" routerLink="/users-acl/roles">Roles</a>
+            </li>
+            <li>
+              <a class="dropdown-item" routerLink="/users-acl/users">Users</a>
+            </li>
+          </ul>
+        </li>
+        <li class="nav-item" *ngIf="permissions.viewPublicAlgos">
+          <a class="nav-link" routerLinkActive="active" routerLink="/store/algo-list">PUBLIC ALGOS</a>
+        </li>
+        <li class="nav-item" *ngIf="permissions.viewMyAlgos">
+          <a class="nav-link" routerLink="/dashboard" routerLinkActive="active">MY ALGOS</a>
+        </li>
+      </ul>
+    </div>
+</nav>

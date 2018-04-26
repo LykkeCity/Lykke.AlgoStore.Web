@@ -10,7 +10,8 @@ import { UserRole } from '../models/user-role.model';
 @Injectable()
 export class UserService {
 
-  constructor(private authRequestService: AuthRequestService) {  }
+  constructor(private authRequestService: AuthRequestService) {
+  }
 
   getUserInfo(): Observable<UserData> {
     return this.authRequestService.get(environment.apiUrl + '/PersonalData').pipe(
@@ -26,7 +27,7 @@ export class UserService {
     return this.authRequestService.get(environment.storeApiUrl + '/v1/roles/getByClientId', { params });
   }
 
-  getUserInfoWithRoles(clientId: string): Observable<UserData> {
+  getUserInfoWithRoles(clientId?: string): Observable<UserData> {
     const params = {};
     if (clientId) {
       params['clientId'] = clientId;
@@ -37,5 +38,4 @@ export class UserService {
   getUserWalletsWithBalances(): Observable<Wallet[]> {
     return this.authRequestService.get<Wallet[]>(environment.apiV2Url + 'wallets/balances');
   }
-
 }

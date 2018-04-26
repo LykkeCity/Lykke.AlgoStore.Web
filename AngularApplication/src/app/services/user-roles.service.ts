@@ -12,6 +12,10 @@ export class UserRolesService {
 
   }
 
+  saveRole(role: UserRole): Observable<UserRole> {
+    return this.authRequestService.post(environment.storeApiUrl + '/v1/roles/saveRole', role);
+  }
+
   getAllUsersWithRoles(): Observable<UserData[]> {
     return this.authRequestService.get(environment.storeApiUrl + '/v1/users/getAllWithRoles');
   }
@@ -25,6 +29,11 @@ export class UserRolesService {
     return this.authRequestService.get(environment.storeApiUrl + '/v1/roles/getByClientId', { params });
   }
 
+  getById(roleId: string): Observable<UserRole> {
+    const params = { roleId };
+    return this.authRequestService.get(environment.storeApiUrl + '/v1/roles/getById', { params });
+  }
+
   revokeRole(clientId: string, roleId: string): Observable<UserRole> {
     const body = { clientId, roleId };
     return this.authRequestService.post(environment.storeApiUrl + '/v1/roles/revokeRole', body);
@@ -33,5 +42,10 @@ export class UserRolesService {
   assignRole(clientId: string, roleId: string): Observable<UserRole> {
     const body = { clientId, roleId };
     return this.authRequestService.post(environment.storeApiUrl + '/v1/roles/assignRole', body);
+  }
+
+  deleteRole(roleId: string): Observable<UserRole> {
+    const params = { roleId };
+    return this.authRequestService.delete(environment.storeApiUrl + '/v1/roles/deleteRole', { params });
   }
 }

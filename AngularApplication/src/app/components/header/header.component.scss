@@ -1,7 +1,11 @@
 @import "~scss/reuse";
 
 .navbar {
-  box-shadow: 2px -2px 5px rgba(0, 0, 0, 0.5);
+  height: $navbar-height;
+}
+
+.user-navbar {
+  background-color: $gray-200;
   height: $navbar-height;
 }
 
@@ -22,5 +26,9 @@
 @include media-breakpoint-up(md) {
   .navbar {
     height: $navbar-height-md;
+  }
+
+  .user-navbar {
+    height: $navbar-height;
   }
 }

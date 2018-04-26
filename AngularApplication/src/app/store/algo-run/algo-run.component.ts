@@ -10,6 +10,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { AlgoInstance, AlgoInstanceData, IAlgoInstanceType } from '../models/algo-instance.model';
 import { AlgoService } from '../../services/algo.service';
 import { InstanceService } from '../../services/instance.service';
+import { AppGlobals } from '../../services/app.globals';
 
 @Component({
   selector: 'app-algo-run',
@@ -25,12 +26,21 @@ export class AlgoRunComponent implements OnInit, OnDestroy {
   metadataForm: FormGroup;
   showMetadataForm = false;
   clientId: string;
+  permissions: {
+    canRunInstance: boolean,
+    canSeeInstances: boolean,
+  };
 
   constructor(private route: ActivatedRoute,
               private algoService: AlgoService,
               private instanceService: InstanceService,
               private userService: UserService,
               private bsModalService: BsModalService) {
+
+    this.permissions = {
+      canRunInstance: AppGlobals.hasPermission('SaveAlgoInstanceDataAsync') && AppGlobals.hasPermission('UploadBinaryFile'),
+      canSeeInstances: AppGlobals.hasPermission('GetAllAlgoInstanceDataAsync'),
+    };
 
     this.subscriptions.push(this.route.params.subscribe(params => {
       this.clientId = params['clientId'];
@@ -43,9 +53,12 @@ export class AlgoRunComponent implements OnInit, OnDestroy {
         this.showMetadataForm = true;
       }));
 
-      this.subscriptions.push(this.instanceService.getAlgoInstances(algoId).subscribe(instances => {
-        this.instancesArray = instances;
-      }));
+      if (this.permissions.canSeeInstances) {
+        this.subscriptions.push(this.instanceService.getAlgoInstances(algoId).subscribe(instances => {
+          this.instancesArray = instances;
+        }));
+      }
+
     }));
 
     this.subscriptions.push(this.userService.getUserWalletsWithBalances().subscribe(wallets => {
@@ -74,6 +87,10 @@ export class AlgoRunComponent implements OnInit, OnDestroy {
   }
 
   goLive(wallet: Wallet): void {
+    if (!this.permissions.canRunInstance) {
+      return;
+    }
+
     this.mapFormToData();
     const initialState = {
       type: 'Live',

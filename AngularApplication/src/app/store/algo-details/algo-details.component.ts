@@ -9,6 +9,7 @@ import { AlgoComment } from '../../models/algo-comment.model';
 import { AlgoService } from '../../services/algo.service';
 import { AlgoRatingService } from '../../services/algo-rating.service';
 import { AlgoCommentService } from '../../services/algo-comment.service';
+import { AppGlobals } from '../../services/app.globals';
 
 @Component({
   selector: 'app-algo-detail',
@@ -17,7 +18,13 @@ import { AlgoCommentService } from '../../services/algo-comment.service';
 })
 export class AlgoDetailsComponent implements OnInit, OnDestroy {
 
-  algo: Algo = {};
+  permissions: {
+    canSeeComments: boolean,
+    canSeeAlgoRating: boolean,
+    canEditAlgoRating: boolean,
+    canRunInstance: boolean
+  };
+  algo: Algo;
   subscriptions: Subscription[] = [];
   editor: any;
   myRating: AlgoRating = {};
@@ -30,6 +37,12 @@ export class AlgoDetailsComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private notificationsService: NotificationsService) {
 
+    this.permissions = {
+      canEditAlgoRating: AppGlobals.hasPermission('RateAlgo'),
+      canSeeAlgoRating: AppGlobals.hasPermission('GetAlgoRating'),
+      canSeeComments: AppGlobals.hasPermission('GetAllCommentsForAlgoAsync'),
+      canRunInstance: AppGlobals.hasPermission('SaveAlgoInstanceDataAsync') && AppGlobals.hasPermission('UploadBinaryFile')
+    };
   }
 
   ngOnInit() {
@@ -41,13 +54,17 @@ export class AlgoDetailsComponent implements OnInit, OnDestroy {
         this.algo.ClientId = clientId;
       }));
 
-      this.subscriptions.push(this.algoRatingService.getUserAlgoRating(algoId).subscribe(rating => {
-        this.myRating = rating;
-      }));
+      if (this.permissions.canSeeAlgoRating) {
+        this.subscriptions.push(this.algoRatingService.getUserAlgoRating(algoId).subscribe(rating => {
+          this.myRating = rating;
+        }));
+      }
 
-      this.subscriptions.push(this.algoCommentService.getAlgoComments(algoId).subscribe((comments) => {
-        this.comments = comments;
-      }));
+      if (this.permissions.canSeeComments) {
+        this.subscriptions.push(this.algoCommentService.getAlgoComments(algoId).subscribe((comments) => {
+          this.comments = comments;
+        }));
+      }
     }));
   }
 
@@ -67,15 +84,17 @@ export class AlgoDetailsComponent implements OnInit, OnDestroy {
   }
 
   onRatingChange(data) {
-    const ratingData = {
-      AlgoId: this.algo.AlgoId,
-      Rating: data.rating
-    };
-    this.subscriptions.push(this.algoRatingService.saveAlgoRating(ratingData).subscribe((newAlgoRating) => {
-      this.notificationsService.success('Success', 'Rating saved.');
-      this.algo.Rating = newAlgoRating.Rating;
-      this.algo.RatedUsersCount = newAlgoRating.RatedUsersCount;
-    }));
+    if (this.permissions.canEditAlgoRating) {
+      const ratingData = {
+        AlgoId: this.algo.AlgoId,
+        Rating: data.rating
+      };
+      this.subscriptions.push(this.algoRatingService.saveAlgoRating(ratingData).subscribe((newAlgoRating) => {
+        this.notificationsService.success('Success', 'Rating saved.');
+        this.algo.Rating = newAlgoRating.Rating;
+        this.algo.RatedUsersCount = newAlgoRating.RatedUsersCount;
+      }));
+    }
   }
 
 }

@@ -8,6 +8,7 @@ import { PopupComponent } from '../../../components/popup/popup.component';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { DomSanitizer } from '@angular/platform-browser';
 import { AlgoCommentService } from '../../../services/algo-comment.service';
+import { AppGlobals } from '../../../services/app.globals';
 
 @Component({
   selector: 'app-algo-comments',
@@ -38,6 +39,12 @@ export class AlgoCommentsComponent implements OnChanges {
   currentPage = 1;
   collapse = 'open';
 
+  permissions: {
+    canCreateComment: boolean,
+    canEditComment: boolean,
+    canDeleteComment: boolean
+  };
+
   constructor(private fb: FormBuilder,
               private bsModalService: BsModalService,
               private algoCommentService: AlgoCommentService,
@@ -45,6 +52,14 @@ export class AlgoCommentsComponent implements OnChanges {
               private domSanitizer: DomSanitizer) {
     this.commentForm = this.fb.group({
       Content: ['', Validators.required]
+    });
+
+    AppGlobals.loggedUserSubject.subscribe(() => {
+      this.permissions = {
+        canCreateComment: AppGlobals.hasPermission('CreateComment'),
+        canEditComment: AppGlobals.hasPermission('EditComment'),
+        canDeleteComment: AppGlobals.hasPermission('DeleteComment')
+      };
     });
   }
 
@@ -58,6 +73,10 @@ export class AlgoCommentsComponent implements OnChanges {
   }
 
   editComment(comment: AlgoComment, index: number): void {
+    if (!this.permissions.canEditComment) {
+      return;
+    }
+
     const initialState = {
       comment: comment,
       onEditSuccess: (editedComment) => {
@@ -78,6 +97,10 @@ export class AlgoCommentsComponent implements OnChanges {
   }
 
   deleteComment(comment: AlgoComment, index: number): void {
+    if (!this.permissions.canDeleteComment) {
+      return;
+    }
+
     const initialState = {
       popupConfig: {
         title: 'Delete comment',
@@ -97,7 +120,7 @@ export class AlgoCommentsComponent implements OnChanges {
   }
 
   onCommentSubmit(): void {
-    if (this.commentForm.invalid) {
+    if (this.commentForm.invalid || !this.permissions.canCreateComment) {
       return;
     }
 

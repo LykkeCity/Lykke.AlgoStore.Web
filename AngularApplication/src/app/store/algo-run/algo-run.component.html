@@ -7,7 +7,7 @@
       <div class="col-4 text-right action-buttons">
         <span class="ml-3 cursor-pointer text-muted" (click)="runDemo()"><img src="../../../assets/images/store/run-demo-icon.svg"> <span>Run demo</span></span>
         <span class="ml-3 cursor-pointer text-muted" (click)="backtest()"><img src="../../../assets/images/store/backtest-icon.svg"> <span>Backtest</span></span>
-        <span dropdown class="ml-3 cursor-pointer text-muted">
+        <span dropdown class="ml-3 cursor-pointer text-muted" *ngIf="permissions.canRunInstance">
           <img src="../../../assets/images/store/play-run-icon.svg">
           <span dropdownToggle>Go Live</span>
           <ul *dropdownMenu class="dropdown-menu">
@@ -50,7 +50,7 @@
                 </div>
               </form>
             </div>
-            <div class="col-12 pl-0" *ngIf="instancesArray && instancesArray.length">
+            <div class="col-12 pl-0" *ngIf="instancesArray && instancesArray.length && permissions.canSeeInstances">
               <app-algo-instance-list [algoId]="algo.AlgoId" [instancesArray]="instancesArray"></app-algo-instance-list>
             </div>
           </div>
@@ -58,4 +58,8 @@
       </div>
     </div>
   </div>
+</div>
+
+<div class="loader" *ngIf="!algo">
+  <img src="../../../assets/images/loader.svg">
 </div>

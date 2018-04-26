@@ -1,3 +1,24 @@
-.profile-holder {
-  margin-top: 100px;
+@import '~scss/reuse';
+
+.delete-icon-holder {
+  background-image: url("../../../assets/images/store/delete-symbol-icon.svg");
+  justify-content: center;
+  display: inline-flex;
+  width: 10px;
+  height: 10px;
+  background-size: contain;
+
+  &:hover {
+    position: relative;
+    width: 30px;
+    height: 30px;
+    background-image: url("../../../assets/images/store/delete-active-symbol-icon.svg");
+  }
+}
+
+.role-row {
+  border-bottom: 1px solid $pale-grey;
+  border-top: 1px solid $pale-grey;
+  padding: 20px 0;
+  align-items: center;
 }

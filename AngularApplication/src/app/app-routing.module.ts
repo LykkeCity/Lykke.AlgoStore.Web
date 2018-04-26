@@ -7,6 +7,7 @@ import { SiteLayoutComponent } from './layout/site-layout/site-layout.component'
 import { LoginRedirectGuard } from './services/login-redirect.guard';
 import { AuthGuard } from './services/auth-guard';
 import { NonAuthenticatedGuard } from './services/non-authenticated.guard';
+import { UserDetailsGuard } from './services/user-details.guard';
 
 
 const routes: Routes = [
@@ -15,9 +16,9 @@ const routes: Routes = [
     path: '',
     component: SiteLayoutComponent,
     children: [
-      { path: 'design', loadChildren: 'app/design/design.module#DesignModule', canActivate: [AuthGuard] },
-      { path: 'store', loadChildren: 'app/store/store.module#StoreModule', canActivate: [AuthGuard] },
-      { path: 'users-acl', loadChildren: 'app/acl/acl.module#AclModule', canActivate: [AuthGuard] },
+      { path: 'design', loadChildren: 'app/design/design.module#DesignModule', canLoad: [UserDetailsGuard], canActivate: [AuthGuard] },
+      { path: 'store', loadChildren: 'app/store/store.module#StoreModule', canLoad: [UserDetailsGuard], canActivate: [AuthGuard] },
+      { path: 'users-acl', loadChildren: 'app/acl/acl.module#AclModule', canLoad: [UserDetailsGuard], canActivate: [AuthGuard] },
       { path: '404', component: NotFoundComponent },
     ]
   },

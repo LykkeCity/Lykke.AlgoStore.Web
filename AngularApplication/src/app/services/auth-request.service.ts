@@ -76,6 +76,11 @@ export class AuthRequestService {
       this.authToken.tokenStream.next(null);
     }
 
+    if (error.status === 403) {
+      this.notificationsService.alert('Forbidden', 'You do not have permission to perform this action.');
+      return;
+    }
+
     this.notificationsService.error('Error', 'Error occurred.');
     console.error('ApiService::handleError', error);
     return Observable.throw(error.error);

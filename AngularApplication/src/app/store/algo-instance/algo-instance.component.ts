@@ -17,6 +17,7 @@ import { PopupComponent } from '../../components/popup/popup.component';
 import { PopupConfig } from '../../models/popup.interface';
 import { AlgoService } from '../../services/algo.service';
 import { InstanceService } from '../../services/instance.service';
+import { AppGlobals } from '../../services/app.globals';
 
 @Component({
   selector: 'app-algo-instance',
@@ -39,6 +40,12 @@ export class AlgoInstanceComponent implements OnDestroy {
   editor: any;
   subscriptions: Subscription[] = [];
 
+  permissions: {
+    canSeeLogs: boolean,
+    canSeeStatistics: boolean,
+    canSeeTrades: boolean
+  };
+
   constructor(private route: ActivatedRoute,
               private router: Router,
               private algoService: AlgoService,
@@ -46,6 +53,13 @@ export class AlgoInstanceComponent implements OnDestroy {
               private userService: UserService,
               private bsModalService: BsModalService,
               private notificationsService: NotificationsService) {
+
+
+    this.permissions = {
+      canSeeLogs: AppGlobals.hasPermission('GetTestTailLog'),
+      canSeeStatistics: AppGlobals.hasPermission('GetAlgoInstanceStatisticsAsync'),
+      canSeeTrades: AppGlobals.hasPermission('GetAllTradesForAlgoInstanceAsync')
+    };
 
     this.subscriptions.push(this.route.params.subscribe(params => {
       this.clientId = params['clientId'];
@@ -64,7 +78,13 @@ export class AlgoInstanceComponent implements OnDestroy {
         this.instance = instance;
 
         if (this.instance.AlgoInstanceStatus !== IAlgoInstanceStatus.Deploying) {
-          this.subscriptions.push(this.getLogs());
+          if (this.permissions.canSeeLogs) {
+            this.subscriptions.push(this.getLogs());
+          } else if(this.permissions.canSeeStatistics) {
+            this.subscriptions.push(this.getStatistics());
+          } else if(this.permissions.canSeeTrades) {
+            this.subscriptions.push(this.getTrades());
+          }
         }
       }));
     }));
@@ -217,15 +237,15 @@ export class AlgoInstanceComponent implements OnDestroy {
     this.subscriptions.forEach(sub => sub.unsubscribe());
     this.subscriptions = []; // clear the array so we don't have duplicate subscriptions
 
-    if (heading === 'Statistics') {
+    if (heading === 'Statistics' && this.permissions.canSeeStatistics) {
       this.subscriptions.push(this.getStatistics());
     }
 
-    if (heading === 'Log') {
+    if (heading === 'Log' && this.permissions.canSeeLogs) {
       this.subscriptions.push(this.getLogs());
     }
 
-    if (heading === 'Trades') {
+    if (heading === 'Trades' && this.permissions.canSeeTrades) {
       this.subscriptions.push(this.getTrades());
     }
   }

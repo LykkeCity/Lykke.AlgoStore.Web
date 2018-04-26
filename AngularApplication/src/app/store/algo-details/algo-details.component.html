@@ -1,10 +1,10 @@
-<div class="container">
+<div class="container" *ngIf="algo">
   <div class="details-holder mt-60">
     <div class="row mb-2">
       <div class="col-8 text-left">
         <h3>{{algo.Name}}</h3>
       </div>
-      <div class="col-4 text-right">
+      <div class="col-4 text-right" *ngIf="permissions.canRunInstance">
         <a class="btn btn-primary" [routerLink]="['/store', 'algo-run', algo.ClientId, algo.AlgoId]">Try Algo</a>
       </div>
     </div>
@@ -17,7 +17,7 @@
       </div>
     </div>
     <div class="row">
-      <div class="col-4">
+      <div class="col-4" *ngIf="permissions.canSeeAlgoRating">
         <span class="text-muted">Popularity rating:</span>
         <span class="d-inline-flex ml-3">
           <app-star-rating-comp [rating]="algo.Rating"
@@ -41,7 +41,7 @@
       <div class="col-8">
         <app-code-editor [config]="{sourceCode: algo.Data}"
                          (onInitCompleted)="onEditorCreated($event)"></app-code-editor>
-        <div class="rating-holder text-left">
+        <div class="rating-holder text-left" *ngIf="permissions.canEditAlgoRating">
           <span>Rate algo:</span>
           <span class="d-inline-flex">
             <app-star-rating-comp [rating]="myRating.Rating"
@@ -53,7 +53,7 @@
             </app-star-rating-comp>
           </span>
         </div>
-        <div class="comments-holder mt-5">
+        <div class="comments-holder mt-5" *ngIf="permissions.canSeeComments">
           <app-algo-comments [comments]="comments" [algoId]="algo.AlgoId"></app-algo-comments>
         </div>
       </div>
@@ -65,4 +65,8 @@
       </div>
     </div>
   </div>
+</div>
+
+<div class="loader" *ngIf="!algo">
+  <img src="../../../assets/images/loader.svg">
 </div>

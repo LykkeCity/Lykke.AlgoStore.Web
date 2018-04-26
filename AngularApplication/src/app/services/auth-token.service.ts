@@ -20,7 +20,9 @@ export class AuthTokenService implements OnDestroy {
     this.tokenStream.subscribe(
       token => {
         this.setToken(token);
-        this.verifyUserRoles(token);
+        if (token) {
+          this.verifyUserRoles(token);
+        }
       }
     );
   }

@@ -1,26 +1,38 @@
-<div class="profile-holder container" *ngIf="userInfo">
-  <div class="row">
-    <div class="col-2">
-        <img src="../../../assets/images/user_default_gray.svg" width="100px">
+<div class="profile-holder container text-center" *ngIf="userInfo">
+  <div class="row mt-5">
+    <div class="col-12">
+      <img src="../../../assets/images/user_default_gray.svg" width="100px">
     </div>
-    <div class="col-8">
-      <div class="row">
-        <div class="col-12">
-          <span class="font-weight-semibold">Full Name: </span><span>{{userInfo.FullName}}</span>
-        </div>
-        <div class="col-12">
-          <span class="font-weight-semibold">Email: </span><span>{{userInfo.Email}}</span>
-        </div>
-        <div class="col-12">
-          <span class="font-weight-semibold">User Roles: </span>
-          <span *ngFor="let role of userInfo.Roles">
-            <label class="label label-tiffany">{{role.Name}}</label>
-          </span>
-        </div>
-      </div>
+  </div>
+  <div class="row mt-4">
+    <div class="col-12">
+      <h2>{{userInfo.FullName}}</h2>
     </div>
-    <div class="col-2">
+    <div class="col-12">
+      <h4>{{userInfo.Email}}</h4>
+    </div>
+  </div>
+  <div class="row mt-4" *ngIf="permissions.canAssignRoles">
+    <div class="col-12">
       <button class="btn btn-primary" (click)="openRoleModal()">Assign Role</button>
+    </div>
+  </div>
+  <div class="row mt-4">
+    <div class="col-12">
+      <h5>Active roles</h5>
+    </div>
+  </div>
+  <div class="row" *ngFor="let role of userInfo.Roles">
+    <div class="offset-4 col-2 text-left role-row">
+      {{role.Name}}
+    </div>
+    <div class="col-2 text-right role-row" *ngIf="permissions.canRevokeRoles">
+      <div class="delete-icon-holder cursor-pointer mr-4" (click)="revokeRole(role.Id)"></div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12 mt-4">
+      <a routerLink="/users-acl/users" class="link-style font-weight-semibold">Back</a>
     </div>
   </div>
 </div>

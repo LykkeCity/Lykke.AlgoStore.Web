@@ -20,7 +20,7 @@ export class AssignRoleModalComponent implements OnInit {
 
   constructor(private userRoleService: UserRolesService,
               private fb: FormBuilder,
-              private bsModalRef: BsModalRef,
+              public bsModalRef: BsModalRef,
               private notificationsService: NotificationsService) {
     this.roleGroup = this.fb.group({
       role: ['', Validators.required]

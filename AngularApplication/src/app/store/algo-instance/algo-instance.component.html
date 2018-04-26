@@ -102,14 +102,14 @@
         </div>
       </div>
     </split-area>
-    <split-area size="30">
+    <split-area size="30" *ngIf="permissions.canSeeTrades || permissions.canSeeStatistics || permissions.canSeeLogs">
       <tabset #instanceTabs>
-        <tab heading="Log" class="ml-3" (select)="onSelect($event)">
+        <tab heading="Log" class="ml-3" (select)="onSelect($event)" *ngIf="permissions.canSeeLogs">
           <div class="container">
               <pre>{{log}}</pre>
           </div>
         </tab>
-        <tab heading="Statistics" (select)="onSelect($event)">
+        <tab heading="Statistics" (select)="onSelect($event)" *ngIf="permissions.canSeeStatistics">
           <div class="container">
             <div class="stats-holder">
               <div class="row">
@@ -145,7 +145,7 @@
             </div>
           </div>
         </tab>
-        <tab heading="Trades" (select)="onSelect($event)">
+        <tab heading="Trades" (select)="onSelect($event)" *ngIf="permissions.canSeeTrades">
           <div class="container">
             <table class="table">
               <thead>
@@ -171,4 +171,8 @@
       </tabset>
     </split-area>
   </split>
+</div>
+
+<div class="loader" *ngIf="!(algo && instance)">
+  <img src="../../../assets/images/loader.svg">
 </div>

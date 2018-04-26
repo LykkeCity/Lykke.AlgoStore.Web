@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { PopupComponent } from '../components/popup/popup.component';
-import { ModalModule, TooltipModule } from 'ngx-bootstrap';
+import { BsDropdownModule, ModalModule, TooltipModule } from 'ngx-bootstrap';
 import { CodeEditorComponent } from './code-editor/code-editor.component';
 import { AceEditorModule } from 'ng2-ace-editor';
 import { UiSwitchModule } from 'ngx-ui-switch';
@@ -12,6 +12,8 @@ import { DpDatePickerModule } from 'ng2-date-picker';
 import { AlertModule } from 'ngx-bootstrap';
 import { StarRatingComponent } from './star-rating/star-rating.component';
 import { StarRatingConfigService } from './star-rating/star-rating-config';
+import { ACLGuard } from '../services/acl.guard';
+import { UserDetailsGuard } from '../services/user-details.guard';
 
 
 @NgModule({
@@ -25,9 +27,10 @@ import { StarRatingConfigService } from './star-rating/star-rating-config';
     DpDatePickerModule,
     ModalModule.forRoot(),
     AlertModule.forRoot(),
-    TooltipModule.forRoot()
+    TooltipModule.forRoot(),
+    BsDropdownModule.forRoot(),
   ],
-  providers: [StarRatingConfigService],
+  providers: [StarRatingConfigService, ACLGuard, UserDetailsGuard],
   declarations: [
     PopupComponent,
     CodeEditorComponent,
@@ -42,6 +45,7 @@ import { StarRatingConfigService } from './star-rating/star-rating-config';
     AlertModule,
     ModalModule,
     TooltipModule,
+    BsDropdownModule,
     StarRatingComponent,
     FormsModule,
     ReactiveFormsModule,
