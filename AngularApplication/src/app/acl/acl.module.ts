@@ -6,7 +6,6 @@ import { RolesListComponent } from './roles-list/roles-list.component';
 import { EditRoleComponent } from './edit-role/edit-role.component';
 import { AclRouting } from './acl-routing.module';
 import { UserRolesService } from '../services/user-roles.service';
-import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { SharedModule } from '../shared/shared.module';
 import { AssignRoleModalComponent } from './user-roles/assign-role-modal/assign-role-modal.component';
 import { UserPermissionService } from '../services/user-permissions.service';
@@ -22,7 +21,6 @@ import { UserPermissionService } from '../services/user-permissions.service';
   ],
   imports: [
     AclRouting,
-    NgxDatatableModule,
     SharedModule,
   ],
   providers: [

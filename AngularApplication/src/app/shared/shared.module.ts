@@ -14,6 +14,7 @@ import { StarRatingComponent } from './star-rating/star-rating.component';
 import { StarRatingConfigService } from './star-rating/star-rating-config';
 import { ACLGuard } from '../services/acl.guard';
 import { UserDetailsGuard } from '../services/user-details.guard';
+import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 
 
 @NgModule({
@@ -29,6 +30,7 @@ import { UserDetailsGuard } from '../services/user-details.guard';
     AlertModule.forRoot(),
     TooltipModule.forRoot(),
     BsDropdownModule.forRoot(),
+    NgxDatatableModule
   ],
   providers: [StarRatingConfigService, ACLGuard, UserDetailsGuard],
   declarations: [
@@ -49,6 +51,7 @@ import { UserDetailsGuard } from '../services/user-details.guard';
     StarRatingComponent,
     FormsModule,
     ReactiveFormsModule,
+    NgxDatatableModule
   ]
 })
 export class SharedModule {}
