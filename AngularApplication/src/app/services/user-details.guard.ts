@@ -1,13 +1,12 @@
 import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, CanActivate, CanLoad, Route, Router, RouterStateSnapshot } from '@angular/router';
+import { ActivatedRouteSnapshot, CanActivate, CanLoad, Route, RouterStateSnapshot } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { UserService } from './user.service';
 
 @Injectable()
-export class UserDetailsGuard implements CanActivate, CanLoad{
+export class UserDetailsGuard implements CanActivate, CanLoad {
 
-  constructor(private userService: UserService,
-              private router: Router) {
+  constructor(private userService: UserService) {
   }
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
@@ -18,8 +17,8 @@ export class UserDetailsGuard implements CanActivate, CanLoad{
           observer.next(true);
           observer.complete();
         }, () => {
-          this.router.navigate(['/startup']);
-          observer.next(false);
+
+          observer.next(true);
           observer.complete();
         });
       });
@@ -40,9 +39,10 @@ export class UserDetailsGuard implements CanActivate, CanLoad{
             observer.complete();
           });
         }, () => {
-          this.router.navigate(['/startup']);
-          observer.next(false);
+
+          observer.next(true);
           observer.complete();
+
         });
       });
     }

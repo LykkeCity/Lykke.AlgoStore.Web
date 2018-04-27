@@ -2,18 +2,21 @@ import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivate, CanLoad, Route, Router, RouterStateSnapshot } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { UserService } from './user.service';
+import { NotificationsService } from 'angular2-notifications';
 
 @Injectable()
 export class ACLGuard implements CanActivate, CanLoad {
 
-  constructor(private router: Router, private userService: UserService) {
+  constructor(private router: Router, private userService: UserService, private notificationsService: NotificationsService) {
   }
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
     const hasAccess = this.hasAccess(route.data['acl']);
 
     if (!hasAccess) {
-      this.router.navigate(['/store/dashboard']);
+      this.router.navigate(['/store/algo-list']).then(() => {
+        this.notificationsService.alert('Forbidden', 'You do not have permission to perform this action.');
+      });
     }
 
     return hasAccess;
@@ -24,7 +27,9 @@ export class ACLGuard implements CanActivate, CanLoad {
     const hasAccess = this.hasAccess(route.data['acl']);
 
     if (!hasAccess) {
-      this.router.navigate(['/store/dashboard']);
+      this.router.navigate(['/store/algo-list']).then(() => {
+        this.notificationsService.alert('Forbidden', 'You do not have permission to perform this action.');
+      });
     }
 
     return hasAccess;

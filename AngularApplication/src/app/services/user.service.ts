@@ -23,7 +23,7 @@ export class UserService {
   }
 
   public hasPermission(permissionId: string): boolean {
-    return this.userRoles.getValue().some(p => p.Id === permissionId);
+    return this.userRoles.getValue() ? this.userRoles.getValue().some(p => p.Id === permissionId) : false;
   }
 
   public setLoggedUser(userData: UserData) {
