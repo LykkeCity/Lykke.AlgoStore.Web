@@ -23,11 +23,11 @@
     </div>
   </div>
   <div class="row" *ngFor="let role of userInfo.Roles">
-    <div class="offset-4 col-2 text-left role-row">
+    <div class="offset-4 col-2 role-row role-row align-self-center d-flex justify-content-start">
       {{role.Name}}
     </div>
-    <div class="col-2 text-right role-row" *ngIf="permissions.canRevokeRoles">
-      <div class="delete-icon-holder cursor-pointer mr-4" (click)="revokeRole(role.Id)"></div>
+    <div class="col-2 role-row align-self-center d-flex justify-content-end" *ngIf="permissions.canRevokeRoles">
+      <div class="delete-icon-holder cursor-pointer" (click)="revokeRole(role.Id)"></div>
     </div>
   </div>
   <div class="row">
