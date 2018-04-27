@@ -13,7 +13,11 @@ export class UserRolesService {
   }
 
   saveRole(role: UserRole): Observable<UserRole> {
-    return this.authRequestService.post(environment.storeApiUrl + '/v1/roles/saveRole', role);
+    if (role.Id) {
+      return this.authRequestService.post(environment.storeApiUrl + '/v1/roles/updateRole', role);
+    } else {
+      return this.authRequestService.post(environment.storeApiUrl + '/v1/roles/saveRole', role);
+    }
   }
 
   getAllUsersWithRoles(): Observable<UserData[]> {

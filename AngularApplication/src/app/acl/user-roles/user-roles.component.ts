@@ -8,7 +8,7 @@ import { UserData } from '../../models/userdata.interface';
 import { BsModalService } from 'ngx-bootstrap';
 import { AssignRoleModalComponent } from './assign-role-modal/assign-role-modal.component';
 import { NotificationsService } from 'angular2-notifications';
-import { AppGlobals } from '../../services/app.globals';
+import Permissions from '../../store/models/permissions';
 
 @Component({
   selector: 'app-user-roles',
@@ -32,10 +32,10 @@ export class UserRolesComponent {
               private bsModalService: BsModalService,
               private notificationsService: NotificationsService) {
 
-    this.subscriptions.push(AppGlobals.loggedUserSubject.subscribe(() => {
+    this.subscriptions.push(this.usersService.loggedUserSubject.subscribe(() => {
       this.permissions = {
-        canAssignRoles: AppGlobals.hasPermission('AssignUserRole'),
-        canRevokeRoles: AppGlobals.hasPermission('RevokeRoleFromUser')
+        canAssignRoles: this.usersService.hasPermission(Permissions.ASSIGN_USER_ROLE),
+        canRevokeRoles: this.usersService.hasPermission(Permissions.REVOKE_ROLE)
       };
     }));
 
@@ -86,11 +86,11 @@ export class UserRolesComponent {
       this.notificationsService.success('Success', 'Role successfully revoked.');
 
       // if we're editing the current user, update him
-      const loggedUser = AppGlobals.getLoggedUser();
+      const loggedUser = this.usersService.getLoggedUser();
       if (this.userInfo.ClientId === loggedUser.ClientId) {
         this.userRoleService.getRolesForUser(loggedUser.ClientId).subscribe((roles) => {
           loggedUser.Roles = roles;
-          AppGlobals.setLoggedUser(loggedUser);
+          this.usersService.updatePermissions(loggedUser.Roles);
         });
       }
     });

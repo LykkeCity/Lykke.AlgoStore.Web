@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { AppGlobals } from '../../services/app.globals';
+import { UserService } from '../../services/user.service';
+import Permissions from '../../store/models/permissions';
 
 @Component({
   selector: 'app-header',
@@ -14,12 +15,12 @@ export class HeaderComponent {
     vewRoles: boolean
   };
 
-  constructor() {
-    AppGlobals.loggedUserSubject.subscribe(() => {
+  constructor(private userService: UserService) {
+    this.userService.loggedUserSubject.subscribe(() => {
       this.permissions = {
-        viewPublicAlgos: AppGlobals.hasPermission('GetAllAlgos'),
-        viewMyAlgos: AppGlobals.hasPermission('GetAlgosByClientId'),
-        vewRoles: AppGlobals.hasPermission('GetAllUserRoles') && AppGlobals.hasPermission('GetAllUsersWithRoles')
+        viewPublicAlgos: this.userService.hasPermission(Permissions.GET_ALL_ALGOS),
+        viewMyAlgos: this.userService.hasPermission('GetAlgosByClientId'), // TODO change this with real role when API is ready
+        vewRoles: this.userService.hasPermission(Permissions.GET_ALL_USER_ROLES) && this.userService.hasPermission(Permissions.GET_ALL_USERS_WITH_ROLES)
       };
     });
   }

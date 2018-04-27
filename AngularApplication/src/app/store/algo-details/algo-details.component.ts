@@ -9,7 +9,8 @@ import { AlgoComment } from '../../models/algo-comment.model';
 import { AlgoService } from '../../services/algo.service';
 import { AlgoRatingService } from '../../services/algo-rating.service';
 import { AlgoCommentService } from '../../services/algo-comment.service';
-import { AppGlobals } from '../../services/app.globals';
+import { UserService } from '../../services/user.service';
+import Permissions from '../models/permissions';
 
 @Component({
   selector: 'app-algo-detail',
@@ -35,13 +36,14 @@ export class AlgoDetailsComponent implements OnInit, OnDestroy {
     private algoRatingService: AlgoRatingService,
     private algoCommentService: AlgoCommentService,
     private route: ActivatedRoute,
-    private notificationsService: NotificationsService) {
+    private notificationsService: NotificationsService,
+    private userService: UserService) {
 
     this.permissions = {
-      canEditAlgoRating: AppGlobals.hasPermission('RateAlgo'),
-      canSeeAlgoRating: AppGlobals.hasPermission('GetAlgoRating'),
-      canSeeComments: AppGlobals.hasPermission('GetAllCommentsForAlgoAsync'),
-      canRunInstance: AppGlobals.hasPermission('SaveAlgoInstanceDataAsync') && AppGlobals.hasPermission('UploadBinaryFile')
+      canEditAlgoRating: this.userService.hasPermission(Permissions.RATE_ALGO),
+      canSeeAlgoRating: this.userService.hasPermission(Permissions.GET_ALGO_RATING),
+      canSeeComments: this.userService.hasPermission(Permissions.GET_ALL_COMMENTS_FOR_ALGO),
+      canRunInstance: this.userService.hasPermission(Permissions.SAVE_ALGO_INSTANCE_DATA) && this.userService.hasPermission(Permissions.UPLOAD_BINARY_FILE)
     };
   }
 

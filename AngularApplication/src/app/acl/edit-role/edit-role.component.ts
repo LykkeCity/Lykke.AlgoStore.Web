@@ -6,7 +6,8 @@ import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 import { NotificationsService } from 'angular2-notifications';
 import { UserRole } from '../../models/user-role.model';
-import { AppGlobals } from '../../services/app.globals';
+import { UserService } from '../../services/user.service';
+import Permissions from '../../store/models/permissions';
 
 @Component({
   selector: 'app-edit-role',
@@ -25,13 +26,14 @@ export class EditRoleComponent implements OnDestroy {
   };
 
   constructor(private permissionsService: UserPermissionService,
+              private usersService: UserService,
               private roleService: UserRolesService,
               private route: ActivatedRoute,
               private notificationsService: NotificationsService) {
-    this.subscriptions.push(AppGlobals.loggedUserSubject.subscribe(() => {
+    this.subscriptions.push(this.usersService.userRoles.subscribe(() => {
       this.permissions = {
-        canEditRole: AppGlobals.hasPermission('UpdateUserRole') && AppGlobals.hasPermission('SaveUserRole')
-        && AppGlobals.hasPermission('AssignMultiplePermissionToRole') && AppGlobals.hasPermission('RevokeMultiplePermissions')
+        canEditRole: this.usersService.hasPermission(Permissions.UPDATE_USER_ROLE) && this.usersService.hasPermission(Permissions.SAVE_USER_ROLE)
+        && this.usersService.hasPermission(Permissions.ASSIGN_MULTIPLE_PERMISSIONS_TO_ROLE) && this.usersService.hasPermission(Permissions.REVOKE_PERMISSIONS)
       };
     }));
 
@@ -125,13 +127,13 @@ export class EditRoleComponent implements OnDestroy {
               this.notificationsService.success('Success', 'Role updated successfully.');
 
               // if the currently logged user has this role, update him
-              const loggedUser = AppGlobals.getLoggedUser();
+              const loggedUser = this.usersService.getLoggedUser();
               const userRoleIndex = loggedUser.Roles.findIndex(userRole => userRole.Id === this.roleId);
               if (userRoleIndex !== -1) {
                 loggedUser.Roles[userRoleIndex].Name = role.Name;
                 loggedUser.Roles[userRoleIndex].Permissions = dbPermissions;
 
-                AppGlobals.setLoggedUser(loggedUser);
+                this.usersService.updatePermissions(loggedUser.Roles);
               }
             });
           });

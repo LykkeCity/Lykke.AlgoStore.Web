@@ -5,7 +5,8 @@ import { UserRolesService } from '../../services/user-roles.service';
 import { NotificationsService } from 'angular2-notifications';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap';
 import { Router } from '@angular/router';
-import { AppGlobals } from '../../services/app.globals';
+import { UserService } from '../../services/user.service';
+import Permissions from '../../store/models/permissions';
 
 @Component({
   selector: 'app-roles-list',
@@ -28,13 +29,16 @@ export class RolesListComponent {
   constructor(private rolesService: UserRolesService,
               private notificationsService: NotificationsService,
               private bsModalService: BsModalService,
-              private router: Router) {
+              private router: Router,
+              private userService: UserService) {
 
-    this.subscriptions.push(AppGlobals.loggedUserSubject.subscribe(() => {
+    this.subscriptions.push(this.userService.loggedUserSubject.subscribe(() => {
       this.permissions = {
-        canDeleteRole: AppGlobals.hasPermission('DeleteUserRole'),
-        canCreateRole: AppGlobals.hasPermission('CreateUserRole'),
-        canModifyRole: AppGlobals.hasPermission('GetAllPermissions') && AppGlobals.hasPermission('GetRoleById') && AppGlobals.hasPermission('GetPermissionsByRoleId')
+        canDeleteRole: this.userService.hasPermission(Permissions.DELETE_USER_ROLE),
+        canCreateRole: this.userService.hasPermission(Permissions.SAVE_USER_ROLE),
+        canModifyRole: this.userService.hasPermission(Permissions.GET_ALL_PERMISSIONS) &&
+        this.userService.hasPermission(Permissions.GET_ROLE_BY_ID) &&
+        this.userService.hasPermission(Permissions.GET_PERMISSIONS_BY_ROLE_ID)
       };
     }));
 

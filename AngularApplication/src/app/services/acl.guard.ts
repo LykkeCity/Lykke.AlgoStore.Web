@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivate, CanLoad, Route, Router, RouterStateSnapshot } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
-import { AppGlobals } from './app.globals';
+import { UserService } from './user.service';
 
 @Injectable()
 export class ACLGuard implements CanActivate, CanLoad {
 
-  constructor(private router: Router) {
+  constructor(private router: Router, private userService: UserService) {
   }
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
@@ -31,7 +31,7 @@ export class ACLGuard implements CanActivate, CanLoad {
   }
 
   private hasAccess(requiredPermissions: string[]): boolean {
-    const userRoles = AppGlobals.getLoggedUser().Roles;
+    const userRoles = this.userService.getLoggedUser().Roles;
     const userPermissions = userRoles.map(role => role.Permissions).reduce((acc, val) => acc.concat(val), []);
 
     const matchedPermissions = [];

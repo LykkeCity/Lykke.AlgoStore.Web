@@ -8,7 +8,8 @@ import { PopupComponent } from '../../../components/popup/popup.component';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { DomSanitizer } from '@angular/platform-browser';
 import { AlgoCommentService } from '../../../services/algo-comment.service';
-import { AppGlobals } from '../../../services/app.globals';
+import { UserService } from '../../../services/user.service';
+import Permissions from '../../models/permissions';
 
 @Component({
   selector: 'app-algo-comments',
@@ -49,15 +50,16 @@ export class AlgoCommentsComponent implements OnChanges {
               private bsModalService: BsModalService,
               private algoCommentService: AlgoCommentService,
               private notificationsService: NotificationsService,
-              private domSanitizer: DomSanitizer) {
+              private domSanitizer: DomSanitizer,
+              private userService: UserService) {
     this.commentForm = this.fb.group({
       Content: ['', Validators.required]
     });
 
       this.permissions = {
-        canCreateComment: AppGlobals.hasPermission('CreateComment'),
-        canEditComment: AppGlobals.hasPermission('EditComment'),
-        canDeleteComment: AppGlobals.hasPermission('DeleteComment')
+        canCreateComment: this.userService.hasPermission(Permissions.CREATE_COMMENT),
+        canEditComment: this.userService.hasPermission(Permissions.EDIT_COMMENT),
+        canDeleteComment: this.userService.hasPermission(Permissions.DELETE_COMMENT)
       };
   }
 

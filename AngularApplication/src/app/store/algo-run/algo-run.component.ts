@@ -10,7 +10,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { AlgoInstance, AlgoInstanceData, IAlgoInstanceType } from '../models/algo-instance.model';
 import { AlgoService } from '../../services/algo.service';
 import { InstanceService } from '../../services/instance.service';
-import { AppGlobals } from '../../services/app.globals';
+import Permissions from '../models/permissions';
 
 @Component({
   selector: 'app-algo-run',
@@ -38,8 +38,8 @@ export class AlgoRunComponent implements OnInit, OnDestroy {
               private bsModalService: BsModalService) {
 
     this.permissions = {
-      canRunInstance: AppGlobals.hasPermission('SaveAlgoInstanceDataAsync') && AppGlobals.hasPermission('UploadBinaryFile'),
-      canSeeInstances: AppGlobals.hasPermission('GetAllAlgoInstanceDataAsync'),
+      canRunInstance: this.userService.hasPermission(Permissions.SAVE_ALGO_INSTANCE_DATA) && this.userService.hasPermission(Permissions.UPLOAD_BINARY_FILE),
+      canSeeInstances: this.userService.hasPermission(Permissions.GET_ALL_ALGO_INSTANCE_DATA),
     };
 
     this.subscriptions.push(this.route.params.subscribe(params => {

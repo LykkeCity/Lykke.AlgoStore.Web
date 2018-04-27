@@ -17,7 +17,7 @@ import { PopupComponent } from '../../components/popup/popup.component';
 import { PopupConfig } from '../../models/popup.interface';
 import { AlgoService } from '../../services/algo.service';
 import { InstanceService } from '../../services/instance.service';
-import { AppGlobals } from '../../services/app.globals';
+import Permissions from '../models/permissions';
 
 @Component({
   selector: 'app-algo-instance',
@@ -56,9 +56,9 @@ export class AlgoInstanceComponent implements OnDestroy {
 
 
     this.permissions = {
-      canSeeLogs: AppGlobals.hasPermission('GetTestTailLog'),
-      canSeeStatistics: AppGlobals.hasPermission('GetAlgoInstanceStatisticsAsync'),
-      canSeeTrades: AppGlobals.hasPermission('GetAllTradesForAlgoInstanceAsync')
+      canSeeLogs: this.userService.hasPermission(Permissions.GET_TEST_TAIL_LOG),
+      canSeeStatistics: this.userService.hasPermission(Permissions.GET_ALGO_INSTANCE_STATISTIC),
+      canSeeTrades: this.userService.hasPermission(Permissions.GET_ALL_TRADES_FOR_ALGO)
     };
 
     this.subscriptions.push(this.route.params.subscribe(params => {

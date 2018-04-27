@@ -4,7 +4,6 @@ import { Subscription } from 'rxjs/Subscription';
 import { UserService } from '../../../services/user.service';
 import { UserData } from '../../../models/userdata.interface';
 import { AuthService } from '../../../services/auth.service';
-import { AppGlobals } from '../../../services/app.globals';
 
 @Component({
   selector: 'app-user-profile',
@@ -26,7 +25,7 @@ export class UserProfileComponent implements OnInit, OnDestroy {
 
       this.subscriptions.push(this.userService.getUserRoles().subscribe(roles => {
         this.userData.Roles = roles;
-        AppGlobals.setLoggedUser(this.userData);
+        this.userService.setLoggedUser(this.userData);
       }));
     }));
   }

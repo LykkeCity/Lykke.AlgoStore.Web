@@ -6,11 +6,34 @@ import { UserData } from '../models/userdata.interface';
 import { environment } from '../../environments/environment';
 import { AuthRequestService } from './auth-request.service';
 import { UserRole } from '../models/user-role.model';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 @Injectable()
 export class UserService {
 
+  public loggedUserSubject: BehaviorSubject<UserData> = new BehaviorSubject<UserData>(null);
+  public userRoles: BehaviorSubject<UserRole[]> = new BehaviorSubject<UserRole[]>(null);
+
   constructor(private authRequestService: AuthRequestService) {
+  }
+
+  updatePermissions(roles: UserRole[]) {
+    const userPermissions = roles.map(role => role.Permissions).reduce((acc, val) => acc.concat(val), []);
+    this.userRoles.next(userPermissions);
+  }
+
+  public hasPermission(permissionId: string): boolean {
+    return this.userRoles.getValue().some(p => p.Id === permissionId);
+  }
+
+  public setLoggedUser(userData: UserData) {
+    this.updatePermissions(userData.Roles);
+
+    this.loggedUserSubject.next(userData);
+  }
+
+  public getLoggedUser(): UserData {
+    return this.loggedUserSubject.getValue();
   }
 
   getUserInfo(): Observable<UserData> {

@@ -7,7 +7,8 @@ import { PopupComponent } from '../../../components/popup/popup.component';
 import { BsModalService } from 'ngx-bootstrap';
 import { PopupConfig } from '../../../models/popup.interface';
 import { InstanceService } from '../../../services/instance.service';
-import { AppGlobals } from '../../../services/app.globals';
+import { UserService } from '../../../services/user.service';
+import Permissions from '../../models/permissions';
 
 @Component({
   selector: 'app-algo-instance-list',
@@ -29,10 +30,11 @@ export class AlgoInstanceListComponent {
     private route: ActivatedRoute,
     private instanceService: InstanceService,
     private notificationsService: NotificationsService,
-    private bsModalService: BsModalService
+    private bsModalService: BsModalService,
+    private usersService: UserService
   ) {
     this.permissions = {
-      canDeleteInstance: AppGlobals.hasPermission('DeleteAlgoInstanceDataAsync')
+      canDeleteInstance: this.usersService.hasPermission(Permissions.DELETE_ALGO_INSTANCE_DATA)
     };
 
     this.subscriptions.push(this.route.params.subscribe(params => {
