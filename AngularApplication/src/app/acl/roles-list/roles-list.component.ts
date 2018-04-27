@@ -65,6 +65,8 @@ export class RolesListComponent {
       this.notificationsService.success('Success', 'Role deleted successfully.');
       const index = this.roles.findIndex(r => r.Id === roleId);
       this.roles.splice(index, 1);
+
+      this.roles = [...this.roles];
     });
   }
 
