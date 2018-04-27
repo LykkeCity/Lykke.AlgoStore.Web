@@ -16,6 +16,8 @@ export class UsersListComponent {
   users: UserData[];
   loadingIndicator = true;
   subscriptions: Subscription[] = [];
+  labelColors = ['azure', 'green', 'red', 'mango', 'violet', 'silver'];
+  count = 0;
 
   permissions: {
     canRevokeRole: boolean,

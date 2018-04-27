@@ -15,7 +15,7 @@
         [loadingIndicator]="loadingIndicator"
         [headerHeight]="50"
         [footerHeight]="'auto'"
-        [rowHeight]="60"
+        [rowHeight]="'auto'"
         [rows]="users">
 
         <ngx-datatable-column [resizeable]="false" name="Full Name" prop="FullName" [flexGrow]="2">
@@ -27,8 +27,8 @@
         <ngx-datatable-column [resizeable]="false" name="Email" prop="Email" [flexGrow]="2"></ngx-datatable-column>
         <ngx-datatable-column [resizeable]="false" prop="Roles" name="Roles" [flexGrow]="1.5">
           <ng-template let-value="value" let-row="row" ngx-datatable-cell-template>
-            <span *ngFor="let item of row.Roles">
-              <label class="label label-tiffany">{{item.Name}} <img src="../../../assets/images/colapse-icon.svg" (click)="revokeRole(item.Id, row.ClientId)" *ngIf="permissions.canRevokeRole"></label>
+            <span *ngFor="let item of row.Roles; let index = index">
+              <label class="label label-{{labelColors[index > 0 ? index % 6 : 0]}}">{{item.Name}} <img src="../../../assets/images/colapse-icon.svg" (click)="revokeRole(item.Id, row.ClientId)" *ngIf="permissions.canRevokeRole"></label>
             </span>
           </ng-template>
         </ngx-datatable-column>

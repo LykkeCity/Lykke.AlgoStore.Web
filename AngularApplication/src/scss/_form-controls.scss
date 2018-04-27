@@ -65,14 +65,40 @@
   white-space: nowrap;
   vertical-align: baseline;
 
-  &.label-tiffany {
-    background-color: #64a3d8;
-    border-color: #64a3d8;
+  &.label-azure {
+    background-color: $azure;
+    border-color: $azure;
+  }
+
+  &.label-green {
+    background-color: $green;
+    border-color: $green;
+  }
+
+  &.label-red {
+    background-color: $orange-red;
+    border-color: $orange-red;
+  }
+
+  &.label-mango {
+    background-color: $mango;
+    border-color: $mango;
+  }
+
+  &.label-violet {
+    background-color: #ab00ff;
+    border-color: #ab00ff;
+  }
+
+  &.label-silver {
+    background-color: $silver;
+    border-color: $silver;
   }
 
   img {
-    width: 10px;
-    height: 10px;
+    width: 9px;
+    height: 9px;
+    margin-bottom: 2px;
     cursor: pointer;
   }
 }

@@ -2,10 +2,18 @@
 
 .navbar, .user-navbar {
   height: $navbar-height;
+
+  .nav-link {
+    color: $slate;
+
+    &:hover {
+      color: $azure;
+    }
+  }
 }
 
 .user-navbar {
-  background-color: $gray-200;
+  background-color: $pale-grey-two;
 }
 
 @include media-breakpoint-up(xs) {
