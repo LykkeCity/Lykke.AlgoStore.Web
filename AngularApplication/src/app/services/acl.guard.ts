@@ -15,7 +15,7 @@ export class ACLGuard implements CanActivate, CanLoad {
 
     if (!hasAccess) {
       this.router.navigate(['/store/algo-list']).then(() => {
-        this.notificationsService.alert('Forbidden', 'You do not have permission to perform this action.');
+        this.notificationsService.error('Forbidden', 'You do not have permission to perform this action.');
       });
     }
 
@@ -28,7 +28,7 @@ export class ACLGuard implements CanActivate, CanLoad {
 
     if (!hasAccess) {
       this.router.navigate(['/store/algo-list']).then(() => {
-        this.notificationsService.alert('Forbidden', 'You do not have permission to perform this action.');
+        this.notificationsService.error('Forbidden', 'You do not have permission to perform this action.');
       });
     }
 
