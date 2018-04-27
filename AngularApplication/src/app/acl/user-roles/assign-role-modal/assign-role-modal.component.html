@@ -1,0 +1,34 @@
+<div class="modal-body">
+  <div class="row mt-4">
+    <div class="offset-1 col-9">
+      <h3>Assign new Role</h3>
+    </div>
+  </div>
+  <div class="row mt-1">
+    <div class="offset-1 col-9">
+      <p>You are about to assign a new role to {{userData.FullName}}</p>
+    </div>
+  </div>
+  <form [formGroup]="roleGroup" (ngSubmit)="save()">
+    <div class="row">
+      <div class="offset-1 col-9">
+        <div class="form-group">
+          <label for="user-acl-edit-modal-roles">Type of Role</label>
+          <select class="form-control custom-select" id="user-acl-edit-modal-roles" formControlName="role">
+            <option *ngFor="let role of allRoles" [value]="role.Id">{{role.Name}}</option>
+          </select>
+        </div>
+      </div>
+    </div>
+      <div class="row">
+        <div class="offset-1 col-9 text-center">
+          <button type="submit" class="btn btn-primary">Add Role</button>
+        </div>
+      </div>
+      <div class="row">
+        <div class="offset-1 col-9 text-center mt-2">
+          <a class="link-style font-weight-semibold cursor-pointer" (click)="bsModalRef.hide()">Cancel</a>
+        </div>
+      </div>
+  </form>
+</div>

@@ -10,6 +10,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { AlgoInstance, AlgoInstanceData, IAlgoInstanceType } from '../models/algo-instance.model';
 import { AlgoService } from '../../services/algo.service';
 import { InstanceService } from '../../services/instance.service';
+import Permissions from '../models/permissions';
 
 @Component({
   selector: 'app-algo-run',
@@ -21,16 +22,25 @@ export class AlgoRunComponent implements OnInit, OnDestroy {
   algo: Algo;
   wallets: Wallet[];
   subscriptions: Subscription[] = [];
-  instancesArray: AlgoInstance[];
+  instancesArray: AlgoInstance[] = [];
   metadataForm: FormGroup;
   showMetadataForm = false;
   clientId: string;
+  permissions: {
+    canRunInstance: boolean,
+    canSeeInstances: boolean,
+  };
 
   constructor(private route: ActivatedRoute,
               private algoService: AlgoService,
               private instanceService: InstanceService,
               private userService: UserService,
               private bsModalService: BsModalService) {
+
+    this.permissions = {
+      canRunInstance: this.userService.hasPermission(Permissions.SAVE_ALGO_INSTANCE_DATA) && this.userService.hasPermission(Permissions.UPLOAD_BINARY_FILE),
+      canSeeInstances: this.userService.hasPermission(Permissions.GET_ALL_ALGO_INSTANCE_DATA),
+    };
 
     this.subscriptions.push(this.route.params.subscribe(params => {
       this.clientId = params['clientId'];
@@ -43,9 +53,12 @@ export class AlgoRunComponent implements OnInit, OnDestroy {
         this.showMetadataForm = true;
       }));
 
-      this.subscriptions.push(this.instanceService.getAlgoInstances(algoId).subscribe(instances => {
-        this.instancesArray = instances;
-      }));
+      if (this.permissions.canSeeInstances) {
+        this.subscriptions.push(this.instanceService.getAlgoInstances(algoId).subscribe(instances => {
+          this.instancesArray = instances;
+        }));
+      }
+
     }));
 
     this.subscriptions.push(this.userService.getUserWalletsWithBalances().subscribe(wallets => {
@@ -74,6 +87,10 @@ export class AlgoRunComponent implements OnInit, OnDestroy {
   }
 
   goLive(wallet: Wallet): void {
+    if (!this.permissions.canRunInstance) {
+      return;
+    }
+
     this.mapFormToData();
     const initialState = {
       type: 'Live',

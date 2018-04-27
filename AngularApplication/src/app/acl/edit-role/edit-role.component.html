@@ -1,0 +1,50 @@
+<div class="container" *ngIf="rolePermissions">
+  <div class="row mt-5">
+    <div class="offset-2 col-10">
+      <h2>{{roleId ? 'Edit' : 'Create'}} Role</h2>
+      <h6 *ngIf="!role.CanBeModified" class="text-danger">This role cannot be modified.</h6>
+    </div>
+  </div>
+  <form (ngSubmit)="onSave()">
+    <div class="row mt-4">
+      <div class="offset-2 col-8">
+        <div class="form-group">
+          <label for="role-name">Name</label>
+          <input type="text" class="form-control" id="role-name" [(ngModel)]="role.Name" [ngModelOptions]="{standalone: true}" [readonly]="!role.CanBeModified || !permissions.canEditRole">
+        </div>
+      </div>
+    </div>
+    <div class="row mt-3">
+      <div class="offset-2 col-4 mb-4">
+        <span class="font-weight-semibold">Set Permissions</span>
+      </div>
+      <div class="col-2">
+        <span class="mr-2"><img src="../../../assets/images/select-all.svg"></span>
+        <span class="font-weight-semibold cursor-pointer" (click)="(role.CanBeModified && permissions.canEditRole) ? selectAll() : null" [tooltip]="!role.CanBeModified  ? 'This role cannot be modified.' : !permissions.canEditRole ? 'You do not have the permission to modify this role' : ''">Select all</span>
+      </div>
+      <div class="col-2">
+        <span class="mr-2"><img src="../../../assets/images/deselect-all.svg"></span>
+        <span class="font-weight-semibold cursor-pointer" (click)="(role.CanBeModified && permissions.canEditRole) ? deselectAll(): null" [tooltip]="!role.CanBeModified  ? 'This role cannot be modified.' : !permissions.canEditRole ? 'You do not have the permission to modify this role' : ''">Deselect all</span>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-4" *ngFor="let permission of allPermissions; let even = even;" [ngClass]="{'offset-2' : even}">
+        <div class="form-group">
+          <div class="custom-control custom-checkbox mr-sm-2">
+            <input type="checkbox" class="custom-control-input" [id]="permission.Id" [checked]="permission.checked" (change)="onStateChange(permission)" [disabled]="!role.CanBeModified || (!role.CanBeModified || !permissions.canEditRole)">
+            <label class="custom-control-label cursor-pointer" [for]="permission.Id">{{permission.DisplayName}}</label>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row mt-4 mb-4">
+      <div class="col-12 text-center">
+        <button type="submit" class="btn btn-primary" [disabled]="!role.CanBeModified || !permissions.canEditRole">Save changes</button>
+      </div>
+    </div>
+  </form>
+</div>
+
+<div class="loader" *ngIf="!rolePermissions">
+  <img src="../../../assets/images/loader.svg">
+</div>

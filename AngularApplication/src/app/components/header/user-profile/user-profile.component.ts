@@ -13,19 +13,25 @@ import { AuthService } from '../../../services/auth.service';
 export class UserProfileComponent implements OnInit, OnDestroy {
 
   userData: UserData;
-  private subscription: Subscription;
+  subscriptions: Subscription[] = [];
 
   constructor(private userService: UserService, private authService: AuthService) {
+
   }
 
   ngOnInit() {
-    this.subscription = this.userService.getUserInfo().subscribe(data => {
+    this.subscriptions.push(this.userService.getUserInfo().subscribe(data => {
       this.userData = data;
-    });
+
+      this.subscriptions.push(this.userService.getUserRoles().subscribe(roles => {
+        this.userData.Roles = roles;
+        this.userService.setLoggedUser(this.userData);
+      }));
+    }));
   }
 
   ngOnDestroy() {
-    this.subscription.unsubscribe();
+    this.subscriptions.forEach(sub => sub.unsubscribe());
   }
 
   logout(): void {

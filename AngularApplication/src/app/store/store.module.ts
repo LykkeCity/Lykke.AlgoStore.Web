@@ -1,8 +1,6 @@
 import { NgModule } from '@angular/core';
 import { SharedModule } from '../shared/shared.module';
 import { ArchwizardModule } from 'ng2-archwizard';
-import { NgxDatatableModule } from '@swimlane/ngx-datatable';
-import { BsDropdownModule } from 'ngx-bootstrap';
 import { AngularSplitModule } from 'angular-split';
 import { TabsModule } from 'ngx-bootstrap';
 import { QuillModule } from 'ngx-quill';
@@ -11,7 +9,6 @@ import { NgxPaginationModule } from 'ngx-pagination';
 
 // ROUTING
 import { StoreRouting } from './store-routing.module';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 // COMPONENTS
 import { StoreComponent } from './store.component';
@@ -34,12 +31,8 @@ import { AlgoCommentEditPopupComponent } from './algo-details/algo-comments/algo
 @NgModule({
   imports: [
     StoreRouting,
-    FormsModule,
-    ReactiveFormsModule,
     SharedModule,
     ArchwizardModule,
-    NgxDatatableModule,
-    BsDropdownModule.forRoot(),
     TabsModule.forRoot(),
     AngularSplitModule,
     QuillModule,

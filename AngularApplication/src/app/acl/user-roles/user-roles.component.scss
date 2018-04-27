@@ -1,0 +1,34 @@
+@import '~scss/reuse';
+
+.delete-icon-holder {
+  background-image: url("../../../assets/images/store/delete-symbol-icon.svg");
+  justify-content: center;
+  display: inline-flex;
+  width: 10px;
+  height: 10px;
+  margin-right: 0.6rem;
+  background-size: contain;
+
+  &:hover {
+    position: relative;
+    width: 30px;
+    height: 30px;
+    margin-right: 0;
+    background-image: url("../../../assets/images/store/delete-active-symbol-icon.svg");
+  }
+}
+
+.btn {
+  padding: 0.257rem 1rem;
+}
+
+.email-holder {
+  color: $slate;
+}
+
+.role-row {
+  border-bottom: 1px solid $pale-grey;
+  border-top: 1px solid $pale-grey;
+  height: 60px;
+  align-items: center;
+}

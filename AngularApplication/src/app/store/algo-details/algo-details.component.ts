@@ -9,6 +9,8 @@ import { AlgoComment } from '../../models/algo-comment.model';
 import { AlgoService } from '../../services/algo.service';
 import { AlgoRatingService } from '../../services/algo-rating.service';
 import { AlgoCommentService } from '../../services/algo-comment.service';
+import { UserService } from '../../services/user.service';
+import Permissions from '../models/permissions';
 
 @Component({
   selector: 'app-algo-detail',
@@ -17,7 +19,13 @@ import { AlgoCommentService } from '../../services/algo-comment.service';
 })
 export class AlgoDetailsComponent implements OnInit, OnDestroy {
 
-  algo: Algo = {};
+  permissions: {
+    canSeeComments: boolean,
+    canSeeAlgoRating: boolean,
+    canEditAlgoRating: boolean,
+    canRunInstance: boolean
+  };
+  algo: Algo;
   subscriptions: Subscription[] = [];
   editor: any;
   myRating: AlgoRating = {};
@@ -28,8 +36,15 @@ export class AlgoDetailsComponent implements OnInit, OnDestroy {
     private algoRatingService: AlgoRatingService,
     private algoCommentService: AlgoCommentService,
     private route: ActivatedRoute,
-    private notificationsService: NotificationsService) {
+    private notificationsService: NotificationsService,
+    private userService: UserService) {
 
+    this.permissions = {
+      canEditAlgoRating: this.userService.hasPermission(Permissions.RATE_ALGO),
+      canSeeAlgoRating: this.userService.hasPermission(Permissions.GET_ALGO_RATING),
+      canSeeComments: this.userService.hasPermission(Permissions.GET_ALL_COMMENTS_FOR_ALGO),
+      canRunInstance: this.userService.hasPermission(Permissions.SAVE_ALGO_INSTANCE_DATA) && this.userService.hasPermission(Permissions.UPLOAD_BINARY_FILE)
+    };
   }
 
   ngOnInit() {
@@ -41,13 +56,17 @@ export class AlgoDetailsComponent implements OnInit, OnDestroy {
         this.algo.ClientId = clientId;
       }));
 
-      this.subscriptions.push(this.algoRatingService.getUserAlgoRating(algoId).subscribe(rating => {
-        this.myRating = rating;
-      }));
+      if (this.permissions.canSeeAlgoRating) {
+        this.subscriptions.push(this.algoRatingService.getUserAlgoRating(algoId).subscribe(rating => {
+          this.myRating = rating;
+        }));
+      }
 
-      this.subscriptions.push(this.algoCommentService.getAlgoComments(algoId).subscribe((comments) => {
-        this.comments = comments;
-      }));
+      if (this.permissions.canSeeComments) {
+        this.subscriptions.push(this.algoCommentService.getAlgoComments(algoId).subscribe((comments) => {
+          this.comments = comments;
+        }));
+      }
     }));
   }
 
@@ -67,15 +86,17 @@ export class AlgoDetailsComponent implements OnInit, OnDestroy {
   }
 
   onRatingChange(data) {
-    const ratingData = {
-      AlgoId: this.algo.AlgoId,
-      Rating: data.rating
-    };
-    this.subscriptions.push(this.algoRatingService.saveAlgoRating(ratingData).subscribe((newAlgoRating) => {
-      this.notificationsService.success('Success', 'Rating saved.');
-      this.algo.Rating = newAlgoRating.Rating;
-      this.algo.RatedUsersCount = newAlgoRating.RatedUsersCount;
-    }));
+    if (this.permissions.canEditAlgoRating) {
+      const ratingData = {
+        AlgoId: this.algo.AlgoId,
+        Rating: data.rating
+      };
+      this.subscriptions.push(this.algoRatingService.saveAlgoRating(ratingData).subscribe((newAlgoRating) => {
+        this.notificationsService.success('Success', 'Rating saved.');
+        this.algo.Rating = newAlgoRating.Rating;
+        this.algo.RatedUsersCount = newAlgoRating.RatedUsersCount;
+      }));
+    }
   }
 
 }

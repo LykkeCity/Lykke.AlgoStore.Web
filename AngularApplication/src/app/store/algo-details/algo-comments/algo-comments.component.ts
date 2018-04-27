@@ -8,6 +8,8 @@ import { PopupComponent } from '../../../components/popup/popup.component';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { DomSanitizer } from '@angular/platform-browser';
 import { AlgoCommentService } from '../../../services/algo-comment.service';
+import { UserService } from '../../../services/user.service';
+import Permissions from '../../models/permissions';
 
 @Component({
   selector: 'app-algo-comments',
@@ -38,14 +40,27 @@ export class AlgoCommentsComponent implements OnChanges {
   currentPage = 1;
   collapse = 'open';
 
+  permissions: {
+    canCreateComment: boolean,
+    canEditComment: boolean,
+    canDeleteComment: boolean
+  };
+
   constructor(private fb: FormBuilder,
               private bsModalService: BsModalService,
               private algoCommentService: AlgoCommentService,
               private notificationsService: NotificationsService,
-              private domSanitizer: DomSanitizer) {
+              private domSanitizer: DomSanitizer,
+              private userService: UserService) {
     this.commentForm = this.fb.group({
       Content: ['', Validators.required]
     });
+
+      this.permissions = {
+        canCreateComment: this.userService.hasPermission(Permissions.CREATE_COMMENT),
+        canEditComment: this.userService.hasPermission(Permissions.EDIT_COMMENT),
+        canDeleteComment: this.userService.hasPermission(Permissions.DELETE_COMMENT)
+      };
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -58,6 +73,10 @@ export class AlgoCommentsComponent implements OnChanges {
   }
 
   editComment(comment: AlgoComment, index: number): void {
+    if (!this.permissions.canEditComment) {
+      return;
+    }
+
     const initialState = {
       comment: comment,
       onEditSuccess: (editedComment) => {
@@ -78,6 +97,10 @@ export class AlgoCommentsComponent implements OnChanges {
   }
 
   deleteComment(comment: AlgoComment, index: number): void {
+    if (!this.permissions.canDeleteComment) {
+      return;
+    }
+
     const initialState = {
       popupConfig: {
         title: 'Delete comment',
@@ -97,7 +120,7 @@ export class AlgoCommentsComponent implements OnChanges {
   }
 
   onCommentSubmit(): void {
-    if (this.commentForm.invalid) {
+    if (this.commentForm.invalid || !this.permissions.canCreateComment) {
       return;
     }
 

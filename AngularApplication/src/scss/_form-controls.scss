@@ -48,3 +48,59 @@
 .alert-danger {
   background-color: $orange-red;
 }
+
+.label {
+  margin: 0 2px;
+  display: inline-block;
+  font-weight: 500;
+  padding: 2px 5px 1px;
+  line-height: 1.5384616;
+  border: 1px solid transparent;
+  text-transform: uppercase;
+  font-size: 10px;
+  letter-spacing: .1px;
+  border-radius: 2px;
+  color: #fff;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: baseline;
+
+  &.label-azure {
+    background-color: $azure;
+    border-color: $azure;
+  }
+
+  &.label-green {
+    background-color: $green;
+    border-color: $green;
+  }
+
+  &.label-red {
+    background-color: $orange-red;
+    border-color: $orange-red;
+  }
+
+  &.label-mango {
+    background-color: $mango;
+    border-color: $mango;
+  }
+
+  &.label-violet {
+    background-color: #ab00ff;
+    border-color: #ab00ff;
+  }
+
+  &.label-silver {
+    background-color: $silver;
+    border-color: $silver;
+  }
+
+  img {
+    width: 9px;
+    height: 9px;
+    margin-bottom: 2px;
+    cursor: pointer;
+  }
+}
+
+

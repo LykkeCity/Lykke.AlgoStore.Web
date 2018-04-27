@@ -1,0 +1,75 @@
+<div class="container algo-list-placeholder pt-10 pb-30">
+  <div class="row">
+    <div class="col-10">
+      <h2 class="mt-20 mb-10">List of roles</h2>
+    </div>
+    <div class="col-2 align-self-center" *ngIf="permissions.canCreateRole">
+      <button class="btn btn-primary" routerLink="/users-acl/roles-edit">Create role</button>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col">
+      <ngx-datatable
+        class="algo-table"
+        columnMode="flex"
+        [limit]="10"
+        [reorderable]="false"
+        [loadingIndicator]="loadingIndicator"
+        [headerHeight]="50"
+        [footerHeight]="'auto'"
+        [rowHeight]="60"
+        [rows]="roles">
+
+        <ngx-datatable-column [resizeable]="false" name="Name" prop="Name" [flexGrow]="2"></ngx-datatable-column>
+        <ngx-datatable-column [resizeable]="false" name="Number of permissions" prop="Permissions" [flexGrow]="2">
+          <ng-template let-value="value" let-row="row" ngx-datatable-cell-template>
+            <span *ngIf="value.length">{{value.length}} {{value.length === 1 ? 'permission' : 'permissions'}} active.</span>
+            <span *ngIf="!value.length">No active permissions.</span>
+          </ng-template>
+        </ngx-datatable-column>
+        <ngx-datatable-column [resizeable]="false" name="Actions" [flexGrow]="1.5" *ngIf="permissions.canDeleteRole || permissions.canModifyRole">
+          <ng-template let-value="value" let-row="row" ngx-datatable-cell-template>
+            <span dropdown>
+              <span class="cursor-pointer" dropdownToggle>
+              <img src="../../../assets/images/actions-icon.svg">
+              <ul *dropdownMenu class="dropdown-menu">
+                <li (click)="row.CanBeModified ? editRole(row.Id) : openModal(forbiddenEdit)" *ngIf="permissions.canModifyRole">
+                 <a class="dropdown-item"><img src="../../../assets/images/edit-icon.svg"><span class="ml-1">Edit</span></a>
+                </li>
+                <li (click)="row.CanBeDeleted ? deleteRole(row.Id) : openModal(forbiddenDeletion)" *ngIf="permissions.canDeleteRole">
+                   <a class="dropdown-item"><img src="../../../assets/images/store/delete-icon.svg"><span class="ml-1">Delete</span></a>
+                </li>
+              </ul>
+            </span>
+            </span>
+          </ng-template>
+        </ngx-datatable-column>
+      </ngx-datatable>
+    </div>
+  </div>
+</div>
+
+<ng-template #forbiddenDeletion>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Forbidden</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    This role cannot be deleted.
+  </div>
+</ng-template>
+
+<ng-template #forbiddenEdit>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Forbidden</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    This role cannot be modified.
+  </div>
+</ng-template>

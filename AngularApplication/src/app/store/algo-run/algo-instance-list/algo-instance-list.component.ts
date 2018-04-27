@@ -7,6 +7,8 @@ import { PopupComponent } from '../../../components/popup/popup.component';
 import { BsModalService } from 'ngx-bootstrap';
 import { PopupConfig } from '../../../models/popup.interface';
 import { InstanceService } from '../../../services/instance.service';
+import { UserService } from '../../../services/user.service';
+import Permissions from '../../models/permissions';
 
 @Component({
   selector: 'app-algo-instance-list',
@@ -20,19 +22,31 @@ export class AlgoInstanceListComponent {
   subscriptions: Subscription[] = [];
   clientId: string;
   iAlgoInstanceStatus = IAlgoInstanceStatus;
+  permissions: {
+    canDeleteInstance: boolean
+  };
 
   constructor(
     private route: ActivatedRoute,
     private instanceService: InstanceService,
     private notificationsService: NotificationsService,
-    private bsModalService: BsModalService
+    private bsModalService: BsModalService,
+    private usersService: UserService
   ) {
+    this.permissions = {
+      canDeleteInstance: this.usersService.hasPermission(Permissions.DELETE_ALGO_INSTANCE_DATA)
+    };
+
     this.subscriptions.push(this.route.params.subscribe(params => {
       this.clientId = params['clientId'];
     }));
   }
 
   deleteInstancePrompt(instance: AlgoInstance): void {
+    if (!this.permissions.canDeleteInstance) {
+      return;
+    }
+
     const initialState = {
       popupConfig: {
         title: 'Delete instance',
