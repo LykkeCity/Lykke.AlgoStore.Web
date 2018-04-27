@@ -77,8 +77,8 @@ export class AuthRequestService {
     }
 
     if (error.status === 403) {
-      this.notificationsService.alert('Forbidden', 'You do not have permission to perform this action.');
-      return;
+      this.notificationsService.error('Forbidden', 'You do not have permission to perform this action.');
+      return Observable.throw(error.error);
     }
 
     this.notificationsService.error('Error', 'Error occurred.');
