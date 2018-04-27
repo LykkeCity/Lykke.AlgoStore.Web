@@ -22,7 +22,7 @@ export class AlgoRunComponent implements OnInit, OnDestroy {
   algo: Algo;
   wallets: Wallet[];
   subscriptions: Subscription[] = [];
-  instancesArray: AlgoInstance[];
+  instancesArray: AlgoInstance[] = [];
   metadataForm: FormGroup;
   showMetadataForm = false;
   clientId: string;
