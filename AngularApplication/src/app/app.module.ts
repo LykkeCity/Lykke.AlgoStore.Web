@@ -59,7 +59,6 @@ import { InstanceService } from './services/instance.service';
     HttpClientModule,
     SimpleNotificationsModule.forRoot(),
     NgIdleKeepaliveModule.forRoot(),
-    PopoverModule.forRoot()
   ],
   providers: [
     AuthGuard,

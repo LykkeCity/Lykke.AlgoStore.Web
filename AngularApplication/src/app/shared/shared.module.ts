@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { PopupComponent } from '../components/popup/popup.component';
-import { BsDropdownModule, ModalModule, TooltipModule } from 'ngx-bootstrap';
+import { BsDropdownModule, ModalModule, PopoverModule, TooltipModule } from 'ngx-bootstrap';
 import { CodeEditorComponent } from './code-editor/code-editor.component';
 import { AceEditorModule } from 'ng2-ace-editor';
 import { UiSwitchModule } from 'ngx-ui-switch';
@@ -30,6 +30,7 @@ import { NgxDatatableModule } from '@swimlane/ngx-datatable';
     AlertModule.forRoot(),
     TooltipModule.forRoot(),
     BsDropdownModule.forRoot(),
+    PopoverModule.forRoot(),
     NgxDatatableModule
   ],
   providers: [StarRatingConfigService, ACLGuard, UserDetailsGuard],
@@ -51,7 +52,8 @@ import { NgxDatatableModule } from '@swimlane/ngx-datatable';
     StarRatingComponent,
     FormsModule,
     ReactiveFormsModule,
-    NgxDatatableModule
+    NgxDatatableModule,
+    PopoverModule
   ]
 })
 export class SharedModule {}
