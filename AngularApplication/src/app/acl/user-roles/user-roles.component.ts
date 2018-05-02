@@ -77,7 +77,7 @@ export class UserRolesComponent {
   }
 
   revokeRole(roleId: string) {
-    if (this.permissions.canRevokeRoles) {
+    if (!this.permissions.canRevokeRoles) {
       return;
     }
 
