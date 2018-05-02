@@ -46,7 +46,7 @@
     <div class="col-2" *ngIf="permissions.canEditComment || permissions.canDeleteComment">
     <span dropdown class="ml-3 cursor-pointer text-muted">
           <span dropdownToggle class="dots">. . .</span>
-          <ul *dropdownMenu class="dropdown-menu">
+          <ul *dropdownMenu class="comments-dropdown dropdown-menu">
             <li>
               <a class="dropdown-item" href="javascript:;" (click)="editComment(comment, index)" *ngIf="permissions.canEditComment"><img
                 src="../../../../assets/images/edit-icon.svg"><span class="ml-1">Edit</span></a>
