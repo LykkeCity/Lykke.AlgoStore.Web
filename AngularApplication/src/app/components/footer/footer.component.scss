@@ -3,7 +3,8 @@
 :host {
   position: absolute;
   bottom: -$footer-height;
-  height: $footer-height;
+  //height: $footer-height;
+  height: 60px;
   left: 0;
   width: 100%;
 }
@@ -11,7 +12,7 @@
 .footer {
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
   padding-top: 30px;
-  padding-bottom: 50px;
+  padding-bottom: 10px;
 
   .social-nav {
     .icon {
