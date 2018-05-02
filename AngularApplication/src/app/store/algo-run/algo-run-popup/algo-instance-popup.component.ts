@@ -48,7 +48,9 @@ export class AlgoInstancePopupComponent implements OnDestroy {
         this.subscriptions.push(this.instanceService.createDemoAlgoIntance({...this.algoInstanceData, ...this.algoInstanceForm.value})
           .subscribe(() => {
           this.modalRef.hide();
-        }));
+        }, () => {
+            this.modalRef.hide();
+          }));
         break;
       case 'Live':
         this.subscriptions.push(this.instanceService.createLiveAlgoIntance({...this.algoInstanceData, ...this.algoInstanceForm.value})
