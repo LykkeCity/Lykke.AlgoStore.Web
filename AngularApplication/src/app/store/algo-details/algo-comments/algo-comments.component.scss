@@ -5,8 +5,9 @@
   border-bottom: 1px solid darkgray;
 }
 
-.dropdown-menu {
+.comments-dropdown.dropdown-menu {
   top: 30px !important;
+  left: -40px !important;
 
   .dropdown-item {
     img {
