@@ -9,10 +9,10 @@
   </div>
 </nav>
 <nav class="navbar navbar-expand-lg navbar-light user-navbar container" *ngIf="permissions.vewRoles || permissions.viewMyAlgos || permissions.viewPublicAlgos">
-    <div class="collapse navbar-collapse d-none d-md-none d-lg-flex justify-content-end">
-      <ul class="navbar-nav mr-auto d-none d-md-none d-lg-flex">
+    <div class="collapse navbar-collapse d-flex justify-content-end">
+      <ul class="navbar-nav mr-auto d-flex flex-row">
         <li class="nav-item" dropdown *ngIf="permissions.vewRoles">
-          <a class="nav-link cursor-pointer font-weight-semibold" routerLinkActive="active" dropdownToggle>USER ROLES</a>
+          <a class="nav-link cursor-pointer font-weight-semibold mr-2" routerLinkActive="active" dropdownToggle>USER ROLES</a>
           <ul *dropdownMenu class="dropdown-menu">
             <li>
               <a class="dropdown-item" routerLink="/users-acl/roles">Roles</a>
@@ -22,7 +22,7 @@
             </li>
           </ul>
         </li>
-        <li class="nav-item font-weight-semibold" *ngIf="permissions.viewPublicAlgos">
+        <li class="nav-item font-weight-semibold mr-2" *ngIf="permissions.viewPublicAlgos">
           <a class="nav-link" routerLinkActive="active" routerLink="/store/algo-list">PUBLIC ALGOS</a>
         </li>
         <li class="nav-item font-weight-semibold" *ngIf="permissions.viewMyAlgos">
