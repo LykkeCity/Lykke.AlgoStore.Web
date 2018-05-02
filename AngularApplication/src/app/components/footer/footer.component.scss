@@ -3,8 +3,7 @@
 :host {
   position: absolute;
   bottom: -$footer-height;
-  //height: $footer-height;
-  height: 60px;
+  height: $footer-height-small;
   left: 0;
   width: 100%;
 }
