@@ -44,3 +44,11 @@ ul.dropdown-menu {
 .action-buttons, .fs-1r {
   font-size: 1rem;
 }
+
+::ng-deep .popover {
+  max-width: 300px;
+  color: $slate;
+  background-color: $white;
+  border: 1px solid lightgray;
+  box-shadow: 0 8px 20px 0 rgba(0, 0, 0, 0.1);
+}
