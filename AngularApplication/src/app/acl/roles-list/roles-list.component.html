@@ -4,7 +4,7 @@
       <h2 class="mt-20 mb-10">List of roles</h2>
     </div>
     <div class="col-2 align-self-center" *ngIf="permissions.canCreateRole">
-      <button class="btn btn-primary" routerLink="/users-acl/roles-edit">Create role</button>
+      <button class="btn btn-primary role-button" routerLink="/users-acl/roles-edit">Create new role</button>
     </div>
   </div>
 
@@ -35,10 +35,10 @@
               <img src="../../../assets/images/actions-icon.svg">
               <ul *dropdownMenu class="dropdown-menu">
                 <li (click)="row.CanBeModified ? editRole(row.Id) : openModal(forbiddenEdit)" *ngIf="permissions.canModifyRole">
-                 <a class="dropdown-item"><img src="../../../assets/images/edit-icon.svg"><span class="ml-1">Edit</span></a>
+                 <a class="dropdown-item"><img src="../../../assets/images/edit-icon.svg" class="mb-1"><span class="ml-1">Edit</span></a>
                 </li>
                 <li (click)="row.CanBeDeleted ? deleteRole(row.Id) : openModal(forbiddenDeletion)" *ngIf="permissions.canDeleteRole">
-                   <a class="dropdown-item"><img src="../../../assets/images/store/delete-icon.svg"><span class="ml-1">Delete</span></a>
+                   <a class="dropdown-item"><img src="../../../assets/images/store/delete-icon.svg" class="mb-1"><span class="ml-1">Delete</span></a>
                 </li>
               </ul>
             </span>

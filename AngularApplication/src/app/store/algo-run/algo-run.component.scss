@@ -3,7 +3,7 @@
   padding: 10px 0;
   align-items: center;
 
-  &:hover {
+  &:hover:not(.edit-row) {
     background-color: $pale-grey-two;
   }
 

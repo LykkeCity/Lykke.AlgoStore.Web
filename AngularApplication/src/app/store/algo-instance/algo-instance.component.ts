@@ -67,8 +67,8 @@ export class AlgoInstanceComponent implements OnDestroy {
       this.instanceId = params['instanceId'];
       this.algoId = params['algoId'];
 
-      this.subscriptions.push(this.algoService.getAlgoWithSource(this.algoId, this.clientId ).subscribe(algo => {
-        this.algo = { ...algo, ClientId: this.clientId  };
+      this.subscriptions.push(this.algoService.getAlgoWithSource(this.algoId, this.clientId).subscribe(algo => {
+        this.algo = { ...algo, ClientId: this.clientId };
       }));
 
       this.subscriptions.push(this.userService.getUserWalletsWithBalances().subscribe(wallets => {
@@ -83,9 +83,9 @@ export class AlgoInstanceComponent implements OnDestroy {
         if (this.instance.AlgoInstanceStatus !== IAlgoInstanceStatus.Deploying) {
           if (this.permissions.canSeeLogs) {
             this.subscriptions.push(this.getLogs());
-          } else if(this.permissions.canSeeStatistics) {
+          } else if (this.permissions.canSeeStatistics) {
             this.subscriptions.push(this.getStatistics());
-          } else if(this.permissions.canSeeTrades) {
+          } else if (this.permissions.canSeeTrades) {
             this.subscriptions.push(this.getTrades());
           }
         }

@@ -32,8 +32,10 @@ export class EditRoleComponent implements OnDestroy {
               private notificationsService: NotificationsService) {
     this.subscriptions.push(this.usersService.userRoles.subscribe(() => {
       this.permissions = {
-        canEditRole: this.usersService.hasPermission(Permissions.UPDATE_USER_ROLE) && this.usersService.hasPermission(Permissions.SAVE_USER_ROLE)
-        && this.usersService.hasPermission(Permissions.ASSIGN_MULTIPLE_PERMISSIONS_TO_ROLE) && this.usersService.hasPermission(Permissions.REVOKE_PERMISSIONS)
+        canEditRole: this.usersService.hasPermission(Permissions.UPDATE_USER_ROLE) &&
+        this.usersService.hasPermission(Permissions.SAVE_USER_ROLE)
+        && this.usersService.hasPermission(Permissions.ASSIGN_MULTIPLE_PERMISSIONS_TO_ROLE)
+        && this.usersService.hasPermission(Permissions.REVOKE_PERMISSIONS)
       };
     }));
 
@@ -55,12 +57,12 @@ export class EditRoleComponent implements OnDestroy {
 
         this.subscriptions.push(this.permissionsService.getPermissionsForRole(this.roleId)
           .subscribe((rolePermissions: UserPermission[]) => {
-          this.rolePermissions = rolePermissions;
-          const rolePermissionIds = rolePermissions.map(p => p.Id);
-          perms.forEach(p => p.checked = rolePermissionIds.includes(p.Id));
+            this.rolePermissions = rolePermissions;
+            const rolePermissionIds = rolePermissions.map(p => p.Id);
+            perms.forEach(p => p.checked = rolePermissionIds.includes(p.Id));
 
-          this.allPermissions = perms;
-        }));
+            this.allPermissions = perms;
+          }));
       }));
     }));
   }
@@ -91,26 +93,26 @@ export class EditRoleComponent implements OnDestroy {
   }
 
   mapFromModelsToApiData(dbPermissions: UserPermission[]): any {
-    const result = { assignedPermissions: [], revokedPermissions: []};
-      const dbrolePermissionIds = dbPermissions.map(r => r.Id);
-      const currentPermissionIds = this.rolePermissions.map(r => r.Id);
+    const result = { assignedPermissions: [], revokedPermissions: [] };
+    const dbrolePermissionIds = dbPermissions.map(r => r.Id);
+    const currentPermissionIds = this.rolePermissions.map(r => r.Id);
 
-      // get the ones that we've added
-      for (const perm of this.rolePermissions) {
-        if (!dbrolePermissionIds.includes(perm.Id)) {
-          result.assignedPermissions.push({RoleId: this.roleId, PermissionId: perm.Id});
-          dbPermissions.push(perm);
-        }
+    // get the ones that we've added
+    for (const perm of this.rolePermissions) {
+      if (!dbrolePermissionIds.includes(perm.Id)) {
+        result.assignedPermissions.push({ RoleId: this.roleId, PermissionId: perm.Id });
+        dbPermissions.push(perm);
       }
+    }
 
-      // and the ones that we've removed
-      for (const perm of dbPermissions) {
-        if (!currentPermissionIds.includes(perm.Id)) {
-          result.revokedPermissions.push({RoleId: this.roleId, PermissionId: perm.Id});
-          const index = dbPermissions.findIndex(p => p.Id === perm.Id);
-          dbPermissions.splice(index, 1);
-        }
+    // and the ones that we've removed
+    for (const perm of dbPermissions) {
+      if (!currentPermissionIds.includes(perm.Id)) {
+        result.revokedPermissions.push({ RoleId: this.roleId, PermissionId: perm.Id });
+        const index = dbPermissions.findIndex(p => p.Id === perm.Id);
+        dbPermissions.splice(index, 1);
       }
+    }
 
     return result;
   }

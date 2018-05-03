@@ -5,6 +5,8 @@ import { Subscription } from 'rxjs/Subscription';
 import { NotificationsService } from 'angular2-notifications';
 import { UserService } from '../../services/user.service';
 import Permissions from '../../store/models/permissions';
+import { PopupComponent } from '../../components/popup/popup.component';
+import { BsModalService } from 'ngx-bootstrap';
 
 @Component({
   selector: 'app-users-list',
@@ -17,14 +19,16 @@ export class UsersListComponent {
   loadingIndicator = true;
   subscriptions: Subscription[] = [];
   labelColors = ['azure', 'green', 'red', 'mango', 'violet', 'silver'];
-  count = 0;
 
   permissions: {
     canRevokeRole: boolean,
     canEditUserRoles: boolean
   };
 
-  constructor(private userRolesService: UserRolesService, private notificationsService: NotificationsService, private usersService: UserService) {
+  constructor(private userRolesService: UserRolesService,
+              private notificationsService: NotificationsService,
+              private usersService: UserService,
+              private bsModalService: BsModalService) {
 
     this.permissions = {
       canRevokeRole: this.usersService.hasPermission(Permissions.REVOKE_ROLE),
@@ -43,20 +47,32 @@ export class UsersListComponent {
       return;
     }
 
-    this.userRolesService.revokeRole(clientId, roleId).subscribe(() => {
-      const currentUser = this.users.find(u => u.ClientId === clientId);
-       currentUser.Roles = currentUser.Roles.filter(role => role.Id !== roleId);
-       this.notificationsService.success('Success', 'Role successfully removed.');
+    const initialState = {
+      popupConfig: {
+        title: 'Revoke role',
+        text: 'Are you sure you want to revoke this role?',
+        btnCancelText: 'Cancel',
+        btnConfirmText: 'Delete',
+        successCallback: () => {
+          this.userRolesService.revokeRole(clientId, roleId).subscribe(() => {
+            const currentUser = this.users.find(u => u.ClientId === clientId);
+            currentUser.Roles = currentUser.Roles.filter(role => role.Id !== roleId);
+            this.notificationsService.success('Success', 'Role successfully removed.');
 
-      // if we're editing the current user, update him
-      const loggedUser = this.usersService.getLoggedUser();
-      if (currentUser.ClientId === loggedUser.ClientId) {
-        this.userRolesService.getRolesForUser(loggedUser.ClientId).subscribe((roles) => {
-          loggedUser.Roles = roles;
-          this.usersService.updatePermissions(loggedUser.Roles);
-        });
+            // if we're editing the current user, update him
+            const loggedUser = this.usersService.getLoggedUser();
+            if (currentUser.ClientId === loggedUser.ClientId) {
+              this.userRolesService.getRolesForUser(loggedUser.ClientId).subscribe((roles) => {
+                loggedUser.Roles = roles;
+                this.usersService.updatePermissions(loggedUser.Roles);
+              });
+            }
+          });
+        }
       }
-    });
+    };
+
+    this.bsModalService.show(PopupComponent, { initialState, class: 'modal-sm', keyboard: false, ignoreBackdropClick: true });
   }
 
 }

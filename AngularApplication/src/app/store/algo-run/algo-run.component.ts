@@ -38,7 +38,8 @@ export class AlgoRunComponent implements OnInit, OnDestroy {
               private bsModalService: BsModalService) {
 
     this.permissions = {
-      canRunInstance: this.userService.hasPermission(Permissions.SAVE_ALGO_INSTANCE_DATA) && this.userService.hasPermission(Permissions.UPLOAD_BINARY_FILE),
+      canRunInstance: this.userService.hasPermission(Permissions.SAVE_ALGO_INSTANCE_DATA)
+      && this.userService.hasPermission(Permissions.UPLOAD_BINARY_FILE),
       canSeeInstances: this.userService.hasPermission(Permissions.GET_ALL_ALGO_INSTANCE_DATA),
     };
 
@@ -79,7 +80,7 @@ export class AlgoRunComponent implements OnInit, OnDestroy {
     const initialState = {
       type: 'Demo'
     };
-    this.bsModalService.show(AlgoInstancePopupComponent, {initialState, class: 'modal-sm run-instance-popup'});
+    this.bsModalService.show(AlgoInstancePopupComponent, { initialState, class: 'modal-sm run-instance-popup' });
   }
 
   backtest(): void {
@@ -105,7 +106,7 @@ export class AlgoRunComponent implements OnInit, OnDestroy {
         this.instancesArray.push(instance);
       }
     };
-    this.bsModalService.show(AlgoInstancePopupComponent, {initialState, class: 'modal-sm run-instance-popup'});
+    this.bsModalService.show(AlgoInstancePopupComponent, { initialState, class: 'modal-sm run-instance-popup' });
   }
 
   resetDefault(): void {
@@ -136,7 +137,7 @@ export class AlgoRunComponent implements OnInit, OnDestroy {
       }
     );
 
-    return new FormGroup({Parameters: parametersGroup, Functions: functionsGroup});
+    return new FormGroup({ Parameters: parametersGroup, Functions: functionsGroup });
 
   }
 
