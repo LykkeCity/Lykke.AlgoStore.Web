@@ -9,6 +9,7 @@ import { BsModalService } from 'ngx-bootstrap';
 import { AssignRoleModalComponent } from './assign-role-modal/assign-role-modal.component';
 import { NotificationsService } from 'angular2-notifications';
 import Permissions from '../../store/models/permissions';
+import { PopupComponent } from '../../components/popup/popup.component';
 
 @Component({
   selector: 'app-user-roles',
@@ -81,19 +82,31 @@ export class UserRolesComponent {
       return;
     }
 
-    this.userRoleService.revokeRole(this.userInfo.ClientId, roleId).subscribe(() => {
-      this.userInfo.Roles = this.userInfo.Roles.filter(role => role.Id !== roleId);
-      this.notificationsService.success('Success', 'Role successfully revoked.');
+    const initialState = {
+      popupConfig: {
+        title: 'Revoke role',
+        text: 'Are you sure you want to revoke this role?',
+        btnCancelText: 'Cancel',
+        btnConfirmText: 'Delete',
+        successCallback: () => {
+          this.userRoleService.revokeRole(this.userInfo.ClientId, roleId).subscribe(() => {
+            this.userInfo.Roles = this.userInfo.Roles.filter(role => role.Id !== roleId);
+            this.notificationsService.success('Success', 'Role successfully revoked.');
 
-      // if we're editing the current user, update him
-      const loggedUser = this.usersService.getLoggedUser();
-      if (this.userInfo.ClientId === loggedUser.ClientId) {
-        this.userRoleService.getRolesForUser(loggedUser.ClientId).subscribe((roles) => {
-          loggedUser.Roles = roles;
-          this.usersService.updatePermissions(loggedUser.Roles);
-        });
+            // if we're editing the current user, update him
+            const loggedUser = this.usersService.getLoggedUser();
+            if (this.userInfo.ClientId === loggedUser.ClientId) {
+              this.userRoleService.getRolesForUser(loggedUser.ClientId).subscribe((roles) => {
+                loggedUser.Roles = roles;
+                this.usersService.updatePermissions(loggedUser.Roles);
+              });
+            }
+          });
+        }
       }
-    });
+    };
+
+    this.bsModalService.show(PopupComponent, { initialState, class: 'modal-sm', keyboard: false, ignoreBackdropClick: true });
   }
 
 }

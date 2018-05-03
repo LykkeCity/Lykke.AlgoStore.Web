@@ -20,7 +20,8 @@ export class HeaderComponent {
       this.permissions = {
         viewPublicAlgos: this.userService.hasPermission(Permissions.GET_ALL_ALGOS),
         viewMyAlgos: this.userService.hasPermission('GetAlgosByClientId'), // TODO change this with real role when API is ready
-        vewRoles: this.userService.hasPermission(Permissions.GET_ALL_USER_ROLES) && this.userService.hasPermission(Permissions.GET_ALL_USERS_WITH_ROLES)
+        vewRoles: this.userService.hasPermission(Permissions.GET_ALL_USER_ROLES)
+        && this.userService.hasPermission(Permissions.GET_ALL_USERS_WITH_ROLES)
       };
     });
   }

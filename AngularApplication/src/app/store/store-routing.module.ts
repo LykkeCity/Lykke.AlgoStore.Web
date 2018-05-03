@@ -27,8 +27,11 @@ const routes: Routes = [
     canActivate: [AuthGuard, ACLGuard], data: { acl: [Permissions.GET_UPLOAD_STRING, Permissions.GET_ALGO_METADATA] }
   },
   {
-    path: 'algo-run/:clientId/:algoId', component: AlgoRunComponent,
-    canActivate: [AuthGuard, ACLGuard], data: { acl: [Permissions.GET_UPLOAD_STRING, Permissions.GET_ALGO_METADATA, Permissions.SAVE_ALGO_INSTANCE_DATA, Permissions.UPLOAD_BINARY_FILE] }
+    path: 'algo-run/:clientId/:algoId',
+    component: AlgoRunComponent,
+    canActivate: [AuthGuard, ACLGuard],
+    data: { acl: [Permissions.GET_UPLOAD_STRING, Permissions.GET_ALGO_METADATA,
+        Permissions.SAVE_ALGO_INSTANCE_DATA, Permissions.UPLOAD_BINARY_FILE] }
   },
   {
     path: 'algo-instance/:clientId/:algoId/:instanceId', component: AlgoInstanceComponent,
