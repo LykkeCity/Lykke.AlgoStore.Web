@@ -165,7 +165,7 @@
               </thead>
               <tbody>
               <tr *ngFor="let trade of trades">
-                <td>{{trade.Date | amLocal | amDateFormat: 'YYYY-MM-DD HH:mm:ss'}}</td>
+                <td>{{trade.DateOfTrade ? (trade.DateOfTrade | amLocal | amDateFormat: 'YYYY-MM-DD HH:mm:ss') : ''}}</td>
                 <td>{{trade.Price}}</td>
                 <td>{{trade.IsBuy ? 'Buy' : 'Sell'}}</td>
                 <td>{{trade.Amount}}</td>
