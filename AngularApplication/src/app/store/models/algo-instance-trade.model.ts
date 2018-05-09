@@ -5,4 +5,7 @@ export interface AlgoInstanceTrade {
   IsStarted?: boolean;
   Amount?: string;
   IsBuy?: boolean;
+  Fee?: string;
+  AssetPair?: string;
+  TradedAssetName?: string;
 }
