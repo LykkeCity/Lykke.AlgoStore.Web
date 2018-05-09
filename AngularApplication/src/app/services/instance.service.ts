@@ -53,6 +53,10 @@ export class InstanceService {
     return this.authRequestService.post(environment.storeApiUrl + '', {data: data}); // TODO add real endpoint
   }
 
+  backtest(data: AlgoInstance): Observable<AlgoInstance> {
+    return this.authRequestService.post(environment.storeApiUrl + '/v1/clientData/backtest', {data: data});
+  }
+
   getAlgoInstances(algoId: string): Observable<AlgoInstance[]> {
     const params = { algoId };
     return this.authRequestService.get(environment.storeApiUrl + '/v1/clientData/instanceData/allByAlgoIdAndClientId', { params });

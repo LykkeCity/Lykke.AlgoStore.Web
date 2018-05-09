@@ -26,6 +26,7 @@ import { InstanceTypeNamePipe } from './pipes/instance-type-name.pipe';
 import { InstanceStatusNamePipe } from './pipes/instance-status-name.pipe';
 import { AlgoCommentsComponent } from './algo-details/algo-comments/algo-comments.component';
 import { AlgoCommentEditPopupComponent } from './algo-details/algo-comments/algo-comment-edit-popup/algo-comment-edit-popup.component';
+import { AlgoBacktestPopupComponent } from './algo-run/algo-backtest-popup/algo-backtest-popup.component';
 
 // SERVICES
 @NgModule({
@@ -55,8 +56,9 @@ import { AlgoCommentEditPopupComponent } from './algo-details/algo-comments/algo
     InstanceStatusNamePipe,
     AlgoCommentsComponent,
     AlgoCommentEditPopupComponent,
+    AlgoBacktestPopupComponent,
   ],
   providers: [],
-  entryComponents: [AlgoInstancePopupComponent, AlgoCommentEditPopupComponent]
+  entryComponents: [AlgoInstancePopupComponent, AlgoCommentEditPopupComponent, AlgoBacktestPopupComponent]
 })
 export class StoreModule { }
