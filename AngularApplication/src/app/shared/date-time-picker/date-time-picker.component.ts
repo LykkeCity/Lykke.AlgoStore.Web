@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { IDatePickerDirectiveConfig } from 'ng2-date-picker';
 
 @Component({
@@ -6,22 +6,27 @@ import { IDatePickerDirectiveConfig } from 'ng2-date-picker';
   templateUrl: './date-time-picker.component.html',
   styleUrls: ['./date-time-picker.component.scss']
 })
-export class DateTimePickerComponent implements OnInit {
+export class DateTimePickerComponent implements OnChanges {
 
   @Input() controlName: string;
   @Input() form: string;
+  @Input() config: IDatePickerDirectiveConfig;
 
-  public datePickerConfig: IDatePickerDirectiveConfig = {
+  public defaultData: IDatePickerDirectiveConfig = {
     format: 'YYYY-MM-DD HH:mm',
     monthFormat: 'MMMM YYYY',
     firstDayOfWeek: 'mo',
     showGoToCurrent: false,
-
   };
 
-  constructor() { }
+  constructor() {
+    this.config = this.defaultData;
+  }
 
-  ngOnInit() {
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['config'] && changes['config'].currentValue) {
+      this.config = { ...this.defaultData, ...changes['config'].currentValue };
+    }
   }
 
 }
