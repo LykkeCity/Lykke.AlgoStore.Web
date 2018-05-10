@@ -106,7 +106,7 @@
       <tabset #instanceTabs>
         <tab heading="Log" class="ml-3" (select)="onSelect($event)" *ngIf="permissions.canSeeLogs">
           <div class="container">
-              <pre>{{log}}</pre>
+              <div *ngFor="let apilog of log" class="log-holder">{{apilog}}</div>
           </div>
         </tab>
         <tab heading="Statistics" (select)="onSelect($event)" *ngIf="permissions.canSeeStatistics">
@@ -157,17 +157,21 @@
                 <th>Price</th>
                 <th>Type</th>
                 <th>Quantity</th>
+                <th>Fee</th>
+                <th>Traded Asset</th>
                 <th>Asset Pair</th>
               </tr>
 
               </thead>
               <tbody>
               <tr *ngFor="let trade of trades">
-                <td>{{trade.Date | amLocal | amDateFormat: 'YYYY-MM-DD HH:mm:ss'}}</td>
+                <td>{{trade.DateOfTrade ? (trade.DateOfTrade | amLocal | amDateFormat: 'YYYY-MM-DD HH:mm:ss') : ''}}</td>
                 <td>{{trade.Price}}</td>
                 <td>{{trade.IsBuy ? 'Buy' : 'Sell'}}</td>
                 <td>{{trade.Amount}}</td>
-                <td>{{assetPair.Value}}</td>
+                <td>{{trade.Fee}}</td>
+                <td>{{trade.TradedAssetName}}</td>
+                <td>{{trade.AssetPair}}</td>
               </tr>
               </tbody>
             </table>

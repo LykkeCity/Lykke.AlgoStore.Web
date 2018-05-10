@@ -30,13 +30,12 @@ export class AlgoInstanceComponent implements OnDestroy {
   instance: AlgoInstance;
   clientId: string;
   instanceId: string;
-  assetPair: BaseAlgoParam; // TODO remove after demo
   algoId: string;
   algo: Algo = {};
   wallets: Wallet[] = [];
   trades: AlgoInstanceTrade[];
   stats: InstanceStatistic;
-  log: string;
+  log: string[] = [];
 
   editor: any;
   subscriptions: Subscription[] = [];
@@ -77,8 +76,6 @@ export class AlgoInstanceComponent implements OnDestroy {
 
       this.subscriptions.push(this.instanceService.getAlgoInstance(this.algoId, this.instanceId).subscribe(instance => {
         this.instance = instance;
-        // TODO remove after demo
-        this.assetPair = this.instance.AlgoMetaDataInformation.Parameters.find(param => param.Key === 'AssetPair');
 
         if (this.instance.AlgoInstanceStatus !== IAlgoInstanceStatus.Deploying) {
           if (this.permissions.canSeeLogs) {
@@ -211,7 +208,9 @@ export class AlgoInstanceComponent implements OnDestroy {
       )
       .subscribe(
         res => {
-          this.log = res.Log.join('\n');
+          if (this.log.length !== res.Log.length) {
+            this.log = res.Log;
+          }
         }
       );
   }

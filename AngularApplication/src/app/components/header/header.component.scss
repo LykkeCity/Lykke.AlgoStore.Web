@@ -16,6 +16,10 @@
   background-color: $pale-grey-two;
 }
 
+.profile-holder {
+  flex: auto;
+}
+
 @include media-breakpoint-up(xs) {
   .navbar .algo-store-logo {
     height: $navbar-logo-height-xs;
