@@ -223,9 +223,6 @@ export class AlgoInstanceComponent implements OnDestroy {
       .subscribe(
         res => {
           this.trades = res;
-          this.trades.map(trade => {
-            trade.Date = trade.Id.split('_')[1];
-          });
         }
       );
   }
