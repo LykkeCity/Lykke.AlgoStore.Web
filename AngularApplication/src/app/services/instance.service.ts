@@ -54,7 +54,7 @@ export class InstanceService {
   }
 
   backtest(data: AlgoInstance): Observable<AlgoInstance> {
-    return this.authRequestService.post(environment.storeApiUrl + '/v1/clientData/backtest', {data: data});
+    return this.authRequestService.post(environment.storeApiUrl + '/v1/clientData/backTestInstanceData', data);
   }
 
   getAlgoInstances(algoId: string): Observable<AlgoInstance[]> {

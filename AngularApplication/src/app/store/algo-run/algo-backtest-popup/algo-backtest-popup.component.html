@@ -13,10 +13,10 @@
         <div class="col-12">
           <div class="form-group">
             <label for="instance-name" class="font-weight-semibold">Name</label>
-            <input type="text" name="name" id="instance-name" class="form-control" formControlName="instanceName" placeholder="My Moving Average Cross v1.0">
-            <div *ngIf="algoInstanceForm.get('instanceName').invalid && algoInstanceForm.dirty"
+            <input type="text" name="name" id="instance-name" class="form-control" formControlName="InstanceName" placeholder="My Moving Average Cross v1.0">
+            <div *ngIf="algoInstanceForm.get('InstanceName').invalid && algoInstanceForm.dirty"
                  class="text-danger">
-              <div *ngIf="algoInstanceForm.get('instanceName').errors['required']">
+              <div *ngIf="algoInstanceForm.get('InstanceName').errors['required']">
                 Please enter a name
               </div>
             </div>
@@ -25,10 +25,10 @@
         <div class="col-12">
           <div class="form-group">
             <label class="font-weight-semibold">Start date</label>
-            <app-date-time-picker controlName="instanceStartDate" [form]="algoInstanceForm" [config]="dpConfig"></app-date-time-picker>
-            <div *ngIf="algoInstanceForm.get('instanceStartDate').invalid && algoInstanceForm.dirty"
+            <app-date-time-picker controlName="AlgoInstanceRunDate" [form]="algoInstanceForm" [config]="dpConfig"></app-date-time-picker>
+            <div *ngIf="algoInstanceForm.get('AlgoInstanceRunDate').invalid && algoInstanceForm.dirty"
                  class="text-danger">
-              <div *ngIf="algoInstanceForm.get('instanceStartDate').errors['required']">
+              <div *ngIf="algoInstanceForm.get('AlgoInstanceRunDate').errors['required']">
                 Please enter a date
               </div>
             </div>
@@ -37,13 +37,13 @@
         <div class="col-6">
           <div class="form-group">
             <label for="trade-asset" class="font-weight-semibold">{{tradeAsset}} balance</label>
-            <input type="text" name="name" id="trade-asset" class="form-control" formControlName="tradeAssetBalance">
-            <div *ngIf="algoInstanceForm.get('tradeAssetBalance').invalid && algoInstanceForm.dirty"
+            <input type="text" name="name" id="trade-asset" class="form-control" formControlName="BacktestTradingAssetBalance">
+            <div *ngIf="algoInstanceForm.get('BacktestTradingAssetBalance').invalid && algoInstanceForm.dirty"
                  class="text-danger">
-              <div *ngIf="algoInstanceForm.get('tradeAssetBalance').errors['required']">
+              <div *ngIf="algoInstanceForm.get('BacktestTradingAssetBalance').errors['required']">
                 The balance is required
               </div>
-              <div *ngIf="algoInstanceForm.get('tradeAssetBalance').errors['min']">
+              <div *ngIf="algoInstanceForm.get('BacktestTradingAssetBalance').errors['min']">
                 The minimum balance is 0
               </div>
             </div>
@@ -52,13 +52,13 @@
         <div class="col-6">
           <div class="form-group">
             <label for="asset-two" class="font-weight-semibold">{{assetTwo}} balance</label>
-            <input type="text" name="name" id="asset-two" class="form-control" formControlName="assetTwoBalance">
-            <div *ngIf="algoInstanceForm.get('assetTwoBalance').invalid && algoInstanceForm.dirty"
+            <input type="text" name="name" id="asset-two" class="form-control" formControlName="BacktestAssetTwoBalance">
+            <div *ngIf="algoInstanceForm.get('BacktestAssetTwoBalance').invalid && algoInstanceForm.dirty"
                  class="text-danger">
-              <div *ngIf="algoInstanceForm.get('assetTwoBalance').errors['required']">
+              <div *ngIf="algoInstanceForm.get('BacktestAssetTwoBalance').errors['required']">
                 The balance is required
               </div>
-              <div *ngIf="algoInstanceForm.get('assetTwoBalance').errors['min']">
+              <div *ngIf="algoInstanceForm.get('BacktestAssetTwoBalance').errors['min']">
                 The minimum balance is 0
               </div>
             </div>

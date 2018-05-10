@@ -103,7 +103,7 @@ export class AlgoRunComponent implements OnInit, OnDestroy {
         AlgoClientId: this.clientId,
         AlgoId: this.algo.AlgoId,
         AlgoMetaDataInformation: this.algo.AlgoMetaDataInformation,
-        AlgoInstanceType: IAlgoInstanceType.Live
+        AlgoInstanceType: IAlgoInstanceType.Test
       } as AlgoInstanceData,
       onSuccess: (instance) => {
         this.instancesArray.push(instance);

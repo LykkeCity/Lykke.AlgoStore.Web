@@ -5,6 +5,8 @@ import { InstanceService } from '../../../services/instance.service';
 import { AlgoInstanceData } from '../../models/algo-instance.model';
 import { IDatePickerConfig } from 'ng2-date-picker';
 import * as moment from 'moment';
+import { Subscription } from 'rxjs/Subscription';
+import { NotificationsService } from 'angular2-notifications';
 
 @Component({
   selector: 'app-algo-backtest-popup',
@@ -19,13 +21,14 @@ export class AlgoBacktestPopupComponent implements OnInit {
   onSuccess: Function;
   algoInstanceData: AlgoInstanceData;
   dpConfig: IDatePickerConfig;
+  subscriptions: Subscription[] = [];
 
-  constructor(private fb: FormBuilder, public modalRef: BsModalRef, private instanceService: InstanceService) {
+  constructor(private fb: FormBuilder, public modalRef: BsModalRef, private instanceService: InstanceService, private notificationsService: NotificationsService) {
     this.algoInstanceForm = this.fb.group({
-      instanceName: ['', { validators: [Validators.required], updateOn: 'submit'}],
-      tradeAssetBalance: ['', {validators: [Validators.required, Validators.min(0)], updateOn: 'submit'}],
-      assetTwoBalance: ['', {validators: [Validators.required, Validators.min(0)], updateOn: 'submit'}],
-      instanceStartDate: ['', { validators: [Validators.required], updateOn: 'submit'}]
+      InstanceName: ['', { validators: [Validators.required], updateOn: 'submit'}],
+      BacktestTradingAssetBalance: ['', {validators: [Validators.required, Validators.min(0)], updateOn: 'submit'}],
+      BacktestAssetTwoBalance: ['', {validators: [Validators.required, Validators.min(0)], updateOn: 'submit'}],
+      AlgoInstanceRunDate: ['', { validators: [Validators.required], updateOn: 'submit'}]
     });
 
     this.dpConfig = {
@@ -43,9 +46,18 @@ export class AlgoBacktestPopupComponent implements OnInit {
       return;
     }
 
-    this.instanceService.backtest({...this.algoInstanceData, ...this.algoInstanceForm.value}).subscribe((data) => {
-      this.modalRef.hide();
-      this.onSuccess(data);
+    const backtestData = {...this.algoInstanceData, ...this.algoInstanceForm.value};
+
+    this.instanceService.backtest(backtestData).subscribe((data) => {
+      this.subscriptions.push(this.instanceService.algoDeploy(this.algoInstanceData.AlgoClientId, data.AlgoId, data.InstanceId)
+        .subscribe(() => {
+          this.notificationsService.success('Backtest instance created successfully.');
+          this.modalRef.hide();
+          this.onSuccess(data);
+        }, () => {
+          this.notificationsService.error('Error', 'There was an error while running your instance.');
+          this.modalRef.hide();
+        }));
     });
   }
 
