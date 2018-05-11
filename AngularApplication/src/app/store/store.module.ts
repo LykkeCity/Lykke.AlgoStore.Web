@@ -13,7 +13,6 @@ import { StoreRouting } from './store-routing.module';
 // COMPONENTS
 import { StoreComponent } from './store.component';
 import { AlgoListComponent } from './algo-list/algo-list.component';
-import { AlgoEditComponent } from './algo-edit/algo-edit.component';
 import { AlgoDetailsComponent } from './algo-details/algo-details.component';
 import { AlgoMetadataComponent } from './algo-details/algo-metadata/algo-metadata.component';
 import { AlgoRunComponent } from './algo-run/algo-run.component';
@@ -27,6 +26,8 @@ import { AlgoCommentsComponent } from './algo-details/algo-comments/algo-comment
 import { AlgoCommentEditPopupComponent } from './algo-details/algo-comments/algo-comment-edit-popup/algo-comment-edit-popup.component';
 import { AlgoBacktestPopupComponent } from './algo-run/algo-backtest-popup/algo-backtest-popup.component';
 import { MyAlgosComponent } from './my-algos/my-algos.component';
+import { AlgoEditComponent } from './algo-edit/algo-edit.component';
+import { AlgoCreateComponent } from './algo-create/algo-create.component';
 
 // SERVICES
 @NgModule({
@@ -43,7 +44,6 @@ import { MyAlgosComponent } from './my-algos/my-algos.component';
   declarations: [
     StoreComponent,
     AlgoListComponent,
-    AlgoEditComponent,
     AlgoDetailsComponent,
     MyAlgosComponent,
     AlgoMetadataComponent,
@@ -57,6 +57,8 @@ import { MyAlgosComponent } from './my-algos/my-algos.component';
     AlgoCommentsComponent,
     AlgoCommentEditPopupComponent,
     AlgoBacktestPopupComponent,
+    AlgoEditComponent,
+    AlgoCreateComponent,
   ],
   providers: [],
   entryComponents: [AlgoInstancePopupComponent, AlgoCommentEditPopupComponent, AlgoBacktestPopupComponent]

@@ -1,0 +1,59 @@
+@import '~scss/reuse';
+
+.tabs-nav {
+  ::ng-deep {
+    ul.nav-tabs {
+      width: 50%;
+      margin: 0 auto;
+
+      .nav-item {
+        font-size: 21px;
+        width: 50%;
+        margin: 0;
+
+        .nav-link {
+          display: flex;
+          justify-content: center;
+          border: none;
+          background-color: transparent !important;
+          padding: 30px 30px 0;
+
+          span {
+            padding-bottom: 30px;
+          }
+
+          &.active span{
+            border-bottom: 4px solid $azure;
+          }
+        }
+      }
+    }
+  }
+}
+
+form {
+  width: 50%;
+  margin: 0 auto;
+}
+
+.ext-holder {
+  align-items: center;
+  display: flex;
+  align-self: center;
+  justify-content: flex-end;
+
+  span {
+    border-radius: 4px;
+    padding: 10px;
+    background-color: $azure;
+  }
+}
+
+.small-text {
+  font-size: 14px;
+}
+
+.cancel-btn {
+  color: $azure;
+}
+

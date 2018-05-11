@@ -1,0 +1,115 @@
+<div class="container">
+  <h3 class="mt-5 mb-5 text-center">Create New Algorithm</h3>
+
+  <div class="row">
+    <div class="col-12 tabs-nav">
+      <tabset>
+        <tab heading="Add Details">
+          <form [formGroup]="algoForm">
+            <div class="row mt-5">
+              <div class="col-12">
+                <label for="algo-name" class="font-weight-semibold">Name*</label>
+                <span class="text-muted float-right">*Required field</span>
+                <div class="form-group">
+                  <input type="text" id="algo-name" class="form-control" placeholder="Moving Average Cross" formControlName="AlgoName">
+                </div>
+              </div>
+            </div>
+
+            <div class="row mt-3">
+              <div class="col-12">
+                <label for="algo-description" class="font-weight-semibold">Description</label>
+                <div class="form-group">
+                  <textarea name="description" id="algo-description" cols="60" rows="10" class="form-control" formControlName="Description"></textarea>
+                </div>
+              </div>
+            </div>
+
+            <div class="row mt-3">
+              <div class="col-6 text-center align-self-center">
+                <span class="font-weight-semibold cursor-pointer cancel-btn">Cancel and close</span>
+              </div>
+              <div class="col-6 text-center">
+                <button class="btn btn-primary">Next</button>
+              </div>
+            </div>
+          </form>
+        </tab>
+        <tab heading="Write Code" [disabled]="algoForm.invalid">
+          <div class="row mt-5">
+            <div class="col-8">
+              <app-code-editor [config]="{readOnly: false, sourceCode: Algo.Data}"
+                               (onInitCompleted)="onEditorCreated($event)" (onCodeUpdated)="onCodeUpdate($event)"></app-code-editor>
+            </div>
+            <div class="col-4">
+              <div class="row">
+                <div class="col-12">
+                  <h5>C# Algorithm File</h5>
+                  <span class="text-muted">Allowed files type: .CS</span>
+
+                  <div *ngIf="userFile && userFile.ext && userFile.ext !== 'cs'" class="row justify-content-center">
+                    <div class="col-12">
+                      <alert type="danger">
+                        <div class="row">
+                          <div class="col-1 align-self-center">
+                            <div class="image-holder">
+                              <img src="../../../assets/images/store/error-icon-small-warning.svg" >
+                            </div>
+                          </div>
+                          <div class="col-10 ml-2">
+                            <div class="row">
+                              <div class="col-12">
+                                File Error
+                              </div>
+                            </div>
+                            <div class="row">
+                              <div class="col-12 small-text">
+                                Please upload a supported file format
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </alert>
+                    </div>
+                  </div>
+                  <hr />
+                </div>
+
+                <input type="file" accept='text/plain' (change)='openFile($event)' hidden #file>
+
+                <div class="col-12" *ngIf="!userFile">
+                  <span class="text-muted cursor-pointer" (click)="file.click()">Upload file</span>
+                </div>
+
+                <div class="col-8" *ngIf="userFile">
+                  <div>{{userFile.name}}</div>
+                  <span class="text-muted cursor-pointer" (click)="file.click()">Upload another file</span>
+                </div>
+
+                <div class="col-4 ext-holder" *ngIf="userFile">
+                 <span>{{userFile.ext}}</span>
+                </div>
+
+              </div>
+              <hr />
+              <div class="row mt-3">
+                <div class="col-12">
+                  <h5>Instructions</h5>
+                  <hr />
+                </div>
+                <div class="col-12">
+                  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row mt-3">
+            <div class="col-12 text-center">
+              <button class="btn btn-primary">Create</button>
+            </div>
+          </div>
+        </tab>
+      </tabset>
+    </div>
+  </div>
+</div>
