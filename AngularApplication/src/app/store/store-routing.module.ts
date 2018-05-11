@@ -5,7 +5,7 @@ import { AlgoListComponent } from './algo-list/algo-list.component';
 import { AlgoEditComponent } from './algo-edit/algo-edit.component';
 import { AlgoDetailsComponent } from './algo-details/algo-details.component';
 import { AuthGuard } from '../services/auth-guard';
-import { DashboardComponent } from './dashboard/dashboard.component';
+import { MyAlgosComponent } from './my-algos/my-algos.component';
 import { AlgoRunComponent } from './algo-run/algo-run.component';
 import { AlgoInstanceComponent } from './algo-instance/algo-instance.component';
 import { ACLGuard } from '../services/acl.guard';
@@ -14,7 +14,7 @@ import Permissions from './models/permissions';
 
 const routes: Routes = [
   { path: '', component: StoreComponent },
-  { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] },
+  { path: 'my-algos', component: MyAlgosComponent, canActivate: [AuthGuard] },
   { path: 'algo-list', component: AlgoListComponent, canActivate: [AuthGuard, ACLGuard], data: { acl: [Permissions.GET_ALL_ALGOS] } },
   {
     path: 'algo-edit/:algoId',

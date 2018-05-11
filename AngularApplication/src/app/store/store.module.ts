@@ -15,7 +15,6 @@ import { StoreComponent } from './store.component';
 import { AlgoListComponent } from './algo-list/algo-list.component';
 import { AlgoEditComponent } from './algo-edit/algo-edit.component';
 import { AlgoDetailsComponent } from './algo-details/algo-details.component';
-import { DashboardComponent } from './dashboard/dashboard.component';
 import { AlgoMetadataComponent } from './algo-details/algo-metadata/algo-metadata.component';
 import { AlgoRunComponent } from './algo-run/algo-run.component';
 import { AlgoInstancePopupComponent } from './algo-run/algo-run-popup/algo-instance-popup.component';
@@ -27,6 +26,7 @@ import { InstanceStatusNamePipe } from './pipes/instance-status-name.pipe';
 import { AlgoCommentsComponent } from './algo-details/algo-comments/algo-comments.component';
 import { AlgoCommentEditPopupComponent } from './algo-details/algo-comments/algo-comment-edit-popup/algo-comment-edit-popup.component';
 import { AlgoBacktestPopupComponent } from './algo-run/algo-backtest-popup/algo-backtest-popup.component';
+import { MyAlgosComponent } from './my-algos/my-algos.component';
 
 // SERVICES
 @NgModule({
@@ -45,7 +45,7 @@ import { AlgoBacktestPopupComponent } from './algo-run/algo-backtest-popup/algo-
     AlgoListComponent,
     AlgoEditComponent,
     AlgoDetailsComponent,
-    DashboardComponent,
+    MyAlgosComponent,
     AlgoMetadataComponent,
     AlgoRunComponent,
     AlgoInstancePopupComponent,
