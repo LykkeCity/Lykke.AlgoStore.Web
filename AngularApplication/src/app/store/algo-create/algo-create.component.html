@@ -1,15 +1,15 @@
-<div class="container">
+<div class="container" *ngIf="ready && !algoSubmitted">
   <h3 class="mt-5 mb-5 text-center">Create New Algorithm</h3>
 
   <div class="row">
     <div class="col-12 tabs-nav">
-      <tabset>
+      <tabset #creationTabs>
         <tab heading="Add Details">
           <form [formGroup]="algoForm">
             <div class="row mt-5">
               <div class="col-12">
                 <label for="algo-name" class="font-weight-semibold">Name*</label>
-                <span class="text-muted float-right">*Required field</span>
+                <span class="text-muted float-right small-text">*Required field</span>
                 <div class="form-group">
                   <input type="text" id="algo-name" class="form-control" placeholder="Moving Average Cross" formControlName="AlgoName">
                 </div>
@@ -27,10 +27,10 @@
 
             <div class="row mt-3">
               <div class="col-6 text-center align-self-center">
-                <span class="font-weight-semibold cursor-pointer cancel-btn">Cancel and close</span>
+                <span class="font-weight-semibold cursor-pointer cancel-btn" routerLink="/store/my-algos">Cancel and close</span>
               </div>
               <div class="col-6 text-center">
-                <button class="btn btn-primary">Next</button>
+                <button class="btn btn-primary" (click)="nextTab()" [disabled]="algoForm.invalid">Next</button>
               </div>
             </div>
           </form>
@@ -105,11 +105,36 @@
           </div>
           <div class="row mt-3">
             <div class="col-12 text-center">
-              <button class="btn btn-primary">Create</button>
+              <button class="btn btn-primary" (click)="onSubmit()" [disabled]="!Algo.Data">Create</button>
             </div>
           </div>
         </tab>
       </tabset>
     </div>
   </div>
+</div>
+
+<div class="container" *ngIf="ready && algoSubmitted">
+  <div class="algo-creation-success-holder text-center mt-250" *ngIf="Algo.AlgoId">
+    <h3>Your successfully created new Algo</h3>
+    <button class="btn btn-primary mt-3" routerLink="/store/my-algos">Finish</button>
+  </div>
+  <div class="algo-creation-error-holder text-center mt-150" *ngIf="!Algo.AlgoId">
+    <h3 class="mb-0">There is a problem with your code.</h3>
+    <h3>Please go back and review.</h3>
+    <div class="row mt-4">
+      <div class="col-12">
+        <textarea name="algo-errors" id="algo-errors" cols="60" rows="10" class="form-control" readonly [(ngModel)]="algoErrors"></textarea>
+      </div>
+    </div>
+    <div class="row mt-3">
+      <div class="col-12">
+        <button class="btn btn-primary" (click)="goBack()">Go back</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="loader" *ngIf="!ready">
+  <img src="../../../assets/images/loader.svg">
 </div>

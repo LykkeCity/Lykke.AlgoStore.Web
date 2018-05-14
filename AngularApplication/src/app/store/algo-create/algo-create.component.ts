@@ -1,19 +1,28 @@
-import { ChangeDetectorRef, Component } from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AlgoService } from '../../services/algo.service';
 import { Algo } from '../models/algo.interface';
+import { TabsetComponent } from 'ngx-bootstrap';
+import { Subscription } from 'rxjs/Subscription';
 
 @Component({
   selector: 'app-algo-create',
   templateUrl: './algo-create.component.html',
   styleUrls: ['./algo-create.component.scss']
 })
-export class AlgoCreateComponent {
+export class AlgoCreateComponent implements OnDestroy {
+
+  @ViewChild('creationTabs') staticTabs: TabsetComponent;
 
   algoForm: FormGroup;
   Algo: Algo = {};
   editor: any;
   userFile: any;
+  ready: boolean;
+  algoSubmitted: boolean;
+  algoErrors: string;
+
+  subscriptions: Subscription[] = [];
 
   constructor(private algoService: AlgoService,
               private formBuilder: FormBuilder,
@@ -23,6 +32,13 @@ export class AlgoCreateComponent {
       AlgoName: ['', Validators.required],
       Description: ['']
     });
+
+    this.ready = true;
+    this.algoSubmitted = false;
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.forEach(sub => sub.unsubscribe());
   }
 
   onEditorCreated(editor: any): void {
@@ -34,12 +50,23 @@ export class AlgoCreateComponent {
     this.ref.detectChanges();
   }
 
+  nextTab(): void {
+    this.staticTabs.tabs[1].active = true;
+  }
+
+  goBack(): void {
+    this.algoSubmitted = false;
+    this.staticTabs.tabs[1].active = true;
+    this.algoErrors = '';
+  }
+
   openFile(event) {
     const input = event.target;
     this.userFile = event.target.files[0];
     this.userFile['ext'] = this.userFile.name.substring(this.userFile.name.lastIndexOf('.') + 1);
 
     if (this.userFile['ext'] !== 'cs') {
+      this.Algo.Data = '';
       return;
     }
 
@@ -48,6 +75,23 @@ export class AlgoCreateComponent {
       this.Algo.Data = reader.result;
     };
     reader.readAsText(input.files[0]);
+  }
+
+  onSubmit(): void {
+    if (!this.Algo.Data) {
+      return;
+    }
+
+    this.ready = false;
+    this.subscriptions.push(this.algoService.createAlgo().subscribe((newAlgo) => {
+      this.Algo = newAlgo;
+      this.ready = true;
+      this.algoSubmitted = true;
+    }, (error) => {
+      this.ready = true;
+      this.algoSubmitted = true;
+      this.algoErrors = 'fdafadfsdaasd';
+    }));
   }
 
 }

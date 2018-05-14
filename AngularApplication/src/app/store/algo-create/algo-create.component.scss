@@ -7,9 +7,13 @@
       margin: 0 auto;
 
       .nav-item {
-        font-size: 21px;
+        font-size: 1.166rem;
         width: 50%;
         margin: 0;
+
+        &:hover {
+          background-color: #ebedef;
+        }
 
         .nav-link {
           display: flex;
@@ -36,6 +40,10 @@ form {
   margin: 0 auto;
 }
 
+.small-text {
+  font-size: 0.722rem;
+}
+
 .ext-holder {
   align-items: center;
   display: flex;
@@ -50,10 +58,14 @@ form {
 }
 
 .small-text {
-  font-size: 14px;
+  font-size: 0.778rem;
 }
 
 .cancel-btn {
   color: $azure;
+}
+
+#algo-errors {
+  border-left: 2px solid #ff3e2e;
 }
 
