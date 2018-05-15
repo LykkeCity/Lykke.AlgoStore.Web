@@ -1,0 +1,24 @@
+@import '~scss/reuse';
+
+.btn-wrapper {
+  button[disabled] {
+    pointer-events: none;
+  }
+}
+
+.not-allowed {
+  cursor: not-allowed;
+}
+
+.public-holder {
+  ::ng-deep .popover {
+    width: 300px;
+    color: $slate;
+    background-color: $white;
+    border: 1px solid lightgray;
+    box-shadow: 0 8px 20px 0 rgba(0, 0, 0, 0.1);
+    text-align: center;
+    height: 100%;
+  }
+}
+

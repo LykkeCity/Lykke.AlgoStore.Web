@@ -1,0 +1,111 @@
+<div class="container mt-5" *ngIf="algo">
+  <div class="row">
+    <div class="col-10">
+      <h3 class="d-inline-block mb-0">{{algo.Name}}</h3>
+      <span class="label-private">Private</span>
+      <span class="label-public">Public</span>
+      <span class="label-draft">Draft</span>
+      <p>{{algo.CreationDate ? algo.CreationDate : 'Created September 9, 2018 9:41:00 AM'}}</p>
+    </div>
+    <div class="col-2 text-right public-holder">
+      <span class="btn-wrapper d-inline-block"
+            [ngClass]="{'not-allowed': !canBePublished }"
+            [popover]="!canBePublished ? editTooltip : null"
+            [outsideClick]="true"
+            placement="bottom"
+            triggers="mouseenter:mouseleave">
+
+        <button class="btn btn-primary cursor-pointer" (click)="goPublic()"
+                [disabled]="!canBePublished">Go public</button>
+      </span>
+    </div>
+  </div>
+
+  <div class="row mt-4">
+    <div class="col-8">
+      <h5 class="mb-0">General details</h5>
+    </div>
+    <div class="col-4 text-right action-buttons">
+        <span class="ml-3 cursor-pointer text-muted" (click)="runDemo()">
+          <img src="../../../assets/images/store/run-demo-icon.svg"/>
+          <span>Run demo</span>
+        </span>
+
+      <span class="ml-3 cursor-pointer text-muted" (click)="delete()">
+        <img src="../../../assets/images/store/delete-icon.svg"/>
+        <span>Delete Algo</span>
+      </span>
+    </div>
+  </div>
+  <hr class="mt-0"/>
+
+  <form [formGroup]="algoForm" (ngSubmit)="onSubmit()">
+    <div class="row">
+      <div class="col-6">
+        <div class="form-group">
+          <label for="algo-name" class="font-weight-semibold">Name</label>
+          <input type="text" class="form-control" id="algo-name" formControlName="Name" (change)="onInputChange()">
+          <div *ngIf="algoForm.get('Name').invalid && algoForm.dirty"
+               class="text-danger">
+            <div *ngIf="algoForm.get('Name').errors['required']">
+              Algo name is required
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="algo-version" class="font-weight-semibold">Version</label>
+          <input type="text" class="form-control" id="algo-version" value="Version 1" readonly>
+        </div>
+
+        <div class="form-group">
+          <label for="algo-key" class="font-weight-semibold">API key</label>
+          <input type="text" class="form-control" id="algo-key" readonly [(ngModel)]="algo.AlgoId"
+                 [ngModelOptions]="{standalone: true}">
+        </div>
+      </div>
+      <div class="col-6">
+        <div class="form-group">
+          <label for="algo-description" class="font-weight-semibold">Description</label>
+          <textarea name="algo-description" id="algo-description" cols="60" rows="9"
+                    class="d-block form-control" formControlName="Description" (change)="onInputChange()"></textarea>
+        </div>
+      </div>
+    </div>
+
+    <div class="row mt-5">
+      <div class="col-8">
+        <app-code-editor [config]="{readOnly: false, sourceCode: algo.Data}" (onInitCompleted)="onEditorCreated($event)"
+                         (onCodeUpdated)="onCodeUpdate($event)"></app-code-editor>
+      </div>
+      <div class="col-4">
+        <div class="metadata-holder">
+          <app-algo-metadata [metadata]="algo.AlgoMetaDataInformation"
+                             (onHighlight)="highlight($event)"></app-algo-metadata>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-6 text-right align-self-center">
+        <span class="font-weight-semibold cursor-pointer cancel-btn"
+              routerLink="/store/my-algos">Cancel and close</span>
+      </div>
+      <div class="col-6 text-left">
+        <button type="submit" class="btn btn-primary" [disabled]="canBePublished">Save a change</button>
+      </div>
+    </div>
+  </form>
+</div>
+
+
+<div class="loader" *ngIf="!algo">
+  <img src="../../../assets/images/loader.svg">
+</div>
+
+<ng-template #editTooltip>
+  <div>
+    <p>You cannot publish this algo because you made changes. Save them in order to publish it.</p>
+  </div>
+</ng-template>
+

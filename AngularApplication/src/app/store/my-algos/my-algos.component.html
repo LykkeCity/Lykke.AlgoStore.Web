@@ -34,10 +34,10 @@
               <span class="cursor-pointer" dropdownToggle>
               <img src="../../../assets/images/actions-icon.svg">
               <ul *dropdownMenu class="dropdown-menu">
-                <li [routerLink]="['store', 'manage-algo', row.Id]">
+                <li [routerLink]="['/store/algo-edit', row.ClientId, row.Id]">
                  <a class="dropdown-item"><img src="../../../assets/images/edit-icon.svg" class="mb-1"><span class="ml-1">Edit</span></a>
                 </li>
-                <li (click)="deleteAlgo()">
+                <li (click)="delete(row)">
                    <a class="dropdown-item"><img src="../../../assets/images/store/delete-icon.svg" class="mb-1"><span class="ml-1">Delete</span></a>
                 </li>
                 <li (click)="duplicateAlgo()">

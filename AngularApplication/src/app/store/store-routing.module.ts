@@ -24,7 +24,7 @@ const routes: Routes = [
         canActivate: [AuthGuard]
       },
       {
-        path: 'algo-edit/:algoId',
+        path: 'algo-edit/:clientId/:algoId',
         component: AlgoEditComponent,
         canActivate: [AuthGuard, ACLGuard],
         data: { acl: [Permissions.GET_ALGO_METADATA] }
