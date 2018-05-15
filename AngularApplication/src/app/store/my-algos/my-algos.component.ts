@@ -5,6 +5,7 @@ import { Subscription } from 'rxjs/Subscription';
 import { PopupConfig } from '../../models/popup.interface';
 import { PopupComponent } from '../../components/popup/popup.component';
 import { BsModalService } from 'ngx-bootstrap';
+import { AlgoDuplicatePopupComponent } from './algo-duplicate-popup/algo-duplicate-popup.component';
 
 @Component({
   selector: 'app-my-algos',
@@ -26,11 +27,19 @@ export class MyAlgosComponent {
       this.algos = getAlgos();
   }
 
-  duplicateAlgo(id: string): void {
+  duplicateAlgo(algo: Algo): void {
+    const initialState = {
+      algoName: algo.Name,
+      algoId: algo.AlgoId,
+      onCreateSuccess: (newAlgo) => {
+        this.algos.push(newAlgo);
+      }
+    };
 
+    this.bsModalService.show(AlgoDuplicatePopupComponent, {initialState, class: 'modal-sm', keyboard: false, ignoreBackdropClick: true});
   }
 
-  delete(algo): void {
+  delete(algo: Algo): void {
     const initialState = {
       popupConfig: {
         title: 'Delete algo',

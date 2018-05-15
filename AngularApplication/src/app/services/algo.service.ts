@@ -22,6 +22,9 @@ export class AlgoService {
     return this.authRequestService.post(environment.storeApiUrl + ''); // TODO add real API url
   }
 
+  duplicateAlgo(data: {name, id}): Observable<Algo> {
+    return this.authRequestService.post(environment.storeApiUrl + '', data); // TODO add real API url
+  }
 
   algoGetAll(): Observable<Algo[]> {
     return this.authRequestService.get(environment.storeApiUrl + '/v1/clientData/metadata');

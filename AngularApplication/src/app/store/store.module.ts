@@ -28,6 +28,7 @@ import { AlgoBacktestPopupComponent } from './algo-run/algo-backtest-popup/algo-
 import { MyAlgosComponent } from './my-algos/my-algos.component';
 import { AlgoEditComponent } from './algo-edit/algo-edit.component';
 import { AlgoCreateComponent } from './algo-create/algo-create.component';
+import { AlgoDuplicatePopupComponent } from './my-algos/algo-duplicate-popup/algo-duplicate-popup.component';
 
 // SERVICES
 @NgModule({
@@ -59,8 +60,9 @@ import { AlgoCreateComponent } from './algo-create/algo-create.component';
     AlgoBacktestPopupComponent,
     AlgoEditComponent,
     AlgoCreateComponent,
+    AlgoDuplicatePopupComponent,
   ],
   providers: [],
-  entryComponents: [AlgoInstancePopupComponent, AlgoCommentEditPopupComponent, AlgoBacktestPopupComponent]
+  entryComponents: [AlgoInstancePopupComponent, AlgoCommentEditPopupComponent, AlgoBacktestPopupComponent, AlgoDuplicatePopupComponent]
 })
 export class StoreModule { }
