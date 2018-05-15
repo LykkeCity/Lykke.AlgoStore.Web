@@ -1,15 +1,5 @@
 @import '~scss/reuse';
 
-.btn-wrapper {
-  button[disabled] {
-    pointer-events: none;
-  }
-}
-
-.not-allowed {
-  cursor: not-allowed;
-}
-
 .public-holder {
   ::ng-deep .popover {
     width: 300px;
@@ -21,4 +11,3 @@
     height: 100%;
   }
 }
-

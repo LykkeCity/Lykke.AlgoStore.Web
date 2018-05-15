@@ -9,7 +9,6 @@ import { AlgoInstancePopupComponent } from '../algo-run/algo-run-popup/algo-inst
 import { BsModalService } from 'ngx-bootstrap';
 import { PopupConfig } from '../../models/popup.interface';
 import { PopupComponent } from '../../components/popup/popup.component';
-import { AlgoInstance } from '../models/algo-instance.model';
 import { NotificationsService } from 'angular2-notifications';
 
 @Component({

@@ -23,7 +23,10 @@ export class AlgoBacktestPopupComponent implements OnInit {
   dpConfig: IDatePickerConfig;
   subscriptions: Subscription[] = [];
 
-  constructor(private fb: FormBuilder, public modalRef: BsModalRef, private instanceService: InstanceService, private notificationsService: NotificationsService) {
+  constructor(private fb: FormBuilder,
+              public modalRef: BsModalRef,
+              private instanceService: InstanceService,
+              private notificationsService: NotificationsService) {
     this.algoInstanceForm = this.fb.group({
       InstanceName: ['', { validators: [Validators.required], updateOn: 'submit'}],
       BacktestTradingAssetBalance: ['', {validators: [Validators.required, Validators.min(0)], updateOn: 'submit'}],

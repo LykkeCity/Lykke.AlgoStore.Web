@@ -1,29 +1,5 @@
 @import '~scss/reuse';
 
-.algo-list-placeholder {
-    .algo-list {
-        .mat-header-row {
-            background-color: $gray-600;
-
-            a {
-                color: $dark;
-            }
-        }
-        /deep/ .commands {
-            margin-bottom: 0;
-            padding-left: 0;
-
-            > li {
-                a {
-                    margin-left: 0;
-                    margin-right: 10px;
-
-                }
-            }
-        }
-    }
-}
-
 /*
    server-side-angular-way.component.css
 */

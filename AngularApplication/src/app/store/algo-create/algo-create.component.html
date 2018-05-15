@@ -30,7 +30,7 @@
                 <span class="font-weight-semibold cursor-pointer cancel-btn" routerLink="/store/my-algos">Cancel and close</span>
               </div>
               <div class="col-6 text-center">
-                <button class="btn btn-primary" (click)="nextTab()" [disabled]="algoForm.invalid">Next</button>
+                <button class="btn btn-primary btn-small" (click)="nextTab()" [disabled]="algoForm.invalid">Next step</button>
               </div>
             </div>
           </form>
@@ -78,7 +78,7 @@
                 <input type="file" accept='text/plain' (change)='openFile($event)' hidden #file>
 
                 <div class="col-12" *ngIf="!userFile">
-                  <span class="text-muted cursor-pointer" (click)="file.click()">Upload file</span>
+                  <span class="text-muted cursor-pointer" (click)="file.click()">Upload file here</span>
                 </div>
 
                 <div class="col-8" *ngIf="userFile">
@@ -135,6 +135,4 @@
   </div>
 </div>
 
-<div class="loader" *ngIf="!ready">
-  <img src="../../../assets/images/loader.svg">
-</div>
+<app-loader [ready]="ready"></app-loader>

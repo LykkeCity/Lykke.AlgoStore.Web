@@ -99,9 +99,7 @@
 </div>
 
 
-<div class="loader" *ngIf="!algo">
-  <img src="../../../assets/images/loader.svg">
-</div>
+<app-loader [ready]="algo"></app-loader>
 
 <ng-template #editTooltip>
   <div>

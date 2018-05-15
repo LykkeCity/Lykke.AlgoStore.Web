@@ -1,5 +1,9 @@
 @import '~scss/reuse';
 
+.btn-small {
+  padding: 0.257rem 1rem;
+}
+
 .custom-control-label::before {
   border: 1px solid $silver;
 

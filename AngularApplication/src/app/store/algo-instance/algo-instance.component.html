@@ -187,6 +187,4 @@
   </split>
 </div>
 
-<div class="loader" *ngIf="!(algo && instance)">
-  <img src="../../../assets/images/loader.svg">
-</div>
+<app-loader [ready]="(algo && instance)"></app-loader>
