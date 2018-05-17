@@ -83,7 +83,7 @@ export class AuthRequestService {
 
     this.notificationsService.error('Error', 'Error occurred.');
     console.error('ApiService::handleError', error);
-    return Observable.throw(error.error);
+    return Observable.throw(error.error ? error.error : error);
   }
 
 }
