@@ -66,16 +66,16 @@ export class AlgoInstanceComponent implements OnDestroy {
       this.instanceId = params['instanceId'];
       this.algoId = params['algoId'];
 
-      this.subscriptions.push(this.algoService.getAlgoWithSource(this.algoId, this.clientId).subscribe(algo => {
-        this.algo = { ...algo, ClientId: this.clientId };
-      }));
-
-      this.subscriptions.push(this.userService.getUserWalletsWithBalances().subscribe(wallets => {
-        this.wallets = wallets;
-      }));
-
       this.subscriptions.push(this.instanceService.getAlgoInstance(this.algoId, this.instanceId).subscribe(instance => {
         this.instance = instance;
+
+        this.subscriptions.push(this.algoService.getAlgoWithSource(this.algoId, this.clientId).subscribe(algo => {
+          this.algo = { ...algo, ClientId: this.clientId };
+        }));
+
+        this.subscriptions.push(this.userService.getUserWalletsWithBalances().subscribe(wallets => {
+          this.wallets = wallets;
+        }));
 
         if (this.instance.AlgoInstanceStatus !== IAlgoInstanceStatus.Deploying) {
           if (this.permissions.canSeeLogs) {
@@ -85,6 +85,11 @@ export class AlgoInstanceComponent implements OnDestroy {
           } else if (this.permissions.canSeeTrades) {
             this.subscriptions.push(this.getTrades());
           }
+        }
+      }, (err) => {
+        if (err.status === 404) {
+          this.notificationsService.error('Error', 'Instance does not exist.');
+          this.router.navigate(['/store/algo-list']);
         }
       }));
     }));
