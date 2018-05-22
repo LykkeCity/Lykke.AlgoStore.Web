@@ -22,18 +22,6 @@
             </div>
           </div>
         </div>
-        <div class="col-12">
-          <div class="form-group">
-            <label class="font-weight-semibold">Start date</label>
-            <app-date-time-picker controlName="AlgoInstanceRunDate" [form]="algoInstanceForm" [config]="dpConfig"></app-date-time-picker>
-            <div *ngIf="algoInstanceForm.get('AlgoInstanceRunDate').invalid && algoInstanceForm.dirty"
-                 class="text-danger">
-              <div *ngIf="algoInstanceForm.get('AlgoInstanceRunDate').errors['required']">
-                Please enter a date
-              </div>
-            </div>
-          </div>
-        </div>
         <div class="col-6">
           <div class="form-group">
             <label for="trade-asset" class="font-weight-semibold">{{tradeAsset}} balance</label>

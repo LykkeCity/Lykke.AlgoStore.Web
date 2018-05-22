@@ -27,8 +27,7 @@ export class AlgoBacktestPopupComponent implements OnInit {
     this.algoInstanceForm = this.fb.group({
       InstanceName: ['', { validators: [Validators.required], updateOn: 'submit'}],
       BacktestTradingAssetBalance: ['', {validators: [Validators.required, Validators.min(0)], updateOn: 'submit'}],
-      BacktestAssetTwoBalance: ['', {validators: [Validators.required, Validators.min(0)], updateOn: 'submit'}],
-      AlgoInstanceRunDate: ['', { validators: [Validators.required], updateOn: 'submit'}]
+      BacktestAssetTwoBalance: ['', {validators: [Validators.required, Validators.min(0)], updateOn: 'submit'}]
     });
 
     this.dpConfig = {
