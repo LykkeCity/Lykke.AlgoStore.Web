@@ -1,5 +1,21 @@
 @import '~scss/reuse';
 
+.algo-create-editor-holder {
+  ::ng-deep {
+    .code-holder {
+      height: 100%;
+
+      .ace-editor-holder {
+        height: 90%;
+
+        ace-editor {
+          height: 100%;
+        }
+      }
+    }
+  }
+}
+
 .tabs-nav {
   ::ng-deep {
     ul.nav-tabs {
@@ -65,3 +81,6 @@ form {
   border-left: 2px solid #ff3e2e;
 }
 
+.normal-font {
+  font-size: 1rem;
+}

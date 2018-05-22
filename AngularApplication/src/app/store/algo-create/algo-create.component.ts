@@ -63,6 +63,10 @@ export class AlgoCreateComponent implements OnDestroy {
   openFile(event) {
     const input = event.target;
     this.userFile = event.target.files[0];
+    if (!this.userFile) {
+      return;
+    }
+
     this.userFile['ext'] = this.userFile.name.substring(this.userFile.name.lastIndexOf('.') + 1);
 
     if (this.userFile['ext'] !== 'cs') {

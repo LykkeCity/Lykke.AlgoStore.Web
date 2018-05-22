@@ -37,7 +37,7 @@
         </tab>
         <tab heading="Write Code" [disabled]="algoForm.invalid">
           <div class="row mt-5">
-            <div class="col-8">
+            <div class="col-8 algo-create-editor-holder">
               <app-code-editor [config]="{readOnly: false, sourceCode: Algo.Data}"
                                (onInitCompleted)="onEditorCreated($event)" (onCodeUpdated)="onCodeUpdate($event)"></app-code-editor>
             </div>
@@ -97,8 +97,17 @@
                   <h5>Instructions</h5>
                   <hr />
                 </div>
-                <div class="col-12">
-                  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                <div class="col-12 normal-font">
+                  <h5>Requirements and validation</h5>
+                  <p>Every source file submitted to the system must meet the following requirements:</p>
+                  <ul>
+                    <li>The only currently supported language is C#, and so the source file <strong>must</strong> be written in it</li>
+                    <li>The source file can contain any number of classes, interfaces, etc. but it <strong>must</strong> contain <strong>one</strong> class inheriting from BaseAlgo</li>
+                    <li>The class inheriting BaseAlgo (from here on referred to as Algo) <strong>must</strong> be sealed</li>
+                    <li>The Algo <strong>must</strong> implement OnCandleReceived and/or OnQuoteReceived</li>
+                  </ul>
+                  <p>The source file <strong>must</strong> also be syntactically and semantically valid.</p>
+                  <p>All of the above checks will be ran automatically. Any source file which does not meet the requirements will not have the ability to be saved as a usable algo in the system.</p>
                 </div>
               </div>
             </div>
