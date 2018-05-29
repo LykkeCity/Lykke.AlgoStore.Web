@@ -11,8 +11,9 @@ export class AlgoService {
   constructor(private authRequestService: AuthRequestService) { }
 
   getAllPublicAlgos(): Observable<Algo[]> {
-    return this.authRequestService.get(environment.storeApiUrl + '/v1/clientData/getAllAlgos');
+    return this.authRequestService.get(environment.storeApiUrl + '/v1/algo/getAllAlgos');
   }
+
   algoGetAll(): Observable<Algo[]> {
     return this.authRequestService.get(environment.storeApiUrl + '/v1/clientData/metadata');
   }
@@ -28,7 +29,7 @@ export class AlgoService {
       params['clientId'] = clientId;
     }
 
-    return this.authRequestService.get(environment.storeApiUrl + '/v1/clientData/algoMetadata', { params });
+    return this.authRequestService.get(environment.storeApiUrl + '/v1/algo/getAlgoInformation', { params });
   }
 
   getAlgoWithSource(algoId: string, clientId?: string): Observable<Algo> {
@@ -39,7 +40,7 @@ export class AlgoService {
     }
 
     return forkJoin(
-      this.authRequestService.get(environment.storeApiUrl + '/v1/clientData/algoMetadata', { params }),
+      this.authRequestService.get(environment.storeApiUrl + '/v1/algo/getAlgoInformation', { params }),
       this.algoGetSource(algoId, clientId)
     ).map( res => ({...res[0], ...res[1]}) );
   }
@@ -50,14 +51,14 @@ export class AlgoService {
     if (clientId) {
       params['clientId'] = clientId;
     }
-    return this.authRequestService.get(environment.storeApiUrl + '/v1/clientData/imageData/upload/string', { params });
+    return this.authRequestService.get(environment.storeApiUrl + '/v1/algo/sourceCode/getString', { params });
   }
 
   algoSave(algoId: string, data: string): Observable<Algo> {
-    return this.authRequestService.post(environment.storeApiUrl + `/v1/clientData/imageData/upload/string`, { AlgoId: algoId, Data: data });
+    return this.authRequestService.post(environment.storeApiUrl + `/v1/algo/sourceCode/upload/string`, { AlgoId: algoId, Data: data });
   }
 
   algoUpload(formData: FormData): Observable<Algo> {
-    return this.authRequestService.post(environment.storeApiUrl + '/v1/clientData/imageData/upload/binary', formData);
+    return this.authRequestService.post(environment.storeApiUrl + '/v1/algo/sourceCode/upload/binary', formData);
   }
 }

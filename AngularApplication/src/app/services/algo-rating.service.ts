@@ -15,11 +15,11 @@ export class AlgoRatingService {
     if (clientId) {
       params['ClientId'] = clientId;
     }
-    return this.authRequestService.get(environment.storeApiUrl + '/v1/clientData/userAlgoRating', { params });
+    return this.authRequestService.get(environment.storeApiUrl + '/v1/algo/userAlgoRating', { params });
   }
 
   saveAlgoRating(ratingData: AlgoRating): Observable<AlgoRating> {
-    return this.authRequestService.post(environment.storeApiUrl + '/v1/clientData/algoRating', ratingData);
+    return this.authRequestService.post(environment.storeApiUrl + '/v1/algo/algoRating', ratingData);
   }
 
 }
