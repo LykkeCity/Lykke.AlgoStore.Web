@@ -29,7 +29,7 @@ export class AlgoCreateComponent implements OnDestroy {
               private ref: ChangeDetectorRef) {
 
     this.algoForm = this.formBuilder.group({
-      AlgoName: ['', Validators.required],
+      Name: ['', Validators.required],
       Description: ['']
     });
 
@@ -46,7 +46,7 @@ export class AlgoCreateComponent implements OnDestroy {
   }
 
   onCodeUpdate(code: string): void {
-    this.Algo.Data = code;
+    this.Algo.Content = code;
     this.ref.detectChanges();
   }
 
@@ -70,28 +70,30 @@ export class AlgoCreateComponent implements OnDestroy {
     this.userFile['ext'] = this.userFile.name.substring(this.userFile.name.lastIndexOf('.') + 1);
 
     if (this.userFile['ext'] !== 'cs') {
-      this.Algo.Data = '';
+      this.Algo.Content = '';
       return;
     }
 
     const reader = new FileReader();
     reader.onload = () => {
-      this.Algo.Data = reader.result;
+      this.Algo.Content = reader.result;
     };
     reader.readAsText(input.files[0]);
   }
 
   onSubmit(): void {
-    if (!this.Algo.Data) {
+    if (!this.Algo.Content) {
       return;
     }
 
     this.ready = false;
-    this.subscriptions.push(this.algoService.createAlgo().subscribe((newAlgo) => {
+    this.Algo.Content = btoa(this.Algo.Content);
+    this.subscriptions.push(this.algoService.createAlgo({ ...this.algoForm.value, ...this.Algo }).subscribe((newAlgo) => {
       this.Algo = newAlgo;
       this.ready = true;
       this.algoSubmitted = true;
     }, (error) => {
+      this.Algo.Content = atob(this.Algo.Content);
       this.ready = true;
       this.algoSubmitted = true;
       this.algoErrors = 'fdafadfsdaasd';

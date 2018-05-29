@@ -45,7 +45,7 @@ export class AlgoDuplicatePopupComponent implements OnInit, OnDestroy {
       return;
     }
 
-    this.algoService.duplicateAlgo({...this.algoDuplicateForm.value, AlgoId: this.algoId}).subscribe((algo) => {
+    this.algoService.createAlgo({...this.algoDuplicateForm.value, AlgoId: this.algoId}).subscribe((algo) => {
       this.onCreateSuccess(algo);
       this.notificationsService.success('Success', 'Algo duplicated successfully.');
       this.modalRef.hide();

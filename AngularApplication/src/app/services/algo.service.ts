@@ -18,12 +18,12 @@ export class AlgoService {
     return this.authRequestService.get(environment.storeApiUrl + ''); // TODO add real API url
   }
 
-  createAlgo(): Observable<Algo> {
-    return this.authRequestService.post(environment.storeApiUrl + ''); // TODO add real API url
+  createAlgo(algo: Algo): Observable<Algo> {
+    return this.authRequestService.post(environment.storeApiUrl + '/v1/algo/create', algo);
   }
 
-  duplicateAlgo(data: {name, id}): Observable<Algo> {
-    return this.authRequestService.post(environment.storeApiUrl + '', data); // TODO add real API url
+  editAlgo(algo: Algo): Observable<Algo> {
+    return this.authRequestService.post(environment.storeApiUrl + '/v1/algo/edit', algo);
   }
 
   algoGetAll(): Observable<Algo[]> {
@@ -66,11 +66,11 @@ export class AlgoService {
     return this.authRequestService.get(environment.storeApiUrl + '/v1/algo/sourceCode/getString', { params });
   }
 
-  algoSave(algoId: string, data: string): Observable<Algo> {
-    return this.authRequestService.post(environment.storeApiUrl + `/v1/algo/sourceCode/upload/string`, { AlgoId: algoId, Data: data });
+  uploadSourceCodeAsString(algoId: string, data: string): Observable<Algo> {
+    return this.authRequestService.post(environment.storeApiUrl + `/v1/clientData/imageData/upload/string`, { AlgoId: algoId, Data: data });
   }
 
-  algoUpload(formData: FormData): Observable<Algo> {
-    return this.authRequestService.post(environment.storeApiUrl + '/v1/algo/sourceCode/upload/binary', formData);
+  uploadSourceCodeAsBinary(formData: FormData): Observable<Algo> {
+    return this.authRequestService.post(environment.storeApiUrl + '/v1/clientData/imageData/upload/binary', formData);
   }
 }
