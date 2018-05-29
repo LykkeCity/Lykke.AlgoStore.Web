@@ -12,6 +12,7 @@ import { AlgoService } from '../../services/algo.service';
 import { InstanceService } from '../../services/instance.service';
 import Permissions from '../models/permissions';
 import { AlgoBacktestPopupComponent } from './algo-backtest-popup/algo-backtest-popup.component';
+import DateTime from '../../core/utils/date-time';
 
 @Component({
   selector: 'app-algo-run',
@@ -176,17 +177,23 @@ export class AlgoRunComponent implements OnInit, OnDestroy {
   mapFormToData() {
     const formValue = this.metadataForm.value;
 
-    this.algo.AlgoMetaDataInformation.Parameters.forEach(
-      param => param.Value = formValue.Parameters[param.Key]
-    );
-
-    this.algo.AlgoMetaDataInformation.Functions.forEach(
-      func => {
-        func.Parameters.forEach(
-          funcParam => funcParam.Value = formValue.Functions[func.Id][funcParam.Key]
-        );
+    this.algo.AlgoMetaDataInformation.Parameters.forEach(param => {
+      if (param.Type === 'DateTime') {
+        param.Value = DateTime.toUtc(formValue.Parameters[param.Key]);
+      } else {
+        param.Value = formValue.Parameters[param.Key];
       }
-    );
+    });
+
+    this.algo.AlgoMetaDataInformation.Functions.forEach(func => {
+      func.Parameters.forEach(funcParam => {
+        if (funcParam.Type === 'DateTime') {
+          funcParam.Value = DateTime.toUtc(formValue.Functions[func.Id][funcParam.Key]);
+        } else {
+          funcParam.Value = formValue.Functions[func.Id][funcParam.Key];
+        }
+      });
+    });
   }
 
 }
