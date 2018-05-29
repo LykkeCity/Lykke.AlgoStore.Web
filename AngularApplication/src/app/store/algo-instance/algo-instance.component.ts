@@ -18,6 +18,7 @@ import { PopupConfig } from '../../models/popup.interface';
 import { AlgoService } from '../../services/algo.service';
 import { InstanceService } from '../../services/instance.service';
 import Permissions from '../models/permissions';
+import { AlgoBacktestPopupComponent } from '../algo-run/algo-backtest-popup/algo-backtest-popup.component';
 
 @Component({
   selector: 'app-algo-instance',
@@ -135,6 +136,33 @@ export class AlgoInstanceComponent implements OnDestroy {
       }
     };
     this.bsModalService.show(AlgoInstancePopupComponent, { initialState, class: 'modal-sm run-instance-popup' });
+  }
+
+  backtest(): void {
+    const assetPair = this.algo.AlgoMetaDataInformation.Parameters.find(param => param.Key === 'AssetPair').Value;
+    const tradedAsset = this.algo.AlgoMetaDataInformation.Parameters.find(param => param.Key === 'TradedAsset').Value;
+    let assetTwoName = '';
+
+    if (assetPair.indexOf(tradedAsset) === 0) {
+      assetTwoName = assetPair.substr(tradedAsset.indexOf(tradedAsset[tradedAsset.length - 1]) + 1);
+    } else {
+      assetTwoName = assetPair.substr(0, assetPair.indexOf(tradedAsset));
+    }
+
+    const initialState = {
+      tradeAsset: tradedAsset,
+      assetTwo: assetTwoName,
+      algoInstanceData: {
+        AlgoClientId: this.clientId,
+        AlgoId: this.algo.AlgoId,
+        AlgoMetaDataInformation: this.algo.AlgoMetaDataInformation,
+        AlgoInstanceType: IAlgoInstanceType.Test
+      } as AlgoInstanceData,
+      onSuccess: (instance) => {
+        this.router.navigate(['/store/algo-run', this.clientId, this.algo.AlgoId]);
+      }
+    };
+    this.bsModalService.show(AlgoBacktestPopupComponent, { initialState, class: 'modal-sm backtest-instance-popup' });
   }
 
   stopInstancePrompt(): void {
