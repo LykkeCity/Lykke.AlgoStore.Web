@@ -46,7 +46,7 @@ export class InstanceService {
   }
 
   createLiveAlgoIntance(data): Observable<AlgoInstance> {
-    return this.authRequestService.post<AlgoInstance>(environment.storeApiUrl + '/v1/clientData/instanceData', data);
+    return this.authRequestService.post<AlgoInstance>(environment.storeApiUrl + '/v1/algoInstances/saveAlgoInstance', data);
   }
 
   createDemoAlgoIntance(data: AlgoInstance): Observable<AlgoInstance> {
@@ -54,22 +54,22 @@ export class InstanceService {
   }
 
   backtest(data: AlgoInstance): Observable<AlgoInstance> {
-    return this.authRequestService.post(environment.storeApiUrl + '/v1/clientData/backTestInstanceData', data);
+    return this.authRequestService.post(environment.storeApiUrl + '/v1/algoInstances/backTestInstanceData', data);
   }
 
   getAlgoInstances(algoId: string): Observable<AlgoInstance[]> {
     const params = { algoId };
-    return this.authRequestService.get(environment.storeApiUrl + '/v1/clientData/instanceData/allByAlgoIdAndClientId', { params });
+    return this.authRequestService.get(environment.storeApiUrl + '/v1/algoInstances/getAllByAlgoIdAndClientId', { params });
   }
 
   getAlgoInstance(algoId: string, instanceId: string): Observable<AlgoInstance> {
     const params = { algoId, instanceId };
-    return this.authRequestService.get(environment.storeApiUrl + '/v1/clientData/instanceData', { params });
+    return this.authRequestService.get(environment.storeApiUrl + '/v1/algoInstances/getAlgoInstance', { params });
   }
 
   deleteAlgoInstance(instance: AlgoInstance): Observable<void> {
     const body = { AlgoId: instance.AlgoId, InstanceId: instance.InstanceId, AlgoClientId: instance.AlgoClientId };
-    return this.authRequestService.delete(environment.storeApiUrl + '/v1/clientData/instanceData', { body });
+    return this.authRequestService.delete(environment.storeApiUrl + '/v1/algoInstances', { body });
   }
 
 }

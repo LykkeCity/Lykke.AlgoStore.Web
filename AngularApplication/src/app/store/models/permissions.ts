@@ -7,14 +7,14 @@ export default class Permissions {
   static readonly ASSIGN_USER_ROLE= 'AssignUserRole';
   static readonly CREATE_COMMENT= 'CreateComment';
   static readonly DELETE_ALGO_INSTANCE_DATA = 'DeleteAlgoInstanceDataAsync';
-  static readonly DELETE_ALGO_METADATA = 'DeleteAlgoMetadata';
+  static readonly DELETE_ALGO_METADATA = 'DeleteAlgo';
   static readonly DELETE_COMMENT = 'DeleteComment';
   static readonly DELETE_USER_ROLE = 'DeleteUserRole';
   static readonly DEPLOY_BINARY_IMAGE = 'DeployBinaryImage';
   static readonly EDIT_COMMENT = 'EditComment';
   static readonly GET_ALGO_INSTANCE_DATA = 'GetAlgoInstanceDataAsync';
   static readonly GET_ALGO_INSTANCE_STATISTIC = 'GetAlgoInstanceStatisticsAsync';
-  static readonly GET_ALGO_METADATA = 'GetAlgoMetadata';
+  static readonly GET_ALGO_METADATA = 'GetAlgoInformation';
   static readonly GET_ALGO_RATING = 'GetAlgoRating';
   static readonly GET_ALL_ALGO_INSTANCE_DATA = 'GetAllAlgoInstanceDataAsync';
   static readonly GET_ALL_ALGOS = 'GetAllAlgos';
