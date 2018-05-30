@@ -1,7 +1,11 @@
 // LIST OF ALGO-STORE PERMISSIONS
 
 export default class Permissions {
+  static readonly CREATE_ALGO = 'CreateAlgo';
+  static readonly EDIT_ALGO = 'EditAlgo';
+  static readonly GET_USER_ALGOS = 'GetAllUserAlgos';
   static readonly ADD_TO_PUBLIC = 'AddToPublic';
+  static readonly REMOVE_FROM_PUBLIC = 'RemoveFromPublic';
   static readonly UPDATE_USER_ROLE = 'UpdateUserRole';
   static readonly ASSIGN_MULTIPLE_PERMISSIONS_TO_ROLE = 'AssignMultiplePermissionToRole';
   static readonly ASSIGN_USER_ROLE= 'AssignUserRole';
@@ -41,4 +45,5 @@ export default class Permissions {
   static readonly STOP_TEST = 'StopTest';
   static readonly UPLOAD_BINARY_FILE = 'UploadBinaryFile';
   static readonly UPLOAD_STRING = 'UploadSting';
+  static readonly RUN_BACKTEST = 'SaveAlgoBackTestInstanceDataAsync';
 }

@@ -1,6 +1,6 @@
 import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { AlgoService } from '../../services/algo.service';
-import { Algo } from '../models/algo.interface';
+import { Algo, AlgoVisibility } from '../models/algo.interface';
 import { Subscription } from 'rxjs/Subscription';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -10,6 +10,8 @@ import { BsModalService } from 'ngx-bootstrap';
 import { PopupConfig } from '../../models/popup.interface';
 import { PopupComponent } from '../../components/popup/popup.component';
 import { NotificationsService } from 'angular2-notifications';
+import { UserService } from '../../services/user.service';
+import Permissions from '../models/permissions';
 
 @Component({
   selector: 'app-algo-create',
@@ -22,6 +24,14 @@ export class AlgoEditComponent implements OnInit, OnDestroy {
   editor: any;
   algoForm: FormGroup;
   canBePublished: boolean;
+  iAlgoVisibility = AlgoVisibility;
+  algoErrors: string;
+
+  permissions: {
+    canPublish: boolean,
+    canUnpublish: boolean,
+    canDelete: boolean
+  };
 
   subscriptions: Subscription[] = [];
   constructor(private algoService: AlgoService,
@@ -30,13 +40,20 @@ export class AlgoEditComponent implements OnInit, OnDestroy {
               private fb: FormBuilder,
               private bsModalService: BsModalService,
               private notificationsService: NotificationsService,
-              private router: Router) {
+              private router: Router,
+              private usersService: UserService) {
     this.algoForm = this.fb.group({
       Name: ['',  { validators: [Validators.required], updateOn: 'submit'}],
       Description: ['', { updateOn: 'submit' }]
     });
 
     this.canBePublished = true;
+
+    this.permissions = {
+      canPublish: this.usersService.hasPermission(Permissions.ADD_TO_PUBLIC),
+      canUnpublish: this.usersService.hasPermission(Permissions.REMOVE_FROM_PUBLIC),
+      canDelete: true // TODO change when exist
+    };
   }
 
   ngOnInit() {
@@ -45,6 +62,7 @@ export class AlgoEditComponent implements OnInit, OnDestroy {
       const clientId = params['clientId'];
       this.subscriptions.push(this.algoService.getAlgoWithSource(algoId, clientId).subscribe(algo => {
         this.algo = algo;
+        this.algo.Content = algo.Data; // TODO remove this custom mapping when the API unifies it
         this.algo.ClientId = clientId;
 
         this.algoForm.setValue({
@@ -65,7 +83,7 @@ export class AlgoEditComponent implements OnInit, OnDestroy {
 
   onCodeUpdate(code: string): void {
     this.canBePublished = false;
-    this.algo.Data = code;
+    this.algo.Content = code;
     this.ref.detectChanges();
   }
 
@@ -86,6 +104,10 @@ export class AlgoEditComponent implements OnInit, OnDestroy {
   }
 
   delete(): void {
+    if (!this.permissions.canDelete) {
+      return;
+    }
+
     const initialState = {
       popupConfig: {
         title: 'Delete algo',
@@ -108,7 +130,25 @@ export class AlgoEditComponent implements OnInit, OnDestroy {
   }
 
   goPublic(): void {
+    if (!this.permissions.canPublish) {
+      return;
+    }
 
+    this.algoService.publish(this.algo.AlgoId, this.algo.ClientId).subscribe(() => {
+      this.algo.AlgoVisibility = this.iAlgoVisibility.Public;
+      this.notificationsService.success('Success', 'Algo has been published successfully.');
+    });
+  }
+
+  goPrivate(): void {
+    if (!this.permissions.canUnpublish) {
+      return;
+    }
+
+    this.algoService.unpublish(this.algo.AlgoId, this.algo.ClientId).subscribe(() => {
+      this.algo.AlgoVisibility = this.iAlgoVisibility.Private;
+      this.notificationsService.success('Success', 'Algo has been unpublished successfully.');
+    });
   }
 
   onSubmit(): void {
@@ -117,6 +157,14 @@ export class AlgoEditComponent implements OnInit, OnDestroy {
       return;
     }
 
+    const tempAlgo = { ...this.algoForm.value, Id: this.algo.AlgoId, Date: this.algo.Date, Content: btoa(this.algo.Content) };
+    this.algoErrors = null;
 
+    this.subscriptions.push(this.algoService.editAlgo(tempAlgo).subscribe(() => {
+      this.notificationsService.success('Success', 'Algo has been edited successfully.');
+      this.router.navigate(['/store/my-algos']);
+    }, (error) => {
+      this.algoErrors = error.DisplayMessage;
+    }));
   }
 }

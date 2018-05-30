@@ -19,7 +19,7 @@ export class HeaderComponent {
     this.userService.loggedUserSubject.subscribe(() => {
       this.permissions = {
         viewPublicAlgos: this.userService.hasPermission(Permissions.GET_ALL_ALGOS),
-        viewMyAlgos: this.userService.hasPermission('GetAlgosByClientId'), // TODO change this with real role when API is ready
+        viewMyAlgos: this.userService.hasPermission(Permissions.GET_USER_ALGOS),
         vewRoles: this.userService.hasPermission(Permissions.GET_ALL_USER_ROLES)
         && this.userService.hasPermission(Permissions.GET_ALL_USERS_WITH_ROLES)
       };

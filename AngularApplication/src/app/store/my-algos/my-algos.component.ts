@@ -6,6 +6,8 @@ import { PopupConfig } from '../../models/popup.interface';
 import { PopupComponent } from '../../components/popup/popup.component';
 import { BsModalService } from 'ngx-bootstrap';
 import { AlgoDuplicatePopupComponent } from './algo-duplicate-popup/algo-duplicate-popup.component';
+import { UserService } from '../../services/user.service';
+import Permissions from '../models/permissions';
 
 @Component({
   selector: 'app-my-algos',
@@ -18,14 +20,30 @@ export class MyAlgosComponent {
   loadingIndicator = true;
   subscriptions: Subscription[] = [];
 
-  constructor(private algoService: AlgoService, private bsModalService: BsModalService) {
+  permissions: {
+    canDeleteAlgo: boolean,
+    canEditAlgo: boolean,
+    canDuplicate: boolean
+  };
+
+  constructor(private algoService: AlgoService, private bsModalService: BsModalService, private usersService: UserService) {
       this.subscriptions.push(this.algoService.getMyAlgos().subscribe((algos) => {
         this.algos = algos;
         this.loadingIndicator = false;
       }));
+
+      this.permissions = {
+        canDeleteAlgo: true, // TODO add real permission when it exists
+        canDuplicate: this.usersService.hasPermission(Permissions.CREATE_ALGO),
+        canEditAlgo: this.usersService.hasPermission(Permissions.EDIT_ALGO)
+      };
   }
 
   duplicateAlgo(algo: Algo): void {
+      if (!this.permissions.canDuplicate) {
+        return;
+      }
+
       const initialState = {
         algo,
         onCreateSuccess: (newAlgo) => {
@@ -38,6 +56,10 @@ export class MyAlgosComponent {
   }
 
   delete(algo: Algo): void {
+    if (!this.permissions.canDeleteAlgo) {
+      return;
+    }
+
     const initialState = {
       popupConfig: {
         title: 'Delete algo',

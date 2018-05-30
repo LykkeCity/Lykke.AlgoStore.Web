@@ -98,7 +98,7 @@ export class AlgoCreateComponent implements OnDestroy {
       this.Algo.Content = atob(this.Algo.Content);
       this.ready = true;
       this.algoSubmitted = true;
-      this.algoErrors = error.errorMessage;
+      this.algoErrors = error.DisplayMessage;
     }));
   }
 

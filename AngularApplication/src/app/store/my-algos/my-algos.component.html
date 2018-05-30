@@ -3,7 +3,7 @@
     <div class="col-8">
       <h2>My algos</h2>
     </div>
-    <div class="col-4 text-right align-self-center">
+    <div class="col-4 text-right align-self-center" *ngIf="permissions.canDuplicate">
       <button class="btn btn-primary btn-small" routerLink="/store/algo-create">+ Create algo</button>
     </div>
   </div>
@@ -23,10 +23,14 @@
 
         <ngx-datatable-column [resizeable]="false" name="Name" prop="Name" [flexGrow]="2">
           <ng-template let-value="value" let-row="row" ngx-datatable-cell-template>
-            <a [routerLink]="['/store/algo-details', row.ClientId, row?.Id]">{{ value }}</a>
+            <a [routerLink]="['/store/algo-details', row.ClientId, row?.Id]" [tooltip]="value" [delay]="1000">{{ value }}</a>
           </ng-template>
         </ngx-datatable-column>
-        <ngx-datatable-column [resizeable]="false" name="Description" prop="Description" [flexGrow]="4"></ngx-datatable-column>
+        <ngx-datatable-column [resizeable]="false" name="Description" prop="Description" [flexGrow]="4">
+          <ng-template let-value="value" let-row="row" ngx-datatable-cell-template>
+            <p [tooltip]="value" [delay]="1000">{{value}}</p>
+          </ng-template>
+        </ngx-datatable-column>
         <ngx-datatable-column [resizeable]="false" name="Visibility" prop="AlgoVisibility" [flexGrow]="2">
           <ng-template let-value="value" let-row="row" ngx-datatable-cell-template>
             <span>{{value | algoVisibility}}</span>
@@ -38,13 +42,13 @@
               <span class="cursor-pointer" dropdownToggle>
               <img src="../../../assets/images/actions-icon.svg">
               <ul *dropdownMenu class="dropdown-menu">
-                <li [routerLink]="['/store/algo-edit', row.ClientId, row.Id]">
+                <li [routerLink]="['/store/algo-edit', row.ClientId, row?.Id]" *ngIf="permissions.canEditAlgo">
                  <a class="dropdown-item"><img src="../../../assets/images/edit-icon.svg" class="mb-1"><span class="ml-1">Edit</span></a>
                 </li>
-                <li (click)="delete(row)">
+                <li (click)="delete(row)" *ngIf="permissions.canDeleteAlgo">
                    <a class="dropdown-item"><img src="../../../assets/images/store/delete-icon.svg" class="mb-1"><span class="ml-1">Delete</span></a>
                 </li>
-                <li (click)="duplicateAlgo(row)">
+                <li (click)="duplicateAlgo(row)" *ngIf="permissions.canDuplicate">
                    <a class="dropdown-item"><img src="../../../assets/images/store/duplicate-icon.svg" class="mb-1"><span class="ml-1">Duplicate</span></a>
                 </li>
               </ul>

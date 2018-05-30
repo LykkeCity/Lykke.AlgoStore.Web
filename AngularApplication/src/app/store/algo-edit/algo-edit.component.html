@@ -2,10 +2,10 @@
   <div class="row">
     <div class="col-10">
       <h3 class="d-inline-block mb-0">{{algo.Name}}</h3>
-      <span class="label-private">Private</span>
-      <span class="label-public">Public</span>
-      <span class="label-draft">Draft</span>
-      <p>{{algo.CreationDate ? algo.CreationDate : 'Created September 9, 2018 9:41:00 AM'}}</p>
+      <span class="label-private" *ngIf="algo.AlgoVisibility === iAlgoVisibility.Private">Private</span>
+      <span class="label-public" *ngIf="algo.AlgoVisibility === iAlgoVisibility.Public">Public</span>
+      <span class="label-draft" *ngIf="algo.AlgoVisibility === iAlgoVisibility.Demo">Draft</span>
+      <p>Created {{ algo.Date }}</p>
     </div>
     <div class="col-2 text-right public-holder">
       <span class="btn-wrapper d-inline-block"
@@ -16,8 +16,17 @@
             triggers="mouseenter:mouseleave">
 
         <button class="btn btn-primary cursor-pointer" (click)="goPublic()"
-                [disabled]="!canBePublished">Go public</button>
+                [disabled]="!canBePublished" *ngIf="algo.AlgoVisibility === iAlgoVisibility.Private && permissions.canPublish">Go Public</button>
+
+        <button class="btn btn-primary cursor-pointer" (click)="goPrivate()"
+                [disabled]="!canBePublished" *ngIf="algo.AlgoVisibility === iAlgoVisibility.Public && permissions.canUnpublish">Go Private</button>
       </span>
+    </div>
+  </div>
+
+  <div class="row mt-4" *ngIf="algoErrors">
+    <div class="col-12">
+      <textarea name="algo-errors" id="algo-errors" cols="60" rows="10" class="form-control" readonly [(ngModel)]="algoErrors"></textarea>
     </div>
   </div>
 
@@ -31,7 +40,7 @@
           <span>Run demo</span>
         </span>
 
-      <span class="ml-3 cursor-pointer text-muted" (click)="delete()">
+      <span class="ml-3 cursor-pointer text-muted" (click)="delete()" *ngIf="permissions.canDelete">
         <img src="../../../assets/images/store/delete-icon.svg"/>
         <span>Delete Algo</span>
       </span>
@@ -75,7 +84,7 @@
 
     <div class="row mt-5">
       <div class="col-8">
-        <app-code-editor [config]="{readOnly: false, sourceCode: algo.Data}" (onInitCompleted)="onEditorCreated($event)"
+        <app-code-editor [config]="{readOnly: false, sourceCode: algo.Content}" (onInitCompleted)="onEditorCreated($event)"
                          (onCodeUpdated)="onCodeUpdate($event)"></app-code-editor>
       </div>
       <div class="col-4">

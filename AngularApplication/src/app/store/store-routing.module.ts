@@ -16,18 +16,19 @@ import { AlgoCreateComponent } from './algo-create/algo-create.component';
 const routes: Routes = [
   {
     path: '', component: StoreComponent, children: [
-      { path: 'my-algos', component: MyAlgosComponent, canActivate: [AuthGuard] },
+      { path: 'my-algos', component: MyAlgosComponent, canActivate: [AuthGuard, ACLGuard], data: { acl: [Permissions.GET_USER_ALGOS] }  },
       { path: 'algo-list', component: AlgoListComponent, canActivate: [AuthGuard, ACLGuard], data: { acl: [Permissions.GET_ALL_ALGOS] } },
       {
         path: 'algo-create',
         component: AlgoCreateComponent,
-        canActivate: [AuthGuard]
+        canActivate: [AuthGuard, ACLGuard],
+        data: {acl: [Permissions.CREATE_ALGO] }
       },
       {
         path: 'algo-edit/:clientId/:algoId',
         component: AlgoEditComponent,
         canActivate: [AuthGuard, ACLGuard],
-        data: { acl: [Permissions.GET_ALGO_METADATA] }
+        data: { acl: [Permissions.GET_ALGO_METADATA, Permissions.EDIT_ALGO, Permissions.GET_UPLOAD_STRING] }
       },
       {
         path: 'algo-details/:clientId/:algoId', component: AlgoDetailsComponent,
@@ -39,7 +40,7 @@ const routes: Routes = [
         canActivate: [AuthGuard, ACLGuard],
         data: {
           acl: [Permissions.GET_UPLOAD_STRING, Permissions.GET_ALGO_METADATA,
-            Permissions.SAVE_ALGO_INSTANCE_DATA, Permissions.UPLOAD_BINARY_FILE]
+            Permissions.SAVE_ALGO_INSTANCE_DATA, Permissions.UPLOAD_BINARY_FILE, Permissions.RUN_BACKTEST]
         }
       },
       {
