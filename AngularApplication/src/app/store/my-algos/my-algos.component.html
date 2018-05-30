@@ -23,11 +23,15 @@
 
         <ngx-datatable-column [resizeable]="false" name="Name" prop="Name" [flexGrow]="2">
           <ng-template let-value="value" let-row="row" ngx-datatable-cell-template>
-            <a [routerLink]="['/store/algo-details', row.ClientId, row.Id]">{{ value }}</a>
+            <a [routerLink]="['/store/algo-details', row.ClientId, row?.Id]">{{ value }}</a>
           </ng-template>
         </ngx-datatable-column>
         <ngx-datatable-column [resizeable]="false" name="Description" prop="Description" [flexGrow]="4"></ngx-datatable-column>
-        <ngx-datatable-column [resizeable]="false" name="Visibility" prop="Visibility" [flexGrow]="2"></ngx-datatable-column>
+        <ngx-datatable-column [resizeable]="false" name="Visibility" prop="AlgoVisibility" [flexGrow]="2">
+          <ng-template let-value="value" let-row="row" ngx-datatable-cell-template>
+            <span>{{value | algoVisibility}}</span>
+          </ng-template>
+        </ngx-datatable-column>
         <ngx-datatable-column [resizeable]="false" name="Actions" [flexGrow]="2">
           <ng-template let-value="value" let-row="row" ngx-datatable-cell-template>
             <span dropdown>

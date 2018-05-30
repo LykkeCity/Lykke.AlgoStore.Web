@@ -15,7 +15,7 @@ export class AlgoService {
   }
 
   getMyAlgos(): Observable<Algo[]> {
-    return this.authRequestService.get(environment.storeApiUrl + ''); // TODO add real API url
+    return this.authRequestService.get(environment.storeApiUrl + '/v1/algo/getAllUserAlgos'); // TODO add real API url
   }
 
   createAlgo(algo: Algo): Observable<Algo> {

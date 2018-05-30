@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { BsModalRef } from 'ngx-bootstrap';
 import { NotificationsService } from 'angular2-notifications';
 import { AlgoService } from '../../../services/algo.service';
+import { Algo } from '../../models/algo.interface';
 
 @Component({
   selector: 'app-algo-duplicate-popup',
@@ -14,8 +15,7 @@ export class AlgoDuplicatePopupComponent implements OnInit, OnDestroy {
 
   algoDuplicateForm: FormGroup;
   onCreateSuccess: Function;
-  algoName: string;
-  algoId: string;
+  algo: Algo;
   subscriptions: Subscription[] = [];
 
 
@@ -30,7 +30,7 @@ export class AlgoDuplicatePopupComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.algoDuplicateForm.setValue({
-      Name: this.algoName + ' copy'
+      Name: this.algo.Name + ' copy'
     });
   }
 
@@ -45,12 +45,14 @@ export class AlgoDuplicatePopupComponent implements OnInit, OnDestroy {
       return;
     }
 
-    this.algoService.createAlgo({...this.algoDuplicateForm.value, AlgoId: this.algoId}).subscribe((algo) => {
-      this.onCreateSuccess(algo);
-      this.notificationsService.success('Success', 'Algo duplicated successfully.');
-      this.modalRef.hide();
+    this.algoService.algoGetSource(this.algo.Id, this.algo.ClientId).subscribe((code) => {
+      this.algo.Id = null;
+      this.algo.Content = btoa(code.Data);
+      this.algoService.createAlgo({...this.algo, ...this.algoDuplicateForm.value }).subscribe((algo) => {
+        this.onCreateSuccess(algo);
+        this.notificationsService.success('Success', 'Algo duplicated successfully.');
+        this.modalRef.hide();
+      });
     });
-
   }
-
 }

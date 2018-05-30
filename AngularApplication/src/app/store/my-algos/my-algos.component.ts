@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Algo, getAlgos } from '../models/algo.interface';
+import { Algo } from '../models/algo.interface';
 import { AlgoService } from '../../services/algo.service';
 import { Subscription } from 'rxjs/Subscription';
 import { PopupConfig } from '../../models/popup.interface';
@@ -15,28 +15,26 @@ import { AlgoDuplicatePopupComponent } from './algo-duplicate-popup/algo-duplica
 export class MyAlgosComponent {
 
   algos: Algo[];
-  loadingIndicator: boolean;
+  loadingIndicator = true;
   subscriptions: Subscription[] = [];
 
   constructor(private algoService: AlgoService, private bsModalService: BsModalService) {
-      // this.subscriptions.push(this.algoService.getMyAlgos().subscribe((algos) => {
-      //   this.algos = algos;
-      // }));
-
-
-      this.algos = getAlgos();
+      this.subscriptions.push(this.algoService.getMyAlgos().subscribe((algos) => {
+        this.algos = algos;
+        this.loadingIndicator = false;
+      }));
   }
 
   duplicateAlgo(algo: Algo): void {
-    const initialState = {
-      algoName: algo.Name,
-      algoId: algo.AlgoId,
-      onCreateSuccess: (newAlgo) => {
-        this.algos.push(newAlgo);
-      }
-    };
+      const initialState = {
+        algo,
+        onCreateSuccess: (newAlgo) => {
+          this.algos.push(newAlgo);
+          this.algos = [...this.algos];
+        }
+      };
 
-    this.bsModalService.show(AlgoDuplicatePopupComponent, {initialState, class: 'modal-sm', keyboard: false, ignoreBackdropClick: true});
+      this.bsModalService.show(AlgoDuplicatePopupComponent, {initialState, class: 'modal-sm', keyboard: false, ignoreBackdropClick: true});
   }
 
   delete(algo: Algo): void {

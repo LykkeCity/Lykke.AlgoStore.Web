@@ -29,6 +29,7 @@ import { MyAlgosComponent } from './my-algos/my-algos.component';
 import { AlgoEditComponent } from './algo-edit/algo-edit.component';
 import { AlgoCreateComponent } from './algo-create/algo-create.component';
 import { AlgoDuplicatePopupComponent } from './my-algos/algo-duplicate-popup/algo-duplicate-popup.component';
+import { AlgoVisibilityPipe } from './pipes/algo-visibility.pipe';
 
 // SERVICES
 @NgModule({
@@ -55,6 +56,7 @@ import { AlgoDuplicatePopupComponent } from './my-algos/algo-duplicate-popup/alg
     AlgoInstanceListComponent,
     InstanceTypeNamePipe,
     InstanceStatusNamePipe,
+    AlgoVisibilityPipe,
     AlgoCommentsComponent,
     AlgoCommentEditPopupComponent,
     AlgoBacktestPopupComponent,

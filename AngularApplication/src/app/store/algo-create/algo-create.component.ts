@@ -4,6 +4,7 @@ import { AlgoService } from '../../services/algo.service';
 import { Algo } from '../models/algo.interface';
 import { TabsetComponent } from 'ngx-bootstrap';
 import { Subscription } from 'rxjs/Subscription';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-algo-create',
@@ -26,7 +27,8 @@ export class AlgoCreateComponent implements OnDestroy {
 
   constructor(private algoService: AlgoService,
               private formBuilder: FormBuilder,
-              private ref: ChangeDetectorRef) {
+              private ref: ChangeDetectorRef,
+              private router: Router) {
 
     this.algoForm = this.formBuilder.group({
       Name: ['', Validators.required],
@@ -56,6 +58,7 @@ export class AlgoCreateComponent implements OnDestroy {
 
   goBack(): void {
     this.algoSubmitted = false;
+    this.ref.detectChanges();
     this.staticTabs.tabs[1].active = true;
     this.algoErrors = '';
   }
@@ -89,14 +92,13 @@ export class AlgoCreateComponent implements OnDestroy {
     this.ready = false;
     this.Algo.Content = btoa(this.Algo.Content);
     this.subscriptions.push(this.algoService.createAlgo({ ...this.algoForm.value, ...this.Algo }).subscribe((newAlgo) => {
-      this.Algo = newAlgo;
       this.ready = true;
-      this.algoSubmitted = true;
+      this.router.navigate(['/store/my-algos']);
     }, (error) => {
       this.Algo.Content = atob(this.Algo.Content);
       this.ready = true;
       this.algoSubmitted = true;
-      this.algoErrors = 'fdafadfsdaasd';
+      this.algoErrors = error.errorMessage;
     }));
   }
 
