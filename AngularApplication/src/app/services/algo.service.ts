@@ -14,6 +14,26 @@ export class AlgoService {
     return this.authRequestService.get(environment.storeApiUrl + '/v1/algo/getAllAlgos');
   }
 
+  getMyAlgos(): Observable<Algo[]> {
+    return this.authRequestService.get(environment.storeApiUrl + '/v1/algo/getAllUserAlgos');
+  }
+
+  createAlgo(algo: Algo): Observable<Algo> {
+    return this.authRequestService.post(environment.storeApiUrl + '/v1/algo/create', algo);
+  }
+
+  editAlgo(algo: Algo): Observable<Algo> {
+    return this.authRequestService.post(environment.storeApiUrl + '/v1/algo/edit', algo);
+  }
+
+  publish(AlgoId: string, ClientId: string): Observable<Algo> {
+    return this.authRequestService.post(environment.storeApiUrl + '/v1/algo/addToPublic', { AlgoId, ClientId });
+  }
+
+  unpublish(AlgoId: string, ClientId: string): Observable<Algo> {
+    return this.authRequestService.post(environment.storeApiUrl + '/v1/algo/removeFromPublic', { AlgoId, ClientId });
+  }
+
   algoGetAll(): Observable<Algo[]> {
     return this.authRequestService.get(environment.storeApiUrl + '/v1/clientData/metadata');
   }
@@ -54,11 +74,11 @@ export class AlgoService {
     return this.authRequestService.get(environment.storeApiUrl + '/v1/algo/sourceCode/getString', { params });
   }
 
-  algoSave(algoId: string, data: string): Observable<Algo> {
+  uploadSourceCodeAsString(algoId: string, data: string): Observable<Algo> {
     return this.authRequestService.post(environment.storeApiUrl + `/v1/algo/sourceCode/upload/string`, { AlgoId: algoId, Data: data });
   }
 
-  algoUpload(formData: FormData): Observable<Algo> {
+  uploadSourceCodeAsBinary(formData: FormData): Observable<Algo> {
     return this.authRequestService.post(environment.storeApiUrl + '/v1/algo/sourceCode/upload/binary', formData);
   }
 }

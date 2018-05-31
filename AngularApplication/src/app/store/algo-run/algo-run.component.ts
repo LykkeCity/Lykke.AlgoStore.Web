@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
-import { Algo } from '../models/algo.interface';
+import { Algo, AlgoVisibility } from '../models/algo.interface';
 import { Wallet } from '../../models/wallet.model';
 import { UserService } from '../../services/user.service';
 import { BsModalService } from 'ngx-bootstrap';
@@ -25,11 +25,13 @@ export class AlgoRunComponent implements OnInit, OnDestroy {
   subscriptions: Subscription[] = [];
   instancesArray: AlgoInstance[] = [];
   metadataForm: FormGroup;
+  iAlgoVisibility = AlgoVisibility;
   showMetadataForm = false;
   clientId: string;
   permissions: {
     canRunInstance: boolean,
     canSeeInstances: boolean,
+    canRunBacktest: boolean,
   };
 
   constructor(private route: ActivatedRoute,
@@ -42,6 +44,7 @@ export class AlgoRunComponent implements OnInit, OnDestroy {
       canRunInstance: this.userService.hasPermission(Permissions.SAVE_ALGO_INSTANCE_DATA)
       && this.userService.hasPermission(Permissions.UPLOAD_BINARY_FILE),
       canSeeInstances: this.userService.hasPermission(Permissions.GET_ALL_ALGO_INSTANCE_DATA),
+      canRunBacktest: this.userService.hasPermission(Permissions.RUN_BACKTEST)
     };
 
     this.subscriptions.push(this.route.params.subscribe(params => {
@@ -85,6 +88,10 @@ export class AlgoRunComponent implements OnInit, OnDestroy {
   }
 
   backtest(): void {
+    if (!this.permissions.canRunBacktest) {
+      return;
+    }
+
     this.mapFormToData();
     const assetPair = this.algo.AlgoMetaDataInformation.Parameters.find(param => param.Key === 'AssetPair').Value;
     const tradedAsset = this.algo.AlgoMetaDataInformation.Parameters.find(param => param.Key === 'TradedAsset').Value;

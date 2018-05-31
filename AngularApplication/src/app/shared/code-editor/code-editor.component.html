@@ -8,7 +8,7 @@
       <span><ui-switch size="small" (click)="onThemeChange()"></ui-switch></span>
     </div>
   </div>
-  <div>
+  <div class="ace-editor-holder">
     <ace-editor [(text)]="config.sourceCode" [mode]="config.mode" [readOnly]="config.readOnly" id="editor"></ace-editor>
   </div>
 </div>

@@ -229,7 +229,6 @@ export class AlgoInstanceComponent implements OnDestroy {
       .subscribe(
         res => {
           this.stats = res;
-          this.stats.NetProfit = Number.parseFloat(this.stats.NetProfit).toFixed(2);
         }
       );
   }

@@ -15,6 +15,7 @@ import { StarRatingConfigService } from './star-rating/star-rating-config';
 import { ACLGuard } from '../services/acl.guard';
 import { UserDetailsGuard } from '../services/user-details.guard';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
+import { LoaderComponent } from './loader/loader.component';
 
 
 @NgModule({
@@ -38,7 +39,8 @@ import { NgxDatatableModule } from '@swimlane/ngx-datatable';
     PopupComponent,
     CodeEditorComponent,
     DateTimePickerComponent,
-    StarRatingComponent
+    StarRatingComponent,
+    LoaderComponent
   ],
   exports: [
     CommonModule,
@@ -53,7 +55,8 @@ import { NgxDatatableModule } from '@swimlane/ngx-datatable';
     FormsModule,
     ReactiveFormsModule,
     NgxDatatableModule,
-    PopoverModule
+    PopoverModule,
+    LoaderComponent
   ]
 })
 export class SharedModule {}

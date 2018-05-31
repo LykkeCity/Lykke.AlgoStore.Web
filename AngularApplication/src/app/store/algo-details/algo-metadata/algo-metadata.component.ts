@@ -11,6 +11,7 @@ export class AlgoMetadataComponent {
 
   @Input() metadata: AlgoMetadata;
   @Output() onHighlight = new EventEmitter<BaseAlgoParam>();
+  showAll: boolean;
 
   highlight(param: BaseAlgoParam): void {
     this.onHighlight.emit(param);

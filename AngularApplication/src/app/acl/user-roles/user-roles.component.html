@@ -37,6 +37,4 @@
   </div>
 </div>
 
-<div class="loader" *ngIf="!userInfo">
-  <img src="../../../assets/images/loader.svg">
-</div>
+<app-loader [ready]="userInfo"></app-loader>
