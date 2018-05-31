@@ -134,10 +134,10 @@ export class AlgoEditComponent implements OnInit, OnDestroy {
       return;
     }
 
-    this.algoService.publish(this.algo.AlgoId, this.algo.ClientId).subscribe(() => {
+    this.subscriptions.push(this.algoService.publish(this.algo.AlgoId, this.algo.ClientId).subscribe(() => {
       this.algo.AlgoVisibility = this.iAlgoVisibility.Public;
       this.notificationsService.success('Success', 'Algo has been published successfully.');
-    });
+    }));
   }
 
   goPrivate(): void {
@@ -145,10 +145,10 @@ export class AlgoEditComponent implements OnInit, OnDestroy {
       return;
     }
 
-    this.algoService.unpublish(this.algo.AlgoId, this.algo.ClientId).subscribe(() => {
+    this.subscriptions.push(this.algoService.unpublish(this.algo.AlgoId, this.algo.ClientId).subscribe(() => {
       this.algo.AlgoVisibility = this.iAlgoVisibility.Private;
       this.notificationsService.success('Success', 'Algo has been unpublished successfully.');
-    });
+    }));
   }
 
   onSubmit(): void {
