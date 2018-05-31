@@ -93,7 +93,8 @@ export class AlgoCreateComponent implements OnDestroy {
     this.Algo.Content = btoa(this.Algo.Content);
     this.subscriptions.push(this.algoService.createAlgo({ ...this.algoForm.value, ...this.Algo }).subscribe((newAlgo) => {
       this.ready = true;
-      this.router.navigate(['/store/my-algos']);
+      this.algoSubmitted = true;
+      this.Algo.AlgoId = newAlgo.Id;
     }, (error) => {
       this.Algo.Content = atob(this.Algo.Content);
       this.ready = true;

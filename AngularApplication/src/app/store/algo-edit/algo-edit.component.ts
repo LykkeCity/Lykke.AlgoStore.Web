@@ -148,6 +148,8 @@ export class AlgoEditComponent implements OnInit, OnDestroy {
     this.subscriptions.push(this.algoService.unpublish(this.algo.AlgoId, this.algo.ClientId).subscribe(() => {
       this.algo.AlgoVisibility = this.iAlgoVisibility.Private;
       this.notificationsService.success('Success', 'Algo has been unpublished successfully.');
+    }, (error) => {
+      this.notificationsService.error('Error', error.DisplayMessage);
     }));
   }
 
