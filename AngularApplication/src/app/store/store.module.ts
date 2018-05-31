@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { SharedModule } from '../shared/shared.module';
-import { ArchwizardModule } from 'ng2-archwizard';
 import { AngularSplitModule } from 'angular-split';
 import { TabsModule } from 'ngx-bootstrap';
 import { QuillModule } from 'ngx-quill';
@@ -36,7 +35,6 @@ import { AlgoVisibilityPipe } from './pipes/algo-visibility.pipe';
   imports: [
     StoreRouting,
     SharedModule,
-    ArchwizardModule,
     TabsModule.forRoot(),
     AngularSplitModule,
     QuillModule,
