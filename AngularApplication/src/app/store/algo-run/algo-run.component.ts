@@ -178,7 +178,7 @@ export class AlgoRunComponent implements OnInit, OnDestroy {
     const formValue = this.metadataForm.value;
 
     this.algo.AlgoMetaDataInformation.Parameters.forEach(param => {
-      if (param.Type === 'DateTime') {
+      if (param.Type === 'System.DateTime') {
         param.Value = DateTime.toUtc(formValue.Parameters[param.Key]);
       } else {
         param.Value = formValue.Parameters[param.Key];
@@ -187,7 +187,7 @@ export class AlgoRunComponent implements OnInit, OnDestroy {
 
     this.algo.AlgoMetaDataInformation.Functions.forEach(func => {
       func.Parameters.forEach(funcParam => {
-        if (funcParam.Type === 'DateTime') {
+        if (funcParam.Type === 'System.DateTime') {
           funcParam.Value = DateTime.toUtc(formValue.Functions[func.Id][funcParam.Key]);
         } else {
           funcParam.Value = formValue.Functions[func.Id][funcParam.Key];
