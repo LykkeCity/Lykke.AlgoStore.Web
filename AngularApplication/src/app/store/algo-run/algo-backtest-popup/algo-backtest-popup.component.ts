@@ -3,8 +3,6 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { BsModalRef } from 'ngx-bootstrap';
 import { InstanceService } from '../../../services/instance.service';
 import { AlgoInstanceData } from '../../models/algo-instance.model';
-import { IDatePickerConfig } from 'ng2-date-picker';
-import * as moment from 'moment';
 import { Subscription } from 'rxjs/Subscription';
 import { NotificationsService } from 'angular2-notifications';
 
@@ -20,7 +18,6 @@ export class AlgoBacktestPopupComponent implements OnInit {
   assetTwo: string;
   onSuccess: Function;
   algoInstanceData: AlgoInstanceData;
-  dpConfig: IDatePickerConfig;
   subscriptions: Subscription[] = [];
 
   constructor(private fb: FormBuilder,
@@ -32,11 +29,6 @@ export class AlgoBacktestPopupComponent implements OnInit {
       BacktestTradingAssetBalance: ['', {validators: [Validators.required, Validators.min(0)], updateOn: 'submit'}],
       BacktestAssetTwoBalance: ['', {validators: [Validators.required, Validators.min(0)], updateOn: 'submit'}]
     });
-
-    this.dpConfig = {
-      max: moment(),
-      format: 'YYYY-MM-DD',
-    };
   }
 
   ngOnInit() {
