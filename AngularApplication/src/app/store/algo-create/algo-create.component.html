@@ -75,7 +75,7 @@
                   <hr />
                 </div>
 
-                <input type="file" accept='text/plain' (change)='openFile($event)' hidden #file>
+                <input type="file" accept=".cs" (change)='openFile($event)' hidden #file>
 
                 <div class="col-12" *ngIf="!userFile">
                   <span class="text-muted cursor-pointer" (click)="file.click()">Upload file here</span>
