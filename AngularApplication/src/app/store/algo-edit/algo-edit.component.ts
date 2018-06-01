@@ -62,7 +62,6 @@ export class AlgoEditComponent implements OnInit, OnDestroy {
       const clientId = params['clientId'];
       this.subscriptions.push(this.algoService.getAlgoWithSource(algoId, clientId).subscribe(algo => {
         this.algo = algo;
-        this.algo.Content = algo.Data; // TODO remove this custom mapping when the API unifies it
         this.algo.ClientId = clientId;
 
         this.algoForm.setValue({

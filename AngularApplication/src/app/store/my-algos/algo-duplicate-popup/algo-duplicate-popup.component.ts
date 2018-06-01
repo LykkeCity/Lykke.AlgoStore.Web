@@ -48,7 +48,7 @@ export class AlgoDuplicatePopupComponent implements OnInit, OnDestroy {
     this.subscriptions.push(this.algoService.algoGetSource((this.algo.Id || this.algo.AlgoId), this.algo.ClientId).subscribe((code) => {
       const id = this.algo.Id;
       this.algo.Id = null;
-      this.algo.Content = btoa(code.Data);
+      this.algo.Content = btoa(code.Content);
       this.subscriptions.push(this.algoService.createAlgo({...this.algo, ...this.algoDuplicateForm.value }).subscribe((algo) => {
         this.algo.Id = id;
         this.onCreateSuccess(algo);

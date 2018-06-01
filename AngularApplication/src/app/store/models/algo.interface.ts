@@ -18,7 +18,6 @@ export interface Algo {
     UsersCount?: string;
     Rating?: number;
     RatedUsersCount?: number;
-    Data?: string;
     Content?: string;
     AlgoVisibility?: AlgoVisibility;
     AlgoMetaDataInformation?: AlgoMetadata;
