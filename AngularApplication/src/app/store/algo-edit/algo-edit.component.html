@@ -35,11 +35,6 @@
       <h5 class="mb-0">General details</h5>
     </div>
     <div class="col-4 text-right action-buttons">
-        <span class="ml-3 cursor-pointer text-muted" (click)="runDemo()">
-          <img src="../../../assets/images/store/run-demo-icon.svg"/>
-          <span>Run demo</span>
-        </span>
-
       <span class="ml-3 cursor-pointer text-muted" (click)="delete()" *ngIf="permissions.canDelete">
         <img src="../../../assets/images/store/delete-icon.svg"/>
         <span>Delete Algo</span>
@@ -112,7 +107,7 @@
 
 <ng-template #editTooltip>
   <div>
-    <p>You cannot publish this algo because you made changes. Save them in order to publish it.</p>
+    <p>You cannot {{algo.AlgoVisibility === iAlgoVisibility.Public ? 'unpublish' : 'publish'}} this algo because you made changes. Save them in order to {{algo.AlgoVisibility === iAlgoVisibility.Public ? 'unpublish' : 'publish'}} it.</p>
   </div>
 </ng-template>
 

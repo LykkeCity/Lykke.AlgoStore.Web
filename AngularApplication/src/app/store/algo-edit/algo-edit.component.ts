@@ -95,13 +95,6 @@ export class AlgoEditComponent implements OnInit, OnDestroy {
     this.canBePublished = false;
   }
 
-  runDemo(): void {
-    const initialState = {
-      type: 'Demo'
-    };
-    this.bsModalService.show(AlgoInstancePopupComponent, { initialState, class: 'modal-sm run-instance-popup' });
-  }
-
   delete(): void {
     if (!this.permissions.canDelete) {
       return;
