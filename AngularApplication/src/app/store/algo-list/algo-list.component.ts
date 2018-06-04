@@ -33,4 +33,10 @@ export class AlgoListComponent implements OnInit, OnDestroy {
     this.loadingIndicator = false;
     this.dataSource = result;
   };
+
+  isBigger({ row, column, value }): any {
+    return {
+      'block-cell': value.length > 30
+    };
+  }
 }

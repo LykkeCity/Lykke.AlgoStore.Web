@@ -80,4 +80,10 @@ export class MyAlgosComponent {
     //   this.router.navigate(['/store/my-algos']);
     // }));
   }
+
+  isBigger({ row, column, value }): any {
+    return {
+      'block-cell': value.length > 30
+    };
+  }
 }

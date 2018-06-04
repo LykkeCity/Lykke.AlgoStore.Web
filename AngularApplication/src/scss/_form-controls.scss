@@ -128,4 +128,15 @@
   color: white;
 }
 
+.link-style {
+  cursor: pointer;
+  font-size: 1.125rem;
+  color: $azure;
+
+  &:hover {
+    color: $slate;
+    text-decoration: none;
+  }
+}
+
 
