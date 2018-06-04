@@ -11,7 +11,7 @@
   <div class="col-8 metadata-name">
     <div>{{param.Key}}</div>
     <div class="text-muted metadata-value" *ngIf="param.Type === 'System.DateTime'">{{param.Value ? (param.Value | amLocal | amDateFormat:'YYYY-MM-DD HH:mm:ss' ) : ''}}</div>
-    <div class="text-muted metadata-value" *ngIf="param.Type !== 'System.DateTime'">{{param.Value}}</div>
+    <div class="text-muted metadata-value" *ngIf="param.Type !== 'System.DateTime'">{{param.DisplayValue ? param.DisplayValue : param.Value}}</div>
   </div>
   <div class="col-4 text-right cursor-pointer">
     <span class="text-muted" (click)="highlight(param)">Find</span>
@@ -24,7 +24,7 @@
         <div class="col-8 metadata-name">
           <div>{{func.Id}}.{{param.Key}}</div>
           <div class="text-muted metadata-value" *ngIf="param.Type === 'System.DateTime'">{{param.Value ? (param.Value | amLocal | amDateFormat:'YYYY-MM-DD HH:mm:ss' ) : ''}}</div>
-          <div class="text-muted metadata-value" *ngIf="param.Type !== 'System.DateTime'">{{param.Value}}</div>
+          <div class="text-muted metadata-value" *ngIf="param.Type !== 'System.DateTime'">{{param.DisplayValue ? param.DisplayValue : param.Value}}</div>
         </div>
         <div class="col-4 text-right cursor-pointer">
           <span class="text-muted" (click)="highlight(param)">Find</span>
