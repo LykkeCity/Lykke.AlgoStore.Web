@@ -8,6 +8,7 @@ import { BsModalService } from 'ngx-bootstrap';
 import { AlgoDuplicatePopupComponent } from './algo-duplicate-popup/algo-duplicate-popup.component';
 import { UserService } from '../../services/user.service';
 import Permissions from '../models/permissions';
+import { NotificationsService } from 'angular2-notifications';
 
 @Component({
   selector: 'app-my-algos',
@@ -26,14 +27,17 @@ export class MyAlgosComponent {
     canDuplicate: boolean
   };
 
-  constructor(private algoService: AlgoService, private bsModalService: BsModalService, private usersService: UserService) {
+  constructor(private algoService: AlgoService,
+              private bsModalService: BsModalService,
+              private usersService: UserService,
+              private notificationsService: NotificationsService) {
       this.subscriptions.push(this.algoService.getMyAlgos().subscribe((algos) => {
         this.algos = algos;
         this.loadingIndicator = false;
       }));
 
       this.permissions = {
-        canDeleteAlgo: true, // TODO add real permission when it exists
+        canDeleteAlgo: this.usersService.hasPermission(Permissions.DELETE_ALGO),
         canDuplicate: this.usersService.hasPermission(Permissions.CREATE_ALGO),
         canEditAlgo: this.usersService.hasPermission(Permissions.EDIT_ALGO)
       };
@@ -75,10 +79,22 @@ export class MyAlgosComponent {
   }
 
   deleteAlgo(algo: Algo): void {
-    // this.subscriptions.push(this.algoService.deleteAlgo(algo).subscribe(() => {
-    //   this.notificationsService.success('Success', 'Algo has been deleted successfully.');
-    //   this.router.navigate(['/store/my-algos']);
-    // }));
+    const deleteModel = {
+      AlgoId: algo.Id,
+      AlgoClientId: algo.ClientId,
+      ForceDelete: false
+    };
+
+    this.subscriptions.push(this.algoService.delete(deleteModel).subscribe(() => {
+      this.notificationsService.success('Success', 'Algo has been deleted successfully.');
+
+      const index = this.algos.findIndex(a => a.Id === algo.Id);
+      this.algos.splice(index, 1);
+
+      this.algos = [...this.algos];
+    }, (error) => {
+      this.notificationsService.error('Error', error.DisplayMessage);
+    }));
   }
 
   isBigger({ row, column, value }): any {

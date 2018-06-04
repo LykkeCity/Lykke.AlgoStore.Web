@@ -3,6 +3,7 @@
 export default class Permissions {
   static readonly CREATE_ALGO = 'CreateAlgo';
   static readonly EDIT_ALGO = 'EditAlgo';
+  static readonly DELETE_ALGO = 'DeleteAlgo';
   static readonly GET_USER_ALGOS = 'GetAllUserAlgos';
   static readonly ADD_TO_PUBLIC = 'AddToPublic';
   static readonly REMOVE_FROM_PUBLIC = 'RemoveFromPublic';
