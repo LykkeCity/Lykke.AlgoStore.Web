@@ -139,8 +139,8 @@ export class AlgoInstanceComponent implements OnDestroy {
   }
 
   backtest(): void {
-    const assetPair = this.algo.AlgoMetaDataInformation.Parameters.find(param => param.Key === 'AssetPair').Value;
-    const tradedAsset = this.algo.AlgoMetaDataInformation.Parameters.find(param => param.Key === 'TradedAsset').Value;
+    const assetPair = this.instance.AlgoMetaDataInformation.Parameters.find(param => param.Key === 'AssetPair').Value;
+    const tradedAsset = this.instance.AlgoMetaDataInformation.Parameters.find(param => param.Key === 'TradedAsset').Value;
     let assetTwoName = '';
 
     if (assetPair.indexOf(tradedAsset) === 0) {
@@ -155,7 +155,7 @@ export class AlgoInstanceComponent implements OnDestroy {
       algoInstanceData: {
         AlgoClientId: this.clientId,
         AlgoId: this.algo.AlgoId,
-        AlgoMetaDataInformation: this.algo.AlgoMetaDataInformation,
+        AlgoMetaDataInformation: this.instance.AlgoMetaDataInformation,
         AlgoInstanceType: IAlgoInstanceType.Test
       } as AlgoInstanceData,
       onSuccess: (instance) => {
