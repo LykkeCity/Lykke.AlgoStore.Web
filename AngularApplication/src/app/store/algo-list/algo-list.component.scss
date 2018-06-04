@@ -1,15 +1,17 @@
 @import '~scss/reuse';
 
-/*
-   server-side-angular-way.component.css
-*/
 .no-data-available {
   text-align: center;
 }
 
-/*
-   src/styles.css (i.e. your global style)
-*/
-.dataTables_empty {
-  display: none;
+::ng-deep {
+  .tooltip-inner {
+    max-width: 500px
+  }
+
+  .block-cell {
+    .datatable-body-cell-label {
+      display: block !important;
+    }
+  }
 }
