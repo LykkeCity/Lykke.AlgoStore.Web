@@ -1,4 +1,4 @@
-<div class="container mt-5" *ngIf="algo">
+<div class="container mt-5" *ngIf="algo && instances">
   <div class="row">
     <div class="col-10">
       <h3 class="d-inline-block mb-0 algo-name">{{algo.Name}}</h3>
@@ -34,10 +34,17 @@
     <div class="col-8">
       <h5 class="mb-0">General details</h5>
     </div>
-    <div class="col-4 text-right action-buttons">
-      <span class="ml-3 cursor-pointer text-muted" (click)="delete()" *ngIf="permissions.canDelete">
+    <div class="col-4 text-right action-buttons public-holder" *ngIf="algo.AlgoVisibility !== iAlgoVisibility.Public">
+      <span class="ml-3 cursor-pointer text-muted" (click)="delete(false)" *ngIf="permissions.canDelete && !forceDelete">
         <img src="../../../assets/images/store/delete-icon.svg"/>
         <span>Delete Algo</span>
+      </span>
+      <span class="ml-3 cursor-pointer text-muted" (click)="delete(true)" *ngIf="permissions.canDelete && forceDelete">
+        <img src="../../../assets/images/store/delete-icon.svg"/>
+        <span [popover]="forceDeleteTooltip"
+              [outsideClick]="true"
+              placement="bottom"
+              triggers="mouseenter:mouseleave">Force-delete Algo</span>
       </span>
     </div>
   </div>
@@ -103,11 +110,19 @@
 </div>
 
 
-<app-loader [ready]="algo"></app-loader>
+<app-loader [ready]="algo && instances"></app-loader>
 
 <ng-template #editTooltip>
   <div>
     <p>You cannot {{algo.AlgoVisibility === iAlgoVisibility.Public ? 'unpublish' : 'publish'}} this algo because you made changes. Save them in order to {{algo.AlgoVisibility === iAlgoVisibility.Public ? 'unpublish' : 'publish'}} it.</p>
+  </div>
+</ng-template>
+
+<ng-template #forceDeleteTooltip>
+  <div>
+    <p>
+      All instances, running or not, will be deleted and all history data will be lost.
+    </p>
   </div>
 </ng-template>
 

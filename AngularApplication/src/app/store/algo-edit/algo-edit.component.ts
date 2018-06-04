@@ -5,13 +5,14 @@ import { Subscription } from 'rxjs/Subscription';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { BaseAlgoParam } from '../models/base-algo-param.model';
-import { AlgoInstancePopupComponent } from '../algo-run/algo-run-popup/algo-instance-popup.component';
 import { BsModalService } from 'ngx-bootstrap';
 import { PopupConfig } from '../../models/popup.interface';
 import { PopupComponent } from '../../components/popup/popup.component';
 import { NotificationsService } from 'angular2-notifications';
 import { UserService } from '../../services/user.service';
 import Permissions from '../models/permissions';
+import { InstanceService } from '../../services/instance.service';
+import { AlgoInstance } from '../models/algo-instance.model';
 
 @Component({
   selector: 'app-algo-create',
@@ -26,6 +27,8 @@ export class AlgoEditComponent implements OnInit, OnDestroy {
   canBePublished: boolean;
   iAlgoVisibility = AlgoVisibility;
   algoErrors: string;
+  instances: AlgoInstance[];
+  forceDelete: boolean;
 
   permissions: {
     canPublish: boolean,
@@ -41,7 +44,8 @@ export class AlgoEditComponent implements OnInit, OnDestroy {
               private bsModalService: BsModalService,
               private notificationsService: NotificationsService,
               private router: Router,
-              private usersService: UserService) {
+              private usersService: UserService,
+              private instanceService: InstanceService) {
     this.algoForm = this.fb.group({
       Name: ['',  { validators: [Validators.required], updateOn: 'submit'}],
       Description: ['', { updateOn: 'submit' }]
@@ -52,7 +56,7 @@ export class AlgoEditComponent implements OnInit, OnDestroy {
     this.permissions = {
       canPublish: this.usersService.hasPermission(Permissions.ADD_TO_PUBLIC),
       canUnpublish: this.usersService.hasPermission(Permissions.REMOVE_FROM_PUBLIC),
-      canDelete: true // TODO change when exist
+      canDelete: this.usersService.hasPermission(Permissions.DELETE_ALGO)
     };
   }
 
@@ -63,6 +67,11 @@ export class AlgoEditComponent implements OnInit, OnDestroy {
       this.subscriptions.push(this.algoService.getAlgoWithSource(algoId, clientId).subscribe(algo => {
         this.algo = algo;
         this.algo.ClientId = clientId;
+
+        this.subscriptions.push(this.instanceService.getAlgoInstances(algoId).subscribe(instances => {
+          this.instances = instances;
+          this.forceDelete = instances && instances.length > 0;
+        }));
 
         this.algoForm.setValue({
           Name: this.algo.Name,
@@ -95,7 +104,7 @@ export class AlgoEditComponent implements OnInit, OnDestroy {
     this.canBePublished = false;
   }
 
-  delete(): void {
+  delete(force: boolean): void {
     if (!this.permissions.canDelete) {
       return;
     }
@@ -107,18 +116,26 @@ export class AlgoEditComponent implements OnInit, OnDestroy {
         btnCancelText: 'Cancel',
         btnConfirmText: 'Delete',
         successCallback: () => {
-          this.deleteAlgo(this.algo);
+          this.deleteAlgo(force);
         }
       } as PopupConfig
     };
     this.bsModalService.show(PopupComponent, {initialState, class: 'modal-sm', keyboard: false, ignoreBackdropClick: true});
   }
 
-  deleteAlgo(algo: Algo): void {
-    // this.subscriptions.push(this.algoService.deleteAlgo(algo).subscribe(() => {
-    //   this.notificationsService.success('Success', 'Algo has been deleted successfully.');
-    //   this.router.navigate(['/store/my-algos']);
-    // }));
+  deleteAlgo(force: boolean): void {
+    const deleteModel = {
+      AlgoId: this.algo.AlgoId,
+      AlgoClientId: this.algo.ClientId,
+      ForceDelete: force
+    };
+
+    this.subscriptions.push(this.algoService.delete(deleteModel).subscribe(() => {
+      this.notificationsService.success('Success', 'Algo has been deleted successfully.');
+      this.router.navigate(['/store/my-algos']);
+    }, (error) => {
+      this.notificationsService.error('Error', error.DisplayMessage);
+    }));
   }
 
   goPublic(): void {

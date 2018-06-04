@@ -18,14 +18,14 @@ export class AlgoMetadataComponent implements OnChanges {
       this.metadata = changes['metadata'].currentValue;
 
       this.metadata.Parameters.forEach(param => {
-        if (param['PredefinedValues'].length) {
+        if (param['PredefinedValues'].length && param.Value) {
           param['DisplayValue'] = param['PredefinedValues'].find(p => p.Value === param.Value).Key;
         }
       });
 
       this.metadata.Functions.forEach(func => {
         func.Parameters.forEach(param => {
-          if (param['PredefinedValues'].length) {
+          if (param['PredefinedValues'].length && param.Value) {
             param['DisplayValue'] = param['PredefinedValues'].find(p => p.Value === param.Value).Key;
           }
         });

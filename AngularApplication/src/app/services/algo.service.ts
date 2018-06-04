@@ -26,6 +26,10 @@ export class AlgoService {
     return this.authRequestService.post(environment.storeApiUrl + '/v1/algo/edit', algo);
   }
 
+  delete(deleteModel: any): Observable<Algo> {
+    return this.authRequestService.delete(environment.storeApiUrl + '/v1/algo/delete', { body: deleteModel });
+  }
+
   publish(AlgoId: string, ClientId: string): Observable<Algo> {
     return this.authRequestService.post(environment.storeApiUrl + '/v1/algo/addToPublic', { AlgoId, ClientId });
   }
