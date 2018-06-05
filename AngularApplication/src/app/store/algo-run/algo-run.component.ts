@@ -13,6 +13,7 @@ import { InstanceService } from '../../services/instance.service';
 import Permissions from '../models/permissions';
 import { AlgoBacktestPopupComponent } from './algo-backtest-popup/algo-backtest-popup.component';
 import DateTime from '../../core/utils/date-time';
+import { NotificationsService } from 'angular2-notifications';
 
 @Component({
   selector: 'app-algo-run',
@@ -39,7 +40,8 @@ export class AlgoRunComponent implements OnInit, OnDestroy {
               private algoService: AlgoService,
               private instanceService: InstanceService,
               private userService: UserService,
-              private bsModalService: BsModalService) {
+              private bsModalService: BsModalService,
+              private notificationsService: NotificationsService) {
 
     this.permissions = {
       canRunInstance: this.userService.hasPermission(Permissions.SAVE_ALGO_INSTANCE_DATA)
@@ -104,6 +106,11 @@ export class AlgoRunComponent implements OnInit, OnDestroy {
       assetTwoName = assetPair.substr(0, assetPair.indexOf(tradedAsset));
     }
 
+    if (!assetTwoName) {
+      this.notificationsService.error('Error', 'Your AssetPair and TradedAsset do not match');
+      return;
+    }
+
     const initialState = {
       tradeAsset: tradedAsset,
       assetTwo: assetTwoName,
@@ -126,6 +133,15 @@ export class AlgoRunComponent implements OnInit, OnDestroy {
     }
 
     this.mapFormToData();
+
+    const assetPair = this.algo.AlgoMetaDataInformation.Parameters.find(param => param.Key === 'AssetPair').Value;
+    const tradedAsset = this.algo.AlgoMetaDataInformation.Parameters.find(param => param.Key === 'TradedAsset').Value;
+
+    if (assetPair.indexOf(tradedAsset) === -1) {
+      this.notificationsService.error('Error', 'Your AssetPair and TradedAsset do not match');
+      return;
+    }
+
     const initialState = {
       type: 'Live',
       algoInstanceData: {

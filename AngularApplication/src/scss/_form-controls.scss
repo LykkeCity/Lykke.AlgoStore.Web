@@ -21,6 +21,33 @@
   border: none;
 }
 
+.ng-select.form-control {
+  padding: 0.375rem 0.75rem !important;
+
+  &.ng-select-focused:not(.ng-select-opened) {
+    .ng-select-container {
+      border-color: transparent;
+      box-shadow: none;
+    }
+  }
+
+  .ng-select-container {
+    border: none;
+
+    &:hover {
+      box-shadow: none;
+    }
+  }
+
+  .ng-input, .ng-value-container {
+    outline: none;
+  }
+
+  .ng-dropdown-panel {
+    left: 0;
+  }
+}
+
 .nav-tabs {
   background-color: $pale-grey-two;
   border: none;

@@ -5,6 +5,7 @@ import { TabsModule } from 'ngx-bootstrap';
 import { QuillModule } from 'ngx-quill';
 import { MomentModule } from 'angular2-moment';
 import { NgxPaginationModule } from 'ngx-pagination';
+import { NgSelectModule } from '@ng-select/ng-select';
 
 // ROUTING
 import { StoreRouting } from './store-routing.module';
@@ -39,7 +40,8 @@ import { AlgoVisibilityPipe } from './pipes/algo-visibility.pipe';
     AngularSplitModule,
     QuillModule,
     MomentModule,
-    NgxPaginationModule
+    NgxPaginationModule,
+    NgSelectModule
   ],
   declarations: [
     StoreComponent,
