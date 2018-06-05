@@ -37,5 +37,5 @@ export default class Permissions {
   static readonly SAVE_ALGO_INSTANCE_DATA = 'SaveAlgoInstanceDataAsync';
   static readonly SAVE_USER_ROLE = 'SaveUserRole';
   static readonly UPLOAD_BINARY_FILE = 'UploadBinaryFile';
-  static readonly RUN_BACKTEST = 'SaveAlgoBackTestInstanceDataAsync';
+  static readonly RUN_FAKE_TRADE = 'SaveAlgoFakeTradingInstanceDataAsync';
 }

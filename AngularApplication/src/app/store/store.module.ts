@@ -24,7 +24,7 @@ import { InstanceTypeNamePipe } from './pipes/instance-type-name.pipe';
 import { InstanceStatusNamePipe } from './pipes/instance-status-name.pipe';
 import { AlgoCommentsComponent } from './algo-details/algo-comments/algo-comments.component';
 import { AlgoCommentEditPopupComponent } from './algo-details/algo-comments/algo-comment-edit-popup/algo-comment-edit-popup.component';
-import { AlgoBacktestPopupComponent } from './algo-run/algo-backtest-popup/algo-backtest-popup.component';
+import { AlgoFakeTradingPopupComponent } from './algo-run/algo-fake-trading-popup/algo-fake-trading-popup.component';
 import { MyAlgosComponent } from './my-algos/my-algos.component';
 import { AlgoEditComponent } from './algo-edit/algo-edit.component';
 import { AlgoCreateComponent } from './algo-create/algo-create.component';
@@ -59,12 +59,12 @@ import { AlgoVisibilityPipe } from './pipes/algo-visibility.pipe';
     AlgoVisibilityPipe,
     AlgoCommentsComponent,
     AlgoCommentEditPopupComponent,
-    AlgoBacktestPopupComponent,
+    AlgoFakeTradingPopupComponent,
     AlgoEditComponent,
     AlgoCreateComponent,
     AlgoDuplicatePopupComponent,
   ],
   providers: [],
-  entryComponents: [AlgoInstancePopupComponent, AlgoCommentEditPopupComponent, AlgoBacktestPopupComponent, AlgoDuplicatePopupComponent]
+  entryComponents: [AlgoInstancePopupComponent, AlgoCommentEditPopupComponent, AlgoFakeTradingPopupComponent, AlgoDuplicatePopupComponent]
 })
 export class StoreModule { }
