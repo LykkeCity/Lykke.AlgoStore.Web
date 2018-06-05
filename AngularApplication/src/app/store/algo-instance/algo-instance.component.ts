@@ -18,7 +18,7 @@ import { PopupConfig } from '../../models/popup.interface';
 import { AlgoService } from '../../services/algo.service';
 import { InstanceService } from '../../services/instance.service';
 import Permissions from '../models/permissions';
-import { AlgoBacktestPopupComponent } from '../algo-run/algo-backtest-popup/algo-backtest-popup.component';
+import { AlgoFakeTradingPopupComponent } from '../algo-run/algo-fake-trading-popup/algo-fake-trading-popup.component';
 
 @Component({
   selector: 'app-algo-instance',
@@ -162,7 +162,7 @@ export class AlgoInstanceComponent implements OnDestroy {
         this.router.navigate(['/store/algo-run', this.clientId, this.algo.AlgoId]);
       }
     };
-    this.bsModalService.show(AlgoBacktestPopupComponent, { initialState, class: 'modal-sm backtest-instance-popup' });
+    this.bsModalService.show(AlgoFakeTradingPopupComponent, { initialState, class: 'modal-sm fakeTrading-instance-popup' });
   }
 
   stopInstancePrompt(): void {

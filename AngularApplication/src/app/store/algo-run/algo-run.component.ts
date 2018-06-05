@@ -11,7 +11,7 @@ import { AlgoInstance, AlgoInstanceData, IAlgoInstanceType } from '../models/alg
 import { AlgoService } from '../../services/algo.service';
 import { InstanceService } from '../../services/instance.service';
 import Permissions from '../models/permissions';
-import { AlgoBacktestPopupComponent } from './algo-backtest-popup/algo-backtest-popup.component';
+import { AlgoFakeTradingPopupComponent } from './algo-fake-trading-popup/algo-fake-trading-popup.component';
 import DateTime from '../../core/utils/date-time';
 import { NotificationsService } from 'angular2-notifications';
 
@@ -28,12 +28,13 @@ export class AlgoRunComponent implements OnInit, OnDestroy {
   instancesArray: AlgoInstance[] = [];
   metadataForm: FormGroup;
   iAlgoVisibility = AlgoVisibility;
+  iAlgoInstanceType = IAlgoInstanceType;
   showMetadataForm = false;
   clientId: string;
   permissions: {
     canRunInstance: boolean,
     canSeeInstances: boolean,
-    canRunBacktest: boolean,
+    canRunFakeTrading: boolean,
   };
 
   constructor(private route: ActivatedRoute,
@@ -47,7 +48,7 @@ export class AlgoRunComponent implements OnInit, OnDestroy {
       canRunInstance: this.userService.hasPermission(Permissions.SAVE_ALGO_INSTANCE_DATA)
       && this.userService.hasPermission(Permissions.UPLOAD_BINARY_FILE),
       canSeeInstances: this.userService.hasPermission(Permissions.GET_ALL_ALGO_INSTANCE_DATA),
-      canRunBacktest: this.userService.hasPermission(Permissions.RUN_BACKTEST)
+      canRunFakeTrading: this.userService.hasPermission(Permissions.RUN_FAKE_TRADE)
     };
 
     this.subscriptions.push(this.route.params.subscribe(params => {
@@ -83,15 +84,8 @@ export class AlgoRunComponent implements OnInit, OnDestroy {
     });
   }
 
-  runDemo(): void {
-    const initialState = {
-      type: 'Demo'
-    };
-    this.bsModalService.show(AlgoInstancePopupComponent, { initialState, class: 'modal-sm run-instance-popup' });
-  }
-
-  backtest(): void {
-    if (!this.permissions.canRunBacktest) {
+  fakeTrading(instanceType: IAlgoInstanceType): void {
+    if (!this.permissions.canRunFakeTrading) {
       return;
     }
 
@@ -118,13 +112,13 @@ export class AlgoRunComponent implements OnInit, OnDestroy {
         AlgoClientId: this.clientId,
         AlgoId: this.algo.AlgoId,
         AlgoMetaDataInformation: this.algo.AlgoMetaDataInformation,
-        AlgoInstanceType: IAlgoInstanceType.Test
+        AlgoInstanceType: instanceType
       } as AlgoInstanceData,
       onSuccess: (instance) => {
         this.instancesArray.push(instance);
       }
     };
-    this.bsModalService.show(AlgoBacktestPopupComponent, { initialState, class: 'modal-sm backtest-instance-popup' });
+    this.bsModalService.show(AlgoFakeTradingPopupComponent, { initialState, class: 'modal-sm fakeTrading-instance-popup' });
   }
 
   goLive(wallet: Wallet): void {

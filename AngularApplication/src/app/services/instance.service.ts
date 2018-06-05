@@ -49,12 +49,8 @@ export class InstanceService {
     return this.authRequestService.post<AlgoInstance>(environment.storeApiUrl + '/v1/algoInstances/saveAlgoInstance', data);
   }
 
-  createDemoAlgoIntance(data: AlgoInstance): Observable<AlgoInstance> {
-    return this.authRequestService.post(environment.storeApiUrl + '', {data: data}); // TODO add real endpoint
-  }
-
-  backtest(data: AlgoInstance): Observable<AlgoInstance> {
-    return this.authRequestService.post(environment.storeApiUrl + '/v1/algoInstances/backTestInstanceData', data);
+  fakeTrading(data: AlgoInstance): Observable<AlgoInstance> {
+    return this.authRequestService.post(environment.storeApiUrl + '/v1/algoInstances/fakeTradingInstanceData', data);
   }
 
   getAlgoInstances(algoId: string): Observable<AlgoInstance[]> {

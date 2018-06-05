@@ -2,18 +2,19 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { BsModalRef } from 'ngx-bootstrap';
 import { InstanceService } from '../../../services/instance.service';
-import { AlgoInstanceData } from '../../models/algo-instance.model';
+import { AlgoInstanceData, IAlgoInstanceType } from '../../models/algo-instance.model';
 import { Subscription } from 'rxjs/Subscription';
 import { NotificationsService } from 'angular2-notifications';
 
 @Component({
-  selector: 'app-algo-backtest-popup',
-  templateUrl: './algo-backtest-popup.component.html',
-  styleUrls: ['./algo-backtest-popup.component.scss']
+  selector: 'app-algo-fake-trading-popup',
+  templateUrl: './algo-fake-trading-popup.component.html',
+  styleUrls: ['./algo-fake-trading-popup.component.scss']
 })
-export class AlgoBacktestPopupComponent implements OnInit {
+export class AlgoFakeTradingPopupComponent implements OnInit {
 
   algoInstanceForm: FormGroup;
+  iAlgoInstanceType = IAlgoInstanceType;
   tradeAsset: string;
   assetTwo: string;
   onSuccess: Function;
@@ -26,8 +27,8 @@ export class AlgoBacktestPopupComponent implements OnInit {
               private notificationsService: NotificationsService) {
     this.algoInstanceForm = this.fb.group({
       InstanceName: ['', { validators: [Validators.required], updateOn: 'submit'}],
-      BacktestTradingAssetBalance: ['', {validators: [Validators.required, Validators.min(0)], updateOn: 'submit'}],
-      BacktestAssetTwoBalance: ['', {validators: [Validators.required, Validators.min(0)], updateOn: 'submit'}]
+      FakeTradingTradingAssetBalance: ['', {validators: [Validators.required, Validators.min(0)], updateOn: 'submit'}],
+      FakeTradingAssetTwoBalance: ['', {validators: [Validators.required, Validators.min(0)], updateOn: 'submit'}]
     });
   }
 
@@ -42,10 +43,10 @@ export class AlgoBacktestPopupComponent implements OnInit {
 
     const backtestData = {...this.algoInstanceData, ...this.algoInstanceForm.value};
 
-    this.instanceService.backtest(backtestData).subscribe((data) => {
+    this.instanceService.fakeTrading(backtestData).subscribe((data) => {
       this.subscriptions.push(this.instanceService.algoDeploy(this.algoInstanceData.AlgoClientId, data.AlgoId, data.InstanceId)
         .subscribe(() => {
-          this.notificationsService.success('Backtest instance created successfully.');
+          this.notificationsService.success('Instance created successfully.');
           this.modalRef.hide();
           this.onSuccess(data);
         }, () => {
