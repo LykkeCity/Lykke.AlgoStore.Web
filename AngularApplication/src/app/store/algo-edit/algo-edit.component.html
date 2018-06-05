@@ -1,7 +1,7 @@
 <div class="container mt-5" *ngIf="algo && instances">
   <div class="row">
     <div class="col-10">
-      <h3 class="d-inline-block mb-0 algo-name">{{algo.Name}}</h3>
+      <h3 class="d-inline-block mb-0 break-all">{{algo.Name}}</h3>
       <span class="label-private" *ngIf="algo.AlgoVisibility === iAlgoVisibility.Private">Private</span>
       <span class="label-public" *ngIf="algo.AlgoVisibility === iAlgoVisibility.Public">Public</span>
       <span class="label-draft" *ngIf="algo.AlgoVisibility === iAlgoVisibility.Demo">Draft</span>

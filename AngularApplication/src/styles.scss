@@ -29,6 +29,10 @@ body {
   cursor: pointer;
 }
 
+.break-all {
+  word-break: break-all;
+}
+
 button[disabled] {
   pointer-events: auto;
   cursor: not-allowed;
