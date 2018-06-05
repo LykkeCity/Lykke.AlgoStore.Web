@@ -168,7 +168,7 @@ export class AlgoEditComponent implements OnInit, OnDestroy {
       return;
     }
 
-    const tempAlgo = { ...this.algoForm.value, Id: this.algo.AlgoId, Date: this.algo.Date, Content: btoa(this.algo.Content) };
+    const tempAlgo = { ...this.algoForm.value, Id: this.algo.AlgoId, DateCreated: this.algo.DateCreated, DateModified: this.algo.DateModified, Content: btoa(this.algo.Content) };
     this.algoErrors = null;
 
     this.subscriptions.push(this.algoService.editAlgo(tempAlgo).subscribe(() => {

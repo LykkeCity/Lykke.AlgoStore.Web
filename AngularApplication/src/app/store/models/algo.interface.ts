@@ -12,7 +12,8 @@ export interface Algo {
     ClientId?: string;
     Name?: string;
     Description?: string;
-    Date?: string;
+    DateCreated?: string;
+    DateModified?: string;
     Status?: string;
     Author?: string;
     UsersCount?: string;
