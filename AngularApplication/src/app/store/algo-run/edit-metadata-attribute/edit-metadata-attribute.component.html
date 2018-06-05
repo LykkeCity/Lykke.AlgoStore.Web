@@ -1,25 +1,29 @@
-<div [ngSwitch]="metadataProperty.Type" [formGroup]="form">
+<div [formGroup]="form">
   <label class="metadata-key">
     <span *ngIf="formName">{{formName}}.</span>{{ metadataProperty.Key }}
   </label>
-  <div class="form-group" *ngSwitchCase="'System.String'">
+  <div class="form-group" *ngIf="metadataProperty.Type == 'System.String' && metadataProperty.PredefinedValues.length === 0">
     <input class="form-control" type="text" [formControlName]="metadataProperty.Key">
   </div>
-  <div *ngSwitchCase="'System.Int32'">
+  <div class="form-group" *ngIf="metadataProperty.Type == 'System.Int32'">
     <input class="form-control" type="number" [formControlName]="metadataProperty.Key">
   </div>
-  <div *ngSwitchCase="'System.Double'">
+  <div class="form-group" *ngIf="metadataProperty.Type == 'System.Double'">
     <input class="form-control" type="number" [formControlName]="metadataProperty.Key">
   </div>
-  <div *ngSwitchCase="'enum'">
+  <div *ngIf="metadataProperty.Type == 'enum'">
     <!-- TODO: try to create metadata property of enum type and work this case out here -->
   </div>
-  <div *ngSwitchCase="'System.DateTime'">
+  <div *ngIf="metadataProperty.Type == 'System.DateTime'">
     <app-date-time-picker [form]="form" [controlName]="metadataProperty.Key"></app-date-time-picker>
   </div>
-  <div *ngSwitchDefault>
-    <select *ngIf="metadataProperty.PredefinedValues" [formControlName]="metadataProperty.Key" class="custom-select">
-      <option [value]="option.Value" *ngFor="let option of metadataProperty.PredefinedValues">{{option.Key}}</option>
-    </select>
+  <div *ngIf="metadataProperty.PredefinedValues.length > 0">
+    <ng-select [formControlName]="metadataProperty.Key"
+               placeholder="Select AssetPair"
+               [items]="metadataProperty.PredefinedValues"
+               bindValue="Value"
+               bindLabel="Key" class="form-control">
+
+    </ng-select>
   </div>
 </div>
