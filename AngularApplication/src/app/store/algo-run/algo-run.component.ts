@@ -6,7 +6,7 @@ import { Wallet } from '../../models/wallet.model';
 import { UserService } from '../../services/user.service';
 import { BsModalService } from 'ngx-bootstrap';
 import { AlgoInstancePopupComponent } from './algo-run-popup/algo-instance-popup.component';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AlgoInstance, AlgoInstanceData, IAlgoInstanceType } from '../models/algo-instance.model';
 import { AlgoService } from '../../services/algo.service';
 import { InstanceService } from '../../services/instance.service';
@@ -89,6 +89,11 @@ export class AlgoRunComponent implements OnInit, OnDestroy {
       return;
     }
 
+    if (this.metadataForm.invalid) {
+      this.notificationsService.error('Error', 'All Metadata Attributes should be populated before running an instance', { timeOut: 3000});
+      return;
+    }
+
     this.mapFormToData();
     const assetPair = this.algo.AlgoMetaDataInformation.Parameters.find(param => param.Key === 'AssetPair').Value;
     const tradedAsset = this.algo.AlgoMetaDataInformation.Parameters.find(param => param.Key === 'TradedAsset').Value;
@@ -123,6 +128,11 @@ export class AlgoRunComponent implements OnInit, OnDestroy {
 
   goLive(wallet: Wallet): void {
     if (!this.permissions.canRunInstance) {
+      return;
+    }
+
+    if (this.metadataForm.invalid) {
+      this.notificationsService.error('Error', 'All Metadata Attributes should be populated before running an instance', { timeOut: 3000});
       return;
     }
 
@@ -163,7 +173,7 @@ export class AlgoRunComponent implements OnInit, OnDestroy {
 
     this.algo.AlgoMetaDataInformation.Parameters.forEach(
       value => {
-        parametersGroup.addControl(value.Key, new FormControl(value.Value || ''));
+        parametersGroup.addControl(value.Key, new FormControl(value.Value || '', [Validators.required]));
       }
     );
 
@@ -174,7 +184,7 @@ export class AlgoRunComponent implements OnInit, OnDestroy {
         fnGroup = functionsGroup.get(fn.Id) as FormGroup;
         fn.Parameters.forEach(
           param => {
-            fnGroup.addControl(param.Key, new FormControl(param.Value || ''));
+            fnGroup.addControl(param.Key, new FormControl(param.Value || '', [Validators.required]));
           }
         );
       }
