@@ -25,6 +25,8 @@ export class EditRoleComponent implements OnDestroy {
     canEditRole: boolean;
   };
 
+  loader = false;
+
   constructor(private permissionsService: UserPermissionService,
               private usersService: UserService,
               private roleService: UserRolesService,
@@ -40,6 +42,7 @@ export class EditRoleComponent implements OnDestroy {
     }));
 
     this.subscriptions.push(this.route.params.subscribe((params) => {
+      this.loader = true;
       this.roleId = params['id'];
       if (this.roleId) {
         this.subscriptions.push(this.roleService.getById(this.roleId).subscribe((role) => {
@@ -62,6 +65,8 @@ export class EditRoleComponent implements OnDestroy {
             perms.forEach(p => p.checked = rolePermissionIds.includes(p.Id));
 
             this.allPermissions = perms;
+
+            this.loader = false;
           }));
       }));
     }));
@@ -119,6 +124,9 @@ export class EditRoleComponent implements OnDestroy {
 
   onSave(): void {
     if (this.role.CanBeModified && this.permissions.canEditRole) {
+      this.loader = true;
+
+
       this.subscriptions.push(this.roleService.saveRole(this.role).subscribe((role) => {
         this.roleId = role.Id;
         this.subscriptions.push(this.permissionsService.getPermissionsForRole(role.Id).subscribe((dbPermissions) => {
@@ -126,16 +134,24 @@ export class EditRoleComponent implements OnDestroy {
 
           this.permissionsService.assignPermissions(data.assignedPermissions).subscribe(() => {
             this.permissionsService.revokePermissions(data.revokedPermissions).subscribe(() => {
-              this.notificationsService.success('Success', 'Role updated successfully.');
 
               // if the currently logged user has this role, update him
               const loggedUser = this.usersService.getLoggedUser();
               const userRoleIndex = loggedUser.Roles.findIndex(userRole => userRole.Id === this.roleId);
               if (userRoleIndex !== -1) {
-                loggedUser.Roles[userRoleIndex].Name = role.Name;
-                loggedUser.Roles[userRoleIndex].Permissions = dbPermissions;
+                this.subscriptions.push(this.permissionsService.getPermissionsForRole(role.Id).subscribe((updatedPermissions) => {
 
-                this.usersService.updatePermissions(loggedUser.Roles);
+                  loggedUser.Roles[userRoleIndex].Name = role.Name;
+                  loggedUser.Roles[userRoleIndex].Permissions = updatedPermissions;
+
+                  this.usersService.updatePermissions(loggedUser.Roles);
+
+                  this.loader = false;
+                  this.notificationsService.success('Success', 'Role updated successfully.');
+                }));
+              } else {
+                this.loader = false;
+                this.notificationsService.success('Success', 'Role updated successfully.');
               }
             });
           });

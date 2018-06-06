@@ -29,7 +29,7 @@
                 </ul>
               </span>
               <span class="ml-3 cursor-pointer text-muted" (click)="stopInstancePrompt()"
-                    *ngIf="instance.AlgoInstanceStatus === iAlgoInstanceStatus.Running"><img src="../../../assets/images/store/stop-icon.svg"> <span>Stop</span>
+                    *ngIf="instance.AlgoInstanceStatus === iAlgoInstanceStatus.Running && permissions.canStopTest"><img src="../../../assets/images/store/stop-icon.svg"> <span>Stop</span>
               </span>
               <span class="ml-3 cursor-pointer text-muted" dropdown *ngIf="instance.AlgoInstanceStatus === iAlgoInstanceStatus.Stopped && instance.AlgoInstanceType === iAlgoInstanceType.Live">
                 <img
@@ -48,7 +48,7 @@
                 <span (click)="backtest()">Re-start</span>
               </span>
               <span class="ml-3 cursor-pointer text-muted" (click)="deleteInstancePrompt()"
-                    *ngIf="instance.AlgoInstanceStatus === iAlgoInstanceStatus.Stopped"><img
+                    *ngIf="instance.AlgoInstanceStatus === iAlgoInstanceStatus.Stopped && permissions.canDeleteInstance"><img
                 src="../../../assets/images/store/delete-icon.svg"> <span>Delete</span></span>
             </div>
           </div>

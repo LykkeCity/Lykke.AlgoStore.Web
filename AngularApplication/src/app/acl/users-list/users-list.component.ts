@@ -61,10 +61,9 @@ export class UsersListComponent {
 
             // if we're editing the current user, update him
             const loggedUser = this.usersService.getLoggedUser();
-            if (currentUser.ClientId === loggedUser.ClientId) {
-              this.userRolesService.getRolesForUser(loggedUser.ClientId).subscribe((roles) => {
-                loggedUser.Roles = roles;
-                this.usersService.updatePermissions(loggedUser.Roles);
+            if (currentUser.Email === loggedUser.Email) {
+              this.userRolesService.getRolesForUser(currentUser.ClientId).subscribe((roles) => {
+                this.usersService.updatePermissions(roles);
               });
             }
           });

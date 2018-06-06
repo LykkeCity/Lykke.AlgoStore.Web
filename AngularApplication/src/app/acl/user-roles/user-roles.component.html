@@ -1,4 +1,4 @@
-<div class="profile-holder container text-center" *ngIf="userInfo">
+<div class="profile-holder container text-center" *ngIf="userInfo && allRoles">
   <div class="row mt-5">
     <div class="col-12">
       <img src="../../../assets/images/user_default_gray.svg" width="100px">
@@ -37,4 +37,4 @@
   </div>
 </div>
 
-<app-loader [ready]="userInfo"></app-loader>
+<app-loader [ready]="userInfo && allRoles"></app-loader>
