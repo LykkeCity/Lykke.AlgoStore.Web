@@ -35,6 +35,7 @@ export class AlgoRunComponent implements OnInit, OnDestroy {
     canRunInstance: boolean,
     canSeeInstances: boolean,
     canRunFakeTrading: boolean,
+    isCurrentUser: boolean
   };
 
   constructor(private route: ActivatedRoute,
@@ -48,12 +49,18 @@ export class AlgoRunComponent implements OnInit, OnDestroy {
       canRunInstance: this.userService.hasPermission(Permissions.SAVE_ALGO_INSTANCE_DATA)
       && this.userService.hasPermission(Permissions.UPLOAD_BINARY_FILE),
       canSeeInstances: this.userService.hasPermission(Permissions.GET_ALL_ALGO_INSTANCE_DATA),
-      canRunFakeTrading: this.userService.hasPermission(Permissions.RUN_FAKE_TRADE)
+      canRunFakeTrading: this.userService.hasPermission(Permissions.RUN_FAKE_TRADE),
+      isCurrentUser: false
     };
 
     this.subscriptions.push(this.route.params.subscribe(params => {
       this.clientId = params['clientId'];
       const algoId = params['algoId'];
+
+      this.userService.getUserInfoWithRoles().subscribe((user) => {
+        this.permissions.isCurrentUser = user.ClientId === this.clientId;
+      });
+
 
       this.subscriptions.push(this.algoService.getAlgoWithSource(algoId, this.clientId).subscribe(algo => {
         this.algo = algo;
@@ -214,6 +221,14 @@ export class AlgoRunComponent implements OnInit, OnDestroy {
         }
       });
     });
+  }
+
+  canRunFakeTrading(): boolean {
+    return this.permissions.canRunFakeTrading && (this.algo.AlgoVisibility === this.iAlgoVisibility.Public || this.permissions.isCurrentUser);
+  }
+
+  canRunLiveTrading(): boolean {
+    return this.permissions.canRunInstance && (this.algo.AlgoVisibility === this.iAlgoVisibility.Public || this.permissions.isCurrentUser);
   }
 
 }
