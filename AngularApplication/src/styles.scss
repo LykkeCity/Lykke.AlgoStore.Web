@@ -33,6 +33,10 @@ body {
   word-break: break-all;
 }
 
+.break-word {
+  word-break: break-word;
+}
+
 button[disabled] {
   pointer-events: auto;
   cursor: not-allowed;
