@@ -33,6 +33,11 @@ body {
   word-break: break-all;
 }
 
+.break-word {
+  white-space: pre-wrap;
+  overflow-wrap: break-word;
+}
+
 button[disabled] {
   pointer-events: auto;
   cursor: not-allowed;
