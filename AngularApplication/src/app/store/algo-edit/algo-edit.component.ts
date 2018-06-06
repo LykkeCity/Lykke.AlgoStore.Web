@@ -15,7 +15,7 @@ import { InstanceService } from '../../services/instance.service';
 import { AlgoInstance } from '../models/algo-instance.model';
 
 @Component({
-  selector: 'app-algo-create',
+  selector: 'app-algo-edit',
   templateUrl: './algo-edit.component.html',
   styleUrls: ['./algo-edit.component.scss']
 })
@@ -37,6 +37,7 @@ export class AlgoEditComponent implements OnInit, OnDestroy {
   };
 
   subscriptions: Subscription[] = [];
+
   constructor(private algoService: AlgoService,
               private route: ActivatedRoute,
               private ref: ChangeDetectorRef,
@@ -47,7 +48,7 @@ export class AlgoEditComponent implements OnInit, OnDestroy {
               private usersService: UserService,
               private instanceService: InstanceService) {
     this.algoForm = this.fb.group({
-      Name: ['',  { validators: [Validators.required], updateOn: 'submit'}],
+      Name: ['', { validators: [Validators.required], updateOn: 'submit' }],
       Description: ['', { updateOn: 'submit' }]
     });
 
@@ -120,7 +121,7 @@ export class AlgoEditComponent implements OnInit, OnDestroy {
         }
       } as PopupConfig
     };
-    this.bsModalService.show(PopupComponent, {initialState, class: 'modal-sm', keyboard: false, ignoreBackdropClick: true});
+    this.bsModalService.show(PopupComponent, { initialState, class: 'modal-sm', keyboard: false, ignoreBackdropClick: true });
   }
 
   deleteAlgo(force: boolean): void {
@@ -168,7 +169,13 @@ export class AlgoEditComponent implements OnInit, OnDestroy {
       return;
     }
 
-    const tempAlgo = { ...this.algoForm.value, Id: this.algo.AlgoId, DateCreated: this.algo.DateCreated, DateModified: this.algo.DateModified, Content: btoa(this.algo.Content) };
+    const tempAlgo = {
+      ...this.algoForm.value,
+      Id: this.algo.AlgoId,
+      DateCreated: this.algo.DateCreated,
+      DateModified: this.algo.DateModified,
+      Content: btoa(this.algo.Content)
+    };
     this.algoErrors = null;
 
     this.subscriptions.push(this.algoService.editAlgo(tempAlgo).subscribe(() => {

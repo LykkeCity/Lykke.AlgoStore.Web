@@ -4,7 +4,6 @@ import { AlgoService } from '../../services/algo.service';
 import { Algo } from '../models/algo.interface';
 import { TabsetComponent } from 'ngx-bootstrap';
 import { Subscription } from 'rxjs/Subscription';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-algo-create',
@@ -27,8 +26,7 @@ export class AlgoCreateComponent implements OnDestroy {
 
   constructor(private algoService: AlgoService,
               private formBuilder: FormBuilder,
-              private ref: ChangeDetectorRef,
-              private router: Router) {
+              private ref: ChangeDetectorRef) {
 
     this.algoForm = this.formBuilder.group({
       Name: ['', Validators.required],
