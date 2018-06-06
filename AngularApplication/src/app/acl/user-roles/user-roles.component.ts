@@ -47,8 +47,16 @@ export class UserRolesComponent {
   }
 
   getData(clientId: string) {
-    this.subscriptions.push(this.usersService.getUserInfoWithRoles(clientId).subscribe(roles => {
-      this.userInfo = roles;
+    this.subscriptions.push(this.usersService.getUserInfoWithRoles(clientId).subscribe(info => {
+      const loggedUser = this.usersService.getLoggedUser();
+      if (info.Email === loggedUser.Email) {
+        this.usersService.getUserRoles().subscribe((roles) => {
+          this.userInfo = info;
+          this.usersService.updatePermissions(roles);
+        });
+      } else {
+        this.userInfo = info;
+      }
     }));
 
     this.subscriptions.push(this.userRoleService.getAllRoles().subscribe(roles => {
@@ -95,10 +103,9 @@ export class UserRolesComponent {
 
             // if we're editing the current user, update him
             const loggedUser = this.usersService.getLoggedUser();
-            if (this.userInfo.ClientId === loggedUser.ClientId) {
-              this.userRoleService.getRolesForUser(loggedUser.ClientId).subscribe((roles) => {
-                loggedUser.Roles = roles;
-                this.usersService.updatePermissions(loggedUser.Roles);
+            if (this.userInfo.Email === loggedUser.Email) {
+              this.userRoleService.getRolesForUser(this.userInfo.ClientId).subscribe((roles) => {
+                this.usersService.updatePermissions(roles);
               });
             }
           });

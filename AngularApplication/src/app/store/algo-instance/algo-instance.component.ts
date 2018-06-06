@@ -44,7 +44,9 @@ export class AlgoInstanceComponent implements OnDestroy {
   permissions: {
     canSeeLogs: boolean,
     canSeeStatistics: boolean,
-    canSeeTrades: boolean
+    canSeeTrades: boolean,
+    canStopTest: boolean,
+    canDeleteInstance: boolean
   };
 
   constructor(private route: ActivatedRoute,
@@ -59,7 +61,9 @@ export class AlgoInstanceComponent implements OnDestroy {
     this.permissions = {
       canSeeLogs: this.userService.hasPermission(Permissions.GET_TEST_TAIL_LOG),
       canSeeStatistics: this.userService.hasPermission(Permissions.GET_ALGO_INSTANCE_STATISTIC),
-      canSeeTrades: this.userService.hasPermission(Permissions.GET_ALL_TRADES_FOR_ALGO)
+      canSeeTrades: this.userService.hasPermission(Permissions.GET_ALL_TRADES_FOR_ALGO),
+      canStopTest: this.userService.hasPermission(Permissions.STOP_TEST),
+      canDeleteInstance: this.userService.hasPermission(Permissions.DELETE_ALGO_INSTANCE_DATA)
     };
 
     this.subscriptions.push(this.route.params.subscribe(params => {
@@ -166,6 +170,10 @@ export class AlgoInstanceComponent implements OnDestroy {
   }
 
   stopInstancePrompt(): void {
+    if (!this.permissions.canStopTest) {
+      return;
+    }
+
     const initialState = {
       popupConfig: {
         title: 'Stop instance',
@@ -193,6 +201,10 @@ export class AlgoInstanceComponent implements OnDestroy {
   }
 
   deleteInstancePrompt(): void {
+    if (!this.permissions.canDeleteInstance) {
+      return;
+    }
+
     const initialState = {
       popupConfig: {
         title: 'Delete instance',
