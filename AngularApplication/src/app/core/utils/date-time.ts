@@ -11,6 +11,6 @@ export default class DateTime {
   }
 
   static toUtc(datetime: string): string {
-    return moment().utc(<any>datetime).toISOString();
+    return moment(datetime).format('YYYY-MM-DD[T]HH:mm:ss.SSS[Z]');
   }
 }
