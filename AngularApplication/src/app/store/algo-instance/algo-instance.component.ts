@@ -18,7 +18,7 @@ import { PopupConfig } from '../../models/popup.interface';
 import { AlgoService } from '../../services/algo.service';
 import { InstanceService } from '../../services/instance.service';
 import Permissions from '../models/permissions';
-import { AlgoBacktestPopupComponent } from '../algo-run/algo-backtest-popup/algo-backtest-popup.component';
+import { AlgoFakeTradingPopupComponent } from '../algo-run/algo-fake-trading-popup/algo-fake-trading-popup.component';
 
 @Component({
   selector: 'app-algo-instance',
@@ -44,7 +44,9 @@ export class AlgoInstanceComponent implements OnDestroy {
   permissions: {
     canSeeLogs: boolean,
     canSeeStatistics: boolean,
-    canSeeTrades: boolean
+    canSeeTrades: boolean,
+    canStopTest: boolean,
+    canDeleteInstance: boolean
   };
 
   constructor(private route: ActivatedRoute,
@@ -59,7 +61,9 @@ export class AlgoInstanceComponent implements OnDestroy {
     this.permissions = {
       canSeeLogs: this.userService.hasPermission(Permissions.GET_TEST_TAIL_LOG),
       canSeeStatistics: this.userService.hasPermission(Permissions.GET_ALGO_INSTANCE_STATISTIC),
-      canSeeTrades: this.userService.hasPermission(Permissions.GET_ALL_TRADES_FOR_ALGO)
+      canSeeTrades: this.userService.hasPermission(Permissions.GET_ALL_TRADES_FOR_ALGO),
+      canStopTest: this.userService.hasPermission(Permissions.STOP_TEST),
+      canDeleteInstance: this.userService.hasPermission(Permissions.DELETE_ALGO_INSTANCE_DATA)
     };
 
     this.subscriptions.push(this.route.params.subscribe(params => {
@@ -80,11 +84,11 @@ export class AlgoInstanceComponent implements OnDestroy {
 
         if (this.instance.AlgoInstanceStatus !== IAlgoInstanceStatus.Deploying) {
           if (this.permissions.canSeeLogs) {
-            this.subscriptions.push(this.getLogs());
+            this.getLogs();
           } else if (this.permissions.canSeeStatistics) {
-            this.subscriptions.push(this.getStatistics());
+           this.getStatistics();
           } else if (this.permissions.canSeeTrades) {
-            this.subscriptions.push(this.getTrades());
+            this.getTrades();
           }
         }
       }, (err) => {
@@ -139,8 +143,8 @@ export class AlgoInstanceComponent implements OnDestroy {
   }
 
   backtest(): void {
-    const assetPair = this.algo.AlgoMetaDataInformation.Parameters.find(param => param.Key === 'AssetPair').Value;
-    const tradedAsset = this.algo.AlgoMetaDataInformation.Parameters.find(param => param.Key === 'TradedAsset').Value;
+    const assetPair = this.instance.AlgoMetaDataInformation.Parameters.find(param => param.Key === 'AssetPair').Value;
+    const tradedAsset = this.instance.AlgoMetaDataInformation.Parameters.find(param => param.Key === 'TradedAsset').Value;
     let assetTwoName = '';
 
     if (assetPair.indexOf(tradedAsset) === 0) {
@@ -155,17 +159,21 @@ export class AlgoInstanceComponent implements OnDestroy {
       algoInstanceData: {
         AlgoClientId: this.clientId,
         AlgoId: this.algo.AlgoId,
-        AlgoMetaDataInformation: this.algo.AlgoMetaDataInformation,
+        AlgoMetaDataInformation: this.instance.AlgoMetaDataInformation,
         AlgoInstanceType: IAlgoInstanceType.Test
       } as AlgoInstanceData,
       onSuccess: (instance) => {
         this.router.navigate(['/store/algo-run', this.clientId, this.algo.AlgoId]);
       }
     };
-    this.bsModalService.show(AlgoBacktestPopupComponent, { initialState, class: 'modal-sm backtest-instance-popup' });
+    this.bsModalService.show(AlgoFakeTradingPopupComponent, { initialState, class: 'modal-sm fakeTrading-instance-popup' });
   }
 
   stopInstancePrompt(): void {
+    if (!this.permissions.canStopTest) {
+      return;
+    }
+
     const initialState = {
       popupConfig: {
         title: 'Stop instance',
@@ -193,6 +201,10 @@ export class AlgoInstanceComponent implements OnDestroy {
   }
 
   deleteInstancePrompt(): void {
+    if (!this.permissions.canDeleteInstance) {
+      return;
+    }
+
     const initialState = {
       popupConfig: {
         title: 'Delete instance',
@@ -221,21 +233,20 @@ export class AlgoInstanceComponent implements OnDestroy {
     this.editor.setHighlightActiveLine(true);
   }
 
-  getStatistics(): Subscription {
-    return this.instanceService.algoGetStatistics(this.instanceId)
+  getStatistics(): void {
+    this.subscriptions.push(this.instanceService.algoGetStatistics(this.instanceId)
       .pipe(
         repeatWhen(() => timer(10000, 5000))
       )
       .subscribe(
         res => {
           this.stats = res;
-          this.stats.NetProfit = Number.parseFloat(this.stats.NetProfit).toFixed(2);
         }
-      );
+      ));
   }
 
-  getLogs(): Subscription {
-    return this.instanceService.algoGetTailLog(this.algoId, this.instanceId, this.clientId)
+  getLogs(): void {
+    this.subscriptions.push(this.instanceService.algoGetTailLog(this.algoId, this.instanceId, this.clientId)
       .pipe(
         repeatWhen(() => timer(10000, 5000))
       )
@@ -245,11 +256,11 @@ export class AlgoInstanceComponent implements OnDestroy {
             this.log = res.Log;
           }
         }
-      );
+      ));
   }
 
-  getTrades(): Subscription {
-    return this.instanceService.algoGetTrades(this.instanceId)
+  getTrades(): void {
+    this.subscriptions.push(this.instanceService.algoGetTrades(this.instanceId)
       .pipe(
         repeatWhen(() => timer(10000, 5000))
       )
@@ -257,7 +268,7 @@ export class AlgoInstanceComponent implements OnDestroy {
         res => {
           this.trades = res;
         }
-      );
+      ));
   }
 
   onSelect(event) {
@@ -270,15 +281,15 @@ export class AlgoInstanceComponent implements OnDestroy {
     this.subscriptions = []; // clear the array so we don't have duplicate subscriptions
 
     if (heading === 'Statistics' && this.permissions.canSeeStatistics) {
-      this.subscriptions.push(this.getStatistics());
+      this.getStatistics();
     }
 
     if (heading === 'Log' && this.permissions.canSeeLogs) {
-      this.subscriptions.push(this.getLogs());
+      this.getLogs();
     }
 
     if (heading === 'Trades' && this.permissions.canSeeTrades) {
-      this.subscriptions.push(this.getTrades());
+      this.getTrades();
     }
   }
 }

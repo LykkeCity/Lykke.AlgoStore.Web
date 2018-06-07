@@ -1,4 +1,4 @@
-<div class="container" *ngIf="rolePermissions">
+<div class="container" *ngIf="!loader">
   <div class="row mt-5">
     <div class="offset-2 col-10">
       <h2>{{roleId ? 'Edit' : 'Create'}} Role</h2>
@@ -45,6 +45,4 @@
   </form>
 </div>
 
-<div class="loader" *ngIf="!rolePermissions">
-  <img src="../../../assets/images/loader.svg">
-</div>
+<app-loader [ready]="!loader"></app-loader>

@@ -10,7 +10,6 @@ import { NotFoundComponent } from './components/not-found/not-found.component';
 import { SiteLayoutComponent } from './layout/site-layout/site-layout.component';
 import { HomeComponent } from './components/home/home.component';
 import { HeaderComponent } from './components/header/header.component';
-import { NotificationsComponent } from './components/header/notifications/notifications.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { UserProfileComponent } from './components/header/user-profile/user-profile.component';
 
@@ -46,7 +45,6 @@ import { InstanceService } from './services/instance.service';
     NotFoundComponent,
     HomeComponent,
     HeaderComponent,
-    NotificationsComponent,
     FooterComponent,
     UserProfileComponent,
     IdlePopupComponent,

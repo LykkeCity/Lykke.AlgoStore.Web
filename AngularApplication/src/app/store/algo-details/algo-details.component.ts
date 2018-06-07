@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Algo } from '../models/algo.interface';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 import { BaseAlgoParam } from '../models/base-algo-param.model';
 import { AlgoRating } from '../models/algo-rating.model';
@@ -11,6 +11,8 @@ import { AlgoRatingService } from '../../services/algo-rating.service';
 import { AlgoCommentService } from '../../services/algo-comment.service';
 import { UserService } from '../../services/user.service';
 import Permissions from '../models/permissions';
+import { AlgoDuplicatePopupComponent } from '../my-algos/algo-duplicate-popup/algo-duplicate-popup.component';
+import { BsModalService } from 'ngx-bootstrap';
 
 @Component({
   selector: 'app-algo-detail',
@@ -23,7 +25,8 @@ export class AlgoDetailsComponent implements OnInit, OnDestroy {
     canSeeComments: boolean,
     canSeeAlgoRating: boolean,
     canEditAlgoRating: boolean,
-    canRunInstance: boolean
+    canRunInstance: boolean,
+    canDuplicate: boolean
   };
   algo: Algo;
   subscriptions: Subscription[] = [];
@@ -36,6 +39,8 @@ export class AlgoDetailsComponent implements OnInit, OnDestroy {
     private algoRatingService: AlgoRatingService,
     private algoCommentService: AlgoCommentService,
     private route: ActivatedRoute,
+    private router: Router,
+    private bsModalService: BsModalService,
     private notificationsService: NotificationsService,
     private userService: UserService) {
 
@@ -44,7 +49,8 @@ export class AlgoDetailsComponent implements OnInit, OnDestroy {
       canSeeAlgoRating: this.userService.hasPermission(Permissions.GET_ALGO_RATING),
       canSeeComments: this.userService.hasPermission(Permissions.GET_ALL_COMMENTS_FOR_ALGO),
       canRunInstance: this.userService.hasPermission(Permissions.SAVE_ALGO_INSTANCE_DATA)
-      && this.userService.hasPermission(Permissions.UPLOAD_BINARY_FILE)
+      && this.userService.hasPermission(Permissions.UPLOAD_BINARY_FILE),
+      canDuplicate: this.userService.hasPermission(Permissions.CREATE_ALGO)
     };
   }
 
@@ -75,6 +81,21 @@ export class AlgoDetailsComponent implements OnInit, OnDestroy {
     this.subscriptions.forEach(sub => {
       sub.unsubscribe();
     });
+  }
+
+  duplicate() {
+    if (!this.permissions.canDuplicate) {
+      return;
+    }
+
+    const initialState = {
+      algo: this.algo,
+      onCreateSuccess: () => {
+        this.router.navigate(['/store/algo-list']);
+      }
+    };
+
+    this.bsModalService.show(AlgoDuplicatePopupComponent, {initialState, class: 'modal-sm', keyboard: false, ignoreBackdropClick: true});
   }
 
   highlight(meta: BaseAlgoParam): void {

@@ -1,36 +1,128 @@
-<div class="container algo-edit-placeholder pt-10 pb-30">
+<div class="container mt-5" *ngIf="algo && instances">
   <div class="row">
+    <div class="col-10">
+      <h3 class="d-inline-block mb-0 break-all">{{algo.Name}}</h3>
+      <span class="label-private" *ngIf="algo.AlgoVisibility === iAlgoVisibility.Private">Private</span>
+      <span class="label-public" *ngIf="algo.AlgoVisibility === iAlgoVisibility.Public">Public</span>
+      <span class="label-draft" *ngIf="algo.AlgoVisibility === iAlgoVisibility.Demo">Draft</span>
+      <p>Created on {{ algo.DateCreated | amLocal | amDateFormat:'YYYY-MM-DD HH:mm:ss' }}{{algo.DateModified ? ', Last modified ' + (algo.DateModified | amLocal | amDateFormat:'YYYY-MM-DD HH:mm:ss' ) : ''}}</p>
+    </div>
+    <div class="col-2 text-right public-holder">
+      <span class="btn-wrapper d-inline-block"
+            [ngClass]="{'not-allowed': !canBePublished }"
+            [popover]="!canBePublished ? editTooltip : null"
+            [outsideClick]="true"
+            placement="bottom"
+            triggers="mouseenter:mouseleave">
+
+        <button class="btn btn-primary cursor-pointer" (click)="goPublic()"
+                [disabled]="!canBePublished" *ngIf="algo.AlgoVisibility === iAlgoVisibility.Private && permissions.canPublish">Go Public</button>
+
+        <button class="btn btn-primary cursor-pointer" (click)="goPrivate()"
+                [disabled]="!canBePublished" *ngIf="algo.AlgoVisibility === iAlgoVisibility.Public && permissions.canUnpublish">Go Private</button>
+      </span>
+    </div>
+  </div>
+
+  <div class="row mt-4" *ngIf="algoErrors">
     <div class="col-12">
-      <h1 class="heading-sm text-center mt-40 mb-60">Edit algo</h1>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-12 text-center">
-      <form [formGroup]="updateFormGroup">
-        <div class="row">
-          <div class="col-offset-3 col-6 text-center">
-            <div class="form-group">
-              <label for="algo-name">Algo name:</label>
-              <input type="text" class="form-control" id="algo-name" formControlName="Name" required>
-            </div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-offset-3 col-6 text-center">
-            <div class="form-group">
-              <label for="algo-descr">Algo Description:</label>
-              <textarea rows="5" class="form-control" id="algo-descr" formControlName="Description" required></textarea>
-            </div>
-          </div>
-        </div>
-      </form>
+      <textarea name="algo-errors" id="algo-errors" cols="60" rows="10" class="form-control" readonly [(ngModel)]="algoErrors"></textarea>
     </div>
   </div>
 
-  <div class="row mt-60">
-    <div class="col-offset-3 col-6 text-center">
-      <button class="btn btn-primary" (click)="update()" [disabled]="!updateFormGroup.valid">Save algo</button>
+  <div class="row mt-4">
+    <div class="col-8">
+      <h5 class="mb-0">General details</h5>
+    </div>
+    <div class="col-4 text-right action-buttons public-holder" *ngIf="algo.AlgoVisibility !== iAlgoVisibility.Public">
+      <span class="ml-3 cursor-pointer text-muted" (click)="delete(false)" *ngIf="permissions.canDelete && !forceDelete">
+        <img src="../../../assets/images/store/delete-icon.svg"/>
+        <span>Delete Algo</span>
+      </span>
+      <span class="ml-3 cursor-pointer text-muted" (click)="delete(true)" *ngIf="permissions.canDelete && forceDelete">
+        <img src="../../../assets/images/store/delete-icon.svg"/>
+        <span [popover]="forceDeleteTooltip"
+              [outsideClick]="true"
+              placement="bottom"
+              triggers="mouseenter:mouseleave">Force-delete Algo</span>
+      </span>
     </div>
   </div>
+  <hr class="mt-0"/>
 
+  <form [formGroup]="algoForm" (ngSubmit)="onSubmit()">
+    <div class="row">
+      <div class="col-6">
+        <div class="form-group">
+          <label for="algo-name" class="font-weight-semibold">Name</label>
+          <input type="text" class="form-control" id="algo-name" formControlName="Name" (change)="onInputChange()">
+          <div *ngIf="algoForm.get('Name').invalid && algoForm.dirty"
+               class="text-danger">
+            <div *ngIf="algoForm.get('Name').errors['required']">
+              Algo name is required
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="algo-version" class="font-weight-semibold">Version</label>
+          <input type="text" class="form-control" id="algo-version" value="Version 1" readonly>
+        </div>
+
+        <div class="form-group">
+          <label for="algo-key" class="font-weight-semibold">API key</label>
+          <input type="text" class="form-control" id="algo-key" readonly [(ngModel)]="algo.AlgoId"
+                 [ngModelOptions]="{standalone: true}">
+        </div>
+      </div>
+      <div class="col-6">
+        <div class="form-group">
+          <label for="algo-description" class="font-weight-semibold">Description</label>
+          <textarea name="algo-description" id="algo-description" cols="60" rows="9"
+                    class="d-block form-control" formControlName="Description" (change)="onInputChange()"></textarea>
+        </div>
+      </div>
+    </div>
+
+    <div class="row mt-5">
+      <div class="col-8">
+        <app-code-editor [config]="{readOnly: false, sourceCode: algo.Content}" (onInitCompleted)="onEditorCreated($event)"
+                         (onCodeUpdated)="onCodeUpdate($event)"></app-code-editor>
+      </div>
+      <div class="col-4">
+        <div class="metadata-holder">
+          <app-algo-metadata [metadata]="algo.AlgoMetaDataInformation"
+                             (onHighlight)="highlight($event)"></app-algo-metadata>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-6 text-right align-self-center">
+        <span class="font-weight-semibold cursor-pointer cancel-btn"
+              routerLink="/store/my-algos">Cancel and close</span>
+      </div>
+      <div class="col-6 text-left">
+        <button type="submit" class="btn btn-primary" [disabled]="canBePublished">Save changes</button>
+      </div>
+    </div>
+  </form>
 </div>
+
+
+<app-loader [ready]="algo && instances"></app-loader>
+
+<ng-template #editTooltip>
+  <div>
+    <p>You cannot {{algo.AlgoVisibility === iAlgoVisibility.Public ? 'unpublish' : 'publish'}} this algo because you made changes. Save them in order to {{algo.AlgoVisibility === iAlgoVisibility.Public ? 'unpublish' : 'publish'}} it.</p>
+  </div>
+</ng-template>
+
+<ng-template #forceDeleteTooltip>
+  <div>
+    <p>
+      All instances, running or not, will be deleted and all history data will be lost.
+    </p>
+  </div>
+</ng-template>
+

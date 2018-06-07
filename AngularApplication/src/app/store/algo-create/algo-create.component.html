@@ -1,0 +1,147 @@
+<div class="container" *ngIf="ready && !algoSubmitted">
+  <h3 class="mt-5 mb-5 text-center">Create New Algorithm</h3>
+
+  <div class="row">
+    <div class="col-12 tabs-nav">
+      <tabset #creationTabs>
+        <tab heading="Add Details">
+          <form [formGroup]="algoForm">
+            <div class="row mt-5">
+              <div class="col-12">
+                <label for="algo-name" class="font-weight-semibold">Name*</label>
+                <span class="text-muted float-right small-text">*Required field</span>
+                <div class="form-group">
+                  <input type="text" id="algo-name" class="form-control" placeholder="Moving Average Cross" formControlName="Name">
+                </div>
+              </div>
+            </div>
+
+            <div class="row mt-3">
+              <div class="col-12">
+                <label for="algo-description" class="font-weight-semibold">Description</label>
+                <div class="form-group">
+                  <textarea name="description" id="algo-description" cols="60" rows="10" class="form-control" formControlName="Description"></textarea>
+                </div>
+              </div>
+            </div>
+
+            <div class="row mt-3">
+              <div class="col-6 text-center align-self-center">
+                <span class="font-weight-semibold cursor-pointer cancel-btn" routerLink="/store/my-algos">Cancel and close</span>
+              </div>
+              <div class="col-6 text-center">
+                <button class="btn btn-primary btn-small" (click)="nextTab()" [disabled]="algoForm.invalid">Next step</button>
+              </div>
+            </div>
+          </form>
+        </tab>
+        <tab heading="Write Code" [disabled]="algoForm.invalid">
+          <div class="row mt-5">
+            <div class="col-8 algo-create-editor-holder">
+              <app-code-editor [config]="{readOnly: false, sourceCode: Algo.Content}"
+                               (onInitCompleted)="onEditorCreated($event)" (onCodeUpdated)="onCodeUpdate($event)"></app-code-editor>
+            </div>
+            <div class="col-4">
+              <div class="row">
+                <div class="col-12">
+                  <h5>C# Algorithm File</h5>
+                  <span class="text-muted">Allowed files type: .CS</span>
+
+                  <div *ngIf="userFile && userFile.ext && userFile.ext !== 'cs'" class="row justify-content-center">
+                    <div class="col-12">
+                      <alert type="danger">
+                        <div class="row">
+                          <div class="col-1 align-self-center">
+                            <div class="image-holder">
+                              <img src="../../../assets/images/store/error-icon-small-warning.svg" >
+                            </div>
+                          </div>
+                          <div class="col-10 ml-2">
+                            <div class="row">
+                              <div class="col-12">
+                                File Error
+                              </div>
+                            </div>
+                            <div class="row">
+                              <div class="col-12 small-text">
+                                Please upload a supported file format
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </alert>
+                    </div>
+                  </div>
+                  <hr />
+                </div>
+
+                <input type="file" accept=".cs" (change)='openFile($event)' hidden #file>
+
+                <div class="col-12" *ngIf="!userFile">
+                  <span class="text-muted cursor-pointer" (click)="file.click()">Upload file here</span>
+                </div>
+
+                <div class="col-8" *ngIf="userFile">
+                  <div>{{userFile.name}}</div>
+                  <span class="text-muted cursor-pointer" (click)="file.click()">Upload another file</span>
+                </div>
+
+                <div class="col-4 ext-holder" *ngIf="userFile">
+                 <span>{{userFile.ext}}</span>
+                </div>
+
+              </div>
+              <hr />
+              <div class="row mt-3">
+                <div class="col-12">
+                  <h5>Instructions</h5>
+                  <hr />
+                </div>
+                <div class="col-12 normal-font">
+                  <h5>Requirements and validation</h5>
+                  <p>Every source file submitted to the system must meet the following requirements:</p>
+                  <ul>
+                    <li>The only currently supported language is C#, and so the source file <strong>must</strong> be written in it</li>
+                    <li>The source file can contain any number of classes, interfaces, etc. but it <strong>must</strong> contain <strong>one</strong> class inheriting from BaseAlgo</li>
+                    <li>The class inheriting BaseAlgo (from here on referred to as Algo) <strong>must</strong> be sealed</li>
+                    <li>The Algo <strong>must</strong> implement OnCandleReceived and/or OnQuoteReceived</li>
+                  </ul>
+                  <p>The source file <strong>must</strong> also be syntactically and semantically valid.</p>
+                  <p>All of the above checks will be ran automatically. Any source file which does not meet the requirements will not have the ability to be saved as a usable algo in the system.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row mt-3">
+            <div class="col-12 text-center">
+              <button class="btn btn-primary" (click)="onSubmit()" [disabled]="!Algo.Content">Create</button>
+            </div>
+          </div>
+        </tab>
+      </tabset>
+    </div>
+  </div>
+</div>
+
+<div class="container" *ngIf="ready && algoSubmitted">
+  <div class="algo-creation-success-holder text-center mt-250" *ngIf="Algo.AlgoId">
+    <h3>Your successfully created new Algo</h3>
+    <button class="btn btn-primary mt-3" routerLink="/store/my-algos">Finish</button>
+  </div>
+  <div class="algo-creation-error-holder text-center mt-150" *ngIf="!Algo.AlgoId">
+    <h3 class="mb-0">There is a problem with your code.</h3>
+    <h3>Please go back and review.</h3>
+    <div class="row mt-4">
+      <div class="col-12">
+        <textarea name="algo-errors" id="algo-errors" cols="60" rows="10" class="form-control" readonly [(ngModel)]="algoErrors"></textarea>
+      </div>
+    </div>
+    <div class="row mt-3">
+      <div class="col-12">
+        <button class="btn btn-primary" (click)="goBack()">Go back</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<app-loader [ready]="ready"></app-loader>

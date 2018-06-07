@@ -5,13 +5,13 @@
         <h3>{{algo.Name}}</h3>
       </div>
       <div class="col-4 text-right action-buttons">
-        <span class="ml-3 cursor-pointer text-muted" (click)="runDemo()"><img
+        <span class="ml-3 cursor-pointer text-muted" (click)="fakeTrading(iAlgoInstanceType.Demo)" *ngIf="canRunFakeTrading()"><img
           src="../../../assets/images/store/run-demo-icon.svg"> <span>Run demo</span></span>
-        <span class="ml-3 cursor-pointer text-muted" (click)="backtest()"><img
+        <span class="ml-3 cursor-pointer text-muted" (click)="fakeTrading(iAlgoInstanceType.Test)" *ngIf="canRunFakeTrading()"><img
           src="../../../assets/images/store/backtest-icon.svg"> <span [popover]="popoverTemplate" [outsideClick]="true"
                                                                       placement="bottom" container="body"
                                                                       triggers="mouseenter:mouseleave">Backtest</span></span>
-        <span dropdown class="ml-3 cursor-pointer text-muted" *ngIf="permissions.canRunInstance">
+        <span dropdown class="ml-3 cursor-pointer text-muted" *ngIf="canRunLiveTrading()">
           <img src="../../../assets/images/store/play-run-icon.svg">
           <span dropdownToggle>Go Live</span>
           <ul *dropdownMenu class="dropdown-menu">
@@ -34,7 +34,7 @@
   <div class="main-content">
     <div class="row">
       <div class="col-8">
-        <app-code-editor [config]="{sourceCode: algo.Data}"></app-code-editor>
+        <app-code-editor [config]="{sourceCode: algo.Content}"></app-code-editor>
       </div>
       <div class="col-4">
         <div class="row">
@@ -43,9 +43,6 @@
               <div class="row">
                 <div class="col-8 text-left">
                   <h5>Metadata Attributes</h5>
-                </div>
-                <div class="col-4 text-right">
-                  <span class="show-all-button font-weight-semibold"><a href="javascript:;">Show all</a></span>
                 </div>
               </div>
               <hr class="mt-0">
@@ -71,9 +68,7 @@
   </div>
 </div>
 
-<div class="loader" *ngIf="!algo">
-  <img src="../../../assets/images/loader.svg">
-</div>
+<app-loader [ready]="algo"></app-loader>
 
 
 <ng-template #popoverTemplate>

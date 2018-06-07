@@ -1,0 +1,66 @@
+<div class="container">
+  <div class="row mt-4">
+    <div class="col-8">
+      <h2>My algos</h2>
+    </div>
+    <div class="col-4 text-right align-self-center" *ngIf="permissions.canDuplicate">
+      <button class="btn btn-primary btn-small" routerLink="/store/algo-create">+ Create algo</button>
+    </div>
+  </div>
+  <hr />
+  <div class="row">
+    <div class="col-12">
+      <ngx-datatable
+        class="algo-table"
+        columnMode="flex"
+        [limit]="10"
+        [reorderable]="false"
+        [loadingIndicator]="loadingIndicator"
+        [headerHeight]="50"
+        [footerHeight]="'auto'"
+        [rowHeight]="60"
+        [rows]="algos">
+
+        <ngx-datatable-column [resizeable]="false" name="Name" prop="Name" [flexGrow]="2" [cellClass]="isBigger">
+          <ng-template let-value="value" let-row="row" ngx-datatable-cell-template>
+            <span class="text-truncate d-block">
+              <p [routerLink]="['/store/algo-details', row.ClientId, row?.Id]" [tooltip]="value" container="body" class="link-style">{{ value }}</p>
+            </span>
+          </ng-template>
+        </ngx-datatable-column>
+        <ngx-datatable-column [resizeable]="false" name="Description" prop="Description" [flexGrow]="3" [cellClass]="isBigger">
+          <ng-template let-value="value" let-row="row" ngx-datatable-cell-template>
+            <span class="text-truncate d-block">
+              <p [tooltip]="value" container="body">{{value}}</p>
+            </span>
+          </ng-template>
+        </ngx-datatable-column>
+        <ngx-datatable-column [resizeable]="false" name="Visibility" prop="AlgoVisibility" [flexGrow]="2">
+          <ng-template let-value="value" let-row="row" ngx-datatable-cell-template>
+            <span>{{value | algoVisibility}}</span>
+          </ng-template>
+        </ngx-datatable-column>
+        <ngx-datatable-column [resizeable]="false" name="Actions" [flexGrow]="2">
+          <ng-template let-value="value" let-row="row" ngx-datatable-cell-template>
+            <span dropdown>
+              <span class="cursor-pointer" dropdownToggle>
+              <img src="../../../assets/images/actions-icon.svg">
+              <ul *dropdownMenu class="dropdown-menu">
+                <li [routerLink]="['/store/algo-edit', row.ClientId, row?.Id]" *ngIf="permissions.canEditAlgo">
+                 <a class="dropdown-item"><img src="../../../assets/images/edit-icon.svg" class="mb-1"><span class="ml-1">Edit</span></a>
+                </li>
+                <li (click)="delete(row)" *ngIf="permissions.canDeleteAlgo">
+                   <a class="dropdown-item"><img src="../../../assets/images/store/delete-icon.svg" class="mb-1"><span class="ml-1">Delete</span></a>
+                </li>
+                <li (click)="duplicateAlgo(row)" *ngIf="permissions.canDuplicate">
+                   <a class="dropdown-item"><img src="../../../assets/images/store/duplicate-icon.svg" class="mb-1"><span class="ml-1">Duplicate</span></a>
+                </li>
+              </ul>
+            </span>
+            </span>
+          </ng-template>
+        </ngx-datatable-column>
+      </ngx-datatable>
+    </div>
+  </div>
+</div>

@@ -2,10 +2,11 @@
   <div class="details-holder mt-60">
     <div class="row mb-2">
       <div class="col-8 text-left">
-        <h3>{{algo.Name}}</h3>
+        <h3 class="break-all">{{algo.Name}}</h3>
       </div>
-      <div class="col-4 text-right" *ngIf="permissions.canRunInstance">
-        <a class="btn btn-primary" [routerLink]="['/store', 'algo-run', algo.ClientId, algo.AlgoId]">Try Algo</a>
+      <div class="col-4 text-right">
+        <span class="font-weight-semibold cursor-pointer cancel-btn mr-2" (click)="duplicate()" *ngIf="permissions.canDuplicate">Duplicate</span>
+        <a class="btn btn-primary ml-2" [routerLink]="['/store', 'algo-run', algo.ClientId, algo.AlgoId]" *ngIf="permissions.canRunInstance">Try Algo</a>
       </div>
     </div>
     <div class="row mb-2">
@@ -17,7 +18,7 @@
       </div>
     </div>
     <div class="row">
-      <div class="col-4" *ngIf="permissions.canSeeAlgoRating">
+      <div class="col-4">
         <span class="text-muted">Popularity rating:</span>
         <span class="d-inline-flex ml-3">
           <app-star-rating-comp [rating]="algo.Rating"
@@ -30,8 +31,8 @@
         </span>
         <span class="text-muted rated-users-count">{{algo.RatedUsersCount}}<span> <img src="../../../assets/images/rating-count-avatar-icon.svg"></span></span>
       </div>
-      <div class="col-4">
-        <span class="text-muted">Description:</span> <span class="ml-3">{{algo.Description}}</span>
+      <div class="col-8">
+        <span class="text-muted">Description:</span> <span class="ml-3 break-all">{{algo.Description}}</span>
       </div>
     </div>
   </div>
@@ -39,7 +40,7 @@
   <div class="main-content">
     <div class="row">
       <div class="col-8">
-        <app-code-editor [config]="{sourceCode: algo.Data}"
+        <app-code-editor [config]="{sourceCode: algo.Content}"
                          (onInitCompleted)="onEditorCreated($event)"></app-code-editor>
         <div class="rating-holder text-left" *ngIf="permissions.canEditAlgoRating">
           <span>Rate algo:</span>
@@ -67,6 +68,4 @@
   </div>
 </div>
 
-<div class="loader" *ngIf="!algo">
-  <img src="../../../assets/images/loader.svg">
-</div>
+<app-loader [ready]="algo"></app-loader>

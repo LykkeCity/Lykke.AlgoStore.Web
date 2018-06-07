@@ -6,7 +6,7 @@
           <div class="row">
             <div class="col-8 text-left instance-name-holder">
               <div class="row">
-                <div class="col-11 align-self-center">
+                <div class="col-11 align-self-center break-all">
                   <h3>{{instance.InstanceName}}</h3>
                 </div>
                 <div class="col-1 text-right align-self-center cursor-pointer edit-image-holder" (click)="edit()"  tooltip="Click to edit." placement="bottom"  container="body">
@@ -29,7 +29,7 @@
                 </ul>
               </span>
               <span class="ml-3 cursor-pointer text-muted" (click)="stopInstancePrompt()"
-                    *ngIf="instance.AlgoInstanceStatus === iAlgoInstanceStatus.Running"><img src="../../../assets/images/store/stop-icon.svg"> <span>Stop</span>
+                    *ngIf="instance.AlgoInstanceStatus === iAlgoInstanceStatus.Running && permissions.canStopTest"><img src="../../../assets/images/store/stop-icon.svg"> <span>Stop</span>
               </span>
               <span class="ml-3 cursor-pointer text-muted" dropdown *ngIf="instance.AlgoInstanceStatus === iAlgoInstanceStatus.Stopped && instance.AlgoInstanceType === iAlgoInstanceType.Live">
                 <img
@@ -48,14 +48,14 @@
                 <span (click)="backtest()">Re-start</span>
               </span>
               <span class="ml-3 cursor-pointer text-muted" (click)="deleteInstancePrompt()"
-                    *ngIf="instance.AlgoInstanceStatus === iAlgoInstanceStatus.Stopped"><img
+                    *ngIf="instance.AlgoInstanceStatus === iAlgoInstanceStatus.Stopped && permissions.canDeleteInstance"><img
                 src="../../../assets/images/store/delete-icon.svg"> <span>Delete</span></span>
             </div>
           </div>
           <div class="row mb-2">
             <div class="col-12 action-buttons">
               <span class="instance-type-badge" [ngClass]="{'live': instance.AlgoInstanceType === iAlgoInstanceType.Live}">{{instance.AlgoInstanceType | instanceTypeName}}</span>
-              <span>{{instance.AlgoInstanceRunDate}}</span>
+              <span>{{instance.AlgoInstanceRunDate | amLocal | amDateFormat:'YYYY-MM-DD HH:mm:ss'}}</span>
             </div>
           </div>
         </div>
@@ -94,7 +94,7 @@
           </div>
           <div class="row mt-5">
             <div class="col-8">
-              <app-code-editor [config]="{sourceCode: algo.Data}"
+              <app-code-editor [config]="{sourceCode: algo.Content}"
                                (onInitCompleted)="onEditorCreated($event)"></app-code-editor>
             </div>
             <div class="col-4">
@@ -187,6 +187,4 @@
   </split>
 </div>
 
-<div class="loader" *ngIf="!(algo && instance)">
-  <img src="../../../assets/images/loader.svg">
-</div>
+<app-loader [ready]="(algo && instance)"></app-loader>

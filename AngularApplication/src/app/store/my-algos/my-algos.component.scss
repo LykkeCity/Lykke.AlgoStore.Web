@@ -1,0 +1,19 @@
+@import '~scss/reuse';
+
+ul.dropdown-menu {
+  right: 50px !important;
+  top: 65% !important;
+  left: auto !important;
+}
+::ng-deep {
+  .tooltip-inner {
+    max-width: 500px;
+  }
+
+  .block-cell {
+    .datatable-body-cell-label {
+      display: block !important;
+    }
+  }
+}
+

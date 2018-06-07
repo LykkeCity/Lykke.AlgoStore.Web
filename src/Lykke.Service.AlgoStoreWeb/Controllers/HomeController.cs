@@ -19,7 +19,6 @@ namespace Lykke.Service.AlgoStoreWeb.Controllers
           keys [] = local, dev, prod
           each to be array - apiUrl, client_id, client_secret, return_url
          */
-        private String apiUrl = "https://auth-dev.lykkex.net/connect/token";
 
         protected readonly ILog _log;
         private readonly AuthenticationSettings _authenticationSettings;
@@ -49,7 +48,7 @@ namespace Lykke.Service.AlgoStoreWeb.Controllers
             using (var client = new HttpClient())
             {
                 var response = await client.PostAsync
-                (this.apiUrl,
+                (_authenticationSettings.ApiTokenUrl,
                     new StringContent(postData, Encoding.UTF8, "application/x-www-form-urlencoded")
                 );
 

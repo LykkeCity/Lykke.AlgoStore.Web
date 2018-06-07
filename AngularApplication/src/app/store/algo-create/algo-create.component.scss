@@ -1,0 +1,86 @@
+@import '~scss/reuse';
+
+.algo-create-editor-holder {
+  ::ng-deep {
+    .code-holder {
+      height: 100%;
+
+      .ace-editor-holder {
+        height: 90%;
+
+        ace-editor {
+          height: 100%;
+        }
+      }
+    }
+  }
+}
+
+.tabs-nav {
+  ::ng-deep {
+    ul.nav-tabs {
+      width: 50%;
+      margin: 0 auto;
+
+      .nav-item {
+        font-size: 1.166rem;
+        width: 50%;
+        margin: 0;
+
+        &:hover {
+          background-color: #ebedef;
+        }
+
+        .nav-link {
+          display: flex;
+          justify-content: center;
+          border: none;
+          background-color: transparent !important;
+          padding: 30px 30px 0;
+
+          span {
+            padding-bottom: 30px;
+          }
+
+          &.active span{
+            border-bottom: 4px solid $azure;
+          }
+        }
+      }
+    }
+  }
+}
+
+form {
+  width: 50%;
+  margin: 0 auto;
+}
+
+.small-text {
+  font-size: 0.722rem;
+}
+
+.ext-holder {
+  align-items: center;
+  display: flex;
+  align-self: center;
+  justify-content: flex-end;
+
+  span {
+    border-radius: 4px;
+    padding: 10px;
+    background-color: $azure;
+  }
+}
+
+.cancel-btn {
+  color: $azure;
+}
+
+#algo-errors {
+  border-left: 2px solid #ff3e2e;
+}
+
+.normal-font {
+  font-size: 1rem;
+}

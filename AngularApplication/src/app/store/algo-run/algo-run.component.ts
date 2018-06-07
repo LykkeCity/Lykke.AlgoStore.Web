@@ -1,17 +1,19 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
-import { Algo } from '../models/algo.interface';
+import { Algo, AlgoVisibility } from '../models/algo.interface';
 import { Wallet } from '../../models/wallet.model';
 import { UserService } from '../../services/user.service';
 import { BsModalService } from 'ngx-bootstrap';
 import { AlgoInstancePopupComponent } from './algo-run-popup/algo-instance-popup.component';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AlgoInstance, AlgoInstanceData, IAlgoInstanceType } from '../models/algo-instance.model';
 import { AlgoService } from '../../services/algo.service';
 import { InstanceService } from '../../services/instance.service';
 import Permissions from '../models/permissions';
-import { AlgoBacktestPopupComponent } from './algo-backtest-popup/algo-backtest-popup.component';
+import { AlgoFakeTradingPopupComponent } from './algo-fake-trading-popup/algo-fake-trading-popup.component';
+import DateTime from '../../core/utils/date-time';
+import { NotificationsService } from 'angular2-notifications';
 
 @Component({
   selector: 'app-algo-run',
@@ -25,28 +27,40 @@ export class AlgoRunComponent implements OnInit, OnDestroy {
   subscriptions: Subscription[] = [];
   instancesArray: AlgoInstance[] = [];
   metadataForm: FormGroup;
+  iAlgoVisibility = AlgoVisibility;
+  iAlgoInstanceType = IAlgoInstanceType;
   showMetadataForm = false;
   clientId: string;
   permissions: {
     canRunInstance: boolean,
     canSeeInstances: boolean,
+    canRunFakeTrading: boolean,
+    isCurrentUser: boolean
   };
 
   constructor(private route: ActivatedRoute,
               private algoService: AlgoService,
               private instanceService: InstanceService,
               private userService: UserService,
-              private bsModalService: BsModalService) {
+              private bsModalService: BsModalService,
+              private notificationsService: NotificationsService) {
 
     this.permissions = {
       canRunInstance: this.userService.hasPermission(Permissions.SAVE_ALGO_INSTANCE_DATA)
       && this.userService.hasPermission(Permissions.UPLOAD_BINARY_FILE),
       canSeeInstances: this.userService.hasPermission(Permissions.GET_ALL_ALGO_INSTANCE_DATA),
+      canRunFakeTrading: this.userService.hasPermission(Permissions.RUN_FAKE_TRADE),
+      isCurrentUser: false
     };
 
     this.subscriptions.push(this.route.params.subscribe(params => {
       this.clientId = params['clientId'];
       const algoId = params['algoId'];
+
+      this.userService.getUserInfoWithRoles().subscribe((user) => {
+        this.permissions.isCurrentUser = user.ClientId === this.clientId;
+      });
+
 
       this.subscriptions.push(this.algoService.getAlgoWithSource(algoId, this.clientId).subscribe(algo => {
         this.algo = algo;
@@ -77,14 +91,16 @@ export class AlgoRunComponent implements OnInit, OnDestroy {
     });
   }
 
-  runDemo(): void {
-    const initialState = {
-      type: 'Demo'
-    };
-    this.bsModalService.show(AlgoInstancePopupComponent, { initialState, class: 'modal-sm run-instance-popup' });
-  }
+  fakeTrading(instanceType: IAlgoInstanceType): void {
+    if (!this.permissions.canRunFakeTrading) {
+      return;
+    }
 
-  backtest(): void {
+    if (this.metadataForm.invalid) {
+      this.notificationsService.error('Error', 'All Metadata Attributes should be populated before running an instance', { timeOut: 3000});
+      return;
+    }
+
     this.mapFormToData();
     const assetPair = this.algo.AlgoMetaDataInformation.Parameters.find(param => param.Key === 'AssetPair').Value;
     const tradedAsset = this.algo.AlgoMetaDataInformation.Parameters.find(param => param.Key === 'TradedAsset').Value;
@@ -96,6 +112,11 @@ export class AlgoRunComponent implements OnInit, OnDestroy {
       assetTwoName = assetPair.substr(0, assetPair.indexOf(tradedAsset));
     }
 
+    if (!assetTwoName) {
+      this.notificationsService.error('Error', 'Your AssetPair and TradedAsset do not match');
+      return;
+    }
+
     const initialState = {
       tradeAsset: tradedAsset,
       assetTwo: assetTwoName,
@@ -103,13 +124,13 @@ export class AlgoRunComponent implements OnInit, OnDestroy {
         AlgoClientId: this.clientId,
         AlgoId: this.algo.AlgoId,
         AlgoMetaDataInformation: this.algo.AlgoMetaDataInformation,
-        AlgoInstanceType: IAlgoInstanceType.Test
+        AlgoInstanceType: instanceType
       } as AlgoInstanceData,
       onSuccess: (instance) => {
         this.instancesArray.push(instance);
       }
     };
-    this.bsModalService.show(AlgoBacktestPopupComponent, { initialState, class: 'modal-sm backtest-instance-popup' });
+    this.bsModalService.show(AlgoFakeTradingPopupComponent, { initialState, class: 'modal-sm fakeTrading-instance-popup' });
   }
 
   goLive(wallet: Wallet): void {
@@ -117,7 +138,21 @@ export class AlgoRunComponent implements OnInit, OnDestroy {
       return;
     }
 
+    if (this.metadataForm.invalid) {
+      this.notificationsService.error('Error', 'All Metadata Attributes should be populated before running an instance', { timeOut: 3000});
+      return;
+    }
+
     this.mapFormToData();
+
+    const assetPair = this.algo.AlgoMetaDataInformation.Parameters.find(param => param.Key === 'AssetPair').Value;
+    const tradedAsset = this.algo.AlgoMetaDataInformation.Parameters.find(param => param.Key === 'TradedAsset').Value;
+
+    if (assetPair.indexOf(tradedAsset) === -1) {
+      this.notificationsService.error('Error', 'Your AssetPair and TradedAsset do not match');
+      return;
+    }
+
     const initialState = {
       type: 'Live',
       algoInstanceData: {
@@ -145,7 +180,7 @@ export class AlgoRunComponent implements OnInit, OnDestroy {
 
     this.algo.AlgoMetaDataInformation.Parameters.forEach(
       value => {
-        parametersGroup.addControl(value.Key, new FormControl(value.Value || ''));
+        parametersGroup.addControl(value.Key, new FormControl(value.Value || '', [Validators.required]));
       }
     );
 
@@ -156,7 +191,7 @@ export class AlgoRunComponent implements OnInit, OnDestroy {
         fnGroup = functionsGroup.get(fn.Id) as FormGroup;
         fn.Parameters.forEach(
           param => {
-            fnGroup.addControl(param.Key, new FormControl(param.Value || ''));
+            fnGroup.addControl(param.Key, new FormControl(param.Value || '', [Validators.required]));
           }
         );
       }
@@ -169,17 +204,31 @@ export class AlgoRunComponent implements OnInit, OnDestroy {
   mapFormToData() {
     const formValue = this.metadataForm.value;
 
-    this.algo.AlgoMetaDataInformation.Parameters.forEach(
-      param => param.Value = formValue.Parameters[param.Key]
-    );
-
-    this.algo.AlgoMetaDataInformation.Functions.forEach(
-      func => {
-        func.Parameters.forEach(
-          funcParam => funcParam.Value = formValue.Functions[func.Id][funcParam.Key]
-        );
+    this.algo.AlgoMetaDataInformation.Parameters.forEach(param => {
+      if (param.Type === 'System.DateTime') {
+        param.Value = DateTime.toUtc(formValue.Parameters[param.Key]);
+      } else {
+        param.Value = formValue.Parameters[param.Key];
       }
-    );
+    });
+
+    this.algo.AlgoMetaDataInformation.Functions.forEach(func => {
+      func.Parameters.forEach(funcParam => {
+        if (funcParam.Type === 'System.DateTime') {
+          funcParam.Value = DateTime.toUtc(formValue.Functions[func.Id][funcParam.Key]);
+        } else {
+          funcParam.Value = formValue.Functions[func.Id][funcParam.Key];
+        }
+      });
+    });
+  }
+
+  canRunFakeTrading(): boolean {
+    return this.permissions.canRunFakeTrading && (this.algo.AlgoVisibility === this.iAlgoVisibility.Public || this.permissions.isCurrentUser);
+  }
+
+  canRunLiveTrading(): boolean {
+    return this.permissions.canRunInstance && (this.algo.AlgoVisibility === this.iAlgoVisibility.Public || this.permissions.isCurrentUser);
   }
 
 }

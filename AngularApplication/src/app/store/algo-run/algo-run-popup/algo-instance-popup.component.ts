@@ -44,21 +44,13 @@ export class AlgoInstancePopupComponent implements OnDestroy {
     }
 
     switch (this.type) {
-      case 'Demo':
-        this.subscriptions.push(this.instanceService.createDemoAlgoIntance({...this.algoInstanceData, ...this.algoInstanceForm.value})
-          .subscribe(() => {
-          this.modalRef.hide();
-        }, () => {
-            this.modalRef.hide();
-          }));
-        break;
       case 'Live':
         this.subscriptions.push(this.instanceService.createLiveAlgoIntance({...this.algoInstanceData, ...this.algoInstanceForm.value})
           .subscribe((data) => {
             this.onInstanceCreateSuccess(data);
             this.subscriptions.push(this.instanceService.algoDeploy(this.algoInstanceData.AlgoClientId, data.AlgoId, data.InstanceId)
               .subscribe(() => {
-                this.notificationsService.success('Algo instance created successfully.');
+                this.notificationsService.success('Success', 'Algo instance created successfully.');
                 this.modalRef.hide();
               }, () => {
                 this.notificationsService.error('Error', 'There was an error while running your instance.');

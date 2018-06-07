@@ -18,13 +18,17 @@
         [rowHeight]="60"
         [rows]="dataSource">
 
-        <ngx-datatable-column [resizeable]="false" name="Name" prop="Name" [flexGrow]="2">
+        <ngx-datatable-column [resizeable]="false" name="Name" prop="Name" [flexGrow]="2" [cellClass]="isBigger">
           <ng-template let-value="value" let-row="row" ngx-datatable-cell-template>
-            <a [routerLink]="['/store/algo-details', row.ClientId, row.Id]">{{ value }}</a>
+            <p [routerLink]="['/store/algo-details', row.ClientId, row.Id]" [tooltip]="value" container="body" class="link-style">{{ value }}</p>
           </ng-template>
         </ngx-datatable-column>
         <ngx-datatable-column [resizeable]="false" name="Author" prop="Author" [flexGrow]="2"></ngx-datatable-column>
-        <ngx-datatable-column [resizeable]="false" name="Description" prop="Description" [flexGrow]="4"></ngx-datatable-column>
+        <ngx-datatable-column [resizeable]="false" name="Description" prop="Description" [flexGrow]="4" [cellClass]="isBigger">
+          <ng-template let-value="value" let-row="row" ngx-datatable-cell-template>
+            <p [tooltip]="value" container="body">{{value}}</p>
+          </ng-template>
+        </ngx-datatable-column>
         <ngx-datatable-column [resizeable]="false" prop="Rating" name="Rating" [flexGrow]="1.5">
           <ng-template let-value="value" let-row="row" ngx-datatable-cell-template>
             <app-star-rating-comp [rating]="value"

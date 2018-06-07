@@ -1,11 +1,11 @@
 <div class="modal-body">
   <div class="row ml-0 mr-0 mt-4">
     <div class="col-12">
-      <h3>Backtest an algo</h3>
+      <h3>{{algoInstanceData.AlgoInstanceType === iAlgoInstanceType.Demo ? 'Demo run of' : 'Backtest'}} an algo</h3>
     </div>
     <div class="row ml-0 mr-0">
       <div class="col-12">
-        <p>We will need some additional data before we proceed with the backtest. </p>
+        <p>We will need some additional data before we proceed with the run. </p>
       </div>
     </div>
     <form (ngSubmit)="onSubmit()" [formGroup]="algoInstanceForm">
@@ -25,13 +25,13 @@
         <div class="col-6">
           <div class="form-group">
             <label for="trade-asset" class="font-weight-semibold">{{tradeAsset}} balance</label>
-            <input type="text" name="name" id="trade-asset" class="form-control" formControlName="BacktestTradingAssetBalance">
-            <div *ngIf="algoInstanceForm.get('BacktestTradingAssetBalance').invalid && algoInstanceForm.dirty"
+            <input type="text" name="name" id="trade-asset" class="form-control" formControlName="FakeTradingTradingAssetBalance">
+            <div *ngIf="algoInstanceForm.get('FakeTradingTradingAssetBalance').invalid && algoInstanceForm.dirty"
                  class="text-danger">
-              <div *ngIf="algoInstanceForm.get('BacktestTradingAssetBalance').errors['required']">
+              <div *ngIf="algoInstanceForm.get('FakeTradingTradingAssetBalance').errors['required']">
                 The balance is required
               </div>
-              <div *ngIf="algoInstanceForm.get('BacktestTradingAssetBalance').errors['min']">
+              <div *ngIf="algoInstanceForm.get('FakeTradingTradingAssetBalance').errors['min']">
                 The minimum balance is 0
               </div>
             </div>
@@ -40,13 +40,13 @@
         <div class="col-6">
           <div class="form-group">
             <label for="asset-two" class="font-weight-semibold">{{assetTwo}} balance</label>
-            <input type="text" name="name" id="asset-two" class="form-control" formControlName="BacktestAssetTwoBalance">
-            <div *ngIf="algoInstanceForm.get('BacktestAssetTwoBalance').invalid && algoInstanceForm.dirty"
+            <input type="text" name="name" id="asset-two" class="form-control" formControlName="FakeTradingAssetTwoBalance">
+            <div *ngIf="algoInstanceForm.get('FakeTradingAssetTwoBalance').invalid && algoInstanceForm.dirty"
                  class="text-danger">
-              <div *ngIf="algoInstanceForm.get('BacktestAssetTwoBalance').errors['required']">
+              <div *ngIf="algoInstanceForm.get('FakeTradingAssetTwoBalance').errors['required']">
                 The balance is required
               </div>
-              <div *ngIf="algoInstanceForm.get('BacktestAssetTwoBalance').errors['min']">
+              <div *ngIf="algoInstanceForm.get('FakeTradingAssetTwoBalance').errors['min']">
                 The minimum balance is 0
               </div>
             </div>
@@ -55,7 +55,7 @@
       </div>
       <div class="row ml-0 mr-0 text-center">
         <div class="col-12 mb-3">
-          <button type="submit" class="btn btn-primary">Backtest</button>
+          <button type="submit" class="btn btn-primary">{{algoInstanceData.AlgoInstanceType === iAlgoInstanceType.Demo ? 'Run Demo' : 'Backtest'}}</button>
         </div>
         <div class="col-12">
           <a href="javascript:;" (click)="modalRef.hide()" class="link-style">Cancel</a>
