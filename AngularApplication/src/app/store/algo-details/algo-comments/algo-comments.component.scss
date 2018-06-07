@@ -5,10 +5,7 @@
   border-bottom: 1px solid darkgray;
 }
 
-.comments-dropdown.dropdown-menu {
-  top: 30px !important;
-  left: -40px !important;
-
+::ng-deep .comments-dropdown.dropdown-menu {
   .dropdown-item {
     img {
       vertical-align: baseline;
