@@ -24,14 +24,14 @@
         <ngx-datatable-column [resizeable]="false" name="Name" prop="Name" [flexGrow]="2" [cellClass]="isBigger">
           <ng-template let-value="value" let-row="row" ngx-datatable-cell-template>
             <span class="text-truncate d-block">
-              <p [routerLink]="['/store/algo-details', row.ClientId, row?.Id]" [tooltip]="value" [delay]="1000"  container="body" class="link-style">{{ value }}</p>
+              <p [routerLink]="['/store/algo-details', row.ClientId, row?.Id]" [tooltip]="value" container="body" class="link-style">{{ value }}</p>
             </span>
           </ng-template>
         </ngx-datatable-column>
         <ngx-datatable-column [resizeable]="false" name="Description" prop="Description" [flexGrow]="3" [cellClass]="isBigger">
           <ng-template let-value="value" let-row="row" ngx-datatable-cell-template>
             <span class="text-truncate d-block">
-              <p [tooltip]="value" [delay]="1000" container="body">{{value}}</p>
+              <p [tooltip]="value" container="body">{{value}}</p>
             </span>
           </ng-template>
         </ngx-datatable-column>
