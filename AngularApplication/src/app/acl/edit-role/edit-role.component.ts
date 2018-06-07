@@ -78,7 +78,7 @@ export class EditRoleComponent implements OnDestroy {
 
   selectAll(): void {
     this.allPermissions.forEach(p => p.checked = true);
-    this.rolePermissions = this.allPermissions;
+    this.rolePermissions = JSON.parse(JSON.stringify(this.allPermissions));
   }
 
   deselectAll(): void {
