@@ -5,7 +5,7 @@
 
 export const environment = {
   production: false,
-  apiUrl: 'https://api.lykkex.net/api',
+  apiUrl: 'https://api-test.lykkex.net/api',
   apiAuthUrl: 'https://auth-test.lykkex.net',
   applicationId: '405712da-62b2-4231-85d3-de868a1e78a5',
   redirectUrl: 'http://algo-store-web.algo-store.svc.cluster.local/',
