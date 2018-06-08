@@ -47,13 +47,13 @@
               <img src="../../../assets/images/actions-icon.svg">
               <ul *dropdownMenu class="dropdown-menu my-algos-menu">
                 <li [routerLink]="['/store/algo-edit', row.ClientId, row?.Id]" *ngIf="permissions.canEditAlgo">
-                 <a class="dropdown-item"><img src="../../../assets/images/edit-icon.svg" class="mb-1"><span class="ml-1">Edit</span></a>
+                 <a class="dropdown-item cursor-pointer"><img src="../../../assets/images/edit-icon.svg" class="mb-1"><span class="ml-1">Edit</span></a>
                 </li>
                 <li (click)="delete(row)" *ngIf="permissions.canDeleteAlgo">
-                   <a class="dropdown-item"><img src="../../../assets/images/store/delete-icon.svg" class="mb-1"><span class="ml-1">Delete</span></a>
+                   <a class="dropdown-item cursor-pointer"><img src="../../../assets/images/store/delete-icon.svg" class="mb-1"><span class="ml-1">Delete</span></a>
                 </li>
                 <li (click)="duplicateAlgo(row)" *ngIf="permissions.canDuplicate">
-                   <a class="dropdown-item"><img src="../../../assets/images/store/duplicate-icon.svg" class="mb-1"><span class="ml-1">Duplicate</span></a>
+                   <a class="dropdown-item cursor-pointer"><img src="../../../assets/images/store/duplicate-icon.svg" class="mb-1"><span class="ml-1">Duplicate</span></a>
                 </li>
               </ul>
             </span>

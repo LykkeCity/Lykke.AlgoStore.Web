@@ -12,7 +12,7 @@ import { NotificationsService } from 'angular2-notifications';
 import { UserService } from '../../services/user.service';
 import Permissions from '../models/permissions';
 import { InstanceService } from '../../services/instance.service';
-import { AlgoInstance } from '../models/algo-instance.model';
+import { AlgoInstance, IAlgoInstanceStatus } from '../models/algo-instance.model';
 
 @Component({
   selector: 'app-algo-edit',
@@ -26,6 +26,7 @@ export class AlgoEditComponent implements OnInit, OnDestroy {
   algoForm: FormGroup;
   canBePublished: boolean;
   iAlgoVisibility = AlgoVisibility;
+  iAlgoInstanceStatus = IAlgoInstanceStatus;
   algoErrors: string;
   instances: AlgoInstance[];
   forceDelete: boolean;
@@ -71,7 +72,16 @@ export class AlgoEditComponent implements OnInit, OnDestroy {
 
         this.subscriptions.push(this.instanceService.getAlgoInstances(algoId).subscribe(instances => {
           this.instances = instances;
-          this.forceDelete = instances && instances.length > 0;
+          let hasRunning = false;
+
+          for (const inst of this.instances) {
+            if (inst.AlgoInstanceStatus === this.iAlgoInstanceStatus.Running || inst.AlgoInstanceStatus === this.iAlgoInstanceStatus.Deploying) {
+              hasRunning = true;
+              break;
+            }
+          }
+
+          this.forceDelete = instances && instances.length > 0 && !hasRunning;
         }));
 
         this.algoForm.setValue({
