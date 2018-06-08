@@ -46,7 +46,7 @@ export class AlgoFakeTradingPopupComponent implements OnInit {
     this.instanceService.fakeTrading(backtestData).subscribe((data) => {
       this.subscriptions.push(this.instanceService.algoDeploy(this.algoInstanceData.AlgoClientId, data.AlgoId, data.InstanceId)
         .subscribe(() => {
-          this.notificationsService.success('Instance created successfully.');
+          this.notificationsService.success('Success', 'Instance created successfully.');
           this.modalRef.hide();
           this.onSuccess(data);
         }, () => {

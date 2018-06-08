@@ -1,11 +1,12 @@
 @import '~scss/reuse';
 
-ul.dropdown-menu {
-  right: 50px !important;
-  top: 65% !important;
-  left: auto !important;
-}
+
 ::ng-deep {
+  ul.dropdown-menu.my-algos-menu {
+    top: 65% !important;
+    left: auto !important;
+  }
+
   .tooltip-inner {
     max-width: 500px;
   }
