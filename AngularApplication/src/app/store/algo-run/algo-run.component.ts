@@ -49,7 +49,7 @@ export class AlgoRunComponent implements OnInit, OnDestroy {
       canRunInstance: this.userService.hasPermission(Permissions.SAVE_ALGO_INSTANCE_DATA)
       && this.userService.hasPermission(Permissions.UPLOAD_BINARY_FILE),
       canSeeInstances: this.userService.hasPermission(Permissions.GET_ALL_ALGO_INSTANCE_DATA),
-      canRunFakeTrading: this.userService.hasPermission(Permissions.RUN_FAKE_TRADE),
+      canRunFakeTrading: this.userService.hasPermission(Permissions.RUN_FAKE_TRADE) && this.userService.hasPermission(Permissions.UPLOAD_BINARY_FILE),
       isCurrentUser: false
     };
 
