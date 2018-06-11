@@ -35,7 +35,8 @@ export class AlgoRunComponent implements OnInit, OnDestroy {
     canRunInstance: boolean,
     canSeeInstances: boolean,
     canRunFakeTrading: boolean,
-    isCurrentUser: boolean
+    isCurrentUser: boolean,
+    canSeeWallets: boolean
   };
 
   modalRef: BsModalRef;
@@ -49,10 +50,11 @@ export class AlgoRunComponent implements OnInit, OnDestroy {
 
     this.permissions = {
       canRunInstance: this.userService.hasPermission(Permissions.SAVE_ALGO_INSTANCE_DATA)
-      && this.userService.hasPermission(Permissions.UPLOAD_BINARY_FILE),
+      && this.userService.hasPermission(Permissions.UPLOAD_BINARY_FILE) && this.userService.hasPermission(Permissions.GET_FREE_WALLETS),
       canSeeInstances: this.userService.hasPermission(Permissions.GET_ALL_ALGO_INSTANCE_DATA),
       canRunFakeTrading: this.userService.hasPermission(Permissions.RUN_FAKE_TRADE) && this.userService.hasPermission(Permissions.UPLOAD_BINARY_FILE),
-      isCurrentUser: false
+      isCurrentUser: false,
+      canSeeWallets: this.userService.hasPermission(Permissions.GET_FREE_WALLETS)
     };
 
     this.subscriptions.push(this.route.params.subscribe(params => {
@@ -79,9 +81,11 @@ export class AlgoRunComponent implements OnInit, OnDestroy {
 
     }));
 
-    this.subscriptions.push(this.userService.getUserWalletsWithBalances().subscribe(wallets => {
-      this.wallets = wallets;
-    }));
+    if (this.permissions.canSeeWallets) {
+      this.subscriptions.push(this.userService.getFreeWallets().subscribe(wallets => {
+        this.wallets = wallets;
+      }));
+    }
   }
 
   ngOnInit() {
@@ -170,6 +174,10 @@ export class AlgoRunComponent implements OnInit, OnDestroy {
       } as AlgoInstanceData,
       onInstanceCreateSuccess: (instance) => {
         this.instancesArray.push(instance);
+        const index = this.wallets.findIndex(w => w.Id === wallet.Id);
+        if (index !== -1) {
+          this.wallets.splice(index, 1);
+        }
       }
     };
     this.modalRef = this.bsModalService.show(AlgoInstancePopupComponent, { initialState, class: 'modal-sm run-instance-popup' });
