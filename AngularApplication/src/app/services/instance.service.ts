@@ -27,6 +27,10 @@ export class InstanceService {
     );
   }
 
+  editName(instanceId: string, data: {name: string}): Observable<string> {
+    return this.authRequestService.put(environment.storeApiUrl + `/v1/algoInstances/${instanceId}/name`, data);
+  }
+
   algoDelete(algo: Algo): Observable<Algo> {
     return this.authRequestService.post(environment.storeApiUrl + '/v1/clientData/metadata/cascadeDelete', algo);
   }

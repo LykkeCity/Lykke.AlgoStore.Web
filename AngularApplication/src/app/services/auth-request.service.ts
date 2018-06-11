@@ -48,6 +48,17 @@ export class AuthRequestService {
     );
   }
 
+  public put<T>(url: string, body: any = {}, options?: object): Observable<T> {
+    const headers = {
+      'Authorization': 'Bearer ' + this.token,
+    };
+    const reqOptions = Object.assign({}, options, {headers});
+
+    return this.http.put(url, body, reqOptions).pipe(
+      catchError( error => this.handleError(error) )
+    );
+  }
+
   public patch<T>(url: string, body: object = {}, options?: object): Observable<T> {
     const headers = {
       'Authorization': 'Bearer ' + this.token
