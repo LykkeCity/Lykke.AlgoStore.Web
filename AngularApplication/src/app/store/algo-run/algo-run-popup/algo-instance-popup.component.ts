@@ -28,7 +28,7 @@ export class AlgoInstancePopupComponent implements OnDestroy {
               private fb: FormBuilder,
               private notificationsService: NotificationsService) {
     this.algoInstanceForm = this.fb.group({
-      instanceName: ['', Validators.required]
+      name: ['', Validators.required]
     });
   }
 
@@ -62,10 +62,10 @@ export class AlgoInstancePopupComponent implements OnDestroy {
           }));
         break;
       case 'Edit':
-        // this.instanceService.editInstance(this.instanceId, this.algoInstanceForm.value).subscribe(() => {
-        //   this.modalRef.hide();
-        //   this.onEditSuccess(this.algoInstanceForm.value.Name);
-        // });
+        this.instanceService.editName(this.instanceId, this.algoInstanceForm.value).subscribe(() => {
+          this.modalRef.hide();
+          this.onEditSuccess(this.algoInstanceForm.value.name);
+        });
         break;
     }
   }
