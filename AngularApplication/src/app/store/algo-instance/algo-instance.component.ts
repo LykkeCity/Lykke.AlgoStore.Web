@@ -37,6 +37,7 @@ export class AlgoInstanceComponent implements OnDestroy {
   trades: AlgoInstanceTrade[];
   stats: InstanceStatistic;
   log: string[] = [];
+  heading = 'Log';
 
   editor: any;
   subscriptions: Subscription[] = [];
@@ -83,13 +84,9 @@ export class AlgoInstanceComponent implements OnDestroy {
         }));
 
         if (this.instance.AlgoInstanceStatus !== IAlgoInstanceStatus.Deploying) {
-          if (this.permissions.canSeeLogs) {
-            this.getLogs();
-          } else if (this.permissions.canSeeStatistics) {
-           this.getStatistics();
-          } else if (this.permissions.canSeeTrades) {
-            this.getTrades();
-          }
+          this.getInstanceData();
+        } else {
+          this.getStatus();
         }
       }, (err) => {
         if (err.status === 404) {
@@ -190,7 +187,7 @@ export class AlgoInstanceComponent implements OnDestroy {
 
   stopInstance(): void {
     this.subscriptions.push(
-      this.instanceService.algoStop(this.algo.AlgoId, this.instance.InstanceId, this.algo.ClientId).subscribe(() => {
+      this.instanceService.stopInstance(this.algo.AlgoId, this.instance.InstanceId, this.algo.ClientId).subscribe(() => {
         this.instance.AlgoInstanceStatus = IAlgoInstanceStatus.Stopped;
         this.notificationsService.success('Success', 'Instance has been stopped successfully.');
         this.subscriptions.forEach(sub => {
@@ -234,7 +231,7 @@ export class AlgoInstanceComponent implements OnDestroy {
   }
 
   getStatistics(): void {
-    this.subscriptions.push(this.instanceService.algoGetStatistics(this.instanceId)
+    this.subscriptions.push(this.instanceService.getInstanceStatistics(this.instanceId)
       .pipe(
         repeatWhen(() => timer(10000, 5000))
       )
@@ -246,7 +243,7 @@ export class AlgoInstanceComponent implements OnDestroy {
   }
 
   getLogs(): void {
-    this.subscriptions.push(this.instanceService.algoGetTailLog(this.algoId, this.instanceId, this.clientId)
+    this.subscriptions.push(this.instanceService.getInstanceLogs(this.algoId, this.instanceId, this.clientId)
       .pipe(
         repeatWhen(() => timer(10000, 5000))
       )
@@ -260,7 +257,7 @@ export class AlgoInstanceComponent implements OnDestroy {
   }
 
   getTrades(): void {
-    this.subscriptions.push(this.instanceService.algoGetTrades(this.instanceId)
+    this.subscriptions.push(this.instanceService.getInstanceTrades(this.instanceId)
       .pipe(
         repeatWhen(() => timer(10000, 5000))
       )
@@ -271,25 +268,48 @@ export class AlgoInstanceComponent implements OnDestroy {
       ));
   }
 
+  getStatus(): void {
+    const statusSub = this.instanceService.getInstanceStatus(this.instanceId)
+      .pipe(
+        repeatWhen(() => timer(10000, 5000))
+      )
+      .subscribe(
+        status => {
+          this.instance.AlgoInstanceStatus = status;
+
+          if (status !== this.iAlgoInstanceStatus.Deploying) {
+            statusSub.unsubscribe();
+
+            this.getInstanceData();
+          }
+        }
+      );
+  }
+
+  getInstanceData(): void {
+    if (this.heading === 'Statistics' && this.permissions.canSeeStatistics) {
+      this.getStatistics();
+    }
+
+    if (this.heading === 'Log' && this.permissions.canSeeLogs) {
+      this.getLogs();
+    }
+
+    if (this.heading === 'Trades' && this.permissions.canSeeTrades) {
+      this.getTrades();
+    }
+  }
+
   onSelect(event) {
+    this.heading = event.heading;
+
     if (this.instance.AlgoInstanceStatus === IAlgoInstanceStatus.Deploying) {
       return;
     }
 
-    const heading = event.heading;
     this.subscriptions.forEach(sub => sub.unsubscribe());
     this.subscriptions = []; // clear the array so we don't have duplicate subscriptions
 
-    if (heading === 'Statistics' && this.permissions.canSeeStatistics) {
-      this.getStatistics();
-    }
-
-    if (heading === 'Log' && this.permissions.canSeeLogs) {
-      this.getLogs();
-    }
-
-    if (heading === 'Trades' && this.permissions.canSeeTrades) {
-      this.getTrades();
-    }
+    this.getInstanceData();
   }
 }

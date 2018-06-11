@@ -41,10 +41,10 @@ export class AlgoFakeTradingPopupComponent implements OnInit {
       return;
     }
 
-    const backtestData = {...this.algoInstanceData, ...this.algoInstanceForm.value};
+    const fakeTradingData = {...this.algoInstanceData, ...this.algoInstanceForm.value};
 
-    this.instanceService.fakeTrading(backtestData).subscribe((data) => {
-      this.subscriptions.push(this.instanceService.algoDeploy(this.algoInstanceData.AlgoClientId, data.AlgoId, data.InstanceId)
+    this.instanceService.fakeTrading(fakeTradingData).subscribe((data) => {
+      this.subscriptions.push(this.instanceService.deployInstance(this.algoInstanceData.AlgoClientId, data.AlgoId, data.InstanceId)
         .subscribe(() => {
           this.notificationsService.success('Success', 'Instance created successfully.');
           this.modalRef.hide();
