@@ -4,7 +4,7 @@ import { Subscription } from 'rxjs/Subscription';
 import { Algo, AlgoVisibility } from '../models/algo.interface';
 import { Wallet } from '../../models/wallet.model';
 import { UserService } from '../../services/user.service';
-import { BsModalService } from 'ngx-bootstrap';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap';
 import { AlgoInstancePopupComponent } from './algo-run-popup/algo-instance-popup.component';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AlgoInstance, AlgoInstanceData, IAlgoInstanceType } from '../models/algo-instance.model';
@@ -37,6 +37,8 @@ export class AlgoRunComponent implements OnInit, OnDestroy {
     canRunFakeTrading: boolean,
     isCurrentUser: boolean
   };
+
+  modalRef: BsModalRef;
 
   constructor(private route: ActivatedRoute,
               private algoService: AlgoService,
@@ -86,6 +88,10 @@ export class AlgoRunComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
+    if (this.modalRef) {
+      this.modalRef.hide();
+    }
+
     this.subscriptions.forEach(sub => {
       sub.unsubscribe();
     });
@@ -130,7 +136,7 @@ export class AlgoRunComponent implements OnInit, OnDestroy {
         this.instancesArray.push(instance);
       }
     };
-    this.bsModalService.show(AlgoFakeTradingPopupComponent, { initialState, class: 'modal-sm fakeTrading-instance-popup' });
+    this.modalRef = this.bsModalService.show(AlgoFakeTradingPopupComponent, { initialState, class: 'modal-sm fakeTrading-instance-popup' });
   }
 
   goLive(wallet: Wallet): void {
@@ -166,7 +172,7 @@ export class AlgoRunComponent implements OnInit, OnDestroy {
         this.instancesArray.push(instance);
       }
     };
-    this.bsModalService.show(AlgoInstancePopupComponent, { initialState, class: 'modal-sm run-instance-popup' });
+    this.modalRef = this.bsModalService.show(AlgoInstancePopupComponent, { initialState, class: 'modal-sm run-instance-popup' });
   }
 
   resetDefault(): void {

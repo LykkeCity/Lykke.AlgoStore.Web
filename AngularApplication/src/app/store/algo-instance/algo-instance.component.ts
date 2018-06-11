@@ -8,7 +8,7 @@ import { UserService } from '../../services/user.service';
 import { BaseAlgoParam } from '../models/base-algo-param.model';
 import { AlgoInstanceTrade } from '../models/algo-instance-trade.model';
 import { InstanceStatistic } from '../models/algo-instance-statistic.model';
-import { BsModalService } from 'ngx-bootstrap';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap';
 import { AlgoInstancePopupComponent } from '../algo-run/algo-run-popup/algo-instance-popup.component';
 import { NotificationsService } from 'angular2-notifications';
 import { repeatWhen } from 'rxjs/operators';
@@ -49,6 +49,8 @@ export class AlgoInstanceComponent implements OnDestroy {
     canStopTest: boolean,
     canDeleteInstance: boolean
   };
+
+  modalRef: BsModalRef;
 
   constructor(private route: ActivatedRoute,
               private router: Router,
@@ -98,6 +100,10 @@ export class AlgoInstanceComponent implements OnDestroy {
   }
 
   ngOnDestroy() {
+    if (this.modalRef) {
+      this.modalRef.hide();
+    }
+
     this.subscriptions.forEach(sub => {
       sub.unsubscribe();
     });
@@ -119,7 +125,7 @@ export class AlgoInstanceComponent implements OnDestroy {
       },
       class: 'modal-sm instance-popup'
     };
-    this.bsModalService.show(AlgoInstancePopupComponent, config);
+    this.modalRef = this.bsModalService.show(AlgoInstancePopupComponent, config);
   }
 
   goLive(wallet: Wallet) {
@@ -136,7 +142,7 @@ export class AlgoInstanceComponent implements OnDestroy {
         this.router.navigate(['/store/algo-run', this.clientId, this.algo.AlgoId]);
       }
     };
-    this.bsModalService.show(AlgoInstancePopupComponent, { initialState, class: 'modal-sm run-instance-popup' });
+    this.modalRef = this.bsModalService.show(AlgoInstancePopupComponent, { initialState, class: 'modal-sm run-instance-popup' });
   }
 
   backtest(): void {
@@ -163,7 +169,7 @@ export class AlgoInstanceComponent implements OnDestroy {
         this.router.navigate(['/store/algo-run', this.clientId, this.algo.AlgoId]);
       }
     };
-    this.bsModalService.show(AlgoFakeTradingPopupComponent, { initialState, class: 'modal-sm fakeTrading-instance-popup' });
+    this.modalRef = this.bsModalService.show(AlgoFakeTradingPopupComponent, { initialState, class: 'modal-sm fakeTrading-instance-popup' });
   }
 
   stopInstancePrompt(): void {
@@ -182,7 +188,7 @@ export class AlgoInstanceComponent implements OnDestroy {
         }
       } as PopupConfig
     };
-    this.bsModalService.show(PopupComponent, { initialState, class: 'modal-sm', keyboard: false, ignoreBackdropClick: true });
+    this.modalRef = this.bsModalService.show(PopupComponent, { initialState, class: 'modal-sm', keyboard: false, ignoreBackdropClick: true });
   }
 
   stopInstance(): void {
@@ -213,7 +219,7 @@ export class AlgoInstanceComponent implements OnDestroy {
         }
       } as PopupConfig
     };
-    this.bsModalService.show(PopupComponent, { initialState, class: 'modal-sm', keyboard: false, ignoreBackdropClick: true });
+    this.modalRef = this.bsModalService.show(PopupComponent, { initialState, class: 'modal-sm', keyboard: false, ignoreBackdropClick: true });
   }
 
   deleteInstance(): void {
