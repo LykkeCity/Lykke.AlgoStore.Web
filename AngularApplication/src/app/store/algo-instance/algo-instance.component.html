@@ -4,12 +4,12 @@
       <div class="container">
         <div class="details-holder mt-60">
           <div class="row">
-            <div class="col-8 text-left instance-name-holder">
+            <div class="col-8 text-left" [ngClass]="{'instance-name-holder' : permissions.canEditName}">
               <div class="row">
                 <div class="col-11 align-self-center break-all">
                   <h3>{{instance.InstanceName}}</h3>
                 </div>
-                <div class="col-1 text-right align-self-center cursor-pointer edit-image-holder" (click)="edit()"  tooltip="Click to edit." placement="bottom"  container="body">
+                <div class="col-1 text-right align-self-center cursor-pointer edit-image-holder" (click)="edit()"  tooltip="Click to edit." placement="bottom"  container="body" *ngIf="permissions.canEditName">
                   <img src="../../../assets/images/edit-icon.svg">
                 </div>
               </div>

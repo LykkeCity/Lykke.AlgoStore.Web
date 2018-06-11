@@ -47,7 +47,8 @@ export class AlgoInstanceComponent implements OnDestroy {
     canSeeStatistics: boolean,
     canSeeTrades: boolean,
     canStopTest: boolean,
-    canDeleteInstance: boolean
+    canDeleteInstance: boolean,
+    canEditName: boolean
   };
 
   modalRef: BsModalRef;
@@ -66,7 +67,8 @@ export class AlgoInstanceComponent implements OnDestroy {
       canSeeStatistics: this.userService.hasPermission(Permissions.GET_ALGO_INSTANCE_STATISTIC),
       canSeeTrades: this.userService.hasPermission(Permissions.GET_ALL_TRADES_FOR_ALGO),
       canStopTest: this.userService.hasPermission(Permissions.STOP_TEST),
-      canDeleteInstance: this.userService.hasPermission(Permissions.DELETE_ALGO_INSTANCE_DATA)
+      canDeleteInstance: this.userService.hasPermission(Permissions.DELETE_ALGO_INSTANCE_DATA),
+      canEditName: this.userService.hasPermission(Permissions.EDIT_INSTANCE_NAME)
     };
 
     this.subscriptions.push(this.route.params.subscribe(params => {
@@ -114,6 +116,10 @@ export class AlgoInstanceComponent implements OnDestroy {
   }
 
   edit(): void {
+    if (!this.permissions.canEditName) {
+      return;
+    }
+
     const config = {
       initialState: {
         type: 'Edit',
