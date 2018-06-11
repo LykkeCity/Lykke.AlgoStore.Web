@@ -61,4 +61,8 @@ export class UserService {
   getUserWalletsWithBalances(): Observable<Wallet[]> {
     return this.authRequestService.get<Wallet[]>(environment.apiV2Url + 'wallets/balances');
   }
+
+  getFreeWallets(): Observable<Wallet[]> {
+    return this.authRequestService.get(environment.storeApiUrl + '/v1/clients/wallets');
+  }
 }
