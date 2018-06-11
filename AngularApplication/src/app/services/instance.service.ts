@@ -3,7 +3,7 @@ import { environment } from '../../environments/environment';
 import { Observable } from 'rxjs/Observable';
 import { Algo } from '../store/models/algo.interface';
 import { AuthRequestService } from './auth-request.service';
-import { AlgoInstance } from '../store/models/algo-instance.model';
+import { AlgoInstance, IAlgoInstanceStatus } from '../store/models/algo-instance.model';
 import { AlgoLog } from '../store/models/algo-log.interface';
 import { AlgoInstanceTrade } from '../store/models/algo-instance-trade.model';
 import { InstanceStatistic } from '../store/models/algo-instance-statistic.model';
@@ -13,7 +13,7 @@ export class InstanceService {
 
   constructor(private authRequestService: AuthRequestService) { }
 
-  algoDeploy(algoClientId: string, algoId: string, instanceId: string): Observable<Algo> {
+  deployInstance(algoClientId: string, algoId: string, instanceId: string): Observable<Algo> {
     return this.authRequestService.post(environment.storeApiUrl + '/v1/management/deploy/binary', { algoClientId, algoId, instanceId });
   }
 
@@ -21,7 +21,7 @@ export class InstanceService {
     return this.authRequestService.post(environment.storeApiUrl + '/v1/management/test/start', { AlgoId: algoId });
   }
 
-  algoStop(algoId: string, instanceId: string, algoClientId: string): Observable<Algo> {
+  stopInstance(algoId: string, instanceId: string, algoClientId: string): Observable<Algo> {
     return this.authRequestService.post(
       environment.storeApiUrl + '/v1/management/test/stop', { AlgoId: algoId, InstanceId: instanceId, AlgoClientId: algoClientId }
     );
@@ -30,19 +30,24 @@ export class InstanceService {
   algoDelete(algo: Algo): Observable<Algo> {
     return this.authRequestService.post(environment.storeApiUrl + '/v1/clientData/metadata/cascadeDelete', algo);
   }
-  algoGetTailLog(AlgoId: string, InstanceId: string, AlgoClientId: string, Tail: number = 100): Observable<AlgoLog> {
+
+  getInstanceLogs(AlgoId: string, InstanceId: string, AlgoClientId: string, Tail: number = 100): Observable<AlgoLog> {
     const params = { AlgoId, InstanceId, AlgoClientId, Tail };
     return this.authRequestService.get(environment.storeApiUrl + `/v1/management/test/tailLog`, { params });
   }
 
-  algoGetTrades(instanceId: string): Observable<AlgoInstanceTrade[]> {
+  getInstanceTrades(instanceId: string): Observable<AlgoInstanceTrade[]> {
     const params = { instanceId: instanceId };
     return this.authRequestService.get(environment.storeApiUrl + '/v1/trades', { params });
   }
 
-  algoGetStatistics(instanceId: string): Observable<InstanceStatistic> {
+  getInstanceStatistics(instanceId: string): Observable<InstanceStatistic> {
     const params = { instanceId: instanceId };
     return this.authRequestService.get(environment.storeApiUrl + '/v1/statistics', { params });
+  }
+
+  getInstanceStatus(instanceId: string): Observable<IAlgoInstanceStatus> {
+    return this.authRequestService.get(environment.storeApiUrl + `/v1/algoInstances/${instanceId}/status`);
   }
 
   createLiveAlgoIntance(data): Observable<AlgoInstance> {
