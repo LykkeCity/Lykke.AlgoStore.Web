@@ -48,7 +48,9 @@ export class AlgoInstanceComponent implements OnDestroy {
     canSeeTrades: boolean,
     canStopTest: boolean,
     canDeleteInstance: boolean,
-    canEditName: boolean
+    canEditName: boolean,
+    canRestartInstance: boolean,
+    canSeeWallets: boolean
   };
 
   modalRef: BsModalRef;
@@ -68,7 +70,9 @@ export class AlgoInstanceComponent implements OnDestroy {
       canSeeTrades: this.userService.hasPermission(Permissions.GET_ALL_TRADES_FOR_ALGO),
       canStopTest: this.userService.hasPermission(Permissions.STOP_TEST),
       canDeleteInstance: this.userService.hasPermission(Permissions.DELETE_ALGO_INSTANCE_DATA),
-      canEditName: this.userService.hasPermission(Permissions.EDIT_INSTANCE_NAME)
+      canEditName: this.userService.hasPermission(Permissions.EDIT_INSTANCE_NAME),
+      canRestartInstance: false,
+      canSeeWallets: this.userService.hasPermission(Permissions.GET_FREE_WALLETS)
     };
 
     this.subscriptions.push(this.route.params.subscribe(params => {
@@ -79,13 +83,17 @@ export class AlgoInstanceComponent implements OnDestroy {
       this.subscriptions.push(this.instanceService.getAlgoInstance(this.algoId, this.instanceId).subscribe(instance => {
         this.instance = instance;
 
+        this.permissions.canRestartInstance = (this.instance.AlgoInstanceType === IAlgoInstanceType.Demo
+          || this.instance.AlgoInstanceType === IAlgoInstanceType.Test)
+          || (this.userService.hasPermission(Permissions.SAVE_ALGO_INSTANCE_DATA)
+            && this.userService.hasPermission(Permissions.UPLOAD_BINARY_FILE)
+            && this.userService.hasPermission(Permissions.GET_FREE_WALLETS));
+
         this.subscriptions.push(this.algoService.getAlgoWithSource(this.algoId, this.clientId).subscribe(algo => {
           this.algo = { ...algo, ClientId: this.clientId };
         }));
 
-        this.subscriptions.push(this.userService.getUserWalletsWithBalances().subscribe(wallets => {
-          this.wallets = wallets;
-        }));
+        this.getWallets();
 
         if (this.instance.AlgoInstanceStatus !== IAlgoInstanceStatus.Deploying) {
           this.getInstanceData();
@@ -113,6 +121,14 @@ export class AlgoInstanceComponent implements OnDestroy {
 
   onEditorCreated(editor: any): void {
     this.editor = editor;
+  }
+
+  getWallets(): void {
+    if (this.permissions.canSeeWallets) {
+      this.subscriptions.push(this.userService.getFreeWallets().subscribe(wallets => {
+        this.wallets = wallets;
+      }));
+    }
   }
 
   edit(): void {
@@ -194,7 +210,12 @@ export class AlgoInstanceComponent implements OnDestroy {
         }
       } as PopupConfig
     };
-    this.modalRef = this.bsModalService.show(PopupComponent, { initialState, class: 'modal-sm', keyboard: false, ignoreBackdropClick: true });
+    this.modalRef = this.bsModalService.show(PopupComponent, {
+      initialState,
+      class: 'modal-sm',
+      keyboard: false,
+      ignoreBackdropClick: true
+    });
   }
 
   stopInstance(): void {
@@ -205,6 +226,8 @@ export class AlgoInstanceComponent implements OnDestroy {
         this.subscriptions.forEach(sub => {
           sub.unsubscribe();
         });
+
+        this.getWallets();
       })
     );
   }
@@ -225,7 +248,12 @@ export class AlgoInstanceComponent implements OnDestroy {
         }
       } as PopupConfig
     };
-    this.modalRef = this.bsModalService.show(PopupComponent, { initialState, class: 'modal-sm', keyboard: false, ignoreBackdropClick: true });
+    this.modalRef = this.bsModalService.show(PopupComponent, {
+      initialState,
+      class: 'modal-sm',
+      keyboard: false,
+      ignoreBackdropClick: true
+    });
   }
 
   deleteInstance(): void {
