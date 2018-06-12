@@ -72,7 +72,6 @@ export class AlgoInstanceListComponent {
       if (instance.AlgoInstanceType === IAlgoInstanceType.Live) {
         this.onInstanceDelete.emit();
       }
-      
     }));
   }
 

@@ -7,7 +7,7 @@ import { UserService } from '../../services/user.service';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap';
 import { AlgoInstancePopupComponent } from './algo-run-popup/algo-instance-popup.component';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { AlgoInstance, AlgoInstanceData, IAlgoInstanceType } from '../models/algo-instance.model';
+import { AlgoInstance, AlgoInstanceData, IAlgoInstanceStatus, IAlgoInstanceType } from '../models/algo-instance.model';
 import { AlgoService } from '../../services/algo.service';
 import { InstanceService } from '../../services/instance.service';
 import Permissions from '../models/permissions';
@@ -25,7 +25,7 @@ export class AlgoRunComponent implements OnInit, OnDestroy {
   algo: Algo;
   wallets: Wallet[];
   subscriptions: Subscription[] = [];
-  instancesArray: AlgoInstance[] = [];
+  instancesArray: AlgoInstance[];
   metadataForm: FormGroup;
   iAlgoVisibility = AlgoVisibility;
   iAlgoInstanceType = IAlgoInstanceType;
@@ -52,7 +52,8 @@ export class AlgoRunComponent implements OnInit, OnDestroy {
       canRunInstance: this.userService.hasPermission(Permissions.SAVE_ALGO_INSTANCE_DATA)
       && this.userService.hasPermission(Permissions.UPLOAD_BINARY_FILE) && this.userService.hasPermission(Permissions.GET_FREE_WALLETS),
       canSeeInstances: this.userService.hasPermission(Permissions.GET_ALL_ALGO_INSTANCE_DATA),
-      canRunFakeTrading: this.userService.hasPermission(Permissions.RUN_FAKE_TRADE) && this.userService.hasPermission(Permissions.UPLOAD_BINARY_FILE),
+      canRunFakeTrading: this.userService.hasPermission(Permissions.RUN_FAKE_TRADE)
+      && this.userService.hasPermission(Permissions.UPLOAD_BINARY_FILE),
       isCurrentUser: false,
       canSeeWallets: this.userService.hasPermission(Permissions.GET_FREE_WALLETS)
     };
@@ -111,7 +112,7 @@ export class AlgoRunComponent implements OnInit, OnDestroy {
     }
 
     if (this.metadataForm.invalid) {
-      this.notificationsService.error('Error', 'All Metadata Attributes should be populated before running an instance', { timeOut: 3000});
+      this.notificationsService.error('Error', 'All Metadata Attributes should be populated before running an instance', { timeOut: 3000 });
       return;
     }
 
@@ -153,7 +154,7 @@ export class AlgoRunComponent implements OnInit, OnDestroy {
     }
 
     if (this.metadataForm.invalid) {
-      this.notificationsService.error('Error', 'All Metadata Attributes should be populated before running an instance', { timeOut: 3000});
+      this.notificationsService.error('Error', 'All Metadata Attributes should be populated before running an instance', { timeOut: 3000 });
       return;
     }
 
@@ -242,11 +243,13 @@ export class AlgoRunComponent implements OnInit, OnDestroy {
   }
 
   canRunFakeTrading(): boolean {
-    return this.permissions.canRunFakeTrading && (this.algo.AlgoVisibility === this.iAlgoVisibility.Public || this.permissions.isCurrentUser);
+    return this.permissions.canRunFakeTrading &&
+      (this.algo.AlgoVisibility === this.iAlgoVisibility.Public || this.permissions.isCurrentUser);
   }
 
   canRunLiveTrading(): boolean {
-    return this.permissions.canRunInstance && (this.algo.AlgoVisibility === this.iAlgoVisibility.Public || this.permissions.isCurrentUser);
+    return this.permissions.canRunInstance &&
+      (this.algo.AlgoVisibility === this.iAlgoVisibility.Public || this.permissions.isCurrentUser);
   }
 
   onInstanceDelete(event: any): void {

@@ -55,7 +55,7 @@
       </div>
       <div class="row ml-0 mr-0 text-center">
         <div class="col-12 mb-3">
-          <button type="submit" class="btn btn-primary">{{algoInstanceData.AlgoInstanceType === iAlgoInstanceType.Demo ? 'Run Demo' : 'Backtest'}}</button>
+          <button type="submit" class="btn btn-primary"[disabled]="loader"><i *ngIf="loader" class="icon--spin animate-spin"></i>{{algoInstanceData.AlgoInstanceType === iAlgoInstanceType.Demo ? 'Run Demo' : 'Backtest'}}</button>
         </div>
         <div class="col-12">
           <a href="javascript:;" (click)="modalRef.hide()" class="link-style">Cancel</a>
