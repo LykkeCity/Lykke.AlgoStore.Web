@@ -20,6 +20,7 @@ export class AlgoFakeTradingPopupComponent implements OnInit {
   onSuccess: Function;
   algoInstanceData: AlgoInstanceData;
   subscriptions: Subscription[] = [];
+  loader = false;
 
   constructor(private fb: FormBuilder,
               public modalRef: BsModalRef,
@@ -40,6 +41,8 @@ export class AlgoFakeTradingPopupComponent implements OnInit {
     if (!this.algoInstanceForm.valid) {
       return;
     }
+
+    this.loader = true;
 
     const fakeTradingData = {...this.algoInstanceData, ...this.algoInstanceForm.value};
 

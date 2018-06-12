@@ -11,7 +11,7 @@
     </div>
     <div class="row mb-2">
       <div class="col-4">
-        <span class="text-muted">Author:</span> <span class="ml-3">{{algo.Author}}</span>
+        <span class="text-muted">Author:</span> <span class="ml-3">{{algo.Author ? algo.Author : 'N/A'}}</span>
       </div>
       <div class="col-4">
         <span class="text-muted">Users:</span> <span class="ml-3">{{algo.UsersCount}}</span>
@@ -32,7 +32,7 @@
         <span class="text-muted rated-users-count">{{algo.RatedUsersCount}}<span> <img src="../../../assets/images/rating-count-avatar-icon.svg"></span></span>
       </div>
       <div class="col-8">
-        <span class="text-muted">Description:</span> <span class="ml-3 break-all">{{algo.Description}}</span>
+        <span class="text-muted">Description:</span> <span class="ml-3 break-all">{{algo.Description ? algo.Description : 'N/A'}}</span>
       </div>
     </div>
   </div>

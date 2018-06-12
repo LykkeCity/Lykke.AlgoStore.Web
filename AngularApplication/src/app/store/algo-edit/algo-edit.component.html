@@ -16,10 +16,10 @@
             triggers="mouseenter:mouseleave">
 
         <button class="btn btn-primary cursor-pointer" (click)="goPublic()"
-                [disabled]="!canBePublished" *ngIf="algo.AlgoVisibility === iAlgoVisibility.Private && permissions.canPublish">Go Public</button>
+                [disabled]="!canBePublished || loader" *ngIf="algo.AlgoVisibility === iAlgoVisibility.Private && permissions.canPublish"><i *ngIf="loader" class="icon--spin animate-spin"></i>Go Public</button>
 
         <button class="btn btn-primary cursor-pointer" (click)="goPrivate()"
-                [disabled]="!canBePublished" *ngIf="algo.AlgoVisibility === iAlgoVisibility.Public && permissions.canUnpublish">Go Private</button>
+                [disabled]="!canBePublished || loader" *ngIf="algo.AlgoVisibility === iAlgoVisibility.Public && permissions.canUnpublish"><i *ngIf="loader" class="icon--spin animate-spin"></i>Go Private</button>
       </span>
     </div>
   </div>
@@ -103,7 +103,7 @@
               routerLink="/store/my-algos">Cancel and close</span>
       </div>
       <div class="col-6 text-left">
-        <button type="submit" class="btn btn-primary" [disabled]="canBePublished">Save changes</button>
+        <button type="submit" class="btn btn-primary" [disabled]="canBePublished || loader"><i *ngIf="loader" class="icon--spin animate-spin"></i>Save changes</button>
       </div>
     </div>
   </form>

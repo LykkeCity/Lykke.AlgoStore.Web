@@ -1,4 +1,4 @@
-<div class="container" *ngIf="!loader">
+<div class="container" *ngIf="role && rolePermissions && allPermissions">
   <div class="row mt-5">
     <div class="offset-2 col-10">
       <h2>{{roleId ? 'Edit' : 'Create'}} Role</h2>
@@ -39,10 +39,10 @@
     </div>
     <div class="row mt-4 mb-4">
       <div class="col-12 text-center">
-        <button type="submit" class="btn btn-primary" [disabled]="!role.CanBeModified || !permissions.canEditRole">Save changes</button>
+        <button type="submit" class="btn btn-primary" [disabled]="!role.CanBeModified || !permissions.canEditRole" [disabled]="loader"><i *ngIf="loader" class="icon--spin animate-spin"></i>Save changes</button>
       </div>
     </div>
   </form>
 </div>
 
-<app-loader [ready]="!loader"></app-loader>
+<app-loader [ready]="role && rolePermissions && allPermissions"></app-loader>

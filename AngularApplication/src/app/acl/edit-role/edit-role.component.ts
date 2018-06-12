@@ -42,7 +42,6 @@ export class EditRoleComponent implements OnDestroy {
     }));
 
     this.subscriptions.push(this.route.params.subscribe((params) => {
-      this.loader = true;
       this.roleId = params['id'];
       if (this.roleId) {
         this.subscriptions.push(this.roleService.getById(this.roleId).subscribe((role) => {
@@ -65,8 +64,6 @@ export class EditRoleComponent implements OnDestroy {
             perms.forEach(p => p.checked = rolePermissionIds.includes(p.Id));
 
             this.allPermissions = perms;
-
-            this.loader = false;
           }));
       }));
     }));

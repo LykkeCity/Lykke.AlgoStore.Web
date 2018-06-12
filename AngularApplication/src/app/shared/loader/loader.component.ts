@@ -7,4 +7,5 @@ import { Component, Input } from '@angular/core';
 })
 export class LoaderComponent {
   @Input() ready: boolean;
+  @Input() small: boolean;
 }

@@ -22,7 +22,7 @@
     </div>
       <div class="row">
         <div class="offset-1 col-9 text-center">
-          <button type="submit" class="btn btn-primary">Add Role</button>
+          <button type="submit" class="btn btn-primary" [disabled]="loader"><i *ngIf="loader" class="icon--spin animate-spin"></i>Add Role</button>
         </div>
       </div>
       <div class="row">

@@ -22,6 +22,8 @@ export class AlgoInstancePopupComponent implements OnDestroy {
   onInstanceCreateSuccess: Function;
   subscriptions: Subscription[] = [];
 
+  loader = false;
+
 
   constructor(public modalRef: BsModalRef,
               private instanceService: InstanceService,
@@ -43,13 +45,19 @@ export class AlgoInstancePopupComponent implements OnDestroy {
       return;
     }
 
+    this.loader = true;
+
     switch (this.type) {
       case 'Live':
-        this.subscriptions.push(this.instanceService.createLiveAlgoIntance({...this.algoInstanceData, InstanceName: this.algoInstanceForm.value.name})
+        this.subscriptions.push(this.instanceService.createLiveAlgoIntance({
+          ...this.algoInstanceData,
+          InstanceName: this.algoInstanceForm.value.name
+        })
           .subscribe((data) => {
             this.onInstanceCreateSuccess(data);
             this.subscriptions.push(this.instanceService.deployInstance(this.algoInstanceData.AlgoClientId, data.AlgoId, data.InstanceId)
               .subscribe(() => {
+                this.loader = false;
                 this.notificationsService.success('Success', 'Algo instance created successfully.');
                 this.modalRef.hide();
               }, () => {

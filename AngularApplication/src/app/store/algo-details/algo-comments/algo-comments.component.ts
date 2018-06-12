@@ -39,6 +39,7 @@ export class AlgoCommentsComponent implements OnChanges {
   commentForm: FormGroup;
   currentPage = 1;
   collapse = 'open';
+  loader = false;
 
   permissions: {
     canCreateComment: boolean,
@@ -124,11 +125,14 @@ export class AlgoCommentsComponent implements OnChanges {
       return;
     }
 
+    this.loader = true;
+
     this.algoCommentService.saveComment({ AlgoId: this.algoId, ...this.commentForm.value }).subscribe((savedComment) => {
       this.notificationsService.success('Success', 'Comment added successfully.');
       savedComment.Content = <any>this.domSanitizer.bypassSecurityTrustHtml(savedComment.Content);
       this.comments.unshift(savedComment);
       this.commentForm.reset();
+      this.loader = false;
     });
   }
 

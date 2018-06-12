@@ -37,6 +37,8 @@ export class AlgoEditComponent implements OnInit, OnDestroy {
     canDelete: boolean
   };
 
+  loader = false;
+
   subscriptions: Subscription[] = [];
 
   constructor(private algoService: AlgoService,
@@ -75,7 +77,8 @@ export class AlgoEditComponent implements OnInit, OnDestroy {
           let hasRunning = false;
 
           for (const inst of this.instances) {
-            if (inst.AlgoInstanceStatus === this.iAlgoInstanceStatus.Running || inst.AlgoInstanceStatus === this.iAlgoInstanceStatus.Deploying) {
+            if (inst.AlgoInstanceStatus === this.iAlgoInstanceStatus.Running
+              || inst.AlgoInstanceStatus === this.iAlgoInstanceStatus.Deploying) {
               hasRunning = true;
               break;
             }
@@ -154,9 +157,12 @@ export class AlgoEditComponent implements OnInit, OnDestroy {
       return;
     }
 
+    this.loader = true;
+
     this.subscriptions.push(this.algoService.publish(this.algo.AlgoId, this.algo.ClientId).subscribe(() => {
       this.algo.AlgoVisibility = this.iAlgoVisibility.Public;
       this.notificationsService.success('Success', 'Algo has been published successfully.');
+      this.loader = false;
     }));
   }
 
@@ -165,11 +171,15 @@ export class AlgoEditComponent implements OnInit, OnDestroy {
       return;
     }
 
+    this.loader = true;
+
     this.subscriptions.push(this.algoService.unpublish(this.algo.AlgoId, this.algo.ClientId).subscribe(() => {
       this.algo.AlgoVisibility = this.iAlgoVisibility.Private;
       this.notificationsService.success('Success', 'Algo has been unpublished successfully.');
+      this.loader = true;
     }, (error) => {
       this.notificationsService.error('Error', error.DisplayMessage);
+      this.loader = false;
     }));
   }
 
@@ -178,6 +188,8 @@ export class AlgoEditComponent implements OnInit, OnDestroy {
       this.algoForm.markAsDirty();
       return;
     }
+
+    this.loader = true;
 
     const tempAlgo = {
       ...this.algoForm.value,
@@ -193,6 +205,7 @@ export class AlgoEditComponent implements OnInit, OnDestroy {
       this.router.navigate(['/store/my-algos']);
     }, (error) => {
       this.algoErrors = error.DisplayMessage;
+      this.loader = false;
     }));
   }
 }
