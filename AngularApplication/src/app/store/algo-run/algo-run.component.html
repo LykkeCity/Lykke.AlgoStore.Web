@@ -59,7 +59,7 @@
               </form>
             </div>
             <div class="col-12 pl-0" *ngIf="instancesArray && instancesArray.length && permissions.canSeeInstances">
-              <app-algo-instance-list [algoId]="algo.AlgoId" [instancesArray]="instancesArray"></app-algo-instance-list>
+              <app-algo-instance-list [algoId]="algo.AlgoId" [instancesArray]="instancesArray" (onInstanceDelete)="onInstanceDelete($event)"></app-algo-instance-list>
             </div>
           </div>
         </div>

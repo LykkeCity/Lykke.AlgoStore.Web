@@ -1,5 +1,5 @@
-import { Component, Input } from '@angular/core';
-import { AlgoInstance, IAlgoInstanceStatus } from '../../models/algo-instance.model';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { AlgoInstance, IAlgoInstanceStatus, IAlgoInstanceType } from '../../models/algo-instance.model';
 import { Subscription } from 'rxjs/Subscription';
 import { ActivatedRoute } from '@angular/router';
 import { NotificationsService } from 'angular2-notifications';
@@ -19,6 +19,7 @@ export class AlgoInstanceListComponent {
 
   @Input() algoId: string;
   @Input() instancesArray: AlgoInstance[];
+  @Output() onInstanceDelete = new EventEmitter();
   subscriptions: Subscription[] = [];
   clientId: string;
   iAlgoInstanceStatus = IAlgoInstanceStatus;
@@ -67,6 +68,11 @@ export class AlgoInstanceListComponent {
       this.instancesArray = this.instancesArray.filter(
         i => (i.InstanceId !== instance.InstanceId)
       );
+
+      if (instance.AlgoInstanceType === IAlgoInstanceType.Live) {
+        this.onInstanceDelete.emit();
+      }
+      
     }));
   }
 

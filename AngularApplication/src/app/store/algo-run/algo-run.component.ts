@@ -81,11 +81,7 @@ export class AlgoRunComponent implements OnInit, OnDestroy {
 
     }));
 
-    if (this.permissions.canSeeWallets) {
-      this.subscriptions.push(this.userService.getFreeWallets().subscribe(wallets => {
-        this.wallets = wallets;
-      }));
-    }
+    this.getWallets();
   }
 
   ngOnInit() {
@@ -99,6 +95,14 @@ export class AlgoRunComponent implements OnInit, OnDestroy {
     this.subscriptions.forEach(sub => {
       sub.unsubscribe();
     });
+  }
+
+  getWallets(): void {
+    if (this.permissions.canSeeWallets) {
+      this.subscriptions.push(this.userService.getFreeWallets().subscribe(wallets => {
+        this.wallets = wallets;
+      }));
+    }
   }
 
   fakeTrading(instanceType: IAlgoInstanceType): void {
@@ -243,6 +247,10 @@ export class AlgoRunComponent implements OnInit, OnDestroy {
 
   canRunLiveTrading(): boolean {
     return this.permissions.canRunInstance && (this.algo.AlgoVisibility === this.iAlgoVisibility.Public || this.permissions.isCurrentUser);
+  }
+
+  onInstanceDelete(event: any): void {
+    this.getWallets();
   }
 
 }
