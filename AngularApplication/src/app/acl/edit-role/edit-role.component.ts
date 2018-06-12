@@ -126,6 +126,7 @@ export class EditRoleComponent implements OnDestroy {
 
       this.subscriptions.push(this.roleService.saveRole(this.role).subscribe((role) => {
         this.roleId = role.Id;
+        this.role = role;
         this.subscriptions.push(this.permissionsService.getPermissionsForRole(role.Id).subscribe((dbPermissions) => {
           const data = this.mapFromModelsToApiData(dbPermissions);
 
