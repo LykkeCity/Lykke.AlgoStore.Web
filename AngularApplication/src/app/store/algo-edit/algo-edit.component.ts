@@ -5,7 +5,7 @@ import { Subscription } from 'rxjs/Subscription';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { BaseAlgoParam } from '../models/base-algo-param.model';
-import { BsModalService } from 'ngx-bootstrap';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap';
 import { PopupConfig } from '../../models/popup.interface';
 import { PopupComponent } from '../../components/popup/popup.component';
 import { NotificationsService } from 'angular2-notifications';
@@ -38,6 +38,7 @@ export class AlgoEditComponent implements OnInit, OnDestroy {
   };
 
   loader = false;
+  modalRef: BsModalRef;
 
   subscriptions: Subscription[] = [];
 
@@ -96,6 +97,10 @@ export class AlgoEditComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
+    if (this.modalRef) {
+      this.modalRef.hide();
+    }
+
     this.subscriptions.forEach(sub => sub.unsubscribe());
   }
 
@@ -134,7 +139,7 @@ export class AlgoEditComponent implements OnInit, OnDestroy {
         }
       } as PopupConfig
     };
-    this.bsModalService.show(PopupComponent, { initialState, class: 'modal-sm', keyboard: false, ignoreBackdropClick: true });
+    this.modalRef = this.bsModalService.show(PopupComponent, { initialState, class: 'modal-sm', keyboard: false, ignoreBackdropClick: true });
   }
 
   deleteAlgo(force: boolean): void {

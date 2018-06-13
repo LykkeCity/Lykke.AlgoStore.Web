@@ -73,6 +73,9 @@ export class AlgoInstancePopupComponent implements OnDestroy {
         this.instanceService.editName(this.instanceId, this.algoInstanceForm.value).subscribe(() => {
           this.modalRef.hide();
           this.onEditSuccess(this.algoInstanceForm.value.name);
+        }, (error) => {
+          this.notificationsService.error('Error', error.DisplayMessage);
+          this.modalRef.hide();
         });
         break;
     }

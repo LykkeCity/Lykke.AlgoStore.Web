@@ -1,10 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { Algo } from '../models/algo.interface';
 import { AlgoService } from '../../services/algo.service';
 import { Subscription } from 'rxjs/Subscription';
 import { PopupConfig } from '../../models/popup.interface';
 import { PopupComponent } from '../../components/popup/popup.component';
-import { BsModalService } from 'ngx-bootstrap';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap';
 import { AlgoDuplicatePopupComponent } from './algo-duplicate-popup/algo-duplicate-popup.component';
 import { UserService } from '../../services/user.service';
 import Permissions from '../models/permissions';
@@ -15,7 +15,7 @@ import { NotificationsService } from 'angular2-notifications';
   templateUrl: './my-algos.component.html',
   styleUrls: ['./my-algos.component.scss']
 })
-export class MyAlgosComponent {
+export class MyAlgosComponent implements OnDestroy {
 
   algos: Algo[];
   loadingIndicator = true;
@@ -26,6 +26,8 @@ export class MyAlgosComponent {
     canEditAlgo: boolean,
     canDuplicate: boolean
   };
+
+  modalRef: BsModalRef;
 
   constructor(private algoService: AlgoService,
               private bsModalService: BsModalService,
@@ -43,6 +45,12 @@ export class MyAlgosComponent {
       };
   }
 
+  ngOnDestroy() {
+    if (this.modalRef) {
+      this.modalRef.hide();
+    }
+  }
+
   duplicateAlgo(algo: Algo): void {
       if (!this.permissions.canDuplicate) {
         return;
@@ -56,7 +64,7 @@ export class MyAlgosComponent {
         }
       };
 
-      this.bsModalService.show(AlgoDuplicatePopupComponent, {initialState, class: 'modal-sm', keyboard: false, ignoreBackdropClick: true});
+    this.modalRef = this.bsModalService.show(AlgoDuplicatePopupComponent, {initialState, class: 'modal-sm', keyboard: false, ignoreBackdropClick: true});
   }
 
   delete(algo: Algo): void {
@@ -75,7 +83,7 @@ export class MyAlgosComponent {
         }
       } as PopupConfig
     };
-    this.bsModalService.show(PopupComponent, {initialState, class: 'modal-sm', keyboard: false, ignoreBackdropClick: true});
+    this.modalRef = this.bsModalService.show(PopupComponent, {initialState, class: 'modal-sm', keyboard: false, ignoreBackdropClick: true});
   }
 
   deleteAlgo(algo: Algo): void {

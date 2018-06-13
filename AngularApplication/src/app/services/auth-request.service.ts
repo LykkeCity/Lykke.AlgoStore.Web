@@ -92,7 +92,7 @@ export class AuthRequestService {
       return Observable.throw(error.error);
     }
 
-    this.notificationsService.error('Error', 'Error occurred.');
+    this.notificationsService.error('Error', error.error.DisplayMessage);
     console.error('ApiService::handleError', error);
     return Observable.throw(error.error ? error.error : error);
   }

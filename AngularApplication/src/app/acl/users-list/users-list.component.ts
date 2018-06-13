@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { UserData } from '../../models/userdata.interface';
 import { UserRolesService } from '../../services/user-roles.service';
 import { Subscription } from 'rxjs/Subscription';
@@ -6,14 +6,14 @@ import { NotificationsService } from 'angular2-notifications';
 import { UserService } from '../../services/user.service';
 import Permissions from '../../store/models/permissions';
 import { PopupComponent } from '../../components/popup/popup.component';
-import { BsModalService } from 'ngx-bootstrap';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap';
 
 @Component({
   selector: 'app-users-list',
   templateUrl: './users-list.component.html',
   styleUrls: ['./users-list.component.scss']
 })
-export class UsersListComponent {
+export class UsersListComponent implements OnDestroy {
 
   users: UserData[];
   loadingIndicator = true;
@@ -24,6 +24,8 @@ export class UsersListComponent {
     canRevokeRole: boolean,
     canEditUserRoles: boolean
   };
+
+  modalRef: BsModalRef;
 
   constructor(private userRolesService: UserRolesService,
               private notificationsService: NotificationsService,
@@ -40,6 +42,12 @@ export class UsersListComponent {
       this.users = data;
       this.loadingIndicator = false;
     }));
+  }
+
+  ngOnDestroy() {
+    if (this.modalRef) {
+      this.modalRef.hide();
+    }
   }
 
   revokeRole(roleId: string, clientId: string) {
@@ -71,7 +79,7 @@ export class UsersListComponent {
       }
     };
 
-    this.bsModalService.show(PopupComponent, { initialState, class: 'modal-sm', keyboard: false, ignoreBackdropClick: true });
+    this.modalRef = this.bsModalService.show(PopupComponent, { initialState, class: 'modal-sm', keyboard: false, ignoreBackdropClick: true });
   }
 
 }
