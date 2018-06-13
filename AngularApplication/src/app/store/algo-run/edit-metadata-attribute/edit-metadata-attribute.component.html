@@ -1,6 +1,6 @@
 <div [formGroup]="form">
   <label class="metadata-key break-all">
-    <span *ngIf="formName">{{formName}}.</span>{{ metadataProperty.Key }}
+    <span *ngIf="formName">{{formName}}.</span>{{ metadataProperty.Key }} <span *ngIf="metadataProperty.Description" [tooltip]="metadataProperty.Description"><img src="../../../../assets/images/info.svg" class="info-icon cursor-pointer"></span>
   </label>
   <div class="form-group" *ngIf="metadataProperty.Type == 'System.String' && metadataProperty.PredefinedValues.length === 0">
     <input class="form-control" type="text" [formControlName]="metadataProperty.Key">
