@@ -136,6 +136,10 @@ export class AlgoCommentsComponent implements OnChanges {
     });
   }
 
+  clearForm(): void {
+    this.commentForm.reset();
+  }
+
   toggleCollapse() {
     this.collapse = this.collapse === 'open' ? 'closed' : 'open';
   }
