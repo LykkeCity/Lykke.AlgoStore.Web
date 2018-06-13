@@ -52,10 +52,13 @@ export class AlgoFakeTradingPopupComponent implements OnInit {
           this.notificationsService.success('Success', 'Instance created successfully.');
           this.modalRef.hide();
           this.onSuccess(data);
-        }, () => {
-          this.notificationsService.error('Error', 'There was an error while running your instance.');
+        }, (error) => {
+          this.notificationsService.error('Error', error.DisplayMessage);
           this.modalRef.hide();
         }));
+    }, (error) => {
+      this.notificationsService.error('Error', error.DisplayMessage);
+      this.modalRef.hide();
     });
   }
 

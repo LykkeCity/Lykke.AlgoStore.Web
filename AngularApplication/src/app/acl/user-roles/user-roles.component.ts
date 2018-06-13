@@ -1,11 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { UserRolesService } from '../../services/user-roles.service';
 import { UserRole } from '../../models/user-role.model';
 import { Subscription } from 'rxjs/Subscription';
 import { UserService } from '../../services/user.service';
 import { UserData } from '../../models/userdata.interface';
-import { BsModalService } from 'ngx-bootstrap';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap';
 import { AssignRoleModalComponent } from './assign-role-modal/assign-role-modal.component';
 import { NotificationsService } from 'angular2-notifications';
 import Permissions from '../../store/models/permissions';
@@ -16,7 +16,7 @@ import { PopupComponent } from '../../components/popup/popup.component';
   templateUrl: './user-roles.component.html',
   styleUrls: ['./user-roles.component.scss']
 })
-export class UserRolesComponent {
+export class UserRolesComponent implements OnDestroy{
 
   allRoles: UserRole[];
   userInfo: UserData;
@@ -26,6 +26,8 @@ export class UserRolesComponent {
     canAssignRoles: boolean,
     canRevokeRoles: boolean
   };
+
+  modalRef: BsModalRef;
 
   constructor(private route: ActivatedRoute,
               private userRoleService: UserRolesService,
@@ -44,6 +46,12 @@ export class UserRolesComponent {
       const clientId = params['id'];
       this.getData(clientId);
     }));
+  }
+
+  ngOnDestroy() {
+    if (this.modalRef) {
+      this.modalRef.hide();
+    }
   }
 
   getData(clientId: string) {
@@ -82,7 +90,7 @@ export class UserRolesComponent {
       }
     };
 
-    this.bsModalService.show(AssignRoleModalComponent, config);
+    this.modalRef = this.bsModalService.show(AssignRoleModalComponent, config);
   }
 
   revokeRole(roleId: string) {
@@ -113,7 +121,7 @@ export class UserRolesComponent {
       }
     };
 
-    this.bsModalService.show(PopupComponent, { initialState, class: 'modal-sm', keyboard: false, ignoreBackdropClick: true });
+    this.modalRef = this.bsModalService.show(PopupComponent, { initialState, class: 'modal-sm', keyboard: false, ignoreBackdropClick: true });
   }
 
 }

@@ -1,7 +1,7 @@
-import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, OnDestroy, SimpleChanges } from '@angular/core';
 import { AlgoComment } from '../../../models/algo-comment.model';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { BsModalService } from 'ngx-bootstrap';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap';
 import { AlgoCommentEditPopupComponent } from './algo-comment-edit-popup/algo-comment-edit-popup.component';
 import { NotificationsService } from 'angular2-notifications';
 import { PopupComponent } from '../../../components/popup/popup.component';
@@ -32,7 +32,7 @@ import Permissions from '../../models/permissions';
     ])
   ]
 })
-export class AlgoCommentsComponent implements OnChanges {
+export class AlgoCommentsComponent implements OnChanges, OnDestroy {
 
   @Input() comments: AlgoComment[];
   @Input() algoId: string;
@@ -46,6 +46,8 @@ export class AlgoCommentsComponent implements OnChanges {
     canEditComment: boolean,
     canDeleteComment: boolean
   };
+
+  modalRef: BsModalRef;
 
   constructor(private fb: FormBuilder,
               private bsModalService: BsModalService,
@@ -62,6 +64,12 @@ export class AlgoCommentsComponent implements OnChanges {
         canEditComment: this.userService.hasPermission(Permissions.EDIT_COMMENT),
         canDeleteComment: this.userService.hasPermission(Permissions.DELETE_COMMENT)
       };
+  }
+
+  ngOnDestroy() {
+    if (this.modalRef) {
+      this.modalRef.hide();
+    }
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -89,7 +97,7 @@ export class AlgoCommentsComponent implements OnChanges {
       }
     };
 
-    this.bsModalService.show(AlgoCommentEditPopupComponent, {
+    this.modalRef = this.bsModalService.show(AlgoCommentEditPopupComponent, {
       initialState,
       class: 'modal-sm',
       keyboard: false,
@@ -117,7 +125,7 @@ export class AlgoCommentsComponent implements OnChanges {
       }
     };
 
-    this.bsModalService.show(PopupComponent, { initialState, class: 'modal-sm', keyboard: false, ignoreBackdropClick: true });
+    this.modalRef = this.bsModalService.show(PopupComponent, { initialState, class: 'modal-sm', keyboard: false, ignoreBackdropClick: true });
   }
 
   onCommentSubmit(): void {

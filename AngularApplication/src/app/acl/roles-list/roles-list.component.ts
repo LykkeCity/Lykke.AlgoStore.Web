@@ -1,4 +1,4 @@
-import { Component, TemplateRef } from '@angular/core';
+import { Component, OnDestroy, TemplateRef } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 import { UserRole } from '../../models/user-role.model';
 import { UserRolesService } from '../../services/user-roles.service';
@@ -13,7 +13,7 @@ import Permissions from '../../store/models/permissions';
   templateUrl: './roles-list.component.html',
   styleUrls: ['./roles-list.component.scss']
 })
-export class RolesListComponent {
+export class RolesListComponent implements OnDestroy{
 
   roles: UserRole[];
   loadingIndicator = true;
@@ -46,6 +46,12 @@ export class RolesListComponent {
       this.roles = roles;
       this.loadingIndicator = false;
     }));
+  }
+
+  ngOnDestroy() {
+    if (this.modalRef) {
+      this.modalRef.hide();
+    }
   }
 
   editRole(roleId: string): void {

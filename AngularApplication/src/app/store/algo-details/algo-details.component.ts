@@ -12,7 +12,7 @@ import { AlgoCommentService } from '../../services/algo-comment.service';
 import { UserService } from '../../services/user.service';
 import Permissions from '../models/permissions';
 import { AlgoDuplicatePopupComponent } from '../my-algos/algo-duplicate-popup/algo-duplicate-popup.component';
-import { BsModalService } from 'ngx-bootstrap';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap';
 
 @Component({
   selector: 'app-algo-detail',
@@ -33,6 +33,7 @@ export class AlgoDetailsComponent implements OnInit, OnDestroy {
   editor: any;
   myRating: AlgoRating = {};
   comments: AlgoComment[] = [];
+  modalRef: BsModalRef;
 
   constructor(
     private algoService: AlgoService,
@@ -61,6 +62,8 @@ export class AlgoDetailsComponent implements OnInit, OnDestroy {
       this.subscriptions.push(this.algoService.getAlgoWithSource(algoId, clientId).subscribe(algo => {
         this.algo = algo;
         this.algo.ClientId = clientId;
+      }, () => {
+        this.router.navigate(['/store/algo-list']);
       }));
 
       if (this.permissions.canSeeAlgoRating) {
@@ -78,6 +81,10 @@ export class AlgoDetailsComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
+    if (this.modalRef) {
+      this.modalRef.hide();
+    }
+
     this.subscriptions.forEach(sub => {
       sub.unsubscribe();
     });
@@ -95,7 +102,7 @@ export class AlgoDetailsComponent implements OnInit, OnDestroy {
       }
     };
 
-    this.bsModalService.show(AlgoDuplicatePopupComponent, {initialState, class: 'modal-sm', keyboard: false, ignoreBackdropClick: true});
+    this.modalRef = this.bsModalService.show(AlgoDuplicatePopupComponent, {initialState, class: 'modal-sm', keyboard: false, ignoreBackdropClick: true});
   }
 
   highlight(meta: BaseAlgoParam): void {

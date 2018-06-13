@@ -67,6 +67,9 @@ export class AlgoDuplicatePopupComponent implements OnInit, OnDestroy {
         this.modalRef.hide();
         this.notificationsService.error('Error', error.DisplayMessage);
       }));
+    }, (error) => {
+      this.modalRef.hide();
+      this.notificationsService.error('Error', error.DisplayMessage);
     }));
   }
 }
