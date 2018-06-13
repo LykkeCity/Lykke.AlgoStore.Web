@@ -58,7 +58,7 @@
           <button type="submit" class="btn btn-primary"[disabled]="loader"><i *ngIf="loader" class="icon--spin animate-spin"></i>{{algoInstanceData.AlgoInstanceType === iAlgoInstanceType.Demo ? 'Run Demo' : 'Backtest'}}</button>
         </div>
         <div class="col-12">
-          <a href="javascript:;" (click)="modalRef.hide()" class="link-style">Cancel</a>
+          <a href="javascript:;" class="link-style" [ngClass]="{'font-weight-semibold': !loader, 'text-muted': loader}" (click)="!loader ? modalRef.hide() : null">Cancel</a>
         </div>
       </div>
     </form>

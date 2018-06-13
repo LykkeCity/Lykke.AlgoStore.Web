@@ -27,7 +27,7 @@
       </div>
       <div class="row">
         <div class="offset-1 col-9 text-center mt-2">
-          <a class="link-style font-weight-semibold cursor-pointer" (click)="bsModalRef.hide()">Cancel</a>
+          <a class="link-style cursor-pointer" [ngClass]="{'font-weight-semibold': !loader, 'text-muted': loader}" (click)="!loader ? bsModalRef.hide() : null">Cancel</a>
         </div>
       </div>
   </form>
