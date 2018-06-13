@@ -1,5 +1,5 @@
 <div [formGroup]="form">
-  <label class="metadata-key">
+  <label class="metadata-key break-all">
     <span *ngIf="formName">{{formName}}.</span>{{ metadataProperty.Key }}
   </label>
   <div class="form-group" *ngIf="metadataProperty.Type == 'System.String' && metadataProperty.PredefinedValues.length === 0">
@@ -19,7 +19,7 @@
   </div>
   <div *ngIf="metadataProperty.PredefinedValues.length > 0">
     <ng-select [formControlName]="metadataProperty.Key"
-               placeholder="Select AssetPair"
+               placeholder="Select {{metadataProperty.Key}}"
                [items]="metadataProperty.PredefinedValues"
                bindValue="Value"
                bindLabel="Key" class="form-control">
