@@ -108,11 +108,13 @@ export class EditRoleComponent implements OnDestroy {
     }
 
     // and the ones that we've removed
-    for (const perm of dbPermissions) {
+    for (let i = 0; i < dbPermissions.length; i++) {
+      const perm = dbPermissions[i];
       if (!currentPermissionIds.includes(perm.Id)) {
         result.revokedPermissions.push({ RoleId: this.roleId, PermissionId: perm.Id });
         const index = dbPermissions.findIndex(p => p.Id === perm.Id);
         dbPermissions.splice(index, 1);
+        i--;
       }
     }
 
