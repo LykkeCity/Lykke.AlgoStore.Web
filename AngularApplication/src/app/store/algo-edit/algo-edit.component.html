@@ -55,7 +55,7 @@
       <div class="col-6">
         <div class="form-group">
           <label for="algo-name" class="font-weight-semibold">Name</label>
-          <input type="text" class="form-control" id="algo-name" formControlName="Name" (change)="onInputChange()">
+          <input type="text" class="form-control" id="algo-name" formControlName="Name" (input)="onInputChange()">
           <div *ngIf="algoForm.get('Name').invalid && algoForm.dirty"
                class="text-danger">
             <div *ngIf="algoForm.get('Name').errors['required']">
@@ -79,7 +79,7 @@
         <div class="form-group">
           <label for="algo-description" class="font-weight-semibold">Description</label>
           <textarea name="algo-description" id="algo-description" cols="60" rows="9"
-                    class="d-block form-control" formControlName="Description" (change)="onInputChange()"></textarea>
+                    class="d-block form-control" formControlName="Description" (input)="onInputChange()"></textarea>
         </div>
       </div>
     </div>
