@@ -1,7 +1,7 @@
 import { Component, OnDestroy } from '@angular/core';
 import { Algo } from '../models/algo.interface';
 import { AlgoService } from '../../services/algo.service';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 import { PopupConfig } from '../../models/popup.interface';
 import { PopupComponent } from '../../components/popup/popup.component';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap';

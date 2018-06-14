@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 import { Algo, AlgoVisibility } from '../models/algo.interface';
 import { Wallet } from '../../models/wallet.model';
 import { UserService } from '../../services/user.service';

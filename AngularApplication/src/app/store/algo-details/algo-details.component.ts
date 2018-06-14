@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Algo } from '../models/algo.interface';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 import { BaseAlgoParam } from '../models/base-algo-param.model';
 import { AlgoRating } from '../models/algo-rating.model';
 import { NotificationsService } from 'angular2-notifications';

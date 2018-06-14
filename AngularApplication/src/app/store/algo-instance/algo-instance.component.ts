@@ -1,7 +1,7 @@
 import { Component, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AlgoInstance, AlgoInstanceData, IAlgoInstanceStatus, IAlgoInstanceType } from '../models/algo-instance.model';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription ,  timer } from 'rxjs';
 import { Wallet } from '../../models/wallet.model';
 import { Algo } from '../models/algo.interface';
 import { UserService } from '../../services/user.service';
@@ -12,7 +12,6 @@ import { BsModalRef, BsModalService } from 'ngx-bootstrap';
 import { AlgoInstancePopupComponent } from '../algo-run/algo-run-popup/algo-instance-popup.component';
 import { NotificationsService } from 'angular2-notifications';
 import { repeatWhen } from 'rxjs/operators';
-import { timer } from 'rxjs/observable/timer';
 import { PopupComponent } from '../../components/popup/popup.component';
 import { PopupConfig } from '../../models/popup.interface';
 import { AlgoService } from '../../services/algo.service';

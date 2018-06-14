@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { AlgoInstance, IAlgoInstanceStatus, IAlgoInstanceType } from '../../models/algo-instance.model';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { NotificationsService } from 'angular2-notifications';
 import { PopupComponent } from '../../../components/popup/popup.component';

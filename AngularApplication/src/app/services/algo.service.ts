@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
-import { Observable } from 'rxjs/Observable';
+import { Observable ,  forkJoin } from 'rxjs';
 import { Algo } from '../store/models/algo.interface';
 import { AuthRequestService } from './auth-request.service';
-import { forkJoin } from 'rxjs/observable/forkJoin';
 import { AssetPair } from '../store/models/asset-pair.interface';
 
 @Injectable()
@@ -49,7 +48,7 @@ export class AlgoService {
     return forkJoin(
       this.authRequestService.get(environment.storeApiUrl + '/v1/algo/getAlgoInformation', { params }),
       this.getAlgoSource(algoId, clientId)
-    ).map( res => ({...res[0], ...res[1]}) );
+    ).map( (res: any) => ({...res[0], ...res[1]}) );
   }
 
   getAlgoSource(algoId: string, clientId?: string): Observable<Algo> {

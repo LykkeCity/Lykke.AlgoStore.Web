@@ -2,7 +2,7 @@ import { Component, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { UserRolesService } from '../../services/user-roles.service';
 import { UserRole } from '../../models/user-role.model';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 import { UserService } from '../../services/user.service';
 import { UserData } from '../../models/userdata.interface';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap';

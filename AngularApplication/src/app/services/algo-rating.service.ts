@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AlgoRating } from '../store/models/algo-rating.model';
 import { environment } from '../../environments/environment';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { AuthRequestService } from './auth-request.service';
 
 @Injectable()

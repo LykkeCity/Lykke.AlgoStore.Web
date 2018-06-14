@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AlgoService } from '../../services/algo.service';
 import { Algo } from '../models/algo.interface';
 import { TabsetComponent } from 'ngx-bootstrap';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-algo-create',
