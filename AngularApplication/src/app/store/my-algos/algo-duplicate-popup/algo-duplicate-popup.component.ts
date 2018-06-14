@@ -17,6 +17,7 @@ export class AlgoDuplicatePopupComponent implements OnInit, OnDestroy {
   onCreateSuccess: Function;
   algo: Algo;
   subscriptions: Subscription[] = [];
+  loader = false;
 
 
   constructor(public modalRef: BsModalRef,
@@ -45,16 +46,30 @@ export class AlgoDuplicatePopupComponent implements OnInit, OnDestroy {
       return;
     }
 
-    this.subscriptions.push(this.algoService.algoGetSource((this.algo.Id || this.algo.AlgoId), this.algo.ClientId).subscribe((code) => {
-      const id = this.algo.Id;
-      this.algo.Id = null;
-      this.algo.Content = btoa(code.Content);
-      this.subscriptions.push(this.algoService.createAlgo({...this.algo, ...this.algoDuplicateForm.value }).subscribe((algo) => {
-        this.algo.Id = id;
+    this.loader = true;
+
+    this.subscriptions.push(this.algoService.getAlgoSource((this.algo.Id || this.algo.AlgoId), this.algo.ClientId).subscribe((code) => {
+      const toCopyAlgo = {
+        ...this.algo,
+        ...this.algoDuplicateForm.value,
+        ...{
+          Content: btoa(code.Content),
+          Id: null,
+          AlgoId: null
+        }
+      };
+
+      this.subscriptions.push(this.algoService.createAlgo(toCopyAlgo).subscribe((algo) => {
         this.onCreateSuccess(algo);
         this.notificationsService.success('Success', 'Algo duplicated successfully.');
         this.modalRef.hide();
+      }, (error) => {
+        this.modalRef.hide();
+        this.notificationsService.error('Error', error.DisplayMessage);
       }));
+    }, (error) => {
+      this.modalRef.hide();
+      this.notificationsService.error('Error', error.DisplayMessage);
     }));
   }
 }

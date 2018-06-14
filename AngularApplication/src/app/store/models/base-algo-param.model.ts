@@ -3,4 +3,6 @@ export interface BaseAlgoParam {
   Value?: string;
   Type?: string;
   FunctionType?: string;
+  Description?: string;
+  PredefinedValues?: any[];
 }

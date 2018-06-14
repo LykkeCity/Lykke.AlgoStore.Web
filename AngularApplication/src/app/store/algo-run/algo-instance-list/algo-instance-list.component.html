@@ -7,13 +7,23 @@
       <span class="show-all-button font-weight-semibold"><a href="javascript:;">Show all</a></span>
     </div>
   </div>
-  <div class="row instances-row" *ngFor="let instance of instancesArray">
-    <div class="col-9">
-      <div class="instance-date cursor-pointer break-all" [routerLink]="['/store/algo-instance', clientId, algoId, instance.InstanceId]">{{instance.InstanceName}}</div>
-      <div class="text-muted fs-1r">{{instance.AlgoInstanceType | instanceTypeName}} • {{instance.AlgoInstanceStatus | instanceStatusName}}</div>
-    </div>
-    <div class="col-3 text-center">
-      <div *ngIf="instance.AlgoInstanceStatus === iAlgoInstanceStatus.Stopped && permissions.canDeleteInstance" class="delete-icon-holder cursor-pointer" (click)="deleteInstancePrompt(instance)"></div>
+  <div *ngIf="instancesArray">
+    <div class="row instances-row" *ngFor="let instance of instancesArray">
+      <div class="col-9">
+        <div class="instance-date cursor-pointer break-all" [routerLink]="['/store/algo-instance', clientId, algoId, instance.InstanceId]">{{instance.InstanceName}}</div>
+        <div class="text-muted fs-1r">{{instance.AlgoInstanceType | instanceTypeName}} • {{instance.AlgoInstanceStatus | instanceStatusName}}</div>
+      </div>
+      <div class="col-3 text-center">
+        <div *ngIf="instance.AlgoInstanceStatus === iAlgoInstanceStatus.Stopped && permissions.canDeleteInstance" class="delete-icon-holder cursor-pointer" (click)="deleteInstancePrompt(instance)"></div>
+      </div>
     </div>
   </div>
+
+  <div class="row top-border" *ngIf="instancesArray?.length === 0">
+    <div class="col-12 mt-2">
+      <span>No instances available.</span>
+    </div>
+  </div>
+
+  <app-loader [ready]="instancesArray" [small]="true"></app-loader>
 </div>

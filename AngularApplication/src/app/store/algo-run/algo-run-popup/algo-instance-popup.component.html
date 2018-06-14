@@ -1,34 +1,38 @@
 <div class="modal-body">
   <div class="row ml-0 mr-0 mt-4">
     <div class="col-12" [ngSwitch]="type">
-      <h3 *ngSwitchCase="'Demo'">Run Demo Instance</h3>
       <h3 *ngSwitchCase="'Live'">Run Live Instance</h3>
       <h3 *ngSwitchCase="'Edit'">Edit name</h3>
     </div>
-    <div class="row ml-0 mr-0">
-      <div class="col-12">
-        <p *ngIf="type === 'Demo' || type === 'Live'">Give a name to the new instance of the algorithm. </p>
-        <p *ngIf="type === 'Edit'">You are about to change the name of your running instance. </p>
-      </div>
+  </div>
+  <div class="row ml-0 mr-0">
+    <div class="col-12">
+      <p *ngIf="type === 'Live'">Give a name to the new instance of the algorithm. </p>
+      <p *ngIf="type === 'Edit'">You are about to change the name of your running instance. </p>
     </div>
-    <form (ngSubmit)="onSubmit()" [formGroup]="algoInstanceForm">
-      <div class="row ml-0 mr-0 mb-3">
-        <div class="col-12">
-          <div class="form-group">
-            <label for="instance-name" class="font-weight-semibold">Name</label>
-            <input type="text" name="name" id="instance-name" class="form-control" formControlName="instanceName" placeholder="My Moving Average Cross v1.0">
+  </div>
+  <div class="row ml-0 mr-0">
+    <div class="col-12">
+      <form (ngSubmit)="onSubmit()" [formGroup]="algoInstanceForm">
+        <div class="row ml-0 mr-0 mb-3">
+          <div class="col-12 ml-0 mr-0">
+            <div class="form-group">
+              <label for="instance-name" class="font-weight-semibold">Name</label>
+              <input type="text" name="name" id="instance-name" class="form-control" formControlName="name"
+                     placeholder="My Moving Average Cross v1.0">
+            </div>
           </div>
         </div>
-      </div>
-      <div class="row ml-0 mr-0 text-center">
-        <div class="col-12 mb-3">
-          <button *ngIf="type === 'Demo' || type === 'Live'" type="submit" class="btn btn-primary">Run new instance</button>
-          <button *ngIf="type === 'Edit'" type="submit" class="btn btn-primary">Apply change</button>
+        <div class="row ml-0 mr-0 text-center">
+          <div class="col-12 mb-3">
+            <button *ngIf="type === 'Live'" type="submit" class="btn btn-primary" [disabled]="loader"><i *ngIf="loader" class="icon--spin animate-spin"></i>Run new instance</button>
+            <button *ngIf="type === 'Edit'" type="submit" class="btn btn-primary" [disabled]="loader"><i *ngIf="loader" class="icon--spin animate-spin"></i>Save changes</button>
+          </div>
+          <div class="col-12">
+            <a href="javascript:;" class="link-style" [ngClass]="{'font-weight-semibold': !loader, 'text-muted': loader}" (click)="!loader ? modalRef.hide() : null">Cancel</a>
+          </div>
         </div>
-        <div class="col-12">
-          <a href="javascript:;" (click)="modalRef.hide()" class="link-style">Cancel</a>
-        </div>
-      </div>
-    </form>
+      </form>
+    </div>
   </div>
 </div>

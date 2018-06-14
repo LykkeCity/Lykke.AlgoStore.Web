@@ -17,6 +17,7 @@ export class AssignRoleModalComponent implements OnInit {
   allRoles: UserRole[];
   onSuccess: Function;
   roleGroup: FormGroup;
+  loader = false;
 
   constructor(private userRoleService: UserRolesService,
               private fb: FormBuilder,
@@ -31,10 +32,15 @@ export class AssignRoleModalComponent implements OnInit {
   }
 
   save(): void {
+    this.loader = true;
     this.userRoleService.assignRole(this.userData.ClientId, this.roleGroup.value.role).subscribe(() => {
       this.onSuccess();
       this.bsModalRef.hide();
-      this.notificationsService.success('Success', 'Role assigned successfully..');
+      this.notificationsService.success('Success', 'Role assigned successfully.');
+    }, (error) => {
+      this.loader = false;
+      this.notificationsService.error('Error', error.DisplayMessage);
+      this.bsModalRef.hide();
     });
   }
 

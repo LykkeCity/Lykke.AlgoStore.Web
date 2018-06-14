@@ -9,9 +9,9 @@
 </div>
 <div class="row meta-row" *ngFor="let param of metadata?.Parameters">
   <div class="col-8 metadata-name">
-    <div>{{param.Key}}</div>
-    <div class="text-muted metadata-value" *ngIf="param.Type === 'System.DateTime'">{{param.Value ? (param.Value | amParse: 'YYYY-MM-DD[T]HH:mm:ss.SSS[Z]' | amDateFormat:'YYYY-MM-DD HH:mm:ss' ) : ''}}</div>
-    <div class="text-muted metadata-value" *ngIf="param.Type !== 'System.DateTime'">{{param.DisplayValue ? param.DisplayValue : param.Value}}</div>
+    <div class="break-all">{{param.Key}} <span *ngIf="param.Description" [tooltip]="param.Description"><img src="../../../../assets/images/info.svg" class="info-icon cursor-pointer"></span></div>
+    <div class="text-muted metadata-value break-all" *ngIf="param.Type === 'System.DateTime'">{{param.Value ? (param.Value | amParse: 'YYYY-MM-DD[T]HH:mm:ss.SSS[Z]' | amDateFormat:'YYYY-MM-DD HH:mm:ss' ) : ''}}</div>
+    <div class="text-muted metadata-value break-all" *ngIf="param.Type !== 'System.DateTime'">{{param.DisplayValue ? param.DisplayValue : param.Value}}</div>
   </div>
   <div class="col-4 text-right cursor-pointer">
     <span class="text-muted" (click)="highlight(param)">Find</span>
@@ -22,9 +22,9 @@
     <div *ngFor="let param of func.Parameters" class="col-12">
       <div class="row meta-row">
         <div class="col-8 metadata-name">
-          <div>{{func.Id}}.{{param.Key}}</div>
-          <div class="text-muted metadata-value" *ngIf="param.Type === 'System.DateTime'">{{param.Value ? (param.Value | amParse: 'YYYY-MM-DD[T]HH:mm:ss.SSS[Z]' | amDateFormat:'YYYY-MM-DD HH:mm:ss' ) : ''}}</div>
-          <div class="text-muted metadata-value" *ngIf="param.Type !== 'System.DateTime'">{{param.DisplayValue ? param.DisplayValue : param.Value}}</div>
+          <div class="break-all">{{func.Id}}.{{param.Key}} <span *ngIf="param.Description" [tooltip]="param.Description"><img src="../../../../assets/images/info.svg" class="info-icon cursor-pointer"></span></div>
+          <div class="text-muted metadata-value break-all" *ngIf="param.Type === 'System.DateTime'">{{param.Value ? (param.Value | amParse: 'YYYY-MM-DD[T]HH:mm:ss.SSS[Z]' | amDateFormat:'YYYY-MM-DD HH:mm:ss' ) : ''}}</div>
+          <div class="text-muted metadata-value break-all" *ngIf="param.Type !== 'System.DateTime'">{{param.DisplayValue ? param.DisplayValue : param.Value}}</div>
         </div>
         <div class="col-4 text-right cursor-pointer">
           <span class="text-muted" (click)="highlight(param)">Find</span>

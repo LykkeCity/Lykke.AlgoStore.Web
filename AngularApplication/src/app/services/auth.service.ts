@@ -31,12 +31,12 @@ export class AuthService {
     window.location.replace(this.authenticationUrl);
   }
 
-  logout(redirectFlag: boolean = true): void {
+  logout(): void {
 
     const headers = { 'Authorization': 'Bearer ' + localStorage.getItem('algo-token') };
 
 
-    this.http.post(environment.apiUrl + '/Auth/LogOut', '', { headers }).subscribe(response => {
+    this.http.post(environment.apiUrl + '/Auth/LogOut', '', { headers }).subscribe(() => {
       this.authToken.tokenStream.next(null);
       this.router.navigateByUrl('');
     });

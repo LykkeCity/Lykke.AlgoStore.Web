@@ -4,10 +4,10 @@ import { Subscription } from 'rxjs/Subscription';
 import { Algo, AlgoVisibility } from '../models/algo.interface';
 import { Wallet } from '../../models/wallet.model';
 import { UserService } from '../../services/user.service';
-import { BsModalService } from 'ngx-bootstrap';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap';
 import { AlgoInstancePopupComponent } from './algo-run-popup/algo-instance-popup.component';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { AlgoInstance, AlgoInstanceData, IAlgoInstanceType } from '../models/algo-instance.model';
+import { AlgoInstance, AlgoInstanceData, IAlgoInstanceStatus, IAlgoInstanceType } from '../models/algo-instance.model';
 import { AlgoService } from '../../services/algo.service';
 import { InstanceService } from '../../services/instance.service';
 import Permissions from '../models/permissions';
@@ -25,7 +25,7 @@ export class AlgoRunComponent implements OnInit, OnDestroy {
   algo: Algo;
   wallets: Wallet[];
   subscriptions: Subscription[] = [];
-  instancesArray: AlgoInstance[] = [];
+  instancesArray: AlgoInstance[];
   metadataForm: FormGroup;
   iAlgoVisibility = AlgoVisibility;
   iAlgoInstanceType = IAlgoInstanceType;
@@ -35,8 +35,11 @@ export class AlgoRunComponent implements OnInit, OnDestroy {
     canRunInstance: boolean,
     canSeeInstances: boolean,
     canRunFakeTrading: boolean,
-    isCurrentUser: boolean
+    isCurrentUser: boolean,
+    canSeeWallets: boolean
   };
+
+  modalRef: BsModalRef;
 
   constructor(private route: ActivatedRoute,
               private algoService: AlgoService,
@@ -47,10 +50,12 @@ export class AlgoRunComponent implements OnInit, OnDestroy {
 
     this.permissions = {
       canRunInstance: this.userService.hasPermission(Permissions.SAVE_ALGO_INSTANCE_DATA)
-      && this.userService.hasPermission(Permissions.UPLOAD_BINARY_FILE),
+      && this.userService.hasPermission(Permissions.UPLOAD_BINARY_FILE) && this.userService.hasPermission(Permissions.GET_FREE_WALLETS),
       canSeeInstances: this.userService.hasPermission(Permissions.GET_ALL_ALGO_INSTANCE_DATA),
-      canRunFakeTrading: this.userService.hasPermission(Permissions.RUN_FAKE_TRADE) && this.userService.hasPermission(Permissions.UPLOAD_BINARY_FILE),
-      isCurrentUser: false
+      canRunFakeTrading: this.userService.hasPermission(Permissions.RUN_FAKE_TRADE)
+      && this.userService.hasPermission(Permissions.UPLOAD_BINARY_FILE),
+      isCurrentUser: false,
+      canSeeWallets: this.userService.hasPermission(Permissions.GET_FREE_WALLETS)
     };
 
     this.subscriptions.push(this.route.params.subscribe(params => {
@@ -77,18 +82,28 @@ export class AlgoRunComponent implements OnInit, OnDestroy {
 
     }));
 
-    this.subscriptions.push(this.userService.getUserWalletsWithBalances().subscribe(wallets => {
-      this.wallets = wallets;
-    }));
+    this.getWallets();
   }
 
   ngOnInit() {
   }
 
   ngOnDestroy() {
+    if (this.modalRef) {
+      this.modalRef.hide();
+    }
+
     this.subscriptions.forEach(sub => {
       sub.unsubscribe();
     });
+  }
+
+  getWallets(): void {
+    if (this.permissions.canSeeWallets) {
+      this.subscriptions.push(this.userService.getFreeWallets().subscribe(wallets => {
+        this.wallets = wallets;
+      }));
+    }
   }
 
   fakeTrading(instanceType: IAlgoInstanceType): void {
@@ -97,7 +112,7 @@ export class AlgoRunComponent implements OnInit, OnDestroy {
     }
 
     if (this.metadataForm.invalid) {
-      this.notificationsService.error('Error', 'All Metadata Attributes should be populated before running an instance', { timeOut: 3000});
+      this.notificationsService.error('Error', 'All Metadata Attributes should be populated before running an instance', { timeOut: 3000 });
       return;
     }
 
@@ -130,7 +145,7 @@ export class AlgoRunComponent implements OnInit, OnDestroy {
         this.instancesArray.push(instance);
       }
     };
-    this.bsModalService.show(AlgoFakeTradingPopupComponent, { initialState, class: 'modal-sm fakeTrading-instance-popup' });
+    this.modalRef = this.bsModalService.show(AlgoFakeTradingPopupComponent, { initialState, class: 'modal-sm fakeTrading-instance-popup' });
   }
 
   goLive(wallet: Wallet): void {
@@ -139,7 +154,7 @@ export class AlgoRunComponent implements OnInit, OnDestroy {
     }
 
     if (this.metadataForm.invalid) {
-      this.notificationsService.error('Error', 'All Metadata Attributes should be populated before running an instance', { timeOut: 3000});
+      this.notificationsService.error('Error', 'All Metadata Attributes should be populated before running an instance', { timeOut: 3000 });
       return;
     }
 
@@ -164,9 +179,13 @@ export class AlgoRunComponent implements OnInit, OnDestroy {
       } as AlgoInstanceData,
       onInstanceCreateSuccess: (instance) => {
         this.instancesArray.push(instance);
+        const index = this.wallets.findIndex(w => w.Id === wallet.Id);
+        if (index !== -1) {
+          this.wallets.splice(index, 1);
+        }
       }
     };
-    this.bsModalService.show(AlgoInstancePopupComponent, { initialState, class: 'modal-sm run-instance-popup' });
+    this.modalRef = this.bsModalService.show(AlgoInstancePopupComponent, { initialState, class: 'modal-sm run-instance-popup' });
   }
 
   resetDefault(): void {
@@ -224,11 +243,17 @@ export class AlgoRunComponent implements OnInit, OnDestroy {
   }
 
   canRunFakeTrading(): boolean {
-    return this.permissions.canRunFakeTrading && (this.algo.AlgoVisibility === this.iAlgoVisibility.Public || this.permissions.isCurrentUser);
+    return this.permissions.canRunFakeTrading &&
+      (this.algo.AlgoVisibility === this.iAlgoVisibility.Public || this.permissions.isCurrentUser);
   }
 
   canRunLiveTrading(): boolean {
-    return this.permissions.canRunInstance && (this.algo.AlgoVisibility === this.iAlgoVisibility.Public || this.permissions.isCurrentUser);
+    return this.permissions.canRunInstance &&
+      (this.algo.AlgoVisibility === this.iAlgoVisibility.Public || this.permissions.isCurrentUser);
+  }
+
+  onInstanceDelete(event: any): void {
+    this.getWallets();
   }
 
 }

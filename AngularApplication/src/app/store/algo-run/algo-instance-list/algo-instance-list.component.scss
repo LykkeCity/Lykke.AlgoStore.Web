@@ -1,5 +1,13 @@
 @import '~scss/reuse';
 
+.instances-holder {
+  min-height: 150px;
+}
+
+.top-border {
+  border-top: 1px solid $pale-grey;
+}
+
 .instances-row {
   border-bottom: 1px solid $pale-grey;
   border-top: 1px solid $pale-grey;

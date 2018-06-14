@@ -42,7 +42,6 @@ export class EditRoleComponent implements OnDestroy {
     }));
 
     this.subscriptions.push(this.route.params.subscribe((params) => {
-      this.loader = true;
       this.roleId = params['id'];
       if (this.roleId) {
         this.subscriptions.push(this.roleService.getById(this.roleId).subscribe((role) => {
@@ -65,8 +64,6 @@ export class EditRoleComponent implements OnDestroy {
             perms.forEach(p => p.checked = rolePermissionIds.includes(p.Id));
 
             this.allPermissions = perms;
-
-            this.loader = false;
           }));
       }));
     }));
@@ -111,11 +108,13 @@ export class EditRoleComponent implements OnDestroy {
     }
 
     // and the ones that we've removed
-    for (const perm of dbPermissions) {
+    for (let i = 0; i < dbPermissions.length; i++) {
+      const perm = dbPermissions[i];
       if (!currentPermissionIds.includes(perm.Id)) {
         result.revokedPermissions.push({ RoleId: this.roleId, PermissionId: perm.Id });
         const index = dbPermissions.findIndex(p => p.Id === perm.Id);
         dbPermissions.splice(index, 1);
+        i--;
       }
     }
 
@@ -129,6 +128,7 @@ export class EditRoleComponent implements OnDestroy {
 
       this.subscriptions.push(this.roleService.saveRole(this.role).subscribe((role) => {
         this.roleId = role.Id;
+        this.role = role;
         this.subscriptions.push(this.permissionsService.getPermissionsForRole(role.Id).subscribe((dbPermissions) => {
           const data = this.mapFromModelsToApiData(dbPermissions);
 

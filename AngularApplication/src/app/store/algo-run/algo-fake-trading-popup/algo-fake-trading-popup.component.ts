@@ -20,15 +20,16 @@ export class AlgoFakeTradingPopupComponent implements OnInit {
   onSuccess: Function;
   algoInstanceData: AlgoInstanceData;
   subscriptions: Subscription[] = [];
+  loader = false;
 
   constructor(private fb: FormBuilder,
               public modalRef: BsModalRef,
               private instanceService: InstanceService,
               private notificationsService: NotificationsService) {
     this.algoInstanceForm = this.fb.group({
-      InstanceName: ['', { validators: [Validators.required], updateOn: 'submit'}],
-      FakeTradingTradingAssetBalance: ['', {validators: [Validators.required, Validators.min(0)], updateOn: 'submit'}],
-      FakeTradingAssetTwoBalance: ['', {validators: [Validators.required, Validators.min(0)], updateOn: 'submit'}]
+      InstanceName: ['', { validators: [Validators.required], updateOn: 'submit' }],
+      FakeTradingTradingAssetBalance: ['', { validators: [Validators.required, Validators.min(0)], updateOn: 'submit' }],
+      FakeTradingAssetTwoBalance: ['', { validators: [Validators.required, Validators.min(0)], updateOn: 'submit' }]
     });
   }
 
@@ -41,18 +42,37 @@ export class AlgoFakeTradingPopupComponent implements OnInit {
       return;
     }
 
-    const backtestData = {...this.algoInstanceData, ...this.algoInstanceForm.value};
+    this.loader = true;
 
-    this.instanceService.fakeTrading(backtestData).subscribe((data) => {
-      this.subscriptions.push(this.instanceService.algoDeploy(this.algoInstanceData.AlgoClientId, data.AlgoId, data.InstanceId)
+    const fakeTradingData = {
+      ...this.algoInstanceData,
+      ...this.algoInstanceForm.value,
+      AlgoMetaDataInformation: JSON.parse(JSON.stringify(this.algoInstanceData.AlgoMetaDataInformation))
+    };
+
+    fakeTradingData.AlgoMetaDataInformation.Parameters.forEach(param => {
+      delete param.PredefinedValues;
+    });
+
+    fakeTradingData.AlgoMetaDataInformation.Functions.forEach(func => {
+      func.Parameters.forEach(param => {
+        delete param.PredefinedValues;
+      });
+    });
+
+    this.instanceService.fakeTrading(fakeTradingData).subscribe((data) => {
+      this.subscriptions.push(this.instanceService.deployInstance(this.algoInstanceData.AlgoClientId, data.AlgoId, data.InstanceId)
         .subscribe(() => {
           this.notificationsService.success('Success', 'Instance created successfully.');
           this.modalRef.hide();
           this.onSuccess(data);
-        }, () => {
-          this.notificationsService.error('Error', 'There was an error while running your instance.');
+        }, (error) => {
+          this.notificationsService.error('Error', error.DisplayMessage);
           this.modalRef.hide();
         }));
+    }, (error) => {
+      this.notificationsService.error('Error', error.DisplayMessage);
+      this.modalRef.hide();
     });
   }
 

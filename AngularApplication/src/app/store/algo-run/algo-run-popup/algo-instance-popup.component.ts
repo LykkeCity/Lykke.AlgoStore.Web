@@ -22,13 +22,15 @@ export class AlgoInstancePopupComponent implements OnDestroy {
   onInstanceCreateSuccess: Function;
   subscriptions: Subscription[] = [];
 
+  loader = false;
+
 
   constructor(public modalRef: BsModalRef,
               private instanceService: InstanceService,
               private fb: FormBuilder,
               private notificationsService: NotificationsService) {
     this.algoInstanceForm = this.fb.group({
-      instanceName: ['', Validators.required]
+      name: ['', Validators.required]
     });
   }
 
@@ -43,13 +45,32 @@ export class AlgoInstancePopupComponent implements OnDestroy {
       return;
     }
 
+    this.loader = true;
+
     switch (this.type) {
       case 'Live':
-        this.subscriptions.push(this.instanceService.createLiveAlgoIntance({...this.algoInstanceData, ...this.algoInstanceForm.value})
+        const liveAlgoData = {
+          ...this.algoInstanceData,
+          InstanceName: this.algoInstanceForm.value.name,
+          AlgoMetaDataInformation: JSON.parse(JSON.stringify(this.algoInstanceData.AlgoMetaDataInformation))
+        };
+
+        liveAlgoData.AlgoMetaDataInformation.Parameters.forEach(param => {
+          delete param.PredefinedValues;
+        });
+
+        liveAlgoData.AlgoMetaDataInformation.Functions.forEach(func => {
+          func.Parameters.forEach(param => {
+            delete param.PredefinedValues;
+          });
+        });
+
+        this.subscriptions.push(this.instanceService.createLiveAlgoIntance(liveAlgoData)
           .subscribe((data) => {
             this.onInstanceCreateSuccess(data);
-            this.subscriptions.push(this.instanceService.algoDeploy(this.algoInstanceData.AlgoClientId, data.AlgoId, data.InstanceId)
+            this.subscriptions.push(this.instanceService.deployInstance(this.algoInstanceData.AlgoClientId, data.AlgoId, data.InstanceId)
               .subscribe(() => {
+                this.loader = false;
                 this.notificationsService.success('Success', 'Algo instance created successfully.');
                 this.modalRef.hide();
               }, () => {
@@ -62,10 +83,13 @@ export class AlgoInstancePopupComponent implements OnDestroy {
           }));
         break;
       case 'Edit':
-        // this.instanceService.editInstance(this.instanceId, this.algoInstanceForm.value).subscribe(() => {
-        //   this.modalRef.hide();
-        //   this.onEditSuccess(this.algoInstanceForm.value.Name);
-        // });
+        this.instanceService.editName(this.instanceId, this.algoInstanceForm.value).subscribe(() => {
+          this.modalRef.hide();
+          this.onEditSuccess(this.algoInstanceForm.value.name);
+        }, (error) => {
+          this.notificationsService.error('Error', error.DisplayMessage);
+          this.modalRef.hide();
+        });
         break;
     }
   }

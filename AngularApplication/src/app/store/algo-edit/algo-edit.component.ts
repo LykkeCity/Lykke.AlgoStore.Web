@@ -5,7 +5,7 @@ import { Subscription } from 'rxjs/Subscription';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { BaseAlgoParam } from '../models/base-algo-param.model';
-import { BsModalService } from 'ngx-bootstrap';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap';
 import { PopupConfig } from '../../models/popup.interface';
 import { PopupComponent } from '../../components/popup/popup.component';
 import { NotificationsService } from 'angular2-notifications';
@@ -36,6 +36,9 @@ export class AlgoEditComponent implements OnInit, OnDestroy {
     canUnpublish: boolean,
     canDelete: boolean
   };
+
+  loader = false;
+  modalRef: BsModalRef;
 
   subscriptions: Subscription[] = [];
 
@@ -75,7 +78,8 @@ export class AlgoEditComponent implements OnInit, OnDestroy {
           let hasRunning = false;
 
           for (const inst of this.instances) {
-            if (inst.AlgoInstanceStatus === this.iAlgoInstanceStatus.Running || inst.AlgoInstanceStatus === this.iAlgoInstanceStatus.Deploying) {
+            if (inst.AlgoInstanceStatus === this.iAlgoInstanceStatus.Running
+              || inst.AlgoInstanceStatus === this.iAlgoInstanceStatus.Deploying) {
               hasRunning = true;
               break;
             }
@@ -93,6 +97,10 @@ export class AlgoEditComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
+    if (this.modalRef) {
+      this.modalRef.hide();
+    }
+
     this.subscriptions.forEach(sub => sub.unsubscribe());
   }
 
@@ -131,7 +139,7 @@ export class AlgoEditComponent implements OnInit, OnDestroy {
         }
       } as PopupConfig
     };
-    this.bsModalService.show(PopupComponent, { initialState, class: 'modal-sm', keyboard: false, ignoreBackdropClick: true });
+    this.modalRef = this.bsModalService.show(PopupComponent, { initialState, class: 'modal-sm', keyboard: false, ignoreBackdropClick: true });
   }
 
   deleteAlgo(force: boolean): void {
@@ -154,9 +162,12 @@ export class AlgoEditComponent implements OnInit, OnDestroy {
       return;
     }
 
+    this.loader = true;
+
     this.subscriptions.push(this.algoService.publish(this.algo.AlgoId, this.algo.ClientId).subscribe(() => {
       this.algo.AlgoVisibility = this.iAlgoVisibility.Public;
       this.notificationsService.success('Success', 'Algo has been published successfully.');
+      this.loader = false;
     }));
   }
 
@@ -165,11 +176,15 @@ export class AlgoEditComponent implements OnInit, OnDestroy {
       return;
     }
 
+    this.loader = true;
+
     this.subscriptions.push(this.algoService.unpublish(this.algo.AlgoId, this.algo.ClientId).subscribe(() => {
       this.algo.AlgoVisibility = this.iAlgoVisibility.Private;
       this.notificationsService.success('Success', 'Algo has been unpublished successfully.');
+      this.loader = true;
     }, (error) => {
       this.notificationsService.error('Error', error.DisplayMessage);
+      this.loader = false;
     }));
   }
 
@@ -178,6 +193,8 @@ export class AlgoEditComponent implements OnInit, OnDestroy {
       this.algoForm.markAsDirty();
       return;
     }
+
+    this.loader = true;
 
     const tempAlgo = {
       ...this.algoForm.value,
@@ -193,6 +210,7 @@ export class AlgoEditComponent implements OnInit, OnDestroy {
       this.router.navigate(['/store/my-algos']);
     }, (error) => {
       this.algoErrors = error.DisplayMessage;
+      this.loader = false;
     }));
   }
 }
