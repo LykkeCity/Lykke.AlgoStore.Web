@@ -27,9 +27,9 @@ export class AlgoFakeTradingPopupComponent implements OnInit {
               private instanceService: InstanceService,
               private notificationsService: NotificationsService) {
     this.algoInstanceForm = this.fb.group({
-      InstanceName: ['', { validators: [Validators.required], updateOn: 'submit'}],
-      FakeTradingTradingAssetBalance: ['', {validators: [Validators.required, Validators.min(0)], updateOn: 'submit'}],
-      FakeTradingAssetTwoBalance: ['', {validators: [Validators.required, Validators.min(0)], updateOn: 'submit'}]
+      InstanceName: ['', { validators: [Validators.required], updateOn: 'submit' }],
+      FakeTradingTradingAssetBalance: ['', { validators: [Validators.required, Validators.min(0)], updateOn: 'submit' }],
+      FakeTradingAssetTwoBalance: ['', { validators: [Validators.required, Validators.min(0)], updateOn: 'submit' }]
     });
   }
 
@@ -44,7 +44,21 @@ export class AlgoFakeTradingPopupComponent implements OnInit {
 
     this.loader = true;
 
-    const fakeTradingData = {...this.algoInstanceData, ...this.algoInstanceForm.value};
+    const fakeTradingData = {
+      ...this.algoInstanceData,
+      ...this.algoInstanceForm.value,
+      AlgoMetaDataInformation: JSON.parse(JSON.stringify(this.algoInstanceData.AlgoMetaDataInformation))
+    };
+
+    fakeTradingData.AlgoMetaDataInformation.Parameters.forEach(param => {
+      delete param.PredefinedValues;
+    });
+
+    fakeTradingData.AlgoMetaDataInformation.Functions.forEach(func => {
+      func.Parameters.forEach(param => {
+        delete param.PredefinedValues;
+      });
+    });
 
     this.instanceService.fakeTrading(fakeTradingData).subscribe((data) => {
       this.subscriptions.push(this.instanceService.deployInstance(this.algoInstanceData.AlgoClientId, data.AlgoId, data.InstanceId)
