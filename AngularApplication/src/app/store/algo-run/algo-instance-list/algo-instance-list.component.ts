@@ -59,7 +59,7 @@ export class AlgoInstanceListComponent {
         }
       } as PopupConfig
     };
-    this.bsModalService.show(PopupComponent, {initialState, class: 'modal-sm', keyboard: false, ignoreBackdropClick: true});
+    this.bsModalService.show(PopupComponent, { initialState, class: 'modal-sm', keyboard: false, ignoreBackdropClick: true });
   }
 
   deleteInstance(instance: AlgoInstance): void {

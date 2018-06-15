@@ -102,7 +102,12 @@ export class AlgoDetailsComponent implements OnInit, OnDestroy {
       }
     };
 
-    this.modalRef = this.bsModalService.show(AlgoDuplicatePopupComponent, {initialState, class: 'modal-sm', keyboard: false, ignoreBackdropClick: true});
+    this.modalRef = this.bsModalService.show(AlgoDuplicatePopupComponent, {
+      initialState,
+      class: 'modal-sm',
+      keyboard: false,
+      ignoreBackdropClick: true
+    });
   }
 
   highlight(meta: BaseAlgoParam): void {

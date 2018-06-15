@@ -1,4 +1,3 @@
-
 import {throwError as observableThrowError,  Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
@@ -7,7 +6,6 @@ import { catchError } from 'rxjs/operators';
 
 import { Router } from '@angular/router';
 import { NotificationsService } from 'angular2-notifications';
-import { ErrorObservable } from 'rxjs/observable/ErrorObservable';
 
 @Injectable()
 export class AuthRequestService {

@@ -16,13 +16,13 @@ import { AlgoCreateComponent } from './algo-create/algo-create.component';
 const routes: Routes = [
   {
     path: '', component: StoreComponent, children: [
-      { path: 'my-algos', component: MyAlgosComponent, canActivate: [AuthGuard, ACLGuard], data: { acl: [Permissions.GET_USER_ALGOS] }  },
+      { path: 'my-algos', component: MyAlgosComponent, canActivate: [AuthGuard, ACLGuard], data: { acl: [Permissions.GET_USER_ALGOS] } },
       { path: 'algo-list', component: AlgoListComponent, canActivate: [AuthGuard, ACLGuard], data: { acl: [Permissions.GET_ALL_ALGOS] } },
       {
         path: 'algo-create',
         component: AlgoCreateComponent,
         canActivate: [AuthGuard, ACLGuard],
-        data: {acl: [Permissions.CREATE_ALGO] }
+        data: { acl: [Permissions.CREATE_ALGO] }
       },
       {
         path: 'algo-edit/:clientId/:algoId',

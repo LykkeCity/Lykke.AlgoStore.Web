@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { Algo, AlgoVisibility } from '../models/algo.interface';
@@ -20,7 +20,7 @@ import { NotificationsService } from 'angular2-notifications';
   templateUrl: './algo-run.component.html',
   styleUrls: ['./algo-run.component.scss']
 })
-export class AlgoRunComponent implements OnInit, OnDestroy {
+export class AlgoRunComponent implements OnDestroy {
 
   algo: Algo;
   wallets: Wallet[];
@@ -96,9 +96,6 @@ export class AlgoRunComponent implements OnInit, OnDestroy {
     }));
 
     this.getWallets();
-  }
-
-  ngOnInit() {
   }
 
   ngOnDestroy() {

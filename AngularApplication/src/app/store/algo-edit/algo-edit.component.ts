@@ -139,7 +139,12 @@ export class AlgoEditComponent implements OnInit, OnDestroy {
         }
       } as PopupConfig
     };
-    this.modalRef = this.bsModalService.show(PopupComponent, { initialState, class: 'modal-sm', keyboard: false, ignoreBackdropClick: true });
+    this.modalRef = this.bsModalService.show(PopupComponent, {
+      initialState,
+      class: 'modal-sm',
+      keyboard: false,
+      ignoreBackdropClick: true
+    });
   }
 
   deleteAlgo(force: boolean): void {

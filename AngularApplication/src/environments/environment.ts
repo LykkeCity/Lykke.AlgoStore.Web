@@ -1,5 +1,3 @@
-import 'zone.js/dist/zone-error';
-
 export const environment = {
   production: true,
   apiUrl: 'http://localhost:4200/devapi', // proxies requests to 'https://api-dev.lykkex.net/api'

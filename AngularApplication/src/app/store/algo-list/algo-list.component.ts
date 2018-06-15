@@ -1,6 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
-
 import { Algo } from '../models/algo.interface';
 import { AlgoService } from '../../services/algo.service';
 
