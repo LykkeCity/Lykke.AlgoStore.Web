@@ -1,5 +1,5 @@
 export const environment = {
-  production: true,
+  production: false,
   apiUrl: 'http://localhost:4200/devapi', // proxies requests to 'https://api-dev.lykkex.net/api'
   apiAuthUrl: 'https://auth-dev.lykkex.net',
   applicationId: '62b4815e-3762-4cf2-bad1-876a1feabeb7',
