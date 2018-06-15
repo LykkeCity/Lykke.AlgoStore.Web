@@ -1,7 +1,7 @@
 import { Component, OnDestroy } from '@angular/core';
 import { Algo } from '../models/algo.interface';
 import { AlgoService } from '../../services/algo.service';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 import { PopupConfig } from '../../models/popup.interface';
 import { PopupComponent } from '../../components/popup/popup.component';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap';
@@ -33,16 +33,16 @@ export class MyAlgosComponent implements OnDestroy {
               private bsModalService: BsModalService,
               private usersService: UserService,
               private notificationsService: NotificationsService) {
-      this.subscriptions.push(this.algoService.getMyAlgos().subscribe((algos) => {
-        this.algos = algos;
-        this.loadingIndicator = false;
-      }));
+    this.subscriptions.push(this.algoService.getMyAlgos().subscribe((algos) => {
+      this.algos = algos;
+      this.loadingIndicator = false;
+    }));
 
-      this.permissions = {
-        canDeleteAlgo: this.usersService.hasPermission(Permissions.DELETE_ALGO),
-        canDuplicate: this.usersService.hasPermission(Permissions.CREATE_ALGO),
-        canEditAlgo: this.usersService.hasPermission(Permissions.EDIT_ALGO)
-      };
+    this.permissions = {
+      canDeleteAlgo: this.usersService.hasPermission(Permissions.DELETE_ALGO),
+      canDuplicate: this.usersService.hasPermission(Permissions.CREATE_ALGO),
+      canEditAlgo: this.usersService.hasPermission(Permissions.EDIT_ALGO)
+    };
   }
 
   ngOnDestroy() {
@@ -52,19 +52,24 @@ export class MyAlgosComponent implements OnDestroy {
   }
 
   duplicateAlgo(algo: Algo): void {
-      if (!this.permissions.canDuplicate) {
-        return;
+    if (!this.permissions.canDuplicate) {
+      return;
+    }
+
+    const initialState = {
+      algo,
+      onCreateSuccess: (newAlgo) => {
+        this.algos.push(newAlgo);
+        this.algos = [...this.algos];
       }
+    };
 
-      const initialState = {
-        algo,
-        onCreateSuccess: (newAlgo) => {
-          this.algos.push(newAlgo);
-          this.algos = [...this.algos];
-        }
-      };
-
-    this.modalRef = this.bsModalService.show(AlgoDuplicatePopupComponent, {initialState, class: 'modal-sm', keyboard: false, ignoreBackdropClick: true});
+    this.modalRef = this.bsModalService.show(AlgoDuplicatePopupComponent, {
+      initialState,
+      class: 'modal-sm',
+      keyboard: false,
+      ignoreBackdropClick: true
+    });
   }
 
   delete(algo: Algo): void {
@@ -83,7 +88,12 @@ export class MyAlgosComponent implements OnDestroy {
         }
       } as PopupConfig
     };
-    this.modalRef = this.bsModalService.show(PopupComponent, {initialState, class: 'modal-sm', keyboard: false, ignoreBackdropClick: true});
+    this.modalRef = this.bsModalService.show(PopupComponent, {
+      initialState,
+      class: 'modal-sm',
+      keyboard: false,
+      ignoreBackdropClick: true
+    });
   }
 
   deleteAlgo(algo: Algo): void {

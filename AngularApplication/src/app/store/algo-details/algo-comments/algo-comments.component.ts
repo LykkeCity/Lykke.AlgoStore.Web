@@ -59,11 +59,11 @@ export class AlgoCommentsComponent implements OnChanges, OnDestroy {
       Content: ['', Validators.required]
     });
 
-      this.permissions = {
-        canCreateComment: this.userService.hasPermission(Permissions.CREATE_COMMENT),
-        canEditComment: this.userService.hasPermission(Permissions.EDIT_COMMENT),
-        canDeleteComment: this.userService.hasPermission(Permissions.DELETE_COMMENT)
-      };
+    this.permissions = {
+      canCreateComment: this.userService.hasPermission(Permissions.CREATE_COMMENT),
+      canEditComment: this.userService.hasPermission(Permissions.EDIT_COMMENT),
+      canDeleteComment: this.userService.hasPermission(Permissions.DELETE_COMMENT)
+    };
   }
 
   ngOnDestroy() {
@@ -125,7 +125,12 @@ export class AlgoCommentsComponent implements OnChanges, OnDestroy {
       }
     };
 
-    this.modalRef = this.bsModalService.show(PopupComponent, { initialState, class: 'modal-sm', keyboard: false, ignoreBackdropClick: true });
+    this.modalRef = this.bsModalService.show(PopupComponent, {
+      initialState,
+      class: 'modal-sm',
+      keyboard: false,
+      ignoreBackdropClick: true
+    });
   }
 
   onCommentSubmit(): void {

@@ -1,7 +1,7 @@
 import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { AlgoService } from '../../services/algo.service';
 import { Algo, AlgoVisibility } from '../models/algo.interface';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { BaseAlgoParam } from '../models/base-algo-param.model';
@@ -139,7 +139,12 @@ export class AlgoEditComponent implements OnInit, OnDestroy {
         }
       } as PopupConfig
     };
-    this.modalRef = this.bsModalService.show(PopupComponent, { initialState, class: 'modal-sm', keyboard: false, ignoreBackdropClick: true });
+    this.modalRef = this.bsModalService.show(PopupComponent, {
+      initialState,
+      class: 'modal-sm',
+      keyboard: false,
+      ignoreBackdropClick: true
+    });
   }
 
   deleteAlgo(force: boolean): void {

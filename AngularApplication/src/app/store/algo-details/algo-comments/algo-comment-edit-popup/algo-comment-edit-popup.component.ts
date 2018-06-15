@@ -31,7 +31,7 @@ export class AlgoCommentEditPopupComponent implements OnInit {
       return;
     }
 
-    this.onEditSuccess({...this.comment, Content: this.commentEdit.value.Content});
+    this.onEditSuccess({ ...this.comment, Content: this.commentEdit.value.Content });
     this.bsModalRef.hide();
   }
 

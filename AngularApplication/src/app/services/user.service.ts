@@ -1,12 +1,11 @@
 import { Injectable } from '@angular/core';
 import { map } from 'rxjs/operators';
-import { Observable } from 'rxjs/Observable';
+import { Observable ,  BehaviorSubject } from 'rxjs';
 import { Wallet } from '../models/wallet.model';
 import { UserData } from '../models/userdata.interface';
 import { environment } from '../../environments/environment';
 import { AuthRequestService } from './auth-request.service';
 import { UserRole } from '../models/user-role.model';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 @Injectable()
 export class UserService {

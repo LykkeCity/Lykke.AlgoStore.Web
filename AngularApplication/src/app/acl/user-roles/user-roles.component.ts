@@ -2,7 +2,7 @@ import { Component, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { UserRolesService } from '../../services/user-roles.service';
 import { UserRole } from '../../models/user-role.model';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 import { UserService } from '../../services/user.service';
 import { UserData } from '../../models/userdata.interface';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap';
@@ -16,7 +16,7 @@ import { PopupComponent } from '../../components/popup/popup.component';
   templateUrl: './user-roles.component.html',
   styleUrls: ['./user-roles.component.scss']
 })
-export class UserRolesComponent implements OnDestroy{
+export class UserRolesComponent implements OnDestroy {
 
   allRoles: UserRole[];
   userInfo: UserData;
@@ -121,7 +121,12 @@ export class UserRolesComponent implements OnDestroy{
       }
     };
 
-    this.modalRef = this.bsModalService.show(PopupComponent, { initialState, class: 'modal-sm', keyboard: false, ignoreBackdropClick: true });
+    this.modalRef = this.bsModalService.show(PopupComponent, {
+      initialState,
+      class: 'modal-sm',
+      keyboard: false,
+      ignoreBackdropClick: true
+    });
   }
 
 }

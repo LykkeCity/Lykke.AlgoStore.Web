@@ -1,10 +1,5 @@
-// The file contents for the current environment will overwrite these during build.
-// The build system defaults to the dev environment which uses `environment.ts`, but if you do
-// `ng build --env=prod` then `environment.prod.ts` will be used instead.
-// The trading-list of which env maps to which file can be found in `.angular-cli.json`.
-
 export const environment = {
-  production: false,
+  production: true,
   apiUrl: 'https://api-test.lykkex.net/api',
   apiAuthUrl: 'https://auth-test.lykkex.net',
   applicationId: '405712da-62b2-4231-85d3-de868a1e78a5',

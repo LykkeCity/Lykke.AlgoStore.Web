@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { Algo } from '../store/models/algo.interface';
 import { AuthRequestService } from './auth-request.service';
 import { AlgoInstance, IAlgoInstanceStatus } from '../store/models/algo-instance.model';

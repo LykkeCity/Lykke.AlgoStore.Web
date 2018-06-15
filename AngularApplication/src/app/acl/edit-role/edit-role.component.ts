@@ -3,7 +3,7 @@ import { UserPermission } from '../../models/user-permission.model';
 import { UserPermissionService } from '../../services/user-permissions.service';
 import { UserRolesService } from '../../services/user-roles.service';
 import { ActivatedRoute } from '@angular/router';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 import { NotificationsService } from 'angular2-notifications';
 import { UserRole } from '../../models/user-role.model';
 import { UserService } from '../../services/user.service';
