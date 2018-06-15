@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 
 @Component({
@@ -11,10 +11,22 @@ export class EditMetadataAttributeComponent implements OnInit {
   @Input() metadataProperty: any;
   @Input() form: FormGroup;
   @Input() formName: string;
+  @Output() onAssetPairChange = new EventEmitter();
 
   constructor() { }
 
   ngOnInit() {
+  }
+
+  onChange(event: any): void {
+    if (this.metadataProperty.Key !== 'AssetPair') {
+      return;
+    }
+
+    const data = {
+      assetPair: event
+    };
+    this.onAssetPairChange.emit(data);
   }
 
 }
