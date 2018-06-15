@@ -4,6 +4,7 @@ import { Observable } from 'rxjs/Observable';
 import { Algo } from '../store/models/algo.interface';
 import { AuthRequestService } from './auth-request.service';
 import { forkJoin } from 'rxjs/observable/forkJoin';
+import { AssetPair } from '../store/models/asset-pair.interface';
 
 @Injectable()
 export class AlgoService {
@@ -58,5 +59,10 @@ export class AlgoService {
       params['clientId'] = clientId;
     }
     return this.authRequestService.get(environment.storeApiUrl + '/v1/algo/sourceCode/getString', { params });
+  }
+
+  getAssetsByAssetPair(assetPairId: string): Observable<AssetPair[]> {
+    const params = { assetPairId };
+    return this.authRequestService.get(environment.storeApiUrl + '/v1/algo/getAssetsForAssetPair', { params });
   }
 }
