@@ -37,6 +37,9 @@
           },
           "configurations": {
             "stage": {
+              "namedChunks": false,
+              "outputHashing": "all",
+              "aot": true,
               "fileReplacements": [
                 {
                   "replace": "src/environments/environment.ts",
