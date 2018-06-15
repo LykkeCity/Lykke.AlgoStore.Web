@@ -46,9 +46,10 @@
                 </div>
               </div>
               <hr class="mt-0">
-              <form *ngIf="showMetadataForm" [formGroup]="metadataForm">
+              <form [formGroup]="metadataForm" *ngIf="showMetadataForm">
                 <app-edit-metadata-attribute class="meta-row edit-row" [form]="metadataForm.controls['Parameters']"
                                              [metadataProperty]="param"
+                                             (onAssetPairChange)="onAssetPairChange($event)"
                                              *ngFor="let param of algo.AlgoMetaDataInformation?.Parameters"></app-edit-metadata-attribute>
                 <div *ngFor="let func of algo.AlgoMetaDataInformation?.Functions">
                   <app-edit-metadata-attribute class="meta-row edit-row"
@@ -57,6 +58,8 @@
                                                *ngFor="let param of func.Parameters"></app-edit-metadata-attribute>
                 </div>
               </form>
+
+              <app-loader [ready]="metadataForm" [small]="true"></app-loader>
             </div>
             <div class="col-12 pl-0" *ngIf="permissions.canSeeInstances">
               <app-algo-instance-list [algoId]="algo.AlgoId" [instancesArray]="instancesArray" (onInstanceDelete)="onInstanceDelete($event)"></app-algo-instance-list>

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AuthRequestService } from './auth-request.service';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { UserData } from '../models/userdata.interface';
 import { environment } from '../../environments/environment';
 import { UserRole } from '../models/user-role.model';

@@ -1,7 +1,7 @@
 import { Component, OnDestroy } from '@angular/core';
 import { UserData } from '../../models/userdata.interface';
 import { UserRolesService } from '../../services/user-roles.service';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 import { NotificationsService } from 'angular2-notifications';
 import { UserService } from '../../services/user.service';
 import Permissions from '../../store/models/permissions';
@@ -79,7 +79,12 @@ export class UsersListComponent implements OnDestroy {
       }
     };
 
-    this.modalRef = this.bsModalService.show(PopupComponent, { initialState, class: 'modal-sm', keyboard: false, ignoreBackdropClick: true });
+    this.modalRef = this.bsModalService.show(PopupComponent, {
+      initialState,
+      class: 'modal-sm',
+      keyboard: false,
+      ignoreBackdropClick: true
+    });
   }
 
 }

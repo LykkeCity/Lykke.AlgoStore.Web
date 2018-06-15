@@ -1,13 +1,13 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 import { Algo, AlgoVisibility } from '../models/algo.interface';
 import { Wallet } from '../../models/wallet.model';
 import { UserService } from '../../services/user.service';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap';
 import { AlgoInstancePopupComponent } from './algo-run-popup/algo-instance-popup.component';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { AlgoInstance, AlgoInstanceData, IAlgoInstanceStatus, IAlgoInstanceType } from '../models/algo-instance.model';
+import { AlgoInstance, AlgoInstanceData, IAlgoInstanceType } from '../models/algo-instance.model';
 import { AlgoService } from '../../services/algo.service';
 import { InstanceService } from '../../services/instance.service';
 import Permissions from '../models/permissions';
@@ -20,7 +20,7 @@ import { NotificationsService } from 'angular2-notifications';
   templateUrl: './algo-run.component.html',
   styleUrls: ['./algo-run.component.scss']
 })
-export class AlgoRunComponent implements OnInit, OnDestroy {
+export class AlgoRunComponent implements OnDestroy {
 
   algo: Algo;
   wallets: Wallet[];
@@ -70,8 +70,21 @@ export class AlgoRunComponent implements OnInit, OnDestroy {
       this.subscriptions.push(this.algoService.getAlgoWithSource(algoId, this.clientId).subscribe(algo => {
         this.algo = algo;
         this.algo.ClientId = this.clientId;
-        this.metadataForm = this.dataToFormGroup();
-        this.showMetadataForm = true;
+
+        const assetPair = this.algo.AlgoMetaDataInformation.Parameters.find(p => p.Key === 'AssetPair');
+
+        if (assetPair.Value) {
+          this.algoService.getAssetsByAssetPair(assetPair.Value).subscribe((assets) => {
+            this.algo.AlgoMetaDataInformation.Parameters.find(p => p.Key === 'TradedAsset').PredefinedValues = assets;
+
+            this.metadataForm = this.dataToFormGroup();
+            this.showMetadataForm = true;
+          });
+        } else {
+          this.metadataForm = this.dataToFormGroup();
+          this.metadataForm.controls['Parameters']['controls']['TradedAsset'].disable();
+          this.showMetadataForm = true;
+        }
       }));
 
       if (this.permissions.canSeeInstances) {
@@ -83,9 +96,6 @@ export class AlgoRunComponent implements OnInit, OnDestroy {
     }));
 
     this.getWallets();
-  }
-
-  ngOnInit() {
   }
 
   ngOnDestroy() {
@@ -190,6 +200,23 @@ export class AlgoRunComponent implements OnInit, OnDestroy {
 
   resetDefault(): void {
 
+  }
+
+  onAssetPairChange(data): void {
+    const tradedAssetControl = this.metadataForm.controls['Parameters']['controls']['TradedAsset'];
+
+    tradedAssetControl.disable();
+
+    if (!data.assetPair) {
+      tradedAssetControl.reset();
+      return;
+    }
+
+    this.algoService.getAssetsByAssetPair(data.assetPair.Value).subscribe((assets) => {
+      this.algo.AlgoMetaDataInformation.Parameters.find(p => p.Key === 'TradedAsset').PredefinedValues = assets;
+      tradedAssetControl.reset();
+      tradedAssetControl.enable();
+    });
   }
 
   dataToFormGroup() {

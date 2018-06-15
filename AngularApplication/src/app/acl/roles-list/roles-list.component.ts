@@ -1,5 +1,5 @@
 import { Component, OnDestroy, TemplateRef } from '@angular/core';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 import { UserRole } from '../../models/user-role.model';
 import { UserRolesService } from '../../services/user-roles.service';
 import { NotificationsService } from 'angular2-notifications';
@@ -13,7 +13,7 @@ import Permissions from '../../store/models/permissions';
   templateUrl: './roles-list.component.html',
   styleUrls: ['./roles-list.component.scss']
 })
-export class RolesListComponent implements OnDestroy{
+export class RolesListComponent implements OnDestroy {
 
   roles: UserRole[];
   loadingIndicator = true;

@@ -22,7 +22,9 @@
                placeholder="Select {{metadataProperty.Key}}"
                [items]="metadataProperty.PredefinedValues"
                bindValue="Value"
-               bindLabel="Key" class="form-control">
+               bindLabel="Key"
+               class="form-control"
+               (change)="onChange($event)">
 
     </ng-select>
   </div>

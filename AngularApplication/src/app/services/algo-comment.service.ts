@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { AlgoComment } from '../models/algo-comment.model';
 import { AuthRequestService } from './auth-request.service';
 

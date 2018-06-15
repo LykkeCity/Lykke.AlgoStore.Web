@@ -2,7 +2,7 @@ import { Component, OnDestroy } from '@angular/core';
 import { BsModalRef } from 'ngx-bootstrap';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NotificationsService } from 'angular2-notifications';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 import { AlgoInstanceData } from '../../models/algo-instance.model';
 import { InstanceService } from '../../../services/instance.service';
 

@@ -1,9 +1,8 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import { environment } from '../../environments/environment';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { BehaviorSubject ,  Observable } from 'rxjs';
 import { tap, mergeMap } from 'rxjs/operators';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Observable } from 'rxjs/Observable';
 import { ITokenResponse } from '../models/token-response.interface';
 
 @Injectable()
