@@ -16,7 +16,7 @@ import { PopupComponent } from '../../components/popup/popup.component';
   templateUrl: './user-roles.component.html',
   styleUrls: ['./user-roles.component.scss']
 })
-export class UserRolesComponent implements OnDestroy{
+export class UserRolesComponent implements OnDestroy {
 
   allRoles: UserRole[];
   userInfo: UserData;
@@ -121,7 +121,12 @@ export class UserRolesComponent implements OnDestroy{
       }
     };
 
-    this.modalRef = this.bsModalService.show(PopupComponent, { initialState, class: 'modal-sm', keyboard: false, ignoreBackdropClick: true });
+    this.modalRef = this.bsModalService.show(PopupComponent, {
+      initialState,
+      class: 'modal-sm',
+      keyboard: false,
+      ignoreBackdropClick: true
+    });
   }
 
 }

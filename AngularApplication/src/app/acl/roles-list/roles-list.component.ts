@@ -13,7 +13,7 @@ import Permissions from '../../store/models/permissions';
   templateUrl: './roles-list.component.html',
   styleUrls: ['./roles-list.component.scss']
 })
-export class RolesListComponent implements OnDestroy{
+export class RolesListComponent implements OnDestroy {
 
   roles: UserRole[];
   loadingIndicator = true;
