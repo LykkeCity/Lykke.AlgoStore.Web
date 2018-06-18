@@ -1,5 +1,5 @@
 import { Component, OnDestroy } from '@angular/core';
-import { UserPermission } from '../../models/user-permission.model';
+import { PermissionMap, UserPermission } from '../../models/user-permission.model';
 import { UserPermissionService } from '../../services/user-permissions.service';
 import { UserRolesService } from '../../services/user-roles.service';
 import { ActivatedRoute } from '@angular/router';
@@ -18,14 +18,15 @@ export class EditRoleComponent implements OnDestroy {
 
   roleId: string;
   role: UserRole;
-  rolePermissions: UserPermission[];
-  allPermissions: UserPermission[];
+  rolePermissionIds: string[];
   subscriptions: Subscription[] = [];
   permissions: {
     canEditRole: boolean;
   };
 
   loader = false;
+  orderedPermissions: PermissionMap = {};
+  permissionGroups: string[] = [];
 
   constructor(private permissionsService: UserPermissionService,
               private usersService: UserService,
@@ -55,15 +56,23 @@ export class EditRoleComponent implements OnDestroy {
       }
 
       this.subscriptions.push(this.permissionsService.getAllPermissions().subscribe((perms) => {
-        this.allPermissions = perms;
+        perms.map(p => {
+          if (!this.orderedPermissions[p.Name]) {
+            this.orderedPermissions[p.Name] = { permissions: [], collapseState: 'expanded' };
+          }
+
+          if (!this.orderedPermissions[p.Name].permissions) {
+            this.orderedPermissions[p.Name].permissions = [];
+          }
+
+          this.orderedPermissions[p.Name].permissions.push(p);
+        });
+        this.permissionGroups = Object.keys(this.orderedPermissions);
 
         this.subscriptions.push(this.permissionsService.getPermissionsForRole(this.roleId)
-          .subscribe((rolePermissions: UserPermission[]) => {
-            this.rolePermissions = rolePermissions;
-            const rolePermissionIds = rolePermissions.map(p => p.Id);
-            perms.forEach(p => p.checked = rolePermissionIds.includes(p.Id));
-
-            this.allPermissions = perms;
+          .subscribe((currentPermissions: UserPermission[]) => {
+            this.rolePermissionIds = currentPermissions.map(p => p.Id);
+            this.permissionGroups.forEach(group => this.setInitialState(group));
           }));
       }));
     }));
@@ -73,50 +82,60 @@ export class EditRoleComponent implements OnDestroy {
     this.subscriptions.forEach(sub => sub.unsubscribe());
   }
 
-  selectAll(): void {
-    this.allPermissions.forEach(p => p.checked = true);
-    this.rolePermissions = JSON.parse(JSON.stringify(this.allPermissions));
-  }
-
-  deselectAll(): void {
-    this.allPermissions.forEach(p => p.checked = false);
-    this.rolePermissions = [];
-  }
-
-  onStateChange(perm: UserPermission) {
-    perm.checked = !perm.checked;
-
-    if (perm.checked) {
-      this.rolePermissions.push(perm);
-    } else {
-      const index = this.rolePermissions.findIndex(p => p.Id === perm.Id);
-      this.rolePermissions.splice(index, 1);
+  selectAll(group?: string): void {
+    if (group) {
+      this.orderedPermissions[group].permissions.forEach(p => {
+        p.checked = true;
+        console.log('Checking perm: ' + p.Id);
+      });
+      return;
     }
+
+    this.permissionGroups.forEach(permGroup => this.selectAll(permGroup));
   }
 
-  mapFromModelsToApiData(dbPermissions: UserPermission[]): any {
+  deselectAll(group): void {
+    if (group) {
+      this.orderedPermissions[group].permissions.forEach(p => {
+        p.checked = false;
+        console.log('Uncheking perm: ' + p.Id);
+      });
+      return;
+    }
+
+    this.permissionGroups.forEach(permGroup => this.deselectAll(permGroup));
+  }
+
+  setInitialState(group: string): void {
+    this.orderedPermissions[group].permissions.forEach(p => p.checked = this.rolePermissionIds.includes(p.Id));
+  }
+
+  onStateChange(perm: UserPermission, group: string) {
+    this.orderedPermissions[group].permissions.find(p => p.Id === perm.Id).checked = !perm.checked;
+  }
+
+  mapFromModelsToApiData(): any {
     const result = { assignedPermissions: [], revokedPermissions: [] };
-    const dbrolePermissionIds = dbPermissions.map(r => r.Id);
-    const currentPermissionIds = this.rolePermissions.map(r => r.Id);
+    let allPerms = [];
 
-    // get the ones that we've added
-    for (const perm of this.rolePermissions) {
-      if (!dbrolePermissionIds.includes(perm.Id)) {
+    this.permissionGroups.forEach(group => {
+      allPerms = allPerms.concat(this.orderedPermissions[group].permissions);
+    });
+
+    allPerms.forEach(perm => {
+      // if its missing in the initial ids, then its a new perm
+      if (!this.rolePermissionIds.includes(perm.Id) && perm.checked) {
         result.assignedPermissions.push({ RoleId: this.roleId, PermissionId: perm.Id });
-        dbPermissions.push(perm);
       }
-    }
 
-    // and the ones that we've removed
-    for (let i = 0; i < dbPermissions.length; i++) {
-      const perm = dbPermissions[i];
-      if (!currentPermissionIds.includes(perm.Id)) {
+      // if its in the initial permission, but missing in the current one, remove it
+      if (this.rolePermissionIds.includes(perm.Id) && !perm.checked) {
         result.revokedPermissions.push({ RoleId: this.roleId, PermissionId: perm.Id });
-        const index = dbPermissions.findIndex(p => p.Id === perm.Id);
-        dbPermissions.splice(index, 1);
-        i--;
       }
-    }
+    });
+
+    // finally, refresh the current ones
+    this.rolePermissionIds = allPerms.filter(p => p.checked).map(perm => perm.Id);
 
     return result;
   }
@@ -125,38 +144,39 @@ export class EditRoleComponent implements OnDestroy {
     if (this.role.CanBeModified && this.permissions.canEditRole) {
       this.loader = true;
 
-
       this.subscriptions.push(this.roleService.saveRole(this.role).subscribe((role) => {
         this.roleId = role.Id;
         this.role = role;
-        this.subscriptions.push(this.permissionsService.getPermissionsForRole(role.Id).subscribe((dbPermissions) => {
-          const data = this.mapFromModelsToApiData(dbPermissions);
+        const data = this.mapFromModelsToApiData();
 
-          this.permissionsService.assignPermissions(data.assignedPermissions).subscribe(() => {
-            this.permissionsService.revokePermissions(data.revokedPermissions).subscribe(() => {
+        this.permissionsService.assignPermissions(data.assignedPermissions).subscribe(() => {
+          this.permissionsService.revokePermissions(data.revokedPermissions).subscribe(() => {
 
-              // if the currently logged user has this role, update him
-              const loggedUser = this.usersService.getLoggedUser();
-              const userRoleIndex = loggedUser.Roles.findIndex(userRole => userRole.Id === this.roleId);
-              if (userRoleIndex !== -1) {
-                this.subscriptions.push(this.permissionsService.getPermissionsForRole(role.Id).subscribe((updatedPermissions) => {
+            // if the currently logged user has this role, update him
+            const loggedUser = this.usersService.getLoggedUser();
+            const userRoleIndex = loggedUser.Roles.findIndex(userRole => userRole.Id === this.roleId);
+            if (userRoleIndex !== -1) {
+              this.subscriptions.push(this.permissionsService.getPermissionsForRole(role.Id).subscribe((updatedPermissions) => {
 
-                  loggedUser.Roles[userRoleIndex].Name = role.Name;
-                  loggedUser.Roles[userRoleIndex].Permissions = updatedPermissions;
+                loggedUser.Roles[userRoleIndex].Name = role.Name;
+                loggedUser.Roles[userRoleIndex].Permissions = updatedPermissions;
 
-                  this.usersService.updatePermissions(loggedUser.Roles);
+                this.usersService.updatePermissions(loggedUser.Roles);
 
-                  this.loader = false;
-                  this.notificationsService.success('Success', 'Role updated successfully.');
-                }));
-              } else {
                 this.loader = false;
                 this.notificationsService.success('Success', 'Role updated successfully.');
-              }
-            });
+              }));
+            } else {
+              this.loader = false;
+              this.notificationsService.success('Success', 'Role updated successfully.');
+            }
           });
-        }));
+        });
       }));
     }
+  }
+
+  getTooltip(returnValue?: string): string {
+    return !this.role.CanBeModified  ? 'This role cannot be modified.' : !this.permissions.canEditRole ? 'You do not have the permission to modify this role' : returnValue ? returnValue : '';
   }
 }
