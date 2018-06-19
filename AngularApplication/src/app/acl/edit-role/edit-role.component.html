@@ -36,11 +36,11 @@
     <div class="row">
       <div class="col-4" *ngFor="let group of permissionGroups; let even = even;" [ngClass]="{'offset-2' : even}">
         <div class="row collapse-header mr-1 cursor-pointer">
-          <div class="col-1 pl-0" (click)="orderedPermissions[group].collapseState = orderedPermissions[group].collapseState === 'collapsed' ? 'expanded' : 'collapsed'">
+          <div class="col-1 pl-0" (click)="toggle(group)">
             <span *ngIf="orderedPermissions[group].collapseState === 'collapsed'"><img src="../../../assets/images/arrow-down.svg" /></span>
             <span *ngIf="orderedPermissions[group].collapseState !== 'collapsed'"><img src="../../../assets/images/arrow-up.svg" /></span>
           </div>
-          <div class="col-9 pr-0 pl-0 text-truncate" [tooltip]="isBigger(group) ? group : ''" container="body" (click)="orderedPermissions[group].collapseState = orderedPermissions[group].collapseState === 'collapsed' ? 'expanded' : 'collapsed'">
+          <div class="col-9 pr-0 pl-0 text-truncate" [tooltip]="isBigger(group) ? group : ''" container="body" (click)="toggle(group)">
             <div class="d-inline-block" [tooltip]="!isBigger(group) ? group : ''" container="body">{{group}}</div>
           </div>
           <div class="col-1 pl-0 pr-0" (click)="(role.CanBeModified && permissions.canEditRole) ? selectAll(group) : null">

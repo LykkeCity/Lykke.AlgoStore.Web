@@ -177,6 +177,10 @@ export class EditRoleComponent implements OnDestroy {
         : returnValue ? returnValue : '';
   }
 
+  toggle(group: string): void {
+    this.orderedPermissions[group].collapseState = this.orderedPermissions[group].collapseState === 'collapsed' ? 'expanded' : 'collapsed';
+  }
+
   isBigger(input: string): boolean {
     return input.length > 20;
   }
