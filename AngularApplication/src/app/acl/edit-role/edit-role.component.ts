@@ -92,7 +92,7 @@ export class EditRoleComponent implements OnDestroy {
     this.permissionGroups.forEach(permGroup => this.selectAll(permGroup));
   }
 
-  deselectAll(group): void {
+  deselectAll(group?: string): void {
     if (group) {
       this.orderedPermissions[group].permissions.forEach(p => p.checked = false);
       return;
