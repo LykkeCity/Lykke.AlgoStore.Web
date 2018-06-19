@@ -176,4 +176,8 @@ export class EditRoleComponent implements OnDestroy {
       : !this.permissions.canEditRole ? 'You do not have the permission to modify this role'
         : returnValue ? returnValue : '';
   }
+
+  isBigger(input: string): boolean {
+    return input.length > 20;
+  }
 }

@@ -50,7 +50,7 @@ export class AlgoDetailsComponent implements OnInit, OnDestroy {
       canSeeAlgoRating: this.userService.hasPermission(Permissions.GET_ALGO_RATING),
       canSeeComments: this.userService.hasPermission(Permissions.GET_ALL_COMMENTS_FOR_ALGO),
       canRunInstance: this.userService.hasPermission(Permissions.SAVE_ALGO_INSTANCE_DATA)
-      && this.userService.hasPermission(Permissions.UPLOAD_BINARY_FILE),
+      && this.userService.hasPermission(Permissions.DEPLOY_BINARY_FILE),
       canDuplicate: this.userService.hasPermission(Permissions.CREATE_ALGO)
     };
   }

@@ -36,17 +36,17 @@
     <div class="row">
       <div class="col-4" *ngFor="let group of permissionGroups; let even = even;" [ngClass]="{'offset-2' : even}">
         <div class="row collapse-header mr-1 cursor-pointer">
-          <div class="col-1">
+          <div class="col-1 pl-0" (click)="orderedPermissions[group].collapseState = orderedPermissions[group].collapseState === 'collapsed' ? 'expanded' : 'collapsed'">
             <span *ngIf="orderedPermissions[group].collapseState === 'collapsed'"><img src="../../../assets/images/arrow-down.svg" /></span>
             <span *ngIf="orderedPermissions[group].collapseState !== 'collapsed'"><img src="../../../assets/images/arrow-up.svg" /></span>
           </div>
-          <div class="col-8 pr-0 text-truncate" [tooltip]="group" container="body">
-            <div class="d-inline-block" (click)="orderedPermissions[group].collapseState = orderedPermissions[group].collapseState === 'collapsed' ? 'expanded' : 'collapsed'">{{group}}</div>
+          <div class="col-9 pr-0 pl-0 text-truncate" [tooltip]="isBigger(group) ? group : ''" container="body" (click)="orderedPermissions[group].collapseState = orderedPermissions[group].collapseState === 'collapsed' ? 'expanded' : 'collapsed'">
+            <div class="d-inline-block" [tooltip]="!isBigger(group) ? group : ''" container="body">{{group}}</div>
           </div>
-          <div class="col-1" (click)="(role.CanBeModified && permissions.canEditRole) ? selectAll(group) : null">
+          <div class="col-1 pl-0 pr-0" (click)="(role.CanBeModified && permissions.canEditRole) ? selectAll(group) : null">
             <span [tooltip]="getTooltip('Select all')" container="body"><img src="../../../assets/images/select-all.svg"></span>
           </div>
-          <div class="col-1" (click)="(role.CanBeModified && permissions.canEditRole) ? deselectAll(group): null">
+          <div class="col-1 pl-0 pr-0" (click)="(role.CanBeModified && permissions.canEditRole) ? deselectAll(group): null">
             <span [tooltip]="getTooltip('Deselect all')" container="body"><img src="../../../assets/images/deselect-all.svg"></span>
           </div>
         </div>
