@@ -40,7 +40,7 @@ const routes: Routes = [
         canActivate: [AuthGuard, ACLGuard],
         data: {
           acl: [Permissions.GET_UPLOAD_STRING, Permissions.GET_ALGO_METADATA,
-            Permissions.SAVE_ALGO_INSTANCE_DATA, Permissions.UPLOAD_BINARY_FILE]
+            Permissions.SAVE_ALGO_INSTANCE_DATA, Permissions.DEPLOY_BINARY_FILE]
         }
       },
       {
