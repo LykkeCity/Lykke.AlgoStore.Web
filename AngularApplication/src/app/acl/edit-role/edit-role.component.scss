@@ -1,0 +1,9 @@
+@import "~scss/reuse";
+
+.collapse-header {
+  font-weight: $font-weight-semibold;
+  font-size: 1.2rem;
+  padding: 10px 10px 10px 0;
+  border-bottom: 1px solid lightgray;
+  margin-bottom: 10px;
+}

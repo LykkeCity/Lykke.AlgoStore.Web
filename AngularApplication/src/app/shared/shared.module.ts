@@ -16,6 +16,7 @@ import { ACLGuard } from '../services/acl.guard';
 import { UserDetailsGuard } from '../services/user-details.guard';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { LoaderComponent } from './loader/loader.component';
+import { CollapseContentComponent } from './collapse/collapse-content.component';
 
 
 @NgModule({
@@ -40,7 +41,8 @@ import { LoaderComponent } from './loader/loader.component';
     CodeEditorComponent,
     DateTimePickerComponent,
     StarRatingComponent,
-    LoaderComponent
+    LoaderComponent,
+    CollapseContentComponent
   ],
   exports: [
     CommonModule,
@@ -56,7 +58,8 @@ import { LoaderComponent } from './loader/loader.component';
     ReactiveFormsModule,
     NgxDatatableModule,
     PopoverModule,
-    LoaderComponent
+    LoaderComponent,
+    CollapseContentComponent
   ]
 })
 export class SharedModule {}

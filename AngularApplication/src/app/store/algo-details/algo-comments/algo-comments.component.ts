@@ -10,6 +10,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { AlgoCommentService } from '../../../services/algo-comment.service';
 import { UserService } from '../../../services/user.service';
 import Permissions from '../../models/permissions';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-algo-comments',
@@ -47,6 +48,7 @@ export class AlgoCommentsComponent implements OnChanges, OnDestroy {
     canDeleteComment: boolean
   };
 
+  subscriptions: Subscription[] = [];
   modalRef: BsModalRef;
 
   constructor(private fb: FormBuilder,
@@ -70,6 +72,8 @@ export class AlgoCommentsComponent implements OnChanges, OnDestroy {
     if (this.modalRef) {
       this.modalRef.hide();
     }
+
+    this.subscriptions.forEach(sub => sub.unsubscribe());
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -89,11 +93,11 @@ export class AlgoCommentsComponent implements OnChanges, OnDestroy {
     const initialState = {
       comment: comment,
       onEditSuccess: (editedComment) => {
-        this.algoCommentService.editComment(editedComment).subscribe(savedComment => {
+        this.subscriptions.push(this.algoCommentService.editComment(editedComment).subscribe(savedComment => {
           this.notificationsService.success('Success', 'Comment edited successfully.');
           savedComment.Content = <any>this.domSanitizer.bypassSecurityTrustHtml(savedComment.Content);
           this.comments[index] = savedComment;
-        });
+        }));
       }
     };
 
@@ -117,10 +121,10 @@ export class AlgoCommentsComponent implements OnChanges, OnDestroy {
         btnCancelText: 'Cancel',
         btnConfirmText: 'Delete',
         successCallback: () => {
-          this.algoCommentService.deleteComment(this.algoId, comment.CommentId).subscribe(() => {
+          this.subscriptions.push(this.algoCommentService.deleteComment(this.algoId, comment.CommentId).subscribe(() => {
             this.comments.splice(index, 1);
             this.notificationsService.success('Success', 'Comment deleted successfully');
-          });
+          }));
         }
       }
     };
@@ -140,13 +144,14 @@ export class AlgoCommentsComponent implements OnChanges, OnDestroy {
 
     this.loader = true;
 
-    this.algoCommentService.saveComment({ AlgoId: this.algoId, ...this.commentForm.value }).subscribe((savedComment) => {
-      this.notificationsService.success('Success', 'Comment added successfully.');
-      savedComment.Content = <any>this.domSanitizer.bypassSecurityTrustHtml(savedComment.Content);
-      this.comments.unshift(savedComment);
-      this.commentForm.reset();
-      this.loader = false;
-    });
+    this.subscriptions.push(this.algoCommentService.saveComment({ AlgoId: this.algoId, ...this.commentForm.value })
+      .subscribe((savedComment) => {
+        this.notificationsService.success('Success', 'Comment added successfully.');
+        savedComment.Content = <any>this.domSanitizer.bypassSecurityTrustHtml(savedComment.Content);
+        this.comments.unshift(savedComment);
+        this.commentForm.reset();
+        this.loader = false;
+      }));
   }
 
   clearForm(): void {

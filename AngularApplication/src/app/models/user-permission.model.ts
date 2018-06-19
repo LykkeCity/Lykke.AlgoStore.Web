@@ -4,3 +4,12 @@ export interface UserPermission {
   DisplayName?: string;
   checked?: boolean;
 }
+
+export interface CollapsiblePermission {
+  permissions: UserPermission[];
+  collapseState: string;
+}
+
+export interface PermissionMap {
+  [key: string]: CollapsiblePermission;
+}
