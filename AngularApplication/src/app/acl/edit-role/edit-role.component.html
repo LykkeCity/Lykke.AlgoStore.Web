@@ -1,4 +1,4 @@
-<div class="container" *ngIf="role && rolePermissions && allPermissions">
+<div class="container" *ngIf="role && rolePermissionIds">
   <div class="row mt-5">
     <div class="offset-2 col-10">
       <h2>{{roleId ? 'Edit' : 'Create'}} Role</h2>
@@ -10,39 +10,69 @@
       <div class="offset-2 col-8">
         <div class="form-group">
           <label for="role-name">Name</label>
-          <input type="text" class="form-control" id="role-name" [(ngModel)]="role.Name" [ngModelOptions]="{standalone: true}" [readonly]="!role.CanBeModified || !permissions.canEditRole">
+          <input type="text" class="form-control" id="role-name" [(ngModel)]="role.Name"
+                 [ngModelOptions]="{standalone: true}" [readonly]="!role.CanBeModified || !permissions.canEditRole">
         </div>
       </div>
     </div>
     <div class="row mt-3">
       <div class="offset-2 col-4 mb-4">
         <span class="font-weight-semibold">Set Permissions</span>
+        <span tooltip="Click on the controller name to collapse/expand" container="body"><img src="../../../assets/images/info.svg" class="info-icon cursor-pointer"></span>
       </div>
       <div class="col-2">
         <span class="mr-2"><img src="../../../assets/images/select-all.svg"></span>
-        <span class="font-weight-semibold cursor-pointer" (click)="(role.CanBeModified && permissions.canEditRole) ? selectAll() : null" [tooltip]="!role.CanBeModified  ? 'This role cannot be modified.' : !permissions.canEditRole ? 'You do not have the permission to modify this role' : ''">Select all</span>
+        <span class="font-weight-semibold cursor-pointer"
+              (click)="(role.CanBeModified && permissions.canEditRole) ? selectAll() : null"
+              [tooltip]="getTooltip()">Select all</span>
       </div>
       <div class="col-2">
         <span class="mr-2"><img src="../../../assets/images/deselect-all.svg"></span>
-        <span class="font-weight-semibold cursor-pointer" (click)="(role.CanBeModified && permissions.canEditRole) ? deselectAll(): null" [tooltip]="!role.CanBeModified  ? 'This role cannot be modified.' : !permissions.canEditRole ? 'You do not have the permission to modify this role' : ''">Deselect all</span>
+        <span class="font-weight-semibold cursor-pointer"
+              (click)="(role.CanBeModified && permissions.canEditRole) ? deselectAll(): null"
+              [tooltip]="getTooltip()">Deselect all</span>
       </div>
     </div>
     <div class="row">
-      <div class="col-4" *ngFor="let permission of allPermissions; let even = even;" [ngClass]="{'offset-2' : even}">
-        <div class="form-group">
-          <div class="custom-control custom-checkbox mr-sm-2">
-            <input type="checkbox" class="custom-control-input" [id]="permission.Id" [checked]="permission.checked" (change)="onStateChange(permission)" [disabled]="!role.CanBeModified || (!role.CanBeModified || !permissions.canEditRole)">
-            <label class="custom-control-label cursor-pointer" [for]="permission.Id">{{permission.DisplayName}}</label>
+      <div class="col-4" *ngFor="let group of permissionGroups; let even = even;" [ngClass]="{'offset-2' : even}">
+        <div class="row collapse-header mr-1 cursor-pointer">
+          <div class="col-1">
+            <span *ngIf="orderedPermissions[group].collapseState === 'collapsed'"><img src="../../../assets/images/arrow-down.svg" /></span>
+            <span *ngIf="orderedPermissions[group].collapseState !== 'collapsed'"><img src="../../../assets/images/arrow-up.svg" /></span>
           </div>
+          <div class="col-8 pr-0 text-truncate" [tooltip]="group" container="body">
+            <div class="d-inline-block" (click)="orderedPermissions[group].collapseState = orderedPermissions[group].collapseState === 'collapsed' ? 'expanded' : 'collapsed'">{{group}}</div>
+          </div>
+          <div class="col-1" (click)="(role.CanBeModified && permissions.canEditRole) ? selectAll(group) : null">
+            <span [tooltip]="getTooltip('Select all')" container="body"><img src="../../../assets/images/select-all.svg"></span>
+          </div>
+          <div class="col-1" (click)="(role.CanBeModified && permissions.canEditRole) ? deselectAll(group): null">
+            <span [tooltip]="getTooltip('Deselect all')" container="body"><img src="../../../assets/images/deselect-all.svg"></span>
+          </div>
+        </div>
+        <div class="row">
+          <app-collapse-content [state]="orderedPermissions[group].collapseState">
+            <div class="col-12" *ngFor="let permission of orderedPermissions[group].permissions">
+              <div class="form-group">
+                <div class="custom-control custom-checkbox mr-sm-2">
+                  <input type="checkbox" class="custom-control-input" [id]="permission.Id" [checked]="permission.checked"
+                         (change)="onStateChange(permission, group)"
+                         [disabled]="!role.CanBeModified || (!role.CanBeModified || !permissions.canEditRole)">
+                  <label class="custom-control-label cursor-pointer" [for]="permission.Id">{{permission.DisplayName}}</label>
+                </div>
+              </div>
+            </div>
+          </app-collapse-content>
         </div>
       </div>
     </div>
     <div class="row mt-4 mb-4">
       <div class="col-12 text-center">
-        <button type="submit" class="btn btn-primary" [disabled]="!role.CanBeModified || !permissions.canEditRole" [disabled]="loader"><i *ngIf="loader" class="icon--spin animate-spin"></i>Save changes</button>
+        <button type="submit" class="btn btn-primary" [disabled]="!role.CanBeModified || !permissions.canEditRole || loader"><i *ngIf="loader" class="icon--spin animate-spin"></i>Save changes
+        </button>
       </div>
     </div>
   </form>
 </div>
 
-<app-loader [ready]="role && rolePermissions && allPermissions"></app-loader>
+<app-loader [ready]="role && rolePermissionIds"></app-loader>
