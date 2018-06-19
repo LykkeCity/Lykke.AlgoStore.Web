@@ -16,7 +16,6 @@ export class AlgoCreateComponent implements OnDestroy {
 
   algoForm: FormGroup;
   Algo: Algo = {};
-  editor: any;
   userFile: any;
   ready: boolean;
   algoSubmitted: boolean;
@@ -39,10 +38,6 @@ export class AlgoCreateComponent implements OnDestroy {
 
   ngOnDestroy() {
     this.subscriptions.forEach(sub => sub.unsubscribe());
-  }
-
-  onEditorCreated(editor: any): void {
-    this.editor = editor;
   }
 
   onCodeUpdate(code: string): void {
@@ -88,13 +83,11 @@ export class AlgoCreateComponent implements OnDestroy {
     }
 
     this.ready = false;
-    this.Algo.Content = btoa(this.Algo.Content);
-    this.subscriptions.push(this.algoService.createAlgo({ ...this.algoForm.value, ...this.Algo }).subscribe((newAlgo) => {
+    this.subscriptions.push(this.algoService.createAlgo({ ...this.algoForm.value, ...this.Algo, Content: btoa(this.Algo.Content) }).subscribe((newAlgo) => {
       this.ready = true;
       this.algoSubmitted = true;
       this.Algo.AlgoId = newAlgo.Id;
     }, (error) => {
-      this.Algo.Content = atob(this.Algo.Content);
       this.ready = true;
       this.algoSubmitted = true;
       this.algoErrors = error.DisplayMessage;
