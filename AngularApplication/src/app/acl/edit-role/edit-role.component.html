@@ -35,7 +35,7 @@
     </div>
     <div class="row">
       <div class="col-4" *ngFor="let group of permissionGroups; let even = even;" [ngClass]="{'offset-2' : even}">
-        <div class="row collapse-header mr-1">
+        <div class="row collapse-header mr-1 cursor-pointer">
           <div class="col-1">
             <span *ngIf="orderedPermissions[group].collapseState === 'collapsed'"><img src="../../../assets/images/arrow-down.svg" /></span>
             <span *ngIf="orderedPermissions[group].collapseState !== 'collapsed'"><img src="../../../assets/images/arrow-up.svg" /></span>

@@ -8,6 +8,7 @@ import { NotificationsService } from 'angular2-notifications';
 import { UserRole } from '../../models/user-role.model';
 import { UserService } from '../../services/user.service';
 import Permissions from '../../store/models/permissions';
+import { forEach } from '@angular/router/src/utils/collection';
 
 @Component({
   selector: 'app-edit-role',
@@ -84,10 +85,7 @@ export class EditRoleComponent implements OnDestroy {
 
   selectAll(group?: string): void {
     if (group) {
-      this.orderedPermissions[group].permissions.forEach(p => {
-        p.checked = true;
-        console.log('Checking perm: ' + p.Id);
-      });
+      this.orderedPermissions[group].permissions.forEach(p => p.checked = true);
       return;
     }
 
@@ -96,10 +94,7 @@ export class EditRoleComponent implements OnDestroy {
 
   deselectAll(group): void {
     if (group) {
-      this.orderedPermissions[group].permissions.forEach(p => {
-        p.checked = false;
-        console.log('Uncheking perm: ' + p.Id);
-      });
+      this.orderedPermissions[group].permissions.forEach(p => p.checked = false);
       return;
     }
 
@@ -177,6 +172,8 @@ export class EditRoleComponent implements OnDestroy {
   }
 
   getTooltip(returnValue?: string): string {
-    return !this.role.CanBeModified  ? 'This role cannot be modified.' : !this.permissions.canEditRole ? 'You do not have the permission to modify this role' : returnValue ? returnValue : '';
+    return !this.role.CanBeModified ? 'This role cannot be modified.'
+      : !this.permissions.canEditRole ? 'You do not have the permission to modify this role'
+        : returnValue ? returnValue : '';
   }
 }
