@@ -38,8 +38,7 @@
         <tab heading="Write Code" [disabled]="algoForm.invalid">
           <div class="row mt-5">
             <div class="col-8 algo-create-editor-holder">
-              <app-code-editor [config]="{readOnly: false, sourceCode: Algo.Content}"
-                               (onInitCompleted)="onEditorCreated($event)" (onCodeUpdated)="onCodeUpdate($event)"></app-code-editor>
+              <app-code-editor [config]="{readOnly: false, sourceCode: Algo.Content}" (onCodeUpdated)="onCodeUpdate($event)"></app-code-editor>
             </div>
             <div class="col-4">
               <div class="row">
