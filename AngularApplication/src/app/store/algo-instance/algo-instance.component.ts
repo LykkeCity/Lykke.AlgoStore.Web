@@ -40,6 +40,7 @@ export class AlgoInstanceComponent implements OnDestroy {
 
   editor: any;
   subscriptions: Subscription[] = [];
+  statusSub: Subscription;
 
   permissions: {
     canSeeLogs: boolean,
@@ -116,6 +117,10 @@ export class AlgoInstanceComponent implements OnDestroy {
     this.subscriptions.forEach(sub => {
       sub.unsubscribe();
     });
+
+    if (this.statusSub) {
+      this.statusSub.unsubscribe();
+    }
   }
 
   onEditorCreated(editor: any): void {
@@ -308,7 +313,7 @@ export class AlgoInstanceComponent implements OnDestroy {
   }
 
   getStatus(): void {
-    const statusSub = this.instanceService.getInstanceStatus(this.instanceId)
+    this.statusSub = this.instanceService.getInstanceStatus(this.instanceId)
       .pipe(
         repeatWhen(() => timer(10000, 5000))
       )
@@ -317,7 +322,7 @@ export class AlgoInstanceComponent implements OnDestroy {
           this.instance.AlgoInstanceStatus = status;
 
           if (status !== this.iAlgoInstanceStatus.Deploying) {
-            statusSub.unsubscribe();
+            this.statusSub.unsubscribe();
 
             this.getInstanceData();
           }
