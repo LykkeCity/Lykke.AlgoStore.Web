@@ -2,6 +2,7 @@
   <div class="row mt-5">
     <div class="offset-2 col-10">
       <h2>{{roleId ? 'Edit' : 'Create'}} Role</h2>
+      <p class="small-text">For more information about roles and permissions you can visit <a href="https://lykkex.atlassian.net/wiki/spaces/AL/pages/551288842/User+Permissions" target="_blank">this</a> link.</p>
       <h6 *ngIf="!role.CanBeModified" class="text-danger">This role cannot be modified.</h6>
     </div>
   </div>
@@ -58,7 +59,7 @@
                   <input type="checkbox" class="custom-control-input" [id]="permission.Id" [checked]="permission.checked"
                          (change)="onStateChange(permission, group)"
                          [disabled]="!role.CanBeModified || (!role.CanBeModified || !permissions.canEditRole)">
-                  <label class="custom-control-label cursor-pointer" [for]="permission.Id">{{permission.DisplayName}}</label>
+                  <label class="custom-control-label cursor-pointer" [for]="permission.Id">{{permission.DisplayName}}<span [tooltip]="permission.Description" container="body" *ngIf="permission.Description"><img src="../../../assets/images/info.svg" class="info-icon cursor-pointer"></span></label>
                 </div>
               </div>
             </div>
