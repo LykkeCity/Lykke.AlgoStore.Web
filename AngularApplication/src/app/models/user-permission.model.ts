@@ -3,6 +3,7 @@ export interface UserPermission {
   Name?: string;
   DisplayName?: string;
   checked?: boolean;
+  Description?: string;
 }
 
 export interface CollapsiblePermission {
