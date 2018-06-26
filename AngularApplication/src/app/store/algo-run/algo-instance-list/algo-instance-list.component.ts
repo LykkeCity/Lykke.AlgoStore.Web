@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
 import { AlgoInstance, IAlgoInstanceStatus, IAlgoInstanceType } from '../../models/algo-instance.model';
 import { Subscription } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
@@ -15,17 +15,22 @@ import Permissions from '../../models/permissions';
   templateUrl: './algo-instance-list.component.html',
   styleUrls: ['./algo-instance-list.component.scss']
 })
-export class AlgoInstanceListComponent {
+export class AlgoInstanceListComponent implements OnChanges{
 
   @Input() algoId: string;
   @Input() instancesArray: AlgoInstance[];
   @Output() onInstanceDelete = new EventEmitter();
+
+  displayInstances: AlgoInstance[];
+
   subscriptions: Subscription[] = [];
   clientId: string;
   iAlgoInstanceStatus = IAlgoInstanceStatus;
   permissions: {
     canDeleteInstance: boolean
   };
+
+  showAll = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -41,6 +46,14 @@ export class AlgoInstanceListComponent {
     this.subscriptions.push(this.route.params.subscribe(params => {
       this.clientId = params['clientId'];
     }));
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['instancesArray'] && changes['instancesArray'].currentValue) {
+      this.instancesArray = changes['instancesArray'].currentValue;
+
+      this.toggle();
+    }
   }
 
   deleteInstancePrompt(instance: AlgoInstance): void {
@@ -73,6 +86,12 @@ export class AlgoInstanceListComponent {
         this.onInstanceDelete.emit();
       }
     }));
+  }
+
+  toggle(): void {
+    // if (this.showAll) {
+    //   this.instancesArray =
+    // }
   }
 
 }
