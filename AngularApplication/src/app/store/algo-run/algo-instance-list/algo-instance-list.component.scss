@@ -9,14 +9,9 @@
 }
 
 .instances-row {
-  //border-bottom: 1px solid $pale-grey;
   border-top: 1px solid $pale-grey;
   padding: 10px 0;
   align-items: center;
-
-  &:hover {
-    background-color: $pale-grey-two;
-  }
 
   .metadata-key {
     font-size: 1.125rem;

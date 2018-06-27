@@ -89,9 +89,13 @@ export class AlgoInstanceListComponent implements OnChanges{
   }
 
   toggle(): void {
-    // if (this.showAll) {
-    //   this.instancesArray =
-    // }
+    if (!this.showAll) {
+      this.displayInstances = this.instancesArray.slice(0, 3);
+    } else {
+      this.displayInstances = this.instancesArray;
+    }
+
+    this.showAll = !this.showAll;
   }
 
 }
