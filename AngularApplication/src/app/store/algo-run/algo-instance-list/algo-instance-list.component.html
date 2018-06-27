@@ -4,8 +4,8 @@
       <h5>Running instances</h5>
     </div>
     <div class="col-4 pl-0 pr-0 text-right" *ngIf="instancesArray && instancesArray.length > 3">
-      <span class="show-all-button font-weight-semibold" (click)="toggle()"><a href="javascript:;">{{showAll ? 'Show all' : 'Show less'}}</a></span>
-      <span *ngIf="showAll" tooltip="These may not be all instances. Click 'Show All' for more." container="body"><img src="../../../../assets/images/info.svg" class="info-icon cursor-pointer"></span>
+      <span class="show-all-button font-weight-semibold" (click)="toggle()"><a href="javascript:;">{{showAll ? 'Show less' : 'Show all'}}</a></span>
+      <span *ngIf="!showAll" tooltip="These may not be all instances. Click 'Show All' for more." container="body"><img src="../../../../assets/images/info.svg" class="info-icon cursor-pointer"></span>
     </div>
   </div>
   <div *ngIf="instancesArray">
