@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnDestroy } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { Algo, AlgoVisibility } from '../models/algo.interface';
@@ -46,8 +46,7 @@ export class AlgoRunComponent implements OnDestroy {
               private instanceService: InstanceService,
               private userService: UserService,
               private bsModalService: BsModalService,
-              private notificationsService: NotificationsService,
-              private ref: ChangeDetectorRef) {
+              private notificationsService: NotificationsService) {
 
     this.permissions = {
       canRunInstance: this.userService.hasPermission(Permissions.SAVE_ALGO_INSTANCE_DATA)
@@ -155,7 +154,6 @@ export class AlgoRunComponent implements OnDestroy {
       onSuccess: (instance) => {
         this.instancesArray.push(instance);
         this.instancesArray = [...this.instancesArray];
-        this.ref.detectChanges();
       }
     };
     this.modalRef = this.bsModalService.show(AlgoFakeTradingPopupComponent, { initialState, class: 'modal-sm fakeTrading-instance-popup' });
