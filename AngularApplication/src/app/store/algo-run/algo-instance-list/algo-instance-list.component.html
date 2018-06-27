@@ -1,15 +1,16 @@
 <div class="instances-holder">
   <div class="row">
-    <div class="col-8 text-left">
+    <div class="col-8 pl-0">
       <h5>Running instances</h5>
     </div>
-    <div class="col-4 text-right">
-      <span class="show-all-button font-weight-semibold"><a href="javascript:;">Show all</a></span>
+    <div class="col-4 pl-0 pr-0 text-right" *ngIf="instancesArray && instancesArray.length > 3">
+      <span class="show-all-button font-weight-semibold" (click)="toggle()"><a href="javascript:;">{{showAll ? 'Show all' : 'Show less'}}</a></span>
+      <span *ngIf="showAll" tooltip="These may not be all instances. Click 'Show All' for more." container="body"><img src="../../../../assets/images/info.svg" class="info-icon cursor-pointer"></span>
     </div>
   </div>
   <div *ngIf="instancesArray">
-    <div class="row instances-row" *ngFor="let instance of instancesArray">
-      <div class="col-9">
+    <div class="row instances-row" *ngFor="let instance of displayInstances">
+      <div class="col-9 pl-0">
         <div class="instance-date cursor-pointer break-all" [routerLink]="['/store/algo-instance', clientId, algoId, instance.InstanceId]">{{instance.InstanceName}}</div>
         <div class="text-muted fs-1r">{{instance.AlgoInstanceType | instanceTypeName}} • {{instance.AlgoInstanceStatus | instanceStatusName}}</div>
       </div>

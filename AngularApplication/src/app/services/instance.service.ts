@@ -23,7 +23,7 @@ export class InstanceService {
 
   stopInstance(algoId: string, instanceId: string, algoClientId: string): Observable<Algo> {
     return this.authRequestService.post(
-      environment.storeApiUrl + '/v1/management/test/stop', { AlgoId: algoId, InstanceId: instanceId, AlgoClientId: algoClientId }
+      environment.storeApiUrl + '/v1/management/stop', { AlgoId: algoId, InstanceId: instanceId, AlgoClientId: algoClientId }
     );
   }
 
@@ -37,7 +37,7 @@ export class InstanceService {
 
   getInstanceLogs(AlgoId: string, InstanceId: string, AlgoClientId: string, Tail: number = 100): Observable<AlgoLog> {
     const params = { AlgoId, InstanceId, AlgoClientId, Tail };
-    return this.authRequestService.get(environment.storeApiUrl + `/v1/management/test/tailLog`, { params });
+    return this.authRequestService.get(environment.storeApiUrl + `/v1/management/tailLog`, { params });
   }
 
   getInstanceTrades(instanceId: string): Observable<AlgoInstanceTrade[]> {
