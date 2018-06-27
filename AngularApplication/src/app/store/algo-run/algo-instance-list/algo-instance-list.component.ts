@@ -15,7 +15,7 @@ import Permissions from '../../models/permissions';
   templateUrl: './algo-instance-list.component.html',
   styleUrls: ['./algo-instance-list.component.scss']
 })
-export class AlgoInstanceListComponent implements OnChanges{
+export class AlgoInstanceListComponent implements OnChanges {
 
   @Input() algoId: string;
   @Input() instancesArray: AlgoInstance[];
@@ -52,7 +52,7 @@ export class AlgoInstanceListComponent implements OnChanges{
     if (changes['instancesArray'] && changes['instancesArray'].currentValue) {
       this.instancesArray = changes['instancesArray'].currentValue;
 
-      this.toggle();
+      this.toggle(true);
     }
   }
 
@@ -88,14 +88,16 @@ export class AlgoInstanceListComponent implements OnChanges{
     }));
   }
 
-  toggle(): void {
+  toggle(initial?: boolean): void {
+    if (!initial) {
+      this.showAll = !this.showAll;
+    }
+
     if (!this.showAll) {
       this.displayInstances = this.instancesArray.slice(0, 3);
     } else {
       this.displayInstances = this.instancesArray;
     }
-
-    this.showAll = !this.showAll;
   }
 
 }
