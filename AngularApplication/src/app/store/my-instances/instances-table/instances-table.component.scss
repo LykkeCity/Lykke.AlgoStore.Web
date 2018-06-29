@@ -1,0 +1,18 @@
+.running-instance, .stopped-instance, .deploying-instance {
+  width: 10px;
+  height: 10px;
+  display: inline-block;
+  border-radius: 50%;
+}
+
+.running-instance {
+  background-color: #2ecca1;
+}
+
+.stopped-instance {
+  background-color: #ff3e2e;
+}
+
+.deploying-instance {
+  background-color: #8c94a0;
+}
