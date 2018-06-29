@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { UserInstance } from '../../models/user-instance.interface';
 import { IAlgoInstanceStatus } from '../../models/algo-instance.model';
 
@@ -15,7 +15,7 @@ export class InstancesTableComponent implements OnChanges {
   loadingIndicator: boolean;
 
   constructor() {
-    this.loadingIndicator = false;
+    this.loadingIndicator = true;
   }
 
   ngOnChanges(changes: SimpleChanges) {
