@@ -6,6 +6,7 @@ export default class Permissions {
   static readonly DELETE_ALGO = 'DeleteAlgo';
   static readonly STOP_TEST = 'StopTest';
   static readonly GET_USER_ALGOS = 'GetAllUserAlgos';
+  static readonly GET_USER_INSTANCES = 'GetInstancesForUser';
   static readonly ADD_TO_PUBLIC = 'AddToPublic';
   static readonly REMOVE_FROM_PUBLIC = 'RemoveFromPublic';
   static readonly UPDATE_USER_ROLE = 'UpdateUserRole';

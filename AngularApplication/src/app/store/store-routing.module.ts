@@ -11,6 +11,7 @@ import { ACLGuard } from '../services/acl.guard';
 import Permissions from './models/permissions';
 import { AlgoEditComponent } from './algo-edit/algo-edit.component';
 import { AlgoCreateComponent } from './algo-create/algo-create.component';
+import { MyInstancesComponent } from './my-instances/my-instances.component';
 
 
 const routes: Routes = [
@@ -47,6 +48,10 @@ const routes: Routes = [
         path: 'algo-instance/:clientId/:algoId/:instanceId', component: AlgoInstanceComponent,
         canActivate: [AuthGuard, ACLGuard], data: { acl: [Permissions.GET_ALGO_INSTANCE_DATA, Permissions.GET_UPLOAD_STRING] }
       },
+      {
+        path: 'my-instances', component: MyInstancesComponent,
+        canActivate: [AuthGuard, ACLGuard], data: { acl: [Permissions.GET_USER_INSTANCES] }
+      }
     ]
   },
 ];

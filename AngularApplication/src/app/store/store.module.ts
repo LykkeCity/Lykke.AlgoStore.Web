@@ -30,6 +30,8 @@ import { AlgoEditComponent } from './algo-edit/algo-edit.component';
 import { AlgoCreateComponent } from './algo-create/algo-create.component';
 import { AlgoDuplicatePopupComponent } from './my-algos/algo-duplicate-popup/algo-duplicate-popup.component';
 import { AlgoVisibilityPipe } from './pipes/algo-visibility.pipe';
+import { MyInstancesComponent } from './my-instances/my-instances.component';
+import { InstancesTableComponent } from './my-instances/instances-table/instances-table.component';
 
 // SERVICES
 @NgModule({
@@ -63,6 +65,8 @@ import { AlgoVisibilityPipe } from './pipes/algo-visibility.pipe';
     AlgoEditComponent,
     AlgoCreateComponent,
     AlgoDuplicatePopupComponent,
+    MyInstancesComponent,
+    InstancesTableComponent,
   ],
   providers: [],
   entryComponents: [AlgoInstancePopupComponent, AlgoCommentEditPopupComponent, AlgoFakeTradingPopupComponent, AlgoDuplicatePopupComponent]

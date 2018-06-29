@@ -1,0 +1,44 @@
+@import "~scss/reuse";
+
+.total-instances {
+  font-size: 13px;
+  line-height: 2.31;
+  letter-spacing: 2.4px;
+  color: $slate;
+}
+
+.instance-total-count {
+  font-size: 2rem;
+}
+
+::ng-deep .instances-tabs {
+  .nav-tabs {
+    background-color: transparent;
+    border-bottom: 1px solid #ebedf0;
+
+    .nav-item {
+
+      &.active {
+        border-bottom: 1px solid $azure;
+      }
+
+      .nav-link {
+        border: none;
+        font-size: 1.3rem;
+        color: #8c94a0;
+        font-weight: normal;
+        padding: 0.5rem 2rem;
+
+        &.active {
+          color: black;
+          font-weight: $font-weight-semibold;
+        }
+      }
+    }
+  }
+}
+
+::ng-deep .datatable-header {
+  background-color: transparent;
+}
+

@@ -1,0 +1,56 @@
+<div class="container">
+  <div class="summary-holder mt-5">
+    <div class="row">
+      <div class="col-6">
+        <h2>Instances</h2>
+        <div class="description">
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
+          magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+          consequat.
+        </div>
+      </div>
+      <div class="offset-2 col-4 mt-3">
+          <span class="total-instances">TOTAL INSTANCES</span>
+          <div class="instance-total-count">
+            {{instancesCount}}
+          </div>
+          <div class="instances-categories">
+            <div>
+              <span class="instance-type">Live:</span> <span class="instance-count text-muted">{{instances[iAlgoInstanceType.Live]?.length}}</span>
+            </div>
+            <div>
+              <span class="instance-type">Demo:</span> <span class="instance-count text-muted">{{instances[iAlgoInstanceType.Demo]?.length}}</span>
+            </div>
+            <div>
+              <span class="instance-type">Backtest:</span> <span class="instance-count text-muted">{{instances[iAlgoInstanceType.Test]?.length}}</span>
+            </div>
+          </div>
+      </div>
+    </div>
+  </div>
+  <div class="categories mt-5">
+    <tabset class="instances-tabs">
+      <tab heading="Live">
+        <div class="row mt-5">
+          <div class="col-12">
+            <app-instances-table [instances]="instances[iAlgoInstanceType.Live]" [isLive]="true"></app-instances-table>
+          </div>
+        </div>
+      </tab>
+      <tab heading="Demo">
+        <div class="row mt-5">
+          <div class="col-12">
+            <app-instances-table [instances]="instances[iAlgoInstanceType.Demo]"></app-instances-table>
+          </div>
+        </div>
+      </tab>
+      <tab heading="Backtest">
+        <div class="row mt-5">
+          <div class="col-12">
+            <app-instances-table [instances]="instances[iAlgoInstanceType.Test]"></app-instances-table>
+          </div>
+        </div>
+      </tab>
+    </tabset>
+  </div>
+</div>

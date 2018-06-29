@@ -1,4 +1,4 @@
-.ngx-datatable.algo-table {
+.ngx-datatable.algo-table, .ngx-datatable.instances-table {
 	background:#FFF;
 
 	&.striped {
@@ -293,6 +293,13 @@
 			}
 		}
 	}
+}
+
+.ngx-datatable.instances-table {
+  .datatable-header {
+    background-color: transparent;
+    border-bottom: 1px solid #ebedf0;
+  }
 }
 
 /**
