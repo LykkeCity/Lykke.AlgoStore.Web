@@ -21,11 +21,11 @@ export class MyInstancesComponent implements OnDestroy {
   constructor(private instancesService: InstanceService) {
     this.subscriptions.push(this.instancesService.getUserInstances().subscribe(data => {
       this.instancesCount = data.length;
-       data.forEach(instance => {
-         if (!this.instances[instance.InstanceType]) {
-           this.instances[instance.InstanceType] = [];
-         }
+      this.instances[IAlgoInstanceType.Live] = [];
+      this.instances[IAlgoInstanceType.Test] = [];
+      this.instances[IAlgoInstanceType.Demo] = [];
 
+       data.forEach(instance => {
          this.instances[instance.InstanceType].push(instance);
        });
 
