@@ -16,3 +16,15 @@
 .deploying-instance {
   background-color: #8c94a0;
 }
+
+::ng-deep {
+  .tooltip-inner {
+    max-width: 500px
+  }
+
+  .block-cell {
+    .datatable-body-cell-label {
+      display: block !important;
+    }
+  }
+}
