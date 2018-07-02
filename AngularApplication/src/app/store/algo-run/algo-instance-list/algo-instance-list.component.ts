@@ -82,6 +82,8 @@ export class AlgoInstanceListComponent implements OnChanges {
         i => (i.InstanceId !== instance.InstanceId)
       );
 
+      this.toggle(true);
+
       if (instance.AlgoInstanceType === IAlgoInstanceType.Live) {
         this.onInstanceDelete.emit();
       }
