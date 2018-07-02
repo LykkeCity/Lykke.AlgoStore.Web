@@ -1,6 +1,7 @@
 import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { UserInstance } from '../../models/user-instance.interface';
 import { IAlgoInstanceStatus } from '../../models/algo-instance.model';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-instances-table',
@@ -13,6 +14,7 @@ export class InstancesTableComponent implements OnChanges {
   @Input() isLive: boolean;
   iAlgoInstanceStatus = IAlgoInstanceStatus;
   loadingIndicator: boolean;
+  walletUrl = environment.walletApiUrl;
 
   constructor() {
     this.loadingIndicator = true;

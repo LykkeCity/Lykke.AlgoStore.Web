@@ -2,7 +2,6 @@ import { Component, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { InstanceService } from '../../services/instance.service';
 import { IAlgoInstanceType } from '../models/algo-instance.model';
-import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-my-instances',
@@ -16,7 +15,6 @@ export class MyInstancesComponent implements OnDestroy {
   instancesCount: number;
   instances: any = {};
   iAlgoInstanceType = IAlgoInstanceType;
-  walletUrl = environment.walletApiUrl;
 
   constructor(private instancesService: InstanceService) {
     this.subscriptions.push(this.instancesService.getUserInstances().subscribe(data => {
