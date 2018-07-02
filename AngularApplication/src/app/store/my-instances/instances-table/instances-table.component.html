@@ -12,7 +12,8 @@
   <ngx-datatable-column [resizeable]="false" name="Name" prop="InstanceName" [flexGrow]="2" [cellClass]="isBigger">
     <ng-template let-value="value" let-row="row" ngx-datatable-cell-template>
                   <span class="text-truncate d-block">
-                    <p [routerLink]="['/store/algo-instance', row?.AlgoClientId, row?.AlgoId, row?.InstanceId]" [tooltip]="value" container="body"
+                    <p [routerLink]="['/store/algo-instance', row?.AlgoClientId, row?.AlgoId, row?.InstanceId]"
+                       [tooltip]="value" container="body"
                        class="link-style">{{ value }}</p>
                   </span>
     </ng-template>
@@ -51,11 +52,11 @@
       </div>
     </ng-template>
   </ngx-datatable-column>
-  <ngx-datatable-column [resizeable]="false" name="Wallet" prop="Wallet" [flexGrow]="2" *ngIf="isLive">
+  <ngx-datatable-column [resizeable]="false" name="Wallet" prop="Wallet.Name" [flexGrow]="2" *ngIf="isLive">
     <ng-template let-value="value" let-row="row" ngx-datatable-cell-template>
-                  <span class="text-truncate d-block">
-                    <a [href]="walletUrl" target="_blank">{{value.Name}}</a>
-                  </span>
+        <span class="text-truncate d-block">
+          <a [href]="walletUrl" target="_blank">{{value}}</a>
+        </span>
     </ng-template>
   </ngx-datatable-column>
 </ngx-datatable>
