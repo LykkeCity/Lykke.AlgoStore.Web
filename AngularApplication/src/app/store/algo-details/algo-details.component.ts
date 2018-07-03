@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Algo } from '../models/algo.interface';
+import { Algo, AlgoVisibility } from '../models/algo.interface';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { BaseAlgoParam } from '../models/base-algo-param.model';
@@ -34,6 +34,7 @@ export class AlgoDetailsComponent implements OnInit, OnDestroy {
   myRating: AlgoRating = {};
   comments: AlgoComment[] = [];
   modalRef: BsModalRef;
+  iAlgoVisibility = AlgoVisibility;
 
   constructor(
     private algoService: AlgoService,
