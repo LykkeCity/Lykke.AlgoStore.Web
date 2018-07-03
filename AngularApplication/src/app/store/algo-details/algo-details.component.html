@@ -17,6 +17,14 @@
         <span class="text-muted">Users:</span> <span class="ml-3">{{algo.UsersCount}}</span>
       </div>
     </div>
+    <div class="row mb-2">
+      <div class="col-4">
+        <span class="text-muted">Visibility:</span> <span class="ml-3">{{algo.AlgoVisibility | algoVisibility}}</span>
+      </div>
+      <div class="col-4">
+        <span class="text-muted">Publish date:</span> <span class="ml-3">{{algo.DatePublished ? (algo.DatePublished | amLocal | amDateFormat:'YYYY-MM-DD HH:mm:ss') : 'N/A'}}</span>
+      </div>
+    </div>
     <div class="row">
       <div class="col-4">
         <span class="text-muted">Popularity rating:</span>
