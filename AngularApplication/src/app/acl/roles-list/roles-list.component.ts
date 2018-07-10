@@ -1,4 +1,4 @@
-import { Component, OnDestroy, TemplateRef } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, TemplateRef, ViewChild } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { UserRole } from '../../models/user-role.model';
 import { UserRolesService } from '../../services/user-roles.service';
@@ -7,13 +7,16 @@ import { BsModalRef, BsModalService } from 'ngx-bootstrap';
 import { Router } from '@angular/router';
 import { UserService } from '../../services/user.service';
 import Permissions from '../../store/models/permissions';
+import { ColumnMode, DatatableComponent } from '@swimlane/ngx-datatable';
 
 @Component({
   selector: 'app-roles-list',
   templateUrl: './roles-list.component.html',
   styleUrls: ['./roles-list.component.scss']
 })
-export class RolesListComponent implements OnDestroy {
+export class RolesListComponent implements AfterViewInit, OnDestroy {
+
+  @ViewChild(DatatableComponent) ngxDatatable: DatatableComponent;
 
   roles: UserRole[];
   loadingIndicator = true;
@@ -46,6 +49,10 @@ export class RolesListComponent implements OnDestroy {
       this.roles = roles;
       this.loadingIndicator = false;
     }));
+  }
+
+  ngAfterViewInit() {
+    this.ngxDatatable.columnMode = ColumnMode.force;
   }
 
   ngOnDestroy() {

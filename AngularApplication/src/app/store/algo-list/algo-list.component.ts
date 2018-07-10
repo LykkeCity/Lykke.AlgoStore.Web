@@ -1,7 +1,8 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { Algo } from '../models/algo.interface';
 import { AlgoService } from '../../services/algo.service';
+import { ColumnMode, DatatableComponent } from '@swimlane/ngx-datatable';
 
 
 @Component({
@@ -9,8 +10,8 @@ import { AlgoService } from '../../services/algo.service';
   templateUrl: './algo-list.component.html',
   styleUrls: ['./algo-list.component.scss']
 })
-export class AlgoListComponent implements OnInit, OnDestroy {
-
+export class AlgoListComponent implements OnInit, AfterViewInit, OnDestroy {
+  @ViewChild(DatatableComponent) ngxDatatable: DatatableComponent;
   dataSource: Algo[] = [];
   loadingIndicator = false;
 
@@ -22,6 +23,11 @@ export class AlgoListComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.loadingIndicator = true;
     this.subscriptions.add(this.algoService.getAllPublicAlgos().subscribe(this.onDataObtained));
+  }
+
+
+  ngAfterViewInit() {
+    this.ngxDatatable.columnMode = ColumnMode.force;
   }
 
   ngOnDestroy() {

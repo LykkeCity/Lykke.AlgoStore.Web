@@ -1,4 +1,4 @@
-import { Component, OnDestroy } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, ViewChild } from '@angular/core';
 import { UserData } from '../../models/userdata.interface';
 import { UserRolesService } from '../../services/user-roles.service';
 import { Subscription } from 'rxjs';
@@ -7,14 +7,16 @@ import { UserService } from '../../services/user.service';
 import Permissions from '../../store/models/permissions';
 import { PopupComponent } from '../../components/popup/popup.component';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap';
+import { ColumnMode, DatatableComponent } from '@swimlane/ngx-datatable';
 
 @Component({
   selector: 'app-users-list',
   templateUrl: './users-list.component.html',
   styleUrls: ['./users-list.component.scss']
 })
-export class UsersListComponent implements OnDestroy {
+export class UsersListComponent implements AfterViewInit, OnDestroy {
 
+  @ViewChild(DatatableComponent) ngxDatatable: DatatableComponent;
   users: UserData[];
   loadingIndicator = true;
   subscriptions: Subscription[] = [];
@@ -42,6 +44,10 @@ export class UsersListComponent implements OnDestroy {
       this.users = data;
       this.loadingIndicator = false;
     }));
+  }
+
+  ngAfterViewInit() {
+    this.ngxDatatable.columnMode = ColumnMode.force;
   }
 
   ngOnDestroy() {

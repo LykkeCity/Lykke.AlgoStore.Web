@@ -21,8 +21,8 @@
         [rowHeight]="60"
         [rows]="roles">
 
-        <ngx-datatable-column [resizeable]="false" name="Name" prop="Name" [flexGrow]="2"></ngx-datatable-column>
-        <ngx-datatable-column [resizeable]="false" name="Number of permissions" prop="Permissions" [flexGrow]="2">
+        <ngx-datatable-column name="Name" prop="Name" [flexGrow]="2"></ngx-datatable-column>
+        <ngx-datatable-column name="Number of permissions" prop="Permissions" [flexGrow]="2">
           <ng-template let-value="value" let-row="row" ngx-datatable-cell-template>
             <span *ngIf="value.length">{{value.length}} {{value.length === 1 ? 'permission' : 'permissions'}} active.</span>
             <span *ngIf="!value.length">No active permissions.</span>

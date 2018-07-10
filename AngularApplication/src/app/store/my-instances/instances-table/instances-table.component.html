@@ -7,9 +7,9 @@
   [headerHeight]="50"
   [footerHeight]="'auto'"
   [rowHeight]="60"
-  [rows]="instances" *ngIf="instances">
+  [rows]="instances" [hidden]="!instances">
 
-  <ngx-datatable-column [resizeable]="false" name="Name" prop="InstanceName" [flexGrow]="2" [cellClass]="isBigger">
+  <ngx-datatable-column name="Name" prop="InstanceName" [flexGrow]="2" [cellClass]="isBigger">
     <ng-template let-value="value" let-row="row" ngx-datatable-cell-template>
                   <span class="text-truncate d-block">
                     <p [routerLink]="['/store/algo-instance', row?.AlgoClientId, row?.AlgoId, row?.InstanceId]"
@@ -18,25 +18,25 @@
                   </span>
     </ng-template>
   </ngx-datatable-column>
-  <ngx-datatable-column [resizeable]="false" name="Created Date" prop="CreateDate"
+  <ngx-datatable-column name="Created Date" prop="CreateDate"
                         [flexGrow]="3">
     <ng-template let-value="value" let-row="row" ngx-datatable-cell-template>
       <div>{{value ? (value | amLocal | amDateFormat:'YYYY-MM-DD HH:mm:ss') : 'N/A'}}</div>
     </ng-template>
   </ngx-datatable-column>
-  <ngx-datatable-column [resizeable]="false" name="Start Date" prop="RunDate"
+  <ngx-datatable-column name="Start Date" prop="RunDate"
                         [flexGrow]="3">
     <ng-template let-value="value" let-row="row" ngx-datatable-cell-template>
       <div>{{value ? (value | amLocal | amDateFormat:'YYYY-MM-DD HH:mm:ss') : 'N/A'}}</div>
     </ng-template>
   </ngx-datatable-column>
-  <ngx-datatable-column [resizeable]="false" name="End Date" prop="StopDate"
+  <ngx-datatable-column name="End Date" prop="StopDate"
                         [flexGrow]="3">
     <ng-template let-value="value" let-row="row" ngx-datatable-cell-template>
       <div>{{value ? (value | amLocal | amDateFormat:'YYYY-MM-DD HH:mm:ss') : 'N/A'}}</div>
     </ng-template>
   </ngx-datatable-column>
-  <ngx-datatable-column [resizeable]="false" name="Status" prop="InstanceStatus"
+  <ngx-datatable-column name="Status" prop="InstanceStatus"
                         [flexGrow]="3">
     <ng-template let-value="value" let-row="row" ngx-datatable-cell-template>
       <div *ngIf="value == iAlgoInstanceStatus.Running">

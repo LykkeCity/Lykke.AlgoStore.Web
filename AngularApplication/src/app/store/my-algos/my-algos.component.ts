@@ -1,4 +1,4 @@
-import { Component, OnDestroy } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, ViewChild } from '@angular/core';
 import { Algo } from '../models/algo.interface';
 import { AlgoService } from '../../services/algo.service';
 import { Subscription } from 'rxjs';
@@ -9,14 +9,16 @@ import { AlgoDuplicatePopupComponent } from './algo-duplicate-popup/algo-duplica
 import { UserService } from '../../services/user.service';
 import Permissions from '../models/permissions';
 import { NotificationsService } from 'angular2-notifications';
+import { DatatableComponent, ColumnMode } from '@swimlane/ngx-datatable';
 
 @Component({
   selector: 'app-my-algos',
   templateUrl: './my-algos.component.html',
   styleUrls: ['./my-algos.component.scss']
 })
-export class MyAlgosComponent implements OnDestroy {
+export class MyAlgosComponent implements AfterViewInit, OnDestroy {
 
+  @ViewChild(DatatableComponent) ngxDatatable: DatatableComponent;
   algos: Algo[];
   loadingIndicator = true;
   subscriptions: Subscription[] = [];
@@ -43,6 +45,10 @@ export class MyAlgosComponent implements OnDestroy {
       canDuplicate: this.usersService.hasPermission(Permissions.CREATE_ALGO),
       canEditAlgo: this.usersService.hasPermission(Permissions.EDIT_ALGO)
     };
+  }
+
+  ngAfterViewInit() {
+    this.ngxDatatable.columnMode = ColumnMode.force;
   }
 
   ngOnDestroy() {
