@@ -1,18 +1,13 @@
 import { Injectable } from '@angular/core';
-import { environment } from '../../environments/environment';
+import { environment } from '../../../environments/environment';
 import { Observable } from 'rxjs';
-import { AlgoComment } from '../models/algo-comment.model';
+import { AlgoComment } from '../../models/algo-comment.model';
 import { AuthRequestService } from './auth-request.service';
 
 @Injectable()
 export class AlgoCommentService {
 
   constructor(private authRequestService: AuthRequestService) { }
-
-  getCommentById(AlgoId: string, CommentId: string): Observable<AlgoComment> {
-    const params = { AlgoId, CommentId };
-    return this.authRequestService.get(environment.storeApiUrl + '/v1/comments/getCommentById', { params });
-  }
 
   getAlgoComments(AlgoId: string): Observable<AlgoComment[]> {
     const params = { AlgoId };

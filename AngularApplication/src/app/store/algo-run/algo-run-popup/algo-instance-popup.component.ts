@@ -4,7 +4,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NotificationsService } from 'angular2-notifications';
 import { Subscription } from 'rxjs';
 import { AlgoInstanceData } from '../../models/algo-instance.model';
-import { InstanceService } from '../../../services/instance.service';
+import { InstanceService } from '../../../core/services/instance.service';
 
 
 @Component({

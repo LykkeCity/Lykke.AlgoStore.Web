@@ -1,9 +1,9 @@
 import { Injectable, OnDestroy } from '@angular/core';
-import { environment } from '../../environments/environment';
+import { environment } from '../../../environments/environment';
 import { BehaviorSubject ,  Observable } from 'rxjs';
 import { tap, mergeMap } from 'rxjs/operators';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { ITokenResponse } from '../models/token-response.interface';
+import { ITokenResponse } from '../../models/token-response.interface';
 
 @Injectable()
 export class AuthTokenService implements OnDestroy {

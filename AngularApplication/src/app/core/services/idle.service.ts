@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { DEFAULT_INTERRUPTSOURCES, Idle } from '@ng-idle/core';
-import { environment } from '../../environments/environment';
+import { environment } from '../../../environments/environment';
 import { BsModalService } from 'ngx-bootstrap';
-import { IdlePopupComponent } from '../components/popup/idle-popup/idle-popup.component';
+import { IdlePopupComponent } from '../../components/popup/idle-popup/idle-popup.component';
 
 @Injectable()
 export class IdleService {

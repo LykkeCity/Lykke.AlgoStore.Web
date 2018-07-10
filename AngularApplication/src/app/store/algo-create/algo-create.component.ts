@@ -1,6 +1,6 @@
 import { ChangeDetectorRef, Component, OnDestroy, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { AlgoService } from '../../services/algo.service';
+import { AlgoService } from '../../core/services/algo.service';
 import { Algo } from '../models/algo.interface';
 import { TabsetComponent } from 'ngx-bootstrap';
 import { Subscription } from 'rxjs';

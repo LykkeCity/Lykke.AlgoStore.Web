@@ -1,9 +1,9 @@
 import { AfterViewInit, Component, OnDestroy, ViewChild } from '@angular/core';
 import { UserData } from '../../models/userdata.interface';
-import { UserRolesService } from '../../services/user-roles.service';
+import { UserRolesService } from '../../core/services/user-roles.service';
 import { Subscription } from 'rxjs';
 import { NotificationsService } from 'angular2-notifications';
-import { UserService } from '../../services/user.service';
+import { UserService } from '../../core/services/user.service';
 import Permissions from '../../store/models/permissions';
 import { PopupComponent } from '../../components/popup/popup.component';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap';

@@ -1,6 +1,6 @@
 import { Component, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { InstanceService } from '../../services/instance.service';
+import { InstanceService } from '../../core/services/instance.service';
 import { IAlgoInstanceType } from '../models/algo-instance.model';
 
 @Component({

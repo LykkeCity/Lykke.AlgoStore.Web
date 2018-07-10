@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import { map } from 'rxjs/operators';
 import { Observable ,  BehaviorSubject } from 'rxjs';
-import { Wallet } from '../models/wallet.model';
-import { UserData } from '../models/userdata.interface';
-import { environment } from '../../environments/environment';
+import { Wallet } from '../../models/wallet.model';
+import { UserData } from '../../models/userdata.interface';
+import { environment } from '../../../environments/environment';
 import { AuthRequestService } from './auth-request.service';
-import { UserRole } from '../models/user-role.model';
+import { UserRole } from '../../models/user-role.model';
 
 @Injectable()
 export class UserService {
@@ -55,10 +55,6 @@ export class UserService {
       params['clientId'] = clientId;
     }
     return this.authRequestService.get(environment.storeApiUrl + '/v1/users/getByIdWithRoles', { params });
-  }
-
-  getUserWalletsWithBalances(): Observable<Wallet[]> {
-    return this.authRequestService.get<Wallet[]>(environment.apiV2Url + 'wallets/balances');
   }
 
   getFreeWallets(): Observable<Wallet[]> {

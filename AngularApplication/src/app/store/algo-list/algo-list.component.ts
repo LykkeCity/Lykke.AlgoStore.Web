@@ -1,7 +1,7 @@
 import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { Algo } from '../models/algo.interface';
-import { AlgoService } from '../../services/algo.service';
+import { AlgoService } from '../../core/services/algo.service';
 import { ColumnMode, DatatableComponent } from '@swimlane/ngx-datatable';
 
 

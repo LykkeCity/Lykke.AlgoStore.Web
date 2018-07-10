@@ -1,11 +1,11 @@
 import { AfterViewInit, Component, OnDestroy, TemplateRef, ViewChild } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { UserRole } from '../../models/user-role.model';
-import { UserRolesService } from '../../services/user-roles.service';
+import { UserRolesService } from '../../core/services/user-roles.service';
 import { NotificationsService } from 'angular2-notifications';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap';
 import { Router } from '@angular/router';
-import { UserService } from '../../services/user.service';
+import { UserService } from '../../core/services/user.service';
 import Permissions from '../../store/models/permissions';
 import { ColumnMode, DatatableComponent } from '@swimlane/ngx-datatable';
 

@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { BsModalRef } from 'ngx-bootstrap';
-import { InstanceService } from '../../../services/instance.service';
+import { InstanceService } from '../../../core/services/instance.service';
 import { AlgoInstanceData, IAlgoInstanceType } from '../../models/algo-instance.model';
 import { Subscription } from 'rxjs';
 import { NotificationsService } from 'angular2-notifications';

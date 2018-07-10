@@ -4,7 +4,7 @@ import { AlgoInstance, AlgoInstanceData, IAlgoInstanceStatus, IAlgoInstanceType 
 import { Subscription, timer } from 'rxjs';
 import { Wallet } from '../../models/wallet.model';
 import { Algo } from '../models/algo.interface';
-import { UserService } from '../../services/user.service';
+import { UserService } from '../../core/services/user.service';
 import { BaseAlgoParam } from '../models/base-algo-param.model';
 import { AlgoInstanceTrade } from '../models/algo-instance-trade.model';
 import { InstanceStatistic } from '../models/algo-instance-statistic.model';
@@ -14,8 +14,8 @@ import { NotificationsService } from 'angular2-notifications';
 import { repeatWhen } from 'rxjs/operators';
 import { PopupComponent } from '../../components/popup/popup.component';
 import { PopupConfig } from '../../models/popup.interface';
-import { AlgoService } from '../../services/algo.service';
-import { InstanceService } from '../../services/instance.service';
+import { AlgoService } from '../../core/services/algo.service';
+import { InstanceService } from '../../core/services/instance.service';
 import Permissions from '../models/permissions';
 import { AlgoFakeTradingPopupComponent } from '../algo-run/algo-fake-trading-popup/algo-fake-trading-popup.component';
 

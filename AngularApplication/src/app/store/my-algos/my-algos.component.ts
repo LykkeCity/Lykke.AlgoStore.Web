@@ -1,12 +1,12 @@
 import { AfterViewInit, Component, OnDestroy, ViewChild } from '@angular/core';
 import { Algo } from '../models/algo.interface';
-import { AlgoService } from '../../services/algo.service';
+import { AlgoService } from '../../core/services/algo.service';
 import { Subscription } from 'rxjs';
 import { PopupConfig } from '../../models/popup.interface';
 import { PopupComponent } from '../../components/popup/popup.component';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap';
 import { AlgoDuplicatePopupComponent } from './algo-duplicate-popup/algo-duplicate-popup.component';
-import { UserService } from '../../services/user.service';
+import { UserService } from '../../core/services/user.service';
 import Permissions from '../models/permissions';
 import { NotificationsService } from 'angular2-notifications';
 import { DatatableComponent, ColumnMode } from '@swimlane/ngx-datatable';

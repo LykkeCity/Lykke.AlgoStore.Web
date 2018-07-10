@@ -1,12 +1,12 @@
 import { Component, OnDestroy } from '@angular/core';
 import { PermissionMap, UserPermission } from '../../models/user-permission.model';
-import { UserPermissionService } from '../../services/user-permissions.service';
-import { UserRolesService } from '../../services/user-roles.service';
+import { UserPermissionService } from '../../core/services/user-permissions.service';
+import { UserRolesService } from '../../core/services/user-roles.service';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { NotificationsService } from 'angular2-notifications';
 import { UserRole } from '../../models/user-role.model';
-import { UserService } from '../../services/user.service';
+import { UserService } from '../../core/services/user.service';
 import Permissions from '../../store/models/permissions';
 
 @Component({
