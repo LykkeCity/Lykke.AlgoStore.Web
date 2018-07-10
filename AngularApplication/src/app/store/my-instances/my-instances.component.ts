@@ -14,9 +14,14 @@ export class MyInstancesComponent implements OnDestroy {
   loadingIndicator = true;
   instancesCount: number;
   instances: any = {};
+  temp: any = {};
   iAlgoInstanceType = IAlgoInstanceType;
 
+  typing: any;
+  doneTypingInterval: number;
+
   constructor(private instancesService: InstanceService) {
+    this.doneTypingInterval = 1000;
     this.subscriptions.push(this.instancesService.getUserInstances().subscribe(data => {
       this.instancesCount = data.length;
       this.instances[IAlgoInstanceType.Live] = [];
@@ -27,7 +32,9 @@ export class MyInstancesComponent implements OnDestroy {
          this.instances[instance.InstanceType].push(instance);
        });
 
+       this.temp = { ...this.instances };
        this.loadingIndicator = false;
+
     }));
   }
 
@@ -35,5 +42,21 @@ export class MyInstancesComponent implements OnDestroy {
     this.subscriptions.forEach(sub => sub.unsubscribe());
   }
 
+  updateFilter(event) {
+    const val = event.target.value.toLowerCase();
 
+    clearTimeout(this.typing);
+
+    this.typing = setTimeout(() => {
+
+      const tempLive = this.temp[IAlgoInstanceType.Live].filter((instance) => {
+        return instance.InstanceName.toLocaleLowerCase().indexOf(val) !== -1
+          || instance.Wallet.Name.toLocaleLowerCase().indexOf(val) !== -1
+          || !val;
+      });
+
+      this.instances[IAlgoInstanceType.Live] = [...tempLive];
+
+    }, this.doneTypingInterval);
+  }
 }

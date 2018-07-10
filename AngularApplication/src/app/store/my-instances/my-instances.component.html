@@ -29,7 +29,17 @@
   <div class="categories mt-5">
     <tabset class="instances-tabs">
       <tab heading="Live">
-        <div class="row mt-5">
+        <div class="row mt-2">
+          <div class="offset-8 col-4">
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <span class="input-group-text" id="search-input"><img src="../../../assets/images/search-icon.svg"/></span>
+              </div>
+              <input class="form-control" type='text' placeholder='Type to filter by name or wallet' (keyup)='updateFilter($event)' aria-describedby="search-input"/>
+            </div>
+          </div>
+        </div>
+        <div class="row mt-2">
           <div class="col-12">
             <app-instances-table [instances]="instances[iAlgoInstanceType.Live]" [isLive]="true"></app-instances-table>
           </div>
