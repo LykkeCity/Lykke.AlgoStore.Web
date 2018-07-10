@@ -112,6 +112,20 @@
         position: relative;
       }
 
+      .sort-btn {
+        width: 18px;
+        height: 18px;
+        object-fit: contain;
+        background: url("assets/images/sort-icon.svg") no-repeat;
+        background-position-x: center;
+
+        &.datatable-icon-up, &.datatable-icon-down {
+          width: 7px;
+          height: 18px;
+          background-image: none;
+        }
+      }
+
 			&.longpress {
         .draggable::after {
           transition: transform 400ms ease, opacity 400ms ease;
