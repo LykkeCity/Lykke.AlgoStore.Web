@@ -8,7 +8,6 @@ import { NotificationsService } from 'angular2-notifications';
 import { UserRole } from '../../models/user-role.model';
 import { UserService } from '../../services/user.service';
 import Permissions from '../../store/models/permissions';
-import { forEach } from '@angular/router/src/utils/collection';
 
 @Component({
   selector: 'app-edit-role',

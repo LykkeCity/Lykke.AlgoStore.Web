@@ -12,7 +12,8 @@ export class HeaderComponent {
   permissions: {
     viewPublicAlgos: boolean,
     viewMyAlgos: boolean,
-    vewRoles: boolean
+    vewRoles: boolean,
+    viewMyInstances: boolean
   };
 
   constructor(private userService: UserService) {
@@ -21,7 +22,8 @@ export class HeaderComponent {
         viewPublicAlgos: this.userService.hasPermission(Permissions.GET_ALL_ALGOS),
         viewMyAlgos: this.userService.hasPermission(Permissions.GET_USER_ALGOS),
         vewRoles: this.userService.hasPermission(Permissions.GET_ALL_USER_ROLES)
-        && this.userService.hasPermission(Permissions.GET_ALL_USERS_WITH_ROLES)
+        && this.userService.hasPermission(Permissions.GET_ALL_USERS_WITH_ROLES),
+        viewMyInstances: this.userService.hasPermission(Permissions.GET_USER_INSTANCES)
       };
     });
   }

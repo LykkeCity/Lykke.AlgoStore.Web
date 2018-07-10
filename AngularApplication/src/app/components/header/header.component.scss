@@ -20,6 +20,11 @@
   flex: auto;
 }
 
+.dropdown-menu.roles-menu {
+  left: auto !important;
+  right: auto !important;
+}
+
 @include media-breakpoint-up(xs) {
   .navbar .algo-store-logo {
     height: $navbar-logo-height-xs;

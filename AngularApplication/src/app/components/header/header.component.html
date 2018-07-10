@@ -8,12 +8,12 @@
     </div>
   </div>
 </nav>
-<nav class="navbar navbar-expand-lg navbar-light user-navbar container" *ngIf="permissions.vewRoles || permissions.viewMyAlgos || permissions.viewPublicAlgos">
-    <div class="collapse navbar-collapse d-flex justify-content-end">
+<nav class="navbar navbar-expand-lg navbar-light user-navbar" *ngIf="permissions.vewRoles || permissions.viewMyAlgos || permissions.viewPublicAlgos">
+    <div class="collapse navbar-collapse d-flex justify-content-end container">
       <ul class="navbar-nav mr-auto d-flex flex-row">
         <li class="nav-item" dropdown *ngIf="permissions.vewRoles">
           <a class="nav-link cursor-pointer font-weight-semibold mr-2" routerLinkActive="active" dropdownToggle>USER ROLES</a>
-          <ul *dropdownMenu class="dropdown-menu">
+          <ul *dropdownMenu class="dropdown-menu roles-menu">
             <li>
               <a class="dropdown-item" routerLink="/users-acl/roles">Roles</a>
             </li>
@@ -25,8 +25,11 @@
         <li class="nav-item font-weight-semibold mr-2" *ngIf="permissions.viewPublicAlgos">
           <a class="nav-link" routerLinkActive="active" routerLink="/store/algo-list">PUBLIC ALGOS</a>
         </li>
-        <li class="nav-item font-weight-semibold" *ngIf="permissions.viewMyAlgos">
+        <li class="nav-item font-weight-semibold mr-2" *ngIf="permissions.viewMyAlgos">
           <a class="nav-link" routerLink="/store/my-algos" routerLinkActive="active">MY ALGOS</a>
+        </li>
+        <li class="nav-item font-weight-semibold" *ngIf="permissions.viewMyInstances">
+          <a class="nav-link" routerLink="/store/my-instances" routerLinkActive="active">INSTANCES</a>
         </li>
       </ul>
     </div>

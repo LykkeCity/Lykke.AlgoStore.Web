@@ -1,0 +1,64 @@
+<ngx-datatable
+  class="instances-table"
+  columnMode="flex"
+  [limit]="10"
+  [reorderable]="false"
+  [loadingIndicator]="loadingIndicator"
+  [headerHeight]="50"
+  [footerHeight]="'auto'"
+  [rowHeight]="60"
+  [rows]="instances" *ngIf="instances">
+
+  <ngx-datatable-column [resizeable]="false" name="Name" prop="InstanceName" [flexGrow]="2" [cellClass]="isBigger">
+    <ng-template let-value="value" let-row="row" ngx-datatable-cell-template>
+                  <span class="text-truncate d-block">
+                    <p [routerLink]="['/store/algo-instance', row?.AlgoClientId, row?.AlgoId, row?.InstanceId]"
+                       [tooltip]="value" container="body"
+                       class="link-style">{{ value }}</p>
+                  </span>
+    </ng-template>
+  </ngx-datatable-column>
+  <ngx-datatable-column [resizeable]="false" name="Created Date" prop="CreateDate"
+                        [flexGrow]="3">
+    <ng-template let-value="value" let-row="row" ngx-datatable-cell-template>
+      <div>{{value ? (value | amLocal | amDateFormat:'YYYY-MM-DD HH:mm:ss') : 'N/A'}}</div>
+    </ng-template>
+  </ngx-datatable-column>
+  <ngx-datatable-column [resizeable]="false" name="Start Date" prop="RunDate"
+                        [flexGrow]="3">
+    <ng-template let-value="value" let-row="row" ngx-datatable-cell-template>
+      <div>{{value ? (value | amLocal | amDateFormat:'YYYY-MM-DD HH:mm:ss') : 'N/A'}}</div>
+    </ng-template>
+  </ngx-datatable-column>
+  <ngx-datatable-column [resizeable]="false" name="End Date" prop="StopDate"
+                        [flexGrow]="3">
+    <ng-template let-value="value" let-row="row" ngx-datatable-cell-template>
+      <div>{{value ? (value | amLocal | amDateFormat:'YYYY-MM-DD HH:mm:ss') : 'N/A'}}</div>
+    </ng-template>
+  </ngx-datatable-column>
+  <ngx-datatable-column [resizeable]="false" name="Status" prop="InstanceStatus"
+                        [flexGrow]="3">
+    <ng-template let-value="value" let-row="row" ngx-datatable-cell-template>
+      <div *ngIf="value == iAlgoInstanceStatus.Running">
+        <span><span class="running-instance"></span> Running</span>
+      </div>
+
+      <div *ngIf="value == iAlgoInstanceStatus.Stopped">
+        <span><span class="stopped-instance"></span> Stopped</span>
+      </div>
+
+      <div *ngIf="value == iAlgoInstanceStatus.Deploying">
+        <span><span class="deploying-instance"></span> Deploying</span>
+      </div>
+    </ng-template>
+  </ngx-datatable-column>
+  <ngx-datatable-column [resizeable]="false" name="Wallet" prop="Wallet.Name" [flexGrow]="2" *ngIf="isLive" [cellClass]="isBigger">
+    <ng-template let-value="value" let-row="row" ngx-datatable-cell-template>
+        <span class="text-truncate d-block">
+          <a class="d-block" [tooltip]="value" container="body" [href]="walletUrl" target="_blank">{{value}}</a>
+        </span>
+    </ng-template>
+  </ngx-datatable-column>
+</ngx-datatable>
+
+<app-loader [ready]="instances" [small]="true"></app-loader>
