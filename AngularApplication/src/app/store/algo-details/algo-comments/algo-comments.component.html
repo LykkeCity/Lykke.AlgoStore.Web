@@ -23,7 +23,7 @@
         </div>
         <div class="row">
           <div class="col-12 text-right">
-            <span class="cursor-pointer mr-2" [ngClass]="{'font-weight-semibold': !loader, 'text-muted': loader}" (click)="!loader ? clearForm() : null">Cancel</span>
+            <span class="cursor-pointer mr-2" [ngClass]="{'font-weight-semibold': !loader, 'text-muted': loader}" (click)="!loader ? clearForm() : null">Clear</span>
             <button class="btn btn-primary btn-small ml-2" type="submit" [disabled]="loader"><i *ngIf="loader" class="icon--spin animate-spin"></i>Comment</button>
           </div>
         </div>
