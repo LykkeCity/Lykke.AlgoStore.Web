@@ -81,18 +81,12 @@
 	 .datatable-header,
 	 .datatable-body {
 		 .datatable-row-left {
-			background-color: #FFF;
-			background-position: 100% 0;
-			background-repeat: repeat-y;
-			background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAABCAYAAAD5PA/NAAAAFklEQVQIHWPSkNeSBmJhTQVtbiDNCgASagIIuJX8OgAAAABJRU5ErkJggg==);
-		}
+       background: #FFF url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAABCAYAAAD5PA/NAAAAFklEQVQIHWPSkNeSBmJhTQVtbiDNCgASagIIuJX8OgAAAABJRU5ErkJggg==) repeat-y 100% 0;
+     }
 
 		.datatable-row-right {
-			background-position: 0 0;
-	    background-color: #fff;
-	    background-repeat: repeat-y;
-	    background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAABCAYAAAD5PA/NAAAAFklEQVQI12PQkNdi1VTQ5gbSwkAsDQARLAIGtOSFUAAAAABJRU5ErkJggg==);
-		}
+      background: #fff url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAABCAYAAAD5PA/NAAAAFklEQVQI12PQkNdi1VTQ5gbSwkAsDQARLAIGtOSFUAAAAABJRU5ErkJggg==) repeat-y 0 0;
+    }
 	}
 
 	/**
