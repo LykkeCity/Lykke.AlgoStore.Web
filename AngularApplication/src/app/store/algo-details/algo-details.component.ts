@@ -112,7 +112,6 @@ export class AlgoDetailsComponent implements OnInit, OnDestroy {
 
   highlight(meta: BaseAlgoParam): void {
     this.editor.find(meta.Key);
-    this.editor.setHighlightActiveLine(true);
   }
 
   onEditorCreated(editor: any): void {

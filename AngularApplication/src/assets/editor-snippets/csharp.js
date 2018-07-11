@@ -1,6 +1,5 @@
 define("ace/snippets/csharp",["require","exports","module"], function(require, exports, module) {
 "use strict";
-
 exports.snippetText = 'snippet sim\n' +
   '\tpublic static int Main(string[] args) {\n' +
   '\t\t${1}\n' +
@@ -22,9 +21,6 @@ exports.snippetText = 'snippet sim\n' +
   '\telse {\n' +
   '\t\t${1}\n' +
   '\t} \n' +
-  'snippet ifs\n' +
-  '\tif (${1}) \n' +
-  '\t\t${2}\n' +
   '# ternary conditional\n' +
   'snippet t\n' +
   '\t${1} ? ${2} : ${3}\n' +
@@ -36,7 +32,7 @@ exports.snippetText = 'snippet sim\n' +
   '\t\t${2}\n' +
   '\t} while (${1});\n' +
   '# while loop\n' +
-  'snippet wh\n' +
+  'snippet while\n' +
   '\twhile (${1}) {\n' +
   '\t\t${2}\n' +
   '\t}\n' +
@@ -46,10 +42,6 @@ exports.snippetText = 'snippet sim\n' +
   '\t\t${4}\n' +
   '\t}\n' +
   '# foreach\n' +
-  'snippet fore\n' +
-  '\tforeach (var ${1:entry} in ${2}) {\n' +
-  '\t\t${3}\n' +
-  '\t}\n' +
   'snippet foreach\n' +
   '\tforeach (var ${1:entry} in ${2}) {\n' +
   '\t\t${3}\n' +
@@ -63,41 +55,9 @@ exports.snippetText = 'snippet sim\n' +
   '\tpublic interface ${1:`Filename()`} {\n' +
   '\t\t${2}\n' +
   '\t}\n' +
-  'snippet if+\n' +
-  '\tpublic interface ${1:`Filename()`} {\n' +
-  '\t\t${2}\n' +
-  '\t}\n' +
   '# class bodies\n' +
   'snippet class\n' +
   '\tpublic class ${1:`Filename()`} {\n' +
-  '\t\t${2}\n' +
-  '\t}\n' +
-  'snippet cls\n' +
-  '\t${2:public} class ${1:`Filename()`} {\n' +
-  '\t\t${3}\n' +
-  '\t}\n' +
-  'snippet cls+\n' +
-  '\tpublic class ${1:`Filename()`} {\n' +
-  '\t\t${2}\n' +
-  '\t}\n' +
-  'snippet cls+^\n' +
-  '\tpublic static class ${1:`Filename()`} {\n' +
-  '\t\t${2}\n' +
-  '\t}\n' +
-  'snippet cls&\n' +
-  '\tinternal class ${1:`Filename()`} {\n' +
-  '\t\t${2}\n' +
-  '\t}\n' +
-  'snippet cls&^\n' +
-  '\tinternal static class ${1:`Filename()`} {\n' +
-  '\t\t${2}\n' +
-  '\t}\n' +
-  'snippet cls|\n' +
-  '\tprotected class ${1:`Filename()`} {\n' +
-  '\t\t${2}\n' +
-  '\t}\n' +
-  'snippet cls|%\n' +
-  '\tprotected abstract class ${1:`Filename()`} {\n' +
   '\t\t${2}\n' +
   '\t}\n' +
   '# constructor\n' +

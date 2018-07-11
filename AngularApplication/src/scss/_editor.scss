@@ -1,9 +1,13 @@
 @import '~scss/reuse';
 
 #editor {
-  min-height:50vh;
+  min-height:100vh;
   font-family: $font-family-monospace !important;
   font-size: 1rem;
   border: 1px solid $pale-grey !important;
   border-radius: 5px;
+}
+
+.ace_print-margin-layer {
+  display: none;
 }

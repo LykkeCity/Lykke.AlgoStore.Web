@@ -55,6 +55,8 @@ export class MyAlgosComponent implements AfterViewInit, OnDestroy {
     if (this.modalRef) {
       this.modalRef.hide();
     }
+
+    this.subscriptions.forEach(sub => sub.unsubscribe());
   }
 
   duplicateAlgo(algo: Algo): void {

@@ -77,10 +77,6 @@ export class CodeEditorComponent implements AfterViewInit, OnChanges {
           });
         }
       });
-    } else {
-      this.editor.renderer.setOptions({
-        showFoldWidgets: false
-      });
     }
 
     this.onInitCompleted.emit(this.editor);
