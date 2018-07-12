@@ -1,9 +1,23 @@
 <div class="container algo-list-placeholder pt-10 pb-30">
-  <div class="row">
-    <div class="col-md-12">
-      <h2 class="mt-20 mb-10">Manage roles and permissions</h2>
+  <div class="summary-holder mt-5">
+    <div class="row">
+      <div class="col-6">
+        <h2>Manage roles and permissions</h2>
+        <div class="description">
+          All users that use the AlgoStore are listed here. You can see their assigned roles, revoke existing or assign new ones.
+        </div>
+      </div>
+      <div class="offset-2 col-4 align-self-end">
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <span class="input-group-text" id="search-input"><img src="../../../assets/images/search-icon.svg"/></span>
+          </div>
+          <input class="form-control" type='text' placeholder='Type to filter by name or email' (keyup)='updateFilter($event)' aria-describedby="search-input"/>
+        </div>
+      </div>
     </div>
   </div>
+  <hr />
 
   <div class="row">
     <div class="col">

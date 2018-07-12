@@ -18,9 +18,13 @@ export class UsersListComponent implements AfterViewInit, OnDestroy {
 
   @ViewChild(DatatableComponent) ngxDatatable: DatatableComponent;
   users: UserData[];
+  temp: UserData[];
   loadingIndicator = true;
   subscriptions: Subscription[] = [];
   labelColors = ['azure', 'green', 'red', 'mango', 'violet', 'silver'];
+
+  typing: any;
+  doneTypingInterval: number;
 
   permissions: {
     canRevokeRole: boolean,
@@ -42,8 +46,11 @@ export class UsersListComponent implements AfterViewInit, OnDestroy {
 
     this.subscriptions.push(this.userRolesService.getAllUsersWithRoles().subscribe(data => {
       this.users = data;
+      this.temp = [...this.users];
       this.loadingIndicator = false;
     }));
+
+    this.doneTypingInterval = 1000;
   }
 
   ngAfterViewInit() {
@@ -91,6 +98,24 @@ export class UsersListComponent implements AfterViewInit, OnDestroy {
       keyboard: false,
       ignoreBackdropClick: true
     });
+  }
+
+  updateFilter(event) {
+    const val = event.target.value.toLowerCase();
+
+    clearTimeout(this.typing);
+
+    this.typing = setTimeout(() => {
+
+      const filtered = this.temp.filter((user) => {
+        return user.FullName.toLocaleLowerCase().indexOf(val) !== -1 ||
+              user.Email.toLocaleLowerCase().indexOf(val) !== -1
+            || !val;
+      });
+
+      this.users = [...filtered];
+
+    }, this.doneTypingInterval);
   }
 
 }

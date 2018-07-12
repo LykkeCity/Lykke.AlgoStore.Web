@@ -1,11 +1,24 @@
 <div class="container algo-list-placeholder pt-10 pb-30">
-  <div class="row">
-    <div class="col-md-12">
-      <h2 class="mt-20 mb-10">Public Algos</h2>
+  <div class="summary-holder mt-5">
+    <div class="row">
+      <div class="col-6">
+        <h2>Public Algos</h2>
+        <div class="description">
+          All public Algos are listed here. You can explore predefined algorithms from the AlgoStore administrators or try out other users' algorithms.
+        </div>
+      </div>
+      <div class="offset-2 col-4 align-self-end">
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <span class="input-group-text" id="search-input"><img src="../../../assets/images/search-icon.svg"/></span>
+          </div>
+          <input class="form-control" type='text' placeholder='Type to filter by name or author' (keyup)='updateFilter($event)' aria-describedby="search-input"/>
+        </div>
+      </div>
     </div>
   </div>
-
-  <div class="row">
+  <hr />
+  <div class="row mt-2">
     <div class="col">
       <ngx-datatable
         class="algo-table"
@@ -29,7 +42,7 @@
             <p [tooltip]="value" container="body">{{value}}</p>
           </ng-template>
         </ngx-datatable-column>
-        <ngx-datatable-column [resizeable]="false" prop="Rating" name="Rating" [flexGrow]="1.5">
+        <ngx-datatable-column prop="Rating" name="Rating" [flexGrow]="1.5">
           <ng-template let-value="value" let-row="row" ngx-datatable-cell-template>
             <app-star-rating-comp [rating]="value"
                               [starType]="'svg'"
@@ -40,7 +53,7 @@
             </app-star-rating-comp>
           </ng-template>
         </ngx-datatable-column>
-        <ngx-datatable-column name="Usage" prop="UsersCount" [flexGrow]="1.2"></ngx-datatable-column>
+        <ngx-datatable-column [resizeable]="false" name="Usage" prop="UsersCount" [flexGrow]="1.2"></ngx-datatable-column>
       </ngx-datatable>
     </div>
   </div>

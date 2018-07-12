@@ -20,8 +20,12 @@ export class MyAlgosComponent implements AfterViewInit, OnDestroy {
 
   @ViewChild(DatatableComponent) ngxDatatable: DatatableComponent;
   algos: Algo[];
+  temp: Algo[];
   loadingIndicator = true;
   subscriptions: Subscription[] = [];
+
+  typing: any;
+  doneTypingInterval: number;
 
   permissions: {
     canDeleteAlgo: boolean,
@@ -37,6 +41,7 @@ export class MyAlgosComponent implements AfterViewInit, OnDestroy {
               private notificationsService: NotificationsService) {
     this.subscriptions.push(this.algoService.getMyAlgos().subscribe((algos) => {
       this.algos = algos;
+      this.temp = [...this.algos];
       this.loadingIndicator = false;
     }));
 
@@ -45,6 +50,8 @@ export class MyAlgosComponent implements AfterViewInit, OnDestroy {
       canDuplicate: this.usersService.hasPermission(Permissions.CREATE_ALGO),
       canEditAlgo: this.usersService.hasPermission(Permissions.EDIT_ALGO)
     };
+
+    this.doneTypingInterval = 1000;
   }
 
   ngAfterViewInit() {
@@ -127,5 +134,22 @@ export class MyAlgosComponent implements AfterViewInit, OnDestroy {
     return {
       'block-cell': value.length > 30
     };
+  }
+
+  updateFilter(event) {
+    const val = event.target.value.toLowerCase();
+
+    clearTimeout(this.typing);
+
+    this.typing = setTimeout(() => {
+
+      const filtered = this.temp.filter((algo) => {
+        return algo.Name.toLocaleLowerCase().indexOf(val) !== -1
+          || !val;
+      });
+
+      this.algos = [...filtered];
+
+    }, this.doneTypingInterval);
   }
 }

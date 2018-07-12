@@ -1,14 +1,32 @@
 <div class="container">
-  <div class="row mt-4">
-    <div class="col-8">
-      <h2>My algos</h2>
+  <div class="summary-holder mt-5">
+    <div class="row">
+      <div class="col-6">
+        <h2>My Algos</h2>
+      </div>
     </div>
-    <div class="col-4 text-right align-self-center" *ngIf="permissions.canDuplicate">
-      <button class="btn btn-primary btn-small" routerLink="/store/algo-create">+ Create algo</button>
+    <div class="row">
+      <div class="col-6">
+        <div class="description">
+          Here you can see all the algorithms that you created. You can easily edit, delete or duplicate an already created algo from the Actions column.
+          By default, they are private and visible only by you, but if you make them public, they'll appear on the <a routerLink="/store/algo-list">Public Algos</a> page also.
+        </div>
+      </div>
+      <div class="offset-2 col-4 align-self-end">
+        <div class="mb-1 text-right">
+          <button class="btn btn-primary btn-small" routerLink="/store/algo-create" *ngIf="permissions.canDuplicate">+ Create algo</button>
+        </div>
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <span class="input-group-text" id="search-input"><img src="../../../assets/images/search-icon.svg"/></span>
+          </div>
+          <input class="form-control" type='text' placeholder='Type to filter by name' (keyup)='updateFilter($event)' aria-describedby="search-input"/>
+        </div>
+      </div>
     </div>
   </div>
   <hr />
-  <div class="row">
+  <div class="row mt-2">
     <div class="col-12">
       <ngx-datatable
         class="algo-table"

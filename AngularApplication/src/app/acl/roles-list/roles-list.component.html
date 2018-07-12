@@ -1,14 +1,31 @@
 <div class="container algo-list-placeholder pt-10 pb-30">
-  <div class="row">
-    <div class="col-10">
-      <h2 class="mt-20 mb-10">List of roles</h2>
+  <div class="summary-holder mt-5">
+    <div class="row">
+      <div class="col-6">
+        <h2>List of roles</h2>
+      </div>
     </div>
-    <div class="col-2 align-self-center" *ngIf="permissions.canCreateRole">
-      <button class="btn btn-primary role-button" routerLink="/users-acl/roles-edit">+ Create new role</button>
+    <div class="row">
+      <div class="col-6">
+        <div class="description">
+          These are all currently defined user roles in the system. You can easily edit and delete an already created role from the Actions column or create a new one from the "Create Role" button.
+        </div>
+      </div>
+      <div class="offset-2 col-4 align-self-end">
+        <div class="mb-1 text-right">
+          <button class="btn btn-primary role-button" routerLink="/users-acl/roles-edit" *ngIf="permissions.canCreateRole">+ Create new role</button>
+        </div>
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <span class="input-group-text" id="search-input"><img src="../../../assets/images/search-icon.svg"/></span>
+          </div>
+          <input class="form-control" type='text' placeholder='Type to filter by name' (keyup)='updateFilter($event)' aria-describedby="search-input"/>
+        </div>
+      </div>
     </div>
   </div>
-
-  <div class="row">
+  <hr />
+  <div class="row mt-2">
     <div class="col">
       <ngx-datatable
         class="algo-table"

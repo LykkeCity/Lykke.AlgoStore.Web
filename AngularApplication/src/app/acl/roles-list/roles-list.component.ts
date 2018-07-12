@@ -19,9 +19,12 @@ export class RolesListComponent implements AfterViewInit, OnDestroy {
   @ViewChild(DatatableComponent) ngxDatatable: DatatableComponent;
 
   roles: UserRole[];
+  temp: UserRole[];
   loadingIndicator = true;
   subscriptions: Subscription[] = [];
   modalRef: BsModalRef;
+  typing: any;
+  doneTypingInterval: number;
 
   permissions: {
     canDeleteRole: boolean,
@@ -47,8 +50,11 @@ export class RolesListComponent implements AfterViewInit, OnDestroy {
 
     this.subscriptions.push(this.rolesService.getAllRoles().subscribe(roles => {
       this.roles = roles;
+      this.temp = [...this.roles];
       this.loadingIndicator = false;
     }));
+
+    this.doneTypingInterval = 1000;
   }
 
   ngAfterViewInit() {
@@ -85,5 +91,22 @@ export class RolesListComponent implements AfterViewInit, OnDestroy {
 
   openModal(template: TemplateRef<any>): void {
     this.modalRef = this.bsModalService.show(template);
+  }
+
+  updateFilter(event) {
+    const val = event.target.value.toLowerCase();
+
+    clearTimeout(this.typing);
+
+    this.typing = setTimeout(() => {
+
+      const filtered = this.temp.filter((role) => {
+        return role.Name.toLocaleLowerCase().indexOf(val) !== -1
+          || !val;
+      });
+
+      this.roles = [...filtered];
+
+    }, this.doneTypingInterval);
   }
 }
