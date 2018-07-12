@@ -50,10 +50,9 @@ export class AlgoRunComponent implements OnDestroy {
 
     this.permissions = {
       canRunInstance: this.userService.hasPermission(Permissions.SAVE_ALGO_INSTANCE_DATA)
-      && this.userService.hasPermission(Permissions.DEPLOY_BINARY_FILE) && this.userService.hasPermission(Permissions.GET_FREE_WALLETS),
+      && this.userService.hasPermission(Permissions.GET_FREE_WALLETS),
       canSeeInstances: this.userService.hasPermission(Permissions.GET_ALL_ALGO_INSTANCE_DATA),
-      canRunFakeTrading: this.userService.hasPermission(Permissions.RUN_FAKE_TRADE)
-      && this.userService.hasPermission(Permissions.DEPLOY_BINARY_FILE),
+      canRunFakeTrading: this.userService.hasPermission(Permissions.RUN_FAKE_TRADE),
       isCurrentUser: false,
       canSeeWallets: this.userService.hasPermission(Permissions.GET_FREE_WALLETS)
     };
