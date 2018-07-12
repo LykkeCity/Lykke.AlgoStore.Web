@@ -14,14 +14,6 @@ export class InstanceService {
 
   constructor(private authRequestService: AuthRequestService) { }
 
-  deployInstance(algoClientId: string, algoId: string, instanceId: string): Observable<Algo> {
-    return this.authRequestService.post(environment.storeApiUrl + '/v1/management/deploy/binary', { algoClientId, algoId, instanceId });
-  }
-
-  algoStart(algoId: string): Observable<Algo> {
-    return this.authRequestService.post(environment.storeApiUrl + '/v1/management/test/start', { AlgoId: algoId });
-  }
-
   stopInstance(algoId: string, instanceId: string, algoClientId: string): Observable<Algo> {
     return this.authRequestService.post(
       environment.storeApiUrl + '/v1/management/stop', { AlgoId: algoId, InstanceId: instanceId, AlgoClientId: algoClientId }
@@ -31,11 +23,6 @@ export class InstanceService {
   editName(instanceId: string, data: {name: string}): Observable<string> {
     return this.authRequestService.put(environment.storeApiUrl + `/v1/algoInstances/${instanceId}/name`, data);
   }
-
-  algoDelete(algo: Algo): Observable<Algo> {
-    return this.authRequestService.post(environment.storeApiUrl + '/v1/clientData/metadata/cascadeDelete', algo);
-  }
-
   getInstanceLogs(AlgoId: string, InstanceId: string, AlgoClientId: string, Tail: number = 100): Observable<AlgoLog> {
     const params = { AlgoId, InstanceId, AlgoClientId, Tail };
     return this.authRequestService.get(environment.storeApiUrl + `/v1/management/tailLog`, { params });
