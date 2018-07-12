@@ -4,6 +4,9 @@
       <div class="col-6">
         <h2>List of roles</h2>
       </div>
+      <div class="offset-4 col-2 align-self-center text-right">
+        <button class="btn btn-primary role-button" routerLink="/users-acl/roles-edit" *ngIf="permissions.canCreateRole">+ Create new role</button>
+      </div>
     </div>
     <div class="row">
       <div class="col-6">
@@ -12,9 +15,6 @@
         </div>
       </div>
       <div class="offset-2 col-4 align-self-end">
-        <div class="mb-1 text-right">
-          <button class="btn btn-primary role-button" routerLink="/users-acl/roles-edit" *ngIf="permissions.canCreateRole">+ Create new role</button>
-        </div>
         <div class="input-group">
           <div class="input-group-prepend">
             <span class="input-group-text" id="search-input"><img src="../../../assets/images/search-icon.svg"/></span>
@@ -24,8 +24,7 @@
       </div>
     </div>
   </div>
-  <hr />
-  <div class="row mt-2">
+  <div class="row mt-75">
     <div class="col">
       <ngx-datatable
         class="algo-table"

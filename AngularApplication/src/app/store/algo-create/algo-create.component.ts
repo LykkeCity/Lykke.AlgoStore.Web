@@ -34,6 +34,7 @@ export class AlgoCreateComponent implements OnDestroy {
 
     this.ready = true;
     this.algoSubmitted = false;
+    this.Algo.Content = '// Write your algo or upload an already existing one...';
   }
 
   ngOnDestroy() {
