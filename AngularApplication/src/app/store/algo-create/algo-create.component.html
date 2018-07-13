@@ -30,13 +30,18 @@
                 <span class="font-weight-semibold cursor-pointer cancel-btn" routerLink="/store/my-algos">Cancel and close</span>
               </div>
               <div class="col-6 text-center">
-                <button class="btn btn-primary btn-small" (click)="nextTab()" [disabled]="algoForm.invalid">Next step</button>
+                <button class="btn btn-primary btn-small" (click)="nextTab(1)" [disabled]="algoForm.invalid">Next step</button>
               </div>
             </div>
           </form>
         </tab>
         <tab heading="Choose a template" [disabled]="algoForm.invalid">
-          <div class="row mt-5">
+          <div class="row mt-3">
+            <div class="col-2">
+              <button class="btn btn-light" (click)="nextTab(2)">Skip this step</button>
+            </div>
+          </div>
+          <div class="row mt-3">
             <div class="col-3 template-holder mt-2">
               <div class="row template-item" *ngFor="let template of templates; let index = index;">
                 <div class="col-12">
@@ -50,6 +55,14 @@
             </div>
             <div class="col-9 algo-create-editor-holder">
               <app-code-editor [config]="{readOnly: true, sourceCode: currentTemplate, editorId: 'template-editor'}"></app-code-editor>
+            </div>
+          </div>
+          <div class="row mt-3">
+            <div class="offset-4 col-2 text-center align-self-center">
+              <span class="font-weight-semibold cursor-pointer cancel-btn" routerLink="/store/my-algos">Cancel and close</span>
+            </div>
+            <div class="col-2 text-center">
+              <button class="btn btn-primary btn-small" (click)="nextTab(2)">Next step</button>
             </div>
           </div>
         </tab>

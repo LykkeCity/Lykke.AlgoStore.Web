@@ -51,8 +51,8 @@ export class AlgoCreateComponent implements OnDestroy {
     this.ref.detectChanges();
   }
 
-  nextTab(): void {
-    this.staticTabs.tabs[1].active = true;
+  nextTab(tabIndex: number): void {
+    this.staticTabs.tabs[tabIndex].active = true;
   }
 
   goBack(): void {

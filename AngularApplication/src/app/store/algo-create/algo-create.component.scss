@@ -90,3 +90,11 @@ form {
 .normal-font {
   font-size: 1rem;
 }
+
+.btn-light {
+  background-color: transparent;
+  border: 1px solid $silver;
+  border-radius: 24.5px;
+  font-weight: $font-weight-semibold;
+  color: black;
+}
