@@ -8,8 +8,9 @@
       <span><ui-switch size="small" (click)="onThemeChange()"></ui-switch></span>
     </div>
   </div>
-  <div class="ace-editor-holder" [hidden]="!config.sourceCode && config.readOnly">
-    <ace-editor [(text)]="config.sourceCode" [mode]="config.mode" [readOnly]="config.readOnly" id="editor"></ace-editor>
+  <!--<div class="ace-editor-holder" [hidden]="!config.sourceCode && config.readOnly">-->
+  <div class="ace-editor-holder">
+    <ace-editor [(text)]="config.sourceCode" [mode]="config.mode" [readOnly]="config.readOnly" [id]="config.editorId || 'editor'"></ace-editor>
   </div>
-  <app-loader [small]="true" [ready]="config.sourceCode || !(config.readOnly && !config.sourceCode)"></app-loader>
+  <!--<app-loader [small]="true" [ready]="config.sourceCode || !(config.readOnly && !config.sourceCode) || !config.readOnly"></app-loader>-->
 </div>

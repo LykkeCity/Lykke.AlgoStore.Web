@@ -19,12 +19,12 @@
 .tabs-nav {
   ::ng-deep {
     ul.nav-tabs {
-      width: 50%;
+      width: 75%;
       margin: 0 auto;
 
       .nav-item {
         font-size: 1.166rem;
-        width: 50%;
+        width: 33.3333%;
         margin: 0;
 
         &:hover {
@@ -49,6 +49,12 @@
       }
     }
   }
+}
+
+.template-item {
+  border-bottom: 1px solid #f5f6f7;
+  border-right: 1px solid #f5f6f7;
+  border-left: 1px solid #f5f6f7;
 }
 
 form {

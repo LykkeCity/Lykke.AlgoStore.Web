@@ -1,6 +1,6 @@
 @import '~scss/reuse';
 
-#editor {
+#editor, #template-editor {
   min-height:100vh;
   font-family: $font-family-monospace !important;
   font-size: 1rem;

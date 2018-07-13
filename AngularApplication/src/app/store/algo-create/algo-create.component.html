@@ -35,6 +35,24 @@
             </div>
           </form>
         </tab>
+        <tab heading="Choose a template" [disabled]="algoForm.invalid">
+          <div class="row mt-5">
+            <div class="col-3 template-holder mt-2">
+              <div class="row template-item" *ngFor="let template of templates; let index = index;">
+                <div class="col-12">
+                  <h5 (click)="toggleState(index)" class="cursor-pointer">{{template.name}}</h5>
+                  <app-collapse-content [state]="template.state">
+                    <p>{{template.description}}</p>
+                    <p (click)="setTemplate(template)" class="link-style">Use this one</p>
+                  </app-collapse-content>
+                </div>
+              </div>
+            </div>
+            <div class="col-9 algo-create-editor-holder">
+              <app-code-editor [config]="{readOnly: true, sourceCode: currentTemplate, editorId: 'template-editor'}"></app-code-editor>
+            </div>
+          </div>
+        </tab>
         <tab heading="Write Code" [disabled]="algoForm.invalid">
           <div class="row mt-5">
             <div class="col-8 algo-create-editor-holder">

@@ -36,6 +36,7 @@ import { AlgoService } from './core/services/algo.service';
 import { AlgoCommentService } from './core/services/algo-comment.service';
 import { AlgoRatingService } from './core/services/algo-rating.service';
 import { InstanceService } from './core/services/instance.service';
+import { FileService } from './core/services/file.service';
 
 
 @NgModule({
@@ -71,7 +72,8 @@ import { InstanceService } from './core/services/instance.service';
     AlgoCommentService,
     AlgoRatingService,
     InstanceService,
-    BsModalRef
+    BsModalRef,
+    FileService
   ],
   entryComponents: [PopupComponent, IdlePopupComponent],
   bootstrap: [AppComponent]
