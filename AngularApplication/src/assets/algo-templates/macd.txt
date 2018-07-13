@@ -1,9 +1,9 @@
 using Lykke.AlgoStore.CSharp.AlgoTemplate.Abstractions.Core.Domain;
 using Lykke.AlgoStore.CSharp.AlgoTemplate.Abstractions.Functions.MACD;
 
-namespace Lykke.AlgoStore.CSharp.Algo.Implemention
+namespace Lykke.AlgoStore.CSharp.Algo.Implemention.ExecutableClass
 {
-    public class MacdTrendAlgo : BaseAlgo
+    public sealed class MacdTrendAlgo : BaseAlgo
     {
         public double HoldingStep { get; set; }
         public double Tolerance { get; set; }
@@ -13,11 +13,18 @@ namespace Lykke.AlgoStore.CSharp.Algo.Implemention
 
         public double Holdings => _holdings;
 
+        /// <summary>
+        /// Initial start-up of the algo method which is used to initialize indicators
+        /// </summary>
         public override void OnStartUp(IFunctionProvider functions)
         {
             _macd = functions.GetFunction<MacdFunction>("MACD");
         }
 
+        /// <summary>
+        /// A method which is called when a new candle is received. The algo will be updated according to candle values.
+        /// </summary>
+        /// <param name="context"></param>
         public override void OnCandleReceived(ICandleContext context)
         {
             var histogram = _macd.Histogram;

@@ -2,12 +2,12 @@ using Lykke.AlgoStore.CSharp.AlgoTemplate.Abstractions.Core.Domain;
 using Lykke.AlgoStore.CSharp.AlgoTemplate.Abstractions.Functions.ADX;
 using Lykke.AlgoStore.CSharp.AlgoTemplate.Abstractions.Functions.SMA;
 
-namespace Lykke.AlgoStore.CSharp.Algo.Implemention
+namespace Lykke.AlgoStore.CSharp.Algo.Implemention.ExecutableClass
 {
     /// <summary>
     /// Moving Average Cross Algorithm
     /// </summary>
-    public class MovingAverageCrossAlgo : BaseAlgo
+    public sealed class MovingAverageCrossAlgo : BaseAlgo
     {
         public int ADXThreshold { get; set; }
 
@@ -26,6 +26,9 @@ namespace Lykke.AlgoStore.CSharp.Algo.Implemention
         private SmaFunction _smaLongPeriod;
         private AdxFunction _adx;
 
+        /// <summary>
+        /// Initial start-up of the algo method which is used to initialize indicators
+        /// </summary>
         public override void OnStartUp(IFunctionProvider functions)
         {
             _smaShortPeriod = functions.GetFunction<SmaFunction>("SMA_Short");
@@ -41,6 +44,10 @@ namespace Lykke.AlgoStore.CSharp.Algo.Implemention
             _lastADXValue = _currentADX;
         }
 
+        /// <summary>
+        /// A method which is called when a new candle is received. The algo will be updated according to candle values.
+        /// </summary>
+        /// <param name="context"></param>
         public override void OnCandleReceived(ICandleContext contextCandle)
         {
             contextCandle.Actions.Log($"Algo ADX Threshold {ADXThreshold}");
