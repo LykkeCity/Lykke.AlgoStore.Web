@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { BsModalRef } from 'ngx-bootstrap';
 import { InstanceService } from '../../../services/instance.service';
@@ -11,7 +11,7 @@ import { NotificationsService } from 'angular2-notifications';
   templateUrl: './algo-fake-trading-popup.component.html',
   styleUrls: ['./algo-fake-trading-popup.component.scss']
 })
-export class AlgoFakeTradingPopupComponent implements OnInit {
+export class AlgoFakeTradingPopupComponent implements OnDestroy {
 
   algoInstanceForm: FormGroup;
   iAlgoInstanceType = IAlgoInstanceType;
@@ -33,7 +33,8 @@ export class AlgoFakeTradingPopupComponent implements OnInit {
     });
   }
 
-  ngOnInit() {
+  ngOnDestroy() {
+    this.subscriptions.forEach(sub => sub.unsubscribe());
   }
 
   onSubmit(): void {
@@ -60,20 +61,14 @@ export class AlgoFakeTradingPopupComponent implements OnInit {
       });
     });
 
-    this.instanceService.fakeTrading(fakeTradingData).subscribe((data) => {
-      this.subscriptions.push(this.instanceService.deployInstance(this.algoInstanceData.AlgoClientId, data.AlgoId, data.InstanceId)
-        .subscribe(() => {
-          this.notificationsService.success('Success', 'Instance created successfully.');
-          this.modalRef.hide();
-          this.onSuccess(data);
-        }, (error) => {
-          this.notificationsService.error('Error', error.DisplayMessage);
-          this.modalRef.hide();
-        }));
+    this.subscriptions.push(this.instanceService.fakeTrading(fakeTradingData).subscribe((data) => {
+      this.notificationsService.success('Success', 'Instance created successfully.');
+      this.modalRef.hide();
+      this.onSuccess(data);
     }, (error) => {
       this.notificationsService.error('Error', error.DisplayMessage);
       this.modalRef.hide();
-    });
+    }));
   }
 
 }

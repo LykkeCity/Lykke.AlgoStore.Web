@@ -86,7 +86,6 @@ export class AlgoInstanceComponent implements OnDestroy {
         this.permissions.canRestartInstance = (this.instance.AlgoInstanceType === IAlgoInstanceType.Demo
           || this.instance.AlgoInstanceType === IAlgoInstanceType.Test)
           || (this.userService.hasPermission(Permissions.SAVE_ALGO_INSTANCE_DATA)
-            && this.userService.hasPermission(Permissions.DEPLOY_BINARY_FILE)
             && this.userService.hasPermission(Permissions.GET_FREE_WALLETS));
 
         this.subscriptions.push(this.algoService.getAlgoWithSource(this.algoId, this.clientId).subscribe(algo => {
