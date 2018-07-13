@@ -58,7 +58,7 @@ export class AlgoCreateComponent implements OnDestroy {
   goBack(): void {
     this.algoSubmitted = false;
     this.ref.detectChanges();
-    this.staticTabs.tabs[1].active = true;
+    this.staticTabs.tabs[2].active = true;
     this.algoErrors = '';
   }
 
