@@ -43,6 +43,7 @@ export class AlgoCreateComponent implements OnDestroy {
   }
 
   ngOnDestroy() {
+    this.templates.forEach(template => template.state = 'collapsed');
     this.subscriptions.forEach(sub => sub.unsubscribe());
   }
 

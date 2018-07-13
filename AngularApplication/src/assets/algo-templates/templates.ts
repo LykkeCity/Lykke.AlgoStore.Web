@@ -1,16 +1,10 @@
 const data = [
   {
-    name: 'Dummy Algo',
-    description: 'Dummy algo for AlgoStore system',
-    state: 'collapsed',
-    filePath: '../../../assets/algo-templates/dummy.txt'
-  },
-  {
     name: 'Simple Moving Average',
     description: 'A simple moving average (SMA) is the simplest type of moving average in forex analysis. ' +
     'Basically, a simple moving average is calculated by adding up the last “X” period\'s closing prices and then dividing that number by X.',
     state: 'collapsed',
-    filePath: 'undefined'
+    filePath: '../../../assets/algo-templates/dummy.txt'
   },
   {
     name: 'MACD Trend Algo',
