@@ -231,6 +231,9 @@ export class AlgoInstanceComponent implements OnDestroy {
         });
 
         this.getWallets();
+      }, (error) => {
+        this.notificationsService.error('Error', error.DisplayMessage);
+        this.modalRef.hide();
       })
     );
   }
@@ -264,6 +267,9 @@ export class AlgoInstanceComponent implements OnDestroy {
       () => {
         this.notificationsService.success('Success', 'Instance has been deleted successfully.');
         this.router.navigate(['store/algo-run', this.instance.AlgoClientId, this.instance.AlgoId]);
+      }, (error) => {
+        this.notificationsService.error('Error', error.DisplayMessage);
+        this.modalRef.hide();
       }
     );
   }
