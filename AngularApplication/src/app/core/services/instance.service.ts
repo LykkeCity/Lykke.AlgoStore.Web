@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
-import { environment } from '../../environments/environment';
+import { environment } from '../../../environments/environment';
 import { Observable } from 'rxjs';
-import { Algo } from '../store/models/algo.interface';
+import { Algo } from '../../store/models/algo.interface';
 import { AuthRequestService } from './auth-request.service';
-import { AlgoInstance, IAlgoInstanceStatus } from '../store/models/algo-instance.model';
-import { AlgoLog } from '../store/models/algo-log.interface';
-import { AlgoInstanceTrade } from '../store/models/algo-instance-trade.model';
-import { InstanceStatistic } from '../store/models/algo-instance-statistic.model';
-import { UserInstance } from '../store/models/user-instance.interface';
+import { AlgoInstance, IAlgoInstanceStatus } from '../../store/models/algo-instance.model';
+import { AlgoLog } from '../../store/models/algo-log.interface';
+import { AlgoInstanceTrade } from '../../store/models/algo-instance-trade.model';
+import { InstanceStatistic } from '../../store/models/algo-instance-statistic.model';
+import { UserInstance } from '../../store/models/user-instance.interface';
 
 @Injectable()
 export class InstanceService {
@@ -23,6 +23,7 @@ export class InstanceService {
   editName(instanceId: string, data: {name: string}): Observable<string> {
     return this.authRequestService.put(environment.storeApiUrl + `/v1/algoInstances/${instanceId}/name`, data);
   }
+
   getInstanceLogs(AlgoId: string, InstanceId: string, AlgoClientId: string, Tail: number = 100): Observable<AlgoLog> {
     const params = { AlgoId, InstanceId, AlgoClientId, Tail };
     return this.authRequestService.get(environment.storeApiUrl + `/v1/management/tailLog`, { params });

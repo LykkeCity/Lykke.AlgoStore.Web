@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
-import { environment } from '../../environments/environment';
+import { environment } from '../../../environments/environment';
 import { Observable ,  forkJoin } from 'rxjs';
-import { Algo } from '../store/models/algo.interface';
+import { Algo } from '../../store/models/algo.interface';
 import { AuthRequestService } from './auth-request.service';
-import { AssetPair } from '../store/models/asset-pair.interface';
+import { AssetPair } from '../../store/models/asset-pair.interface';
 
 @Injectable()
 export class AlgoService {

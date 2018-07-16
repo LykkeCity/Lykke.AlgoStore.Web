@@ -1,0 +1,74 @@
+using Lykke.AlgoStore.CSharp.AlgoTemplate.Abstractions.Core.Domain;
+using Lykke.AlgoStore.CSharp.AlgoTemplate.Abstractions.Functions.MACD;
+
+namespace Lykke.AlgoStore.CSharp.Algo.Implemention.ExecutableClass
+{
+    public sealed class MacdTrendAlgo : BaseAlgo
+    {
+        /// <summary>
+        /// Value which shoud be set by the user for holding step
+        /// </summary>
+        public double HoldingStep { get; set; }
+
+        /// <summary>
+        /// The tolerance
+        /// </summary>
+        public double Tolerance { get; set; }
+
+        /// <summary>
+        /// Moving Average Convergence/Divergence indicator
+        /// </summary>
+        private MacdFunction _macd;
+        private double _holdings;
+
+        /// <summary>
+        /// Holding steps
+        /// </summary>
+        public double Holdings => _holdings;
+
+        /// <summary>
+        /// Initial start-up of the algo method which is used to initialize indicators
+        /// </summary>
+        public override void OnStartUp(IFunctionProvider functions)
+        {
+            _macd = functions.GetFunction<MacdFunction>("MACD");
+        }
+
+        /// <summary>
+        /// A method which is called when a new candle is received. The algo will be updated according to candle values.
+        /// </summary>
+        /// <param name="context">
+        /// Candle values
+        /// </param>
+        public override void OnCandleReceived(ICandleContext context)
+        {
+            var histogram = _macd.Histogram;
+            var fast = _macd.Fast.Value;
+
+            if (histogram == null || fast == null)
+                return;
+
+            var signalDeltaPercent = histogram / fast;
+
+            context.Actions.Log($"Function values are: Macd histogram: {histogram}, Macd fast EMA: {fast}");
+
+            if (signalDeltaPercent > Tolerance)
+            {
+                // TODO: Implement buying/selling when trading logic is finalized
+                //context.Actions.BuyStraight(HOLDINGS_STEP);
+                _holdings += HoldingStep;
+
+                context.Actions.Log($"{signalDeltaPercent} is above {Tolerance}, buying {HoldingStep} more of the asset. " +
+                                    $"Current holdings: {_holdings}");
+            }
+            else if (_holdings > 0 && signalDeltaPercent < -Tolerance)
+            {
+                // TODO: Implement buying/selling when trading logic is finalized
+                //context.Actions.SellStraight(_holdings);
+                _holdings = 0;
+
+                context.Actions.Log($"{signalDeltaPercent} is below {-Tolerance}, selling all holdings.");
+            }
+        }
+    }
+}

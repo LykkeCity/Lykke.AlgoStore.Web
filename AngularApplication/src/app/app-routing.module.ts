@@ -4,10 +4,10 @@ import { RouterModule, Routes } from '@angular/router';
 import { NotFoundComponent } from './components/not-found/not-found.component';
 import { HomeComponent } from './components/home/home.component';
 import { SiteLayoutComponent } from './layout/site-layout/site-layout.component';
-import { LoginRedirectGuard } from './services/login-redirect.guard';
-import { AuthGuard } from './services/auth-guard';
-import { NonAuthenticatedGuard } from './services/non-authenticated.guard';
-import { UserDetailsGuard } from './services/user-details.guard';
+import { LoginRedirectGuard } from './core/guards/login-redirect.guard';
+import { AuthGuard } from './core/guards/auth-guard';
+import { NonAuthenticatedGuard } from './core/guards/non-authenticated.guard';
+import { UserDetailsGuard } from './core/guards/user-details.guard';
 
 
 const routes: Routes = [

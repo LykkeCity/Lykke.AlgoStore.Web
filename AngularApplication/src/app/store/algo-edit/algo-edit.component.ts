@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
-import { AlgoService } from '../../services/algo.service';
+import { AlgoService } from '../../core/services/algo.service';
 import { Algo, AlgoVisibility } from '../models/algo.interface';
 import { Subscription } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -9,9 +9,9 @@ import { BsModalRef, BsModalService } from 'ngx-bootstrap';
 import { PopupConfig } from '../../models/popup.interface';
 import { PopupComponent } from '../../components/popup/popup.component';
 import { NotificationsService } from 'angular2-notifications';
-import { UserService } from '../../services/user.service';
+import { UserService } from '../../core/services/user.service';
 import Permissions from '../models/permissions';
-import { InstanceService } from '../../services/instance.service';
+import { InstanceService } from '../../core/services/instance.service';
 import { AlgoInstance, IAlgoInstanceStatus } from '../models/algo-instance.model';
 
 @Component({

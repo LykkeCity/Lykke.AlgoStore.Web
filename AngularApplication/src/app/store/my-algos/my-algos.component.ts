@@ -1,25 +1,31 @@
-import { Component, OnDestroy } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, ViewChild } from '@angular/core';
 import { Algo } from '../models/algo.interface';
-import { AlgoService } from '../../services/algo.service';
+import { AlgoService } from '../../core/services/algo.service';
 import { Subscription } from 'rxjs';
 import { PopupConfig } from '../../models/popup.interface';
 import { PopupComponent } from '../../components/popup/popup.component';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap';
 import { AlgoDuplicatePopupComponent } from './algo-duplicate-popup/algo-duplicate-popup.component';
-import { UserService } from '../../services/user.service';
+import { UserService } from '../../core/services/user.service';
 import Permissions from '../models/permissions';
 import { NotificationsService } from 'angular2-notifications';
+import { DatatableComponent, ColumnMode } from '@swimlane/ngx-datatable';
 
 @Component({
   selector: 'app-my-algos',
   templateUrl: './my-algos.component.html',
   styleUrls: ['./my-algos.component.scss']
 })
-export class MyAlgosComponent implements OnDestroy {
+export class MyAlgosComponent implements AfterViewInit, OnDestroy {
 
+  @ViewChild(DatatableComponent) ngxDatatable: DatatableComponent;
   algos: Algo[];
+  temp: Algo[];
   loadingIndicator = true;
   subscriptions: Subscription[] = [];
+
+  typing: any;
+  doneTypingInterval: number;
 
   permissions: {
     canDeleteAlgo: boolean,
@@ -35,6 +41,7 @@ export class MyAlgosComponent implements OnDestroy {
               private notificationsService: NotificationsService) {
     this.subscriptions.push(this.algoService.getMyAlgos().subscribe((algos) => {
       this.algos = algos;
+      this.temp = [...this.algos];
       this.loadingIndicator = false;
     }));
 
@@ -43,12 +50,20 @@ export class MyAlgosComponent implements OnDestroy {
       canDuplicate: this.usersService.hasPermission(Permissions.CREATE_ALGO),
       canEditAlgo: this.usersService.hasPermission(Permissions.EDIT_ALGO)
     };
+
+    this.doneTypingInterval = 1000;
+  }
+
+  ngAfterViewInit() {
+    this.ngxDatatable.columnMode = ColumnMode.force;
   }
 
   ngOnDestroy() {
     if (this.modalRef) {
       this.modalRef.hide();
     }
+
+    this.subscriptions.forEach(sub => sub.unsubscribe());
   }
 
   duplicateAlgo(algo: Algo): void {
@@ -119,5 +134,22 @@ export class MyAlgosComponent implements OnDestroy {
     return {
       'block-cell': value.length > 30
     };
+  }
+
+  updateFilter(event) {
+    const val = event.target.value.toLowerCase();
+
+    clearTimeout(this.typing);
+
+    this.typing = setTimeout(() => {
+
+      const filtered = this.temp.filter((algo) => {
+        return algo.Name.toLocaleLowerCase().indexOf(val) !== -1
+          || !val;
+      });
+
+      this.algos = [...filtered];
+
+    }, this.doneTypingInterval);
   }
 }

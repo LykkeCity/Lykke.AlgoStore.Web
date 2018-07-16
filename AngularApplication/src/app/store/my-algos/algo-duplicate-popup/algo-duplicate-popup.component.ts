@@ -3,7 +3,7 @@ import { Subscription } from 'rxjs';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { BsModalRef } from 'ngx-bootstrap';
 import { NotificationsService } from 'angular2-notifications';
-import { AlgoService } from '../../../services/algo.service';
+import { AlgoService } from '../../../core/services/algo.service';
 import { Algo } from '../../models/algo.interface';
 
 @Component({

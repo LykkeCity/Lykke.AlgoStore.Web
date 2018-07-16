@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivate, CanLoad, Route, Router, RouterStateSnapshot } from '@angular/router';
 import { Observable } from 'rxjs';
-import { UserService } from './user.service';
+import { UserService } from '../services/user.service';
 import { NotificationsService } from 'angular2-notifications';
 
 @Injectable()
@@ -56,7 +56,6 @@ export class ACLGuard implements CanActivate, CanLoad {
         return true;
       }
     }
-
 
     return false;
   }

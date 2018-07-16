@@ -6,10 +6,10 @@ import { BaseAlgoParam } from '../models/base-algo-param.model';
 import { AlgoRating } from '../models/algo-rating.model';
 import { NotificationsService } from 'angular2-notifications';
 import { AlgoComment } from '../../models/algo-comment.model';
-import { AlgoService } from '../../services/algo.service';
-import { AlgoRatingService } from '../../services/algo-rating.service';
-import { AlgoCommentService } from '../../services/algo-comment.service';
-import { UserService } from '../../services/user.service';
+import { AlgoService } from '../../core/services/algo.service';
+import { AlgoRatingService } from '../../core/services/algo-rating.service';
+import { AlgoCommentService } from '../../core/services/algo-comment.service';
+import { UserService } from '../../core/services/user.service';
 import Permissions from '../models/permissions';
 import { AlgoDuplicatePopupComponent } from '../my-algos/algo-duplicate-popup/algo-duplicate-popup.component';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap';
@@ -112,7 +112,6 @@ export class AlgoDetailsComponent implements OnInit, OnDestroy {
 
   highlight(meta: BaseAlgoParam): void {
     this.editor.find(meta.Key);
-    this.editor.setHighlightActiveLine(true);
   }
 
   onEditorCreated(editor: any): void {

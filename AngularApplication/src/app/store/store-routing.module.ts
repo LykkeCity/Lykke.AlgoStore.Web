@@ -3,15 +3,15 @@ import { RouterModule, Routes } from '@angular/router';
 import { StoreComponent } from './store.component';
 import { AlgoListComponent } from './algo-list/algo-list.component';
 import { AlgoDetailsComponent } from './algo-details/algo-details.component';
-import { AuthGuard } from '../services/auth-guard';
 import { MyAlgosComponent } from './my-algos/my-algos.component';
 import { AlgoRunComponent } from './algo-run/algo-run.component';
 import { AlgoInstanceComponent } from './algo-instance/algo-instance.component';
-import { ACLGuard } from '../services/acl.guard';
 import Permissions from './models/permissions';
 import { AlgoEditComponent } from './algo-edit/algo-edit.component';
 import { AlgoCreateComponent } from './algo-create/algo-create.component';
 import { MyInstancesComponent } from './my-instances/my-instances.component';
+import { AuthGuard } from '../core/guards/auth-guard';
+import { ACLGuard } from '../core/guards/acl.guard';
 
 
 const routes: Routes = [

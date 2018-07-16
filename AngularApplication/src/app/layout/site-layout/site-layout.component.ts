@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { IdleService } from '../../services/idle.service';
+import { IdleService } from '../../core/services/idle.service';
 
 @Component({
   selector: 'app-site-layout',

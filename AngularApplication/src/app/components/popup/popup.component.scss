@@ -10,7 +10,7 @@
       padding: 30px 40px;
     }
   }
-  
+
   :host .curtain {
     position: fixed;
     top: 0;
@@ -27,7 +27,7 @@
       opacity: 1;
     }
   }
-  
+
   body.blur {
     overflow: hidden;
     .main-header,
@@ -36,7 +36,7 @@
       filter: blur(5px);
     }
   }
-  
+
   body.blur-popup {
     overflow: hidden;
     .main-header,
@@ -47,4 +47,3 @@
       filter: blur(5px);
     }
   }
-  

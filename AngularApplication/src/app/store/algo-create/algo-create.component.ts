@@ -1,9 +1,12 @@
 import { ChangeDetectorRef, Component, OnDestroy, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { AlgoService } from '../../services/algo.service';
+import { AlgoService } from '../../core/services/algo.service';
 import { Algo } from '../models/algo.interface';
 import { TabsetComponent } from 'ngx-bootstrap';
 import { Subscription } from 'rxjs';
+import { AlgoTemplate } from '../../models/algo-template.model';
+import templates from '../../../assets/algo-templates/templates';
+import { FileService } from '../../core/services/file.service';
 
 @Component({
   selector: 'app-algo-create',
@@ -16,6 +19,8 @@ export class AlgoCreateComponent implements OnDestroy {
 
   algoForm: FormGroup;
   Algo: Algo = {};
+  templates: AlgoTemplate[] = templates;
+  currentTemplate = '';
   userFile: any;
   ready: boolean;
   algoSubmitted: boolean;
@@ -25,7 +30,8 @@ export class AlgoCreateComponent implements OnDestroy {
 
   constructor(private algoService: AlgoService,
               private formBuilder: FormBuilder,
-              private ref: ChangeDetectorRef) {
+              private ref: ChangeDetectorRef,
+              private fileService: FileService) {
 
     this.algoForm = this.formBuilder.group({
       Name: ['', Validators.required],
@@ -37,6 +43,7 @@ export class AlgoCreateComponent implements OnDestroy {
   }
 
   ngOnDestroy() {
+    this.templates.forEach(template => template.state = 'collapsed');
     this.subscriptions.forEach(sub => sub.unsubscribe());
   }
 
@@ -45,14 +52,14 @@ export class AlgoCreateComponent implements OnDestroy {
     this.ref.detectChanges();
   }
 
-  nextTab(): void {
-    this.staticTabs.tabs[1].active = true;
+  nextTab(tabIndex: number): void {
+    this.staticTabs.tabs[tabIndex].active = true;
   }
 
   goBack(): void {
     this.algoSubmitted = false;
     this.ref.detectChanges();
-    this.staticTabs.tabs[1].active = true;
+    this.staticTabs.tabs[2].active = true;
     this.algoErrors = '';
   }
 
@@ -83,7 +90,8 @@ export class AlgoCreateComponent implements OnDestroy {
     }
 
     this.ready = false;
-    this.subscriptions.push(this.algoService.createAlgo({ ...this.algoForm.value, ...this.Algo, Content: btoa(this.Algo.Content) }).subscribe((newAlgo) => {
+    this.subscriptions.push(this.algoService.createAlgo({ ...this.algoForm.value, ...this.Algo, Content: btoa(this.Algo.Content) })
+      .subscribe((newAlgo) => {
       this.ready = true;
       this.algoSubmitted = true;
       this.Algo.AlgoId = newAlgo.Id;
@@ -94,4 +102,20 @@ export class AlgoCreateComponent implements OnDestroy {
     }));
   }
 
+  setTemplate(template: AlgoTemplate): void {
+    if (template.code) {
+      this.currentTemplate = template.code;
+      this.Algo.Content = this.currentTemplate;
+    } else {
+      this.fileService.readFile(template.filePath).subscribe((file) => {
+        this.templates.find(t => t.name === template.name).code = file;
+        this.currentTemplate = template.code;
+        this.Algo.Content = this.currentTemplate;
+      });
+    }
+  }
+
+  toggleState(index: number): void {
+    this.templates[index].state = this.templates[index].state === 'collapsed' ? 'expanded' : 'collapsed';
+  }
 }

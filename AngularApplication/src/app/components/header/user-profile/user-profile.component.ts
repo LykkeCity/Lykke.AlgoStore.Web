@@ -1,9 +1,9 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 
-import { UserService } from '../../../services/user.service';
+import { UserService } from '../../../core/services/user.service';
 import { UserData } from '../../../models/userdata.interface';
-import { AuthService } from '../../../services/auth.service';
+import { AuthService } from '../../../core/services/auth.service';
 
 @Component({
   selector: 'app-user-profile',

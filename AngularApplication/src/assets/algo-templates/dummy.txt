@@ -1,0 +1,87 @@
+using Lykke.AlgoStore.CSharp.AlgoTemplate.Abstractions.Core.Domain;
+using Lykke.AlgoStore.CSharp.AlgoTemplate.Abstractions.Functions.SMA;
+using System;
+
+namespace Lykke.AlgoStore.CSharp.Algo.Implemention.ExecutableClass
+{
+    /// <summary>
+    /// REMARK: Just a dummy algo implementation for future reference.
+    /// We can and will remove this when first algo is implemented :)
+    /// </summary>
+    public sealed class DummyAlgo : BaseAlgo
+    {
+        /// <summary>
+        /// Simple moving average indicator. It's period for execution should be slower, also known as fast simple moving average.
+        /// </summary>
+        public SmaFunction _shortSma { get; set; }
+
+        /// <summary>
+        /// Simple moving average indicator. It's period for execution should be longer, also known as slow simple moving average.
+        /// </summary>
+        public SmaFunction _longSma { get; set; }
+
+        /// <summary>
+        /// Initial start-up of the algo method which is used to initialize indicators
+        /// </summary>
+        public override void OnStartUp(IFunctionProvider functions)
+        {
+            _shortSma = functions.GetFunction<SmaFunction>("SMA_Short");
+            _longSma = functions.GetFunction<SmaFunction>("SMA_Long");
+        }
+
+
+        /// <summary>
+        /// Method which is called when a new qoute is received. The algo will be updated according to quote values.
+        /// </summary>
+        public override void OnQuoteReceived(IQuoteContext context)
+        {
+            context.Actions.Log($"Volume value: {Volume}");
+
+            var quote = context.Data.Quote;
+            context.Actions.Log($"Receiving quote at {DateTime.UtcNow} " +
+                $"{{quote.Price: {quote.Price}}}, {{quote.Timestamp: {quote.Timestamp}}}, " +
+                $"{{quote.IsBuy: {quote.IsBuy}}}, {{quote.IsOnline: {quote.IsOnline}}}");
+
+            var smaShort = _shortSma.Value;
+            var smaLong = _longSma.Value;
+            context.Actions.Log($"Function values are: SMA_Short: {smaShort}, SMA_Long: {smaLong}");
+
+            if (quote.Price < 10000)
+            {
+                context.Actions.Buy(quote, Volume);
+            }
+
+            if (quote.Price > 8000)
+            {
+                context.Actions.Sell(quote, Volume);
+            }
+        }
+
+
+        /// <summary>
+        /// A method which is called when a new candle is received. The algo will be updated according to candle values.
+        /// </summary>
+        /// <param name="context"></param>
+        public override void OnCandleReceived(ICandleContext context)
+        {
+            context.Actions.Log($"Volume value: {Volume}");
+
+            var candle = context.Data.Candle;
+            context.Actions.Log($"Receiving candle at {candle.DateTime} candle close Price {candle.Close}");
+
+            var smaShort = _shortSma.Value;
+            var smaLong = _longSma.Value;
+            context.Actions.Log($"Function values are: SMA_Short: {smaShort}, SMA_Long: {smaLong}");
+
+            //if (quote.Price < 10000)
+            //{
+            //    context.Actions.Buy(context.Data.Candle, Volume);
+            //}
+
+            //if (quote.Price > 7000)
+            //{
+            context.Actions.Sell(context.Data.Candle, Volume);
+            //}
+        }
+    }
+}

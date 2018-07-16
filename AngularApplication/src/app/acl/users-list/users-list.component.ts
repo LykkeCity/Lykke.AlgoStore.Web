@@ -1,24 +1,30 @@
-import { Component, OnDestroy } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, ViewChild } from '@angular/core';
 import { UserData } from '../../models/userdata.interface';
-import { UserRolesService } from '../../services/user-roles.service';
+import { UserRolesService } from '../../core/services/user-roles.service';
 import { Subscription } from 'rxjs';
 import { NotificationsService } from 'angular2-notifications';
-import { UserService } from '../../services/user.service';
+import { UserService } from '../../core/services/user.service';
 import Permissions from '../../store/models/permissions';
 import { PopupComponent } from '../../components/popup/popup.component';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap';
+import { ColumnMode, DatatableComponent } from '@swimlane/ngx-datatable';
 
 @Component({
   selector: 'app-users-list',
   templateUrl: './users-list.component.html',
   styleUrls: ['./users-list.component.scss']
 })
-export class UsersListComponent implements OnDestroy {
+export class UsersListComponent implements AfterViewInit, OnDestroy {
 
+  @ViewChild(DatatableComponent) ngxDatatable: DatatableComponent;
   users: UserData[];
+  temp: UserData[];
   loadingIndicator = true;
   subscriptions: Subscription[] = [];
   labelColors = ['azure', 'green', 'red', 'mango', 'violet', 'silver'];
+
+  typing: any;
+  doneTypingInterval: number;
 
   permissions: {
     canRevokeRole: boolean,
@@ -40,8 +46,15 @@ export class UsersListComponent implements OnDestroy {
 
     this.subscriptions.push(this.userRolesService.getAllUsersWithRoles().subscribe(data => {
       this.users = data;
+      this.temp = [...this.users];
       this.loadingIndicator = false;
     }));
+
+    this.doneTypingInterval = 1000;
+  }
+
+  ngAfterViewInit() {
+    this.ngxDatatable.columnMode = ColumnMode.force;
   }
 
   ngOnDestroy() {
@@ -85,6 +98,24 @@ export class UsersListComponent implements OnDestroy {
       keyboard: false,
       ignoreBackdropClick: true
     });
+  }
+
+  updateFilter(event) {
+    const val = event.target.value.toLowerCase();
+
+    clearTimeout(this.typing);
+
+    this.typing = setTimeout(() => {
+
+      const filtered = this.temp.filter((user) => {
+        return user.FullName.toLocaleLowerCase().indexOf(val) !== -1 ||
+              user.Email.toLocaleLowerCase().indexOf(val) !== -1
+            || !val;
+      });
+
+      this.users = [...filtered];
+
+    }, this.doneTypingInterval);
   }
 
 }
