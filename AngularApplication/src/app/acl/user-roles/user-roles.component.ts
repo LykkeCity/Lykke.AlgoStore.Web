@@ -65,6 +65,9 @@ export class UserRolesComponent implements OnDestroy {
       } else {
         this.userInfo = info;
       }
+    }, (error) => {
+      this.modalRef.hide();
+      this.notificationsService.error('Error', error.DisplayMessage);
     }));
 
     this.subscriptions.push(this.userRoleService.getAllRoles().subscribe(roles => {
@@ -116,6 +119,9 @@ export class UserRolesComponent implements OnDestroy {
                 this.usersService.updatePermissions(roles);
               });
             }
+          }, (error) => {
+            this.modalRef.hide();
+            this.notificationsService.error('Error', error.DisplayMessage);
           });
         }
       }

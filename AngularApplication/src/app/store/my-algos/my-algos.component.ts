@@ -126,6 +126,7 @@ export class MyAlgosComponent implements AfterViewInit, OnDestroy {
 
       this.algos = [...this.algos];
     }, (error) => {
+      this.modalRef.hide();
       this.notificationsService.error('Error', error.DisplayMessage);
     }));
   }

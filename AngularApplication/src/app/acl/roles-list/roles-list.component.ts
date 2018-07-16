@@ -86,6 +86,8 @@ export class RolesListComponent implements AfterViewInit, OnDestroy {
       this.roles.splice(index, 1);
 
       this.roles = [...this.roles];
+    }, (error) => {
+      this.notificationsService.error('Error', error.DisplayMessage);
     });
   }
 

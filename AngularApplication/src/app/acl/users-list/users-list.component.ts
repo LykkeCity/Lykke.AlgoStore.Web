@@ -87,6 +87,9 @@ export class UsersListComponent implements AfterViewInit, OnDestroy {
                 this.usersService.updatePermissions(roles);
               });
             }
+          }, (error) => {
+            this.modalRef.hide();
+            this.notificationsService.error('Error', error.DisplayMessage);
           });
         }
       }

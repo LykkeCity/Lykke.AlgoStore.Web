@@ -158,6 +158,7 @@ export class AlgoEditComponent implements OnInit, OnDestroy {
       this.notificationsService.success('Success', 'Algo has been deleted successfully.');
       this.router.navigate(['/store/my-algos']);
     }, (error) => {
+      this.modalRef.hide();
       this.notificationsService.error('Error', error.DisplayMessage);
     }));
   }
