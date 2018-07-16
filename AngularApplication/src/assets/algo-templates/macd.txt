@@ -5,12 +5,25 @@ namespace Lykke.AlgoStore.CSharp.Algo.Implemention.ExecutableClass
 {
     public sealed class MacdTrendAlgo : BaseAlgo
     {
+        /// <summary>
+        /// Value which shoud be set by the user for holding step
+        /// </summary>
         public double HoldingStep { get; set; }
+
+        /// <summary>
+        /// The tolerance
+        /// </summary>
         public double Tolerance { get; set; }
 
+        /// <summary>
+        /// Moving Average Convergence/Divergence indicator
+        /// </summary>
         private MacdFunction _macd;
         private double _holdings;
 
+        /// <summary>
+        /// Holding steps
+        /// </summary>
         public double Holdings => _holdings;
 
         /// <summary>
@@ -24,7 +37,9 @@ namespace Lykke.AlgoStore.CSharp.Algo.Implemention.ExecutableClass
         /// <summary>
         /// A method which is called when a new candle is received. The algo will be updated according to candle values.
         /// </summary>
-        /// <param name="context"></param>
+        /// <param name="context">
+        /// Candle values
+        /// </param>
         public override void OnCandleReceived(ICandleContext context)
         {
             var histogram = _macd.Histogram;

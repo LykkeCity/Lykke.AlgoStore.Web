@@ -9,6 +9,9 @@ namespace Lykke.AlgoStore.CSharp.Algo.Implemention.ExecutableClass
     /// </summary>
     public sealed class MovingAverageCrossAlgo : BaseAlgo
     {
+        /// <summary>
+        /// The adx treshold
+        /// </summary>
         public int ADXThreshold { get; set; }
 
         private bool _crossSMAShortAbove;
@@ -22,8 +25,19 @@ namespace Lykke.AlgoStore.CSharp.Algo.Implemention.ExecutableClass
         private double _currentSMALong;
         private double? _currentADX;
 
+        /// <summary>
+        /// Simple moving average indicator. It's period for execution should be slower, also known as fast simple moving average
+        /// </summary>
         private SmaFunction _smaShortPeriod;
+
+        /// <summary>
+        /// Simple moving average indicator. It's period for execution should be longer, also known as slow simple moving average
+        /// </summary>
         private SmaFunction _smaLongPeriod;
+
+        /// <summary>
+        /// Average Directioan Index indicator, which is using Average True Range, Plus Directional Indicator and Minus Directional Indicator
+        /// </summary>
         private AdxFunction _adx;
 
         /// <summary>
@@ -47,7 +61,9 @@ namespace Lykke.AlgoStore.CSharp.Algo.Implemention.ExecutableClass
         /// <summary>
         /// A method which is called when a new candle is received. The algo will be updated according to candle values.
         /// </summary>
-        /// <param name="context"></param>
+        /// <param name="context">
+        /// Candle values
+        /// </param>
         public override void OnCandleReceived(ICandleContext contextCandle)
         {
             contextCandle.Actions.Log($"Algo ADX Threshold {ADXThreshold}");
