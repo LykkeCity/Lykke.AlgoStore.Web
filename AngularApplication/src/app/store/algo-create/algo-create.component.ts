@@ -26,6 +26,7 @@ export class AlgoCreateComponent implements OnDestroy {
   algoSubmitted: boolean;
   algoErrors: string;
 
+  editor: any;
   subscriptions: Subscription[] = [];
 
   constructor(private algoService: AlgoService,
@@ -54,6 +55,11 @@ export class AlgoCreateComponent implements OnDestroy {
 
   nextTab(tabIndex: number): void {
     this.staticTabs.tabs[tabIndex].active = true;
+
+    if (tabIndex === 2) {
+      this.ref.detectChanges();
+      this.editor.resize(true); // force
+    }
   }
 
   goBack(): void {
@@ -100,6 +106,10 @@ export class AlgoCreateComponent implements OnDestroy {
       this.algoSubmitted = true;
       this.algoErrors = error.DisplayMessage;
     }));
+  }
+
+  initEditor(event) {
+      this.editor = event;
   }
 
   setTemplate(template: AlgoTemplate): void {
