@@ -24,7 +24,6 @@
     "@ng-idle/core": "^2.0.0-beta.12",
     "@ng-idle/keepalive": "^2.0.0-beta.12",
     "@ng-select/ng-select": "^1.4.1",
-    "@stomp/ng2-stompjs": "^4.0.0",
     "@swimlane/ngx-datatable": "^11.1.7",
     "angular-datatables": "^5.0.0",
     "angular-split": "^1.0.0-rc.3",
@@ -41,20 +40,18 @@
     "ngx-ui-switch": "^1.4.9",
     "rxjs": "^6.2.1",
     "rxjs-compat": "^6.2.1",
-    "socket.io": "^2.1.1",
-    "sockjs-client": "^1.1.5",
-    "stompjs": "^2.3.3",
     "zone.js": "^0.8.26"
   },
   "devDependencies": {
+    "@angular-devkit/build-angular": "~0.6.8",
     "@angular/cli": "6.0.8",
     "@angular/compiler-cli": "6.0.5",
+    "@stomp/ng2-stompjs": "^4.0.0",
     "codelyzer": "~3.1.1",
     "ngx-pagination": "^3.1.0",
     "ngx-quill": "^2.2.0",
     "ts-node": "~3.2.0",
     "tslint": "~5.3.2",
-    "typescript": "2.7.2",
-    "@angular-devkit/build-angular": "~0.6.8"
+    "typescript": "2.7.2"
   }
 }

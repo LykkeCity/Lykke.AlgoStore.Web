@@ -7,5 +7,15 @@
     "pathRewrite": {
       "^/devapi": ""
     }
+  },
+  "/ws/*": {
+    "target": "ws://algo-store-api.lykke-algo-store.svc.cluster.local/live/dummy",
+    "secure": false,
+    "ws": true,
+    "changeOrigin": true,
+    "logLevel" : "debug",
+    "pathRewrite": {
+      "^/ws": ""
+    }
   }
 }

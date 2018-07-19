@@ -1,83 +1,104 @@
 import { Injectable } from '@angular/core';
-import * as socketIo from 'socket.io-client';
-import * as Stomp from 'stompjs';
-import * as SockJS from 'sockjs-client';
-import { Observable } from 'rxjs';
+import { StompService, StompState } from '@stomp/ng2-stompjs';
+import { Observable } from 'rxjs/Observable';
+import { Message } from '@stomp/stompjs';
+import { ReplaySubject } from 'rxjs/ReplaySubject';
+import { StompRService } from './stomp.service';
+import { Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SocketService {
+  private connectedSource = new ReplaySubject<boolean>();
+  private subscriptions: { [key: string]: Observable<any> } = {};
+  public connected = this.connectedSource.asObservable();
 
-  private socket;
-  private stompClient;
+  constructor(private stompService: StompRService) {
 
-  public initSocket(url = 'ws://127.0.0.10:9921'): void {
-    this.socket = socketIo(url, {
-      path: '',
-      forceNew: true,
-      debug: true,
-      log: true
-    });
-    console.log(this.socket);
-
-  }
-
-  public initializeWebSocketConnection(url = 'http://127.0.0.10:9921') {
-    const ws = new SockJS(url);
-    this.stompClient = Stomp.over(ws);
-    this.stompClient.connect({}, (frame) => {
-      this.stompClient.subscribe('message', (message) => {
-        console.log(message);
-      });
+    this.stompService.state.asObservable().subscribe((stompState) => {
+      console.log(stompState);
+      if (stompState === StompState.CONNECTED) {
+        this.connectedSource.next(true);
+      } else if (stompState === StompState.CLOSED) {
+        this.connectedSource.next(false);
+      }
     });
   }
 
-  public send(message: Message): void {
-    this.socket.emit('message', message);
-  }
+  // Establish new web socket connection
+  // Use only when user was already authenticated else errors will occur (visible in the browser console)
+  // In case of connection issues browser will automatically try to re-establish dropped connection
+  public connect() {
+    this.stompService.config = <any>{
+      url: 'ws://localhost:4200/ws',
 
-  public onData<T>(): Observable<T> {
-    return new Observable<any>(observer => {
-      this.socket.on('message', (data: any) => {
-        console.log(data);
-        observer.next(data);
-      });
+      // Headers
+      // Typical keys: login, passcode, host
+      headers: {
+
+      },
+
+      protocols: [],
+
+      // How often to heartbeat?
+      // Interval in milliseconds, set to 0 to disable
+      heartbeat_in: 0, // Typical value 0 - disabled
+      heartbeat_out: 20000, // Typical value 20000 - every 20 seconds
+
+      // Wait in milliseconds before attempting auto reconnect
+      // Set to 0 to disable
+      // Typical value 5000 (5 seconds)
+      reconnect_delay: 5000,
+
+      // Will log diagnostics on console
+      debug: true
+    };
+
+    this.stompService.initAndConnect();
+    this.stompService.connectObservable.subscribe((f) => {
+      console.log('connected');
+      console.log(f);
+    });
+
+    this.stompService.defaultMessagesObservable.subscribe((m) => {
+      console.log('defaultmessage');
+      console.log(m);
     });
   }
 
-  public onEvent(event: Event): Observable<any> {
-    return new Observable<Event>(observer => {
-      this.socket.on('connect', (data) => {
-        console.log(data);
-        observer.next();
-      });
+  // Disconnect web socket
+  // Browser will stop trying to establish new connection unless openWebSocketConnection() called again
+  public disconnect() {
+    this.stompService.disconnect();
+    this.subscriptions = {};
+  }
 
-      this.socket.on('disconnect', (data) => {
-        console.log(data);
-        observer.next();
-      });
+  receipts() {
+    this.stompService.receiptsObservable.subscribe((m) => {
+      console.log(m);
+    });
 
-      this.socket.on('ping', (data) => {
-        console.log(data);
-        observer.next();
-      });
+    this.stompService.defaultMessagesObservable.subscribe((m) => {
+      console.log(m);
+    });
 
-      this.socket.on('error', (data) => {
-        console.log(data);
-        observer.next();
-      });
+    this.stompService.waitForReceipt('', (frame) => {
+      console.log(frame);
     });
   }
-}
 
-// Socket.io events
-export enum Event {
-  CONNECT = 'connect',
-  DISCONNECT = 'disconnect'
-}
+  public on(queueName: string): Observable<any> {
+    if (!this.subscriptions[queueName]) {
 
-export interface Message {
-  id?: string;
-  payload?: string;
+      this.subscriptions[queueName] = this.stompService
+        .subscribe(queueName)
+        .map((message: Message) => {
+          console.log(message);
+          return JSON.parse(message.body);
+        });
+    }
+
+    return this.subscriptions[queueName];
+  }
 }

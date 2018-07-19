@@ -1,8 +1,7 @@
 import { Component } from '@angular/core';
 import { UserService } from '../../core/services/user.service';
 import Permissions from '../../store/models/permissions';
-import { SocketService, Event } from '../../core/services/socket.service';
-import { AsyncService } from '../../core/services/aync.service';
+import { SocketService } from '../../core/services/socket.service';
 
 @Component({
   selector: 'app-header',
@@ -18,7 +17,7 @@ export class HeaderComponent {
     viewMyInstances: boolean
   };
 
-  constructor(private userService: UserService, private socketService: SocketService, private asyncService: AsyncService) {
+  constructor(private userService: UserService, private socketService: SocketService) {
     this.userService.loggedUserSubject.subscribe(() => {
       this.permissions = {
         viewPublicAlgos: this.userService.hasPermission(Permissions.GET_ALL_ALGOS),
@@ -29,28 +28,18 @@ export class HeaderComponent {
       };
     });
 
-    this.socketService.initSocket();
-    //
-    // this.socketService.onEvent(Event.CONNECT).subscribe(() => {
-    //   console.log('connected');
-    //
-    //   this.socketService.onData().subscribe((data) => {
-    //     console.log(data);
-    //   });
-    //
-    //   setInterval(() => {
-    //     this.socketService.send({id: 'dasdas', payload: 'dsadsad'});
-    //   }, 500)
-    //
-    // });
-
-    this.socketService.initializeWebSocketConnection();
-
-    this.asyncService.connect();
-    this.asyncService.subscribe('message').subscribe((data) => {
-      console.log(data);
+    this.socketService.connect();
+    this.socketService.on('messages').subscribe(m => {
+      console.log(m);
     });
 
+    this.socketService.on('message').subscribe(m => {
+      console.log(m);
+    });
 
+    this.socketService.receipts();
+    // this.socketService.subscribe('').subscribe(m => {
+    //   console.log(m);
+    // });
   }
 }
