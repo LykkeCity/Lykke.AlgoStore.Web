@@ -287,6 +287,11 @@ export class AlgoInstanceComponent implements OnDestroy {
       .subscribe(
         res => {
           this.stats = res;
+        },
+        () => {
+          if (this.modalRef) {
+            this.modalRef.hide();
+          }
         }
       ));
   }
@@ -301,6 +306,11 @@ export class AlgoInstanceComponent implements OnDestroy {
           if (this.log.length !== res.Log.length) {
             this.log = res.Log;
           }
+        },
+        () => {
+          if (this.modalRef) {
+            this.modalRef.hide();
+          }
         }
       ));
   }
@@ -313,6 +323,11 @@ export class AlgoInstanceComponent implements OnDestroy {
       .subscribe(
         res => {
           this.trades = res;
+        },
+        () => {
+          if (this.modalRef) {
+            this.modalRef.hide();
+          }
         }
       ));
   }
@@ -330,6 +345,11 @@ export class AlgoInstanceComponent implements OnDestroy {
             this.statusSub.unsubscribe();
 
             this.getInstanceData();
+          }
+        },
+        () => {
+          if (this.modalRef) {
+            this.modalRef.hide();
           }
         }
       );
