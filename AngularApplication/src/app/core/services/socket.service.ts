@@ -1,104 +1,58 @@
 import { Injectable } from '@angular/core';
-import { StompService, StompState } from '@stomp/ng2-stompjs';
-import { Observable } from 'rxjs/Observable';
-import { Message } from '@stomp/stompjs';
-import { ReplaySubject } from 'rxjs/ReplaySubject';
-import { StompRService } from './stomp.service';
-import { Subject } from 'rxjs';
+import { environment } from '../../../environments/environment';
+import { AuthTokenService } from './auth-token.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SocketService {
-  private connectedSource = new ReplaySubject<boolean>();
-  private subscriptions: { [key: string]: Observable<any> } = {};
-  public connected = this.connectedSource.asObservable();
+  socket: WebSocket;
+  token: string;
+  queues: SocketSubscription[] = [];
 
-  constructor(private stompService: StompRService) {
-
-    this.stompService.state.asObservable().subscribe((stompState) => {
-      console.log(stompState);
-      if (stompState === StompState.CONNECTED) {
-        this.connectedSource.next(true);
-      } else if (stompState === StompState.CLOSED) {
-        this.connectedSource.next(false);
-      }
+  constructor(private tokenService: AuthTokenService) {
+    this.tokenService.tokenStream.subscribe(token => {
+      this.token = token;
     });
   }
 
-  // Establish new web socket connection
-  // Use only when user was already authenticated else errors will occur (visible in the browser console)
-  // In case of connection issues browser will automatically try to re-establish dropped connection
-  public connect() {
-    this.stompService.config = <any>{
-      url: 'ws://localhost:4200/ws',
+  connect(url = environment.wsUrl) {
+    this.socket = new WebSocket(url);
 
-      // Headers
-      // Typical keys: login, passcode, host
-      headers: {
-
-      },
-
-      protocols: [],
-
-      // How often to heartbeat?
-      // Interval in milliseconds, set to 0 to disable
-      heartbeat_in: 0, // Typical value 0 - disabled
-      heartbeat_out: 20000, // Typical value 20000 - every 20 seconds
-
-      // Wait in milliseconds before attempting auto reconnect
-      // Set to 0 to disable
-      // Typical value 5000 (5 seconds)
-      reconnect_delay: 5000,
-
-      // Will log diagnostics on console
-      debug: true
-    };
-
-    this.stompService.initAndConnect();
-    this.stompService.connectObservable.subscribe((f) => {
-      console.log('connected');
-      console.log(f);
-    });
-
-    this.stompService.defaultMessagesObservable.subscribe((m) => {
-      console.log('defaultmessage');
-      console.log(m);
-    });
+    this.socket.addEventListener('open', this.onConnectionOpen.bind(this));
+    this.socket.addEventListener('close', this.onConnectionClose.bind(this));
   }
 
-  // Disconnect web socket
-  // Browser will stop trying to establish new connection unless openWebSocketConnection() called again
-  public disconnect() {
-    this.stompService.disconnect();
-    this.subscriptions = {};
+  disconnect() {
+    this.socket.close();
   }
 
-  receipts() {
-    this.stompService.receiptsObservable.subscribe((m) => {
-      console.log(m);
-    });
-
-    this.stompService.defaultMessagesObservable.subscribe((m) => {
-      console.log(m);
-    });
-
-    this.stompService.waitForReceipt('', (frame) => {
-      console.log(frame);
-    });
+  on(queue: string, callback: (message) => void) {
+    this.socket.addEventListener(queue, callback);
+    this.queues.push({queue, callback});
   }
 
-  public on(queueName: string): Observable<any> {
-    if (!this.subscriptions[queueName]) {
-
-      this.subscriptions[queueName] = this.stompService
-        .subscribe(queueName)
-        .map((message: Message) => {
-          console.log(message);
-          return JSON.parse(message.body);
-        });
-    }
-
-    return this.subscriptions[queueName];
+  send(msg: string) {
+    this.socket.send(msg);
   }
+
+  private onConnectionOpen() {
+    this.send(this.token);
+  }
+
+  private onConnectionClose() {
+    this.socket.removeEventListener('open', this.onConnectionOpen);
+    this.socket.removeEventListener('close', this.onConnectionOpen);
+
+    this.queues.forEach(sub => {
+      this.socket.removeEventListener(sub.queue, sub.callback);
+    });
+
+    this.socket = null;
+  }
+}
+
+interface SocketSubscription {
+  queue: string;
+  callback: any;
 }
