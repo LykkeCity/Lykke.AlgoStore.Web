@@ -37,7 +37,6 @@ import { AlgoCommentService } from './core/services/algo-comment.service';
 import { AlgoRatingService } from './core/services/algo-rating.service';
 import { InstanceService } from './core/services/instance.service';
 import { FileService } from './core/services/file.service';
-import { StompRService, StompService } from '@stomp/ng2-stompjs';
 
 
 @NgModule({
@@ -74,9 +73,7 @@ import { StompRService, StompService } from '@stomp/ng2-stompjs';
     AlgoRatingService,
     InstanceService,
     BsModalRef,
-    FileService,
-    StompRService,
-    StompService
+    FileService
   ],
   entryComponents: [PopupComponent, IdlePopupComponent],
   bootstrap: [AppComponent]
