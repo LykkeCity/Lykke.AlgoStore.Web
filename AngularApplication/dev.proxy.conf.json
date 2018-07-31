@@ -7,45 +7,5 @@
     "pathRewrite": {
       "^/devapi": ""
     }
-  },
-  "/ws/dummy/*": {
-    "target": "ws://algo-store-api.lykke-algo-store.svc.cluster.local/live/dummy",
-    "secure": false,
-    "ws": true,
-    "changeOrigin": true,
-    "logLevel" : "debug",
-    "pathRewrite": {
-      "^/ws": ""
-    }
-  },
-  "/ws/candles/*": {
-    "target": "ws://algo-store-api.lykke-algo-store.svc.cluster.local/live/candles",
-    "secure": false,
-    "ws": true,
-    "changeOrigin": true,
-    "logLevel" : "debug",
-    "pathRewrite": {
-      "^/ws": ""
-    }
-  },
-  "/ws/trades/*": {
-    "target": "ws://algo-store-api.lykke-algo-store.svc.cluster.local/live/trades",
-    "secure": false,
-    "ws": true,
-    "changeOrigin": true,
-    "logLevel" : "debug",
-    "pathRewrite": {
-      "^/ws": ""
-    }
-  },
-  "/ws/functions/*": {
-    "target": "ws://algo-store-api.lykke-algo-store.svc.cluster.local/live/functions",
-    "secure": false,
-    "ws": true,
-    "changeOrigin": true,
-    "logLevel" : "debug",
-    "pathRewrite": {
-      "^/ws": ""
-    }
   }
 }
