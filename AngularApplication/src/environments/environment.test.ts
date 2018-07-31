@@ -5,7 +5,7 @@ export const environment = {
   applicationId: '405712da-62b2-4231-85d3-de868a1e78a5',
   redirectUrl: 'http://algo-store-web.algo-store.svc.cluster.local/',
 
-  wsUrl: 'ws://algo-store-api.algo-store.svc.cluster.local/live/dummy',
+  wsUrl: 'ws://algo-store-api.algo-store.svc.cluster.local/live',
   storeApiUrl: 'http://algo-store-api.algo-store.svc.cluster.local/api',
   walletApiUrl: 'https://webwallet-test.lykkex.net/wallets/hft',
   authUrl: 'http://algo-store-web.algo-store.svc.cluster.local/api/home/authentication',

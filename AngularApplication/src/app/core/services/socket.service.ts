@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment';
 import { AuthTokenService } from './auth-token.service';
+import { UserService } from './user.service';
 
 @Injectable({
   providedIn: 'root'
@@ -8,15 +9,19 @@ import { AuthTokenService } from './auth-token.service';
 export class SocketService {
   socket: WebSocket;
   token: string;
+  clientId: string;
   queues: SocketSubscription[] = [];
 
-  constructor(private tokenService: AuthTokenService) {
+  constructor(private tokenService: AuthTokenService, private usersService: UserService) {
     this.tokenService.tokenStream.subscribe(token => {
       this.token = token;
     });
+
+    this.clientId = this.usersService.getLoggedUser().ClientId;
   }
 
-  connect(url = environment.wsUrl) {
+  connect(suffix: string) {
+    const url = environment.wsUrl + suffix;
     this.socket = new WebSocket(url);
 
     this.socket.addEventListener('open', this.onConnectionOpen.bind(this));
@@ -29,7 +34,7 @@ export class SocketService {
 
   on(queue: string, callback: (message) => void) {
     this.socket.addEventListener(queue, callback);
-    this.queues.push({queue, callback});
+    this.queues.push({ queue, callback });
   }
 
   send(msg: string) {
@@ -37,7 +42,7 @@ export class SocketService {
   }
 
   private onConnectionOpen() {
-    this.send(this.token);
+    this.send(this.buildAuthMessage());
   }
 
   private onConnectionClose() {
@@ -49,6 +54,10 @@ export class SocketService {
     });
 
     this.socket = null;
+  }
+
+  private buildAuthMessage(): string {
+    return `Token:${this.token}_ClientId:${this.clientId}`;
   }
 }
 
