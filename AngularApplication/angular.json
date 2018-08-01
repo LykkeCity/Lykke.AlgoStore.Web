@@ -32,7 +32,8 @@
               "src/assets/editor-snippets/csharp.js",
               "node_modules/ace-builds/src-min/ext-language_tools.js",
               "node_modules/ace-builds/src-min/ext-keybinding_menu.js",
-              "node_modules/ace-builds/src-min/ext-searchbox.js"
+              "node_modules/ace-builds/src-min/ext-searchbox.js",
+              "node_modules/echarts/dist/echarts.min.js"
             ]
           },
           "configurations": {

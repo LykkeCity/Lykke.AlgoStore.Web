@@ -6,6 +6,7 @@ import { QuillModule } from 'ngx-quill';
 import { MomentModule } from 'angular2-moment';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { NgSelectModule } from '@ng-select/ng-select';
+import { NgxEchartsModule } from 'ngx-echarts';
 
 // ROUTING
 import { StoreRouting } from './store-routing.module';
@@ -33,7 +34,6 @@ import { AlgoVisibilityPipe } from './pipes/algo-visibility.pipe';
 import { MyInstancesComponent } from './my-instances/my-instances.component';
 import { InstancesTableComponent } from './my-instances/instances-table/instances-table.component';
 
-// SERVICES
 @NgModule({
   imports: [
     StoreRouting,
@@ -43,7 +43,8 @@ import { InstancesTableComponent } from './my-instances/instances-table/instance
     QuillModule,
     MomentModule,
     NgxPaginationModule,
-    NgSelectModule
+    NgSelectModule,
+    NgxEchartsModule
   ],
   declarations: [
     StoreComponent,
