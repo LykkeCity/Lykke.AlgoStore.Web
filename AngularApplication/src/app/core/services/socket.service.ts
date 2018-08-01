@@ -47,7 +47,7 @@ export class SocketService {
 
   private onConnectionClose() {
     this.socket.removeEventListener('open', this.onConnectionOpen);
-    this.socket.removeEventListener('close', this.onConnectionOpen);
+    this.socket.removeEventListener('close', this.onConnectionClose);
 
     this.queues.forEach(sub => {
       this.socket.removeEventListener(sub.queue, sub.callback);
