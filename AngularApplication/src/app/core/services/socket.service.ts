@@ -17,10 +17,15 @@ export class SocketService {
       this.token = token;
     });
 
-    this.clientId = this.usersService.getLoggedUser().ClientId;
+    this.usersService.loggedUserSubject.subscribe(user => {
+      if (user.ClientId) {
+        this.clientId = user.ClientId;
+      }
+    });
   }
 
   connect(suffix: string) {
+    console.log('connected');
     const url = environment.wsUrl + suffix;
     this.socket = new WebSocket(url);
 
@@ -46,6 +51,7 @@ export class SocketService {
   }
 
   private onConnectionClose() {
+    console.log('disconnected');
     this.socket.removeEventListener('open', this.onConnectionOpen);
     this.socket.removeEventListener('close', this.onConnectionClose);
 

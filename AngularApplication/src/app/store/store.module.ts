@@ -6,7 +6,6 @@ import { QuillModule } from 'ngx-quill';
 import { MomentModule } from 'angular2-moment';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { NgSelectModule } from '@ng-select/ng-select';
-import { NgxEchartsModule } from 'ngx-echarts';
 
 // ROUTING
 import { StoreRouting } from './store-routing.module';
@@ -43,8 +42,7 @@ import { InstancesTableComponent } from './my-instances/instances-table/instance
     QuillModule,
     MomentModule,
     NgxPaginationModule,
-    NgSelectModule,
-    NgxEchartsModule
+    NgSelectModule
   ],
   declarations: [
     StoreComponent,

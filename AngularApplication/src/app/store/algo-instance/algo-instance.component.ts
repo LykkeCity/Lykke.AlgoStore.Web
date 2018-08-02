@@ -18,7 +18,6 @@ import { AlgoService } from '../../core/services/algo.service';
 import { InstanceService } from '../../core/services/instance.service';
 import Permissions from '../models/permissions';
 import { AlgoFakeTradingPopupComponent } from '../algo-run/algo-fake-trading-popup/algo-fake-trading-popup.component';
-import { ChartsService } from '../../core/services/charts.service';
 
 @Component({
   selector: 'app-algo-instance',
@@ -56,18 +55,13 @@ export class AlgoInstanceComponent implements OnDestroy {
 
   modalRef: BsModalRef;
 
-  chartOption: any;
-
   constructor(private route: ActivatedRoute,
               private router: Router,
               private algoService: AlgoService,
               private instanceService: InstanceService,
               private userService: UserService,
               private bsModalService: BsModalService,
-              private notificationsService: NotificationsService,
-              private chartsService: ChartsService) {
-
-    this.chartOption = this.chartsService.getChartOptions();
+              private notificationsService: NotificationsService) {
 
     this.permissions = {
       canSeeLogs: this.userService.hasPermission(Permissions.GET_TEST_TAIL_LOG),
@@ -375,6 +369,7 @@ export class AlgoInstanceComponent implements OnDestroy {
   }
 
   onSelect(event) {
+    console.log('cancel');
     this.heading = event.heading;
 
     if (this.instance.AlgoInstanceStatus === IAlgoInstanceStatus.Deploying) {
