@@ -50,6 +50,10 @@
       <div *ngIf="value == iAlgoInstanceStatus.Deploying">
         <span><span class="deploying-instance"></span> Deploying</span>
       </div>
+
+      <div *ngIf="value == iAlgoInstanceStatus.Errored">
+        <span><span class="stopped-instance"></span> Errored</span>
+      </div>
     </ng-template>
   </ngx-datatable-column>
   <ngx-datatable-column [resizeable]="false" name="Wallet" prop="Wallet.Name" [flexGrow]="2" *ngIf="isLive" [cellClass]="isBigger">
