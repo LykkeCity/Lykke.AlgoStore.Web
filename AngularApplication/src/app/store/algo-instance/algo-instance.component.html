@@ -108,12 +108,12 @@
       </div>
     </split-area>
     <split-area size="30" *ngIf="permissions.canSeeTrades || permissions.canSeeStatistics || permissions.canSeeLogs">
-      <tabset #instanceTabs>
+      <tabset #instanceTabs>          
         <tab heading="Log" class="ml-3" (select)="onSelect($event)" *ngIf="permissions.canSeeLogs">
           <div class="container">
               <div *ngFor="let apilog of log" class="log-holder">{{apilog}}</div>
           </div>
-        </tab>
+        </tab>        
         <tab heading="Statistics" (select)="onSelect($event)" *ngIf="permissions.canSeeStatistics">
           <div class="container">
             <div class="stats-holder">
@@ -182,11 +182,11 @@
             </table>
           </div>
         </tab>
-        <tab heading="Charts">
-          <div class="container">
-            <!--<app-chart [instanceId]="instance.InstanceId"></app-chart>-->
-          </div>
-        </tab>
+        <tab heading="Charts" (select)="onSelect($event)" *ngIf="permissions.canSeeCharts">
+            <div class="container">
+              <app-chart [instanceId]="instance.InstanceId" [metadata]="instance.AlgoMetaDataInformation"></app-chart>
+            </div>
+          </tab>        
       </tabset>
     </split-area>
   </split>

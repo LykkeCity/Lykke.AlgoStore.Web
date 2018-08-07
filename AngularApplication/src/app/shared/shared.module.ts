@@ -19,6 +19,7 @@ import { LoaderComponent } from './loader/loader.component';
 import { CollapseContentComponent } from './collapse/collapse-content.component';
 import { ChartComponent } from './chart/chart.component';
 import { NgxEchartsModule } from 'ngx-echarts';
+import { StompRService, StompService } from '@stomp/ng2-stompjs';
 
 
 @NgModule({
@@ -38,7 +39,7 @@ import { NgxEchartsModule } from 'ngx-echarts';
     NgxDatatableModule,
     NgxEchartsModule
   ],
-  providers: [StarRatingConfigService, ACLGuard, UserDetailsGuard],
+  providers: [StarRatingConfigService, ACLGuard, UserDetailsGuard, StompService, StompRService],
   declarations: [
     PopupComponent,
     CodeEditorComponent,

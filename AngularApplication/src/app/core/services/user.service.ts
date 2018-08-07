@@ -27,8 +27,8 @@ export class UserService {
 
   public setLoggedUser(userData: UserData) {
     this.updatePermissions(userData.Roles);
-
-    this.loggedUserSubject.next(userData);
+    const user = {...this.getLoggedUser(), ...userData };
+    this.loggedUserSubject.next(user);
   }
 
   public getLoggedUser(): UserData {

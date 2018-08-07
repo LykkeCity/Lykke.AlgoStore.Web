@@ -8,6 +8,8 @@ import { AlgoLog } from '../../store/models/algo-log.interface';
 import { AlgoInstanceTrade } from '../../store/models/algo-instance-trade.model';
 import { InstanceStatistic } from '../../store/models/algo-instance-statistic.model';
 import { UserInstance } from '../../store/models/user-instance.interface';
+import { Candle } from '../../shared/chart/models/candle.model';
+import { Function } from '../../shared/chart/models/function.model';
 
 @Injectable()
 export class InstanceService {
@@ -68,6 +70,20 @@ export class InstanceService {
   deleteAlgoInstance(instance: AlgoInstance): Observable<void> {
     const body = { AlgoId: instance.AlgoId, InstanceId: instance.InstanceId, AlgoClientId: instance.AlgoClientId };
     return this.authRequestService.delete(environment.storeApiUrl + '/v1/algoInstances', { body });
+  }
+
+  getHistoricalTrades(instanceId: string, tradedAssetId: string, fromMoment: string, toMoment: string): Observable<AlgoInstanceTrade[]> {
+    const params = { instanceId, tradedAssetId, fromMoment, toMoment };
+    return this.authRequestService.get(environment.storeApiUrl + '/v1/history/trades', { params });
+  }
+
+  getHistoricalCandles(assetPairId: string, priceType: number, timeInterval: string, fromMoment: string, toMoment: string): Observable<Candle[]> {
+    return this.authRequestService.get(environment.storeApiUrl + `/v1/history/candles/${assetPairId}/${priceType}/${timeInterval}/${fromMoment}/${toMoment}`);
+  }
+
+  getHistoricalFunctions(instanceId: string, fromMoment: string, toMoment: string): Observable<Function[]> {
+    const params = { instanceId, fromMoment, toMoment };
+    return this.authRequestService.get(environment.storeApiUrl + '/v1/history/functions', { params });
   }
 
 }
