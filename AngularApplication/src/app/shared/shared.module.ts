@@ -17,6 +17,9 @@ import { UserDetailsGuard } from '../core/guards/user-details.guard';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { LoaderComponent } from './loader/loader.component';
 import { CollapseContentComponent } from './collapse/collapse-content.component';
+import { ChartComponent } from './chart/chart.component';
+import { NgxEchartsModule } from 'ngx-echarts';
+import { StompRService, StompService } from '@stomp/ng2-stompjs';
 
 
 @NgModule({
@@ -33,16 +36,18 @@ import { CollapseContentComponent } from './collapse/collapse-content.component'
     TooltipModule.forRoot(),
     BsDropdownModule.forRoot(),
     PopoverModule.forRoot(),
-    NgxDatatableModule
+    NgxDatatableModule,
+    NgxEchartsModule
   ],
-  providers: [StarRatingConfigService, ACLGuard, UserDetailsGuard],
+  providers: [StarRatingConfigService, ACLGuard, UserDetailsGuard, StompService, StompRService],
   declarations: [
     PopupComponent,
     CodeEditorComponent,
     DateTimePickerComponent,
     StarRatingComponent,
     LoaderComponent,
-    CollapseContentComponent
+    CollapseContentComponent,
+    ChartComponent
   ],
   exports: [
     CommonModule,
@@ -59,7 +64,8 @@ import { CollapseContentComponent } from './collapse/collapse-content.component'
     NgxDatatableModule,
     PopoverModule,
     LoaderComponent,
-    CollapseContentComponent
+    CollapseContentComponent,
+    ChartComponent
   ]
 })
 export class SharedModule {}

@@ -33,7 +33,6 @@ import { AlgoVisibilityPipe } from './pipes/algo-visibility.pipe';
 import { MyInstancesComponent } from './my-instances/my-instances.component';
 import { InstancesTableComponent } from './my-instances/instances-table/instances-table.component';
 
-// SERVICES
 @NgModule({
   imports: [
     StoreRouting,

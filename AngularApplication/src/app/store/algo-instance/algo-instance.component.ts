@@ -40,6 +40,7 @@ export class AlgoInstanceComponent implements OnDestroy {
 
   editor: any;
   subscriptions: Subscription[] = [];
+  instanceDataSubscriptions: Subscription[] = [];
   statusSub: Subscription;
 
   permissions: {
@@ -50,7 +51,8 @@ export class AlgoInstanceComponent implements OnDestroy {
     canDeleteInstance: boolean,
     canEditName: boolean,
     canRestartInstance: boolean,
-    canSeeWallets: boolean
+    canSeeWallets: boolean,
+    canSeeCharts: boolean
   };
 
   modalRef: BsModalRef;
@@ -63,7 +65,6 @@ export class AlgoInstanceComponent implements OnDestroy {
               private bsModalService: BsModalService,
               private notificationsService: NotificationsService) {
 
-
     this.permissions = {
       canSeeLogs: this.userService.hasPermission(Permissions.GET_TEST_TAIL_LOG),
       canSeeStatistics: this.userService.hasPermission(Permissions.GET_ALGO_INSTANCE_STATISTIC),
@@ -72,7 +73,8 @@ export class AlgoInstanceComponent implements OnDestroy {
       canDeleteInstance: this.userService.hasPermission(Permissions.DELETE_ALGO_INSTANCE_DATA),
       canEditName: this.userService.hasPermission(Permissions.EDIT_INSTANCE_NAME),
       canRestartInstance: false,
-      canSeeWallets: this.userService.hasPermission(Permissions.GET_FREE_WALLETS)
+      canSeeWallets: this.userService.hasPermission(Permissions.GET_FREE_WALLETS),
+      canSeeCharts: true
     };
 
     this.subscriptions.push(this.route.params.subscribe(params => {
@@ -114,6 +116,10 @@ export class AlgoInstanceComponent implements OnDestroy {
     }
 
     this.subscriptions.forEach(sub => {
+      sub.unsubscribe();
+    });
+
+    this.instanceDataSubscriptions.forEach(sub => {
       sub.unsubscribe();
     });
 
@@ -280,7 +286,7 @@ export class AlgoInstanceComponent implements OnDestroy {
   }
 
   getStatistics(): void {
-    this.subscriptions.push(this.instanceService.getInstanceStatistics(this.instanceId)
+    this.instanceDataSubscriptions.push(this.instanceService.getInstanceStatistics(this.instanceId)
       .pipe(
         repeatWhen(() => timer(10000, 5000))
       )
@@ -297,7 +303,7 @@ export class AlgoInstanceComponent implements OnDestroy {
   }
 
   getLogs(): void {
-    this.subscriptions.push(this.instanceService.getInstanceLogs(this.algoId, this.instanceId, this.clientId)
+    this.instanceDataSubscriptions.push(this.instanceService.getInstanceLogs(this.algoId, this.instanceId, this.clientId)
       .pipe(
         repeatWhen(() => timer(10000, 5000))
       )
@@ -316,7 +322,7 @@ export class AlgoInstanceComponent implements OnDestroy {
   }
 
   getTrades(): void {
-    this.subscriptions.push(this.instanceService.getInstanceTrades(this.instanceId)
+    this.instanceDataSubscriptions.push(this.instanceService.getInstanceTrades(this.instanceId)
       .pipe(
         repeatWhen(() => timer(10000, 5000))
       )
@@ -376,8 +382,8 @@ export class AlgoInstanceComponent implements OnDestroy {
       return;
     }
 
-    this.subscriptions.forEach(sub => sub.unsubscribe());
-    this.subscriptions = []; // clear the array so we don't have duplicate subscriptions
+    this.instanceDataSubscriptions.forEach(sub => sub.unsubscribe());
+    this.instanceDataSubscriptions = []; // clear the array so we don't have duplicate subscriptions
 
     this.getInstanceData();
   }
