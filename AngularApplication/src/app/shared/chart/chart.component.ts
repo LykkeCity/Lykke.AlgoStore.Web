@@ -82,10 +82,10 @@ export class ChartComponent implements OnChanges, OnDestroy {
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes['instanceId'] && changes['metadata'] && changes['instanceId'].currentValue && changes['metadata'].currentValue) {
-      //this.getHistoricalData().then(() => {
+      this.getHistoricalData().then(() => {
        this.ready = true;
       this.initSocket();
-     // });
+     });
     }
   }
 
@@ -130,7 +130,7 @@ export class ChartComponent implements OnChanges, OnDestroy {
       this.series.push(this.generateFunctionSeries(func.FunctionName));
     }
 
-    this.series.find(s => s.name === func.FunctionName).data.push(func.Value)
+    this.series.find(s => s.name === func.FunctionName).data.push(func.Value);
     func.CalculatedOn = moment(func.CalculatedOn).format('YYYY-MM-DD HH:mm:ss');
     this.categories.push(func.CalculatedOn);
     this.legend.push(func.FunctionName)
@@ -157,7 +157,7 @@ export class ChartComponent implements OnChanges, OnDestroy {
       const timeInterval = this.metadata.Parameters.find(p => p.Key === 'CandleInterval').Value;
 
       const historicalDataPromises = [];
-      historicalDataPromises.push(this.instanceService.getHistoricalCandles(instanceAssetPair, 1, timeInterval, instanceStartDate, now).toPromise());
+      historicalDataPromises.push(this.instanceService.getHistoricalCandles(instanceAssetPair, 3, timeInterval, instanceStartDate, now).toPromise());
       historicalDataPromises.push(this.instanceService.getHistoricalTrades(this.instanceId, instanceTradedAsset, instanceStartDate, now).toPromise());
       historicalDataPromises.push(this.instanceService.getHistoricalFunctions(this.instanceId, instanceStartDate, now).toPromise());
 
