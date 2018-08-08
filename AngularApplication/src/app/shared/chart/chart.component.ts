@@ -157,7 +157,7 @@ export class ChartComponent implements OnChanges, OnDestroy {
       const timeInterval = this.metadata.Parameters.find(p => p.Key === 'CandleInterval').Value;
 
       const historicalDataPromises = [];
-      historicalDataPromises.push(this.instanceService.getHistoricalCandles(instanceAssetPair, 3, timeInterval, instanceStartDate, now).toPromise());
+      historicalDataPromises.push(this.instanceService.getHistoricalCandles(instanceAssetPair, 1, timeInterval, instanceStartDate, now).toPromise());
       historicalDataPromises.push(this.instanceService.getHistoricalTrades(this.instanceId, instanceTradedAsset, instanceStartDate, now).toPromise());
       historicalDataPromises.push(this.instanceService.getHistoricalFunctions(this.instanceId, instanceStartDate, now).toPromise());
 
