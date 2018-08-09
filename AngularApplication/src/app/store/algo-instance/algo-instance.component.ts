@@ -1,5 +1,6 @@
 import { Component, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { DATETIME_DISPLAY_FORMAT } from '../../core/utils/date-time';
 import { AlgoInstance, AlgoInstanceData, IAlgoInstanceStatus, IAlgoInstanceType } from '../models/algo-instance.model';
 import { Subscription, timer } from 'rxjs';
 import { Wallet } from '../../models/wallet.model';
@@ -42,6 +43,7 @@ export class AlgoInstanceComponent implements OnDestroy {
   subscriptions: Subscription[] = [];
   instanceDataSubscriptions: Subscription[] = [];
   statusSub: Subscription;
+  displayDateFormat = DATETIME_DISPLAY_FORMAT;
 
   permissions: {
     canSeeLogs: boolean,

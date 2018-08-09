@@ -1,5 +1,7 @@
 import * as moment from 'moment';
 
+export const DATETIME_DISPLAY_FORMAT = 'YYYY-MM-DD HH:mm:ss';
+
 export default class DateTime {
 
   static now(): string {

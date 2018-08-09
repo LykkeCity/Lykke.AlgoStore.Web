@@ -13,6 +13,7 @@ import { UserService } from '../../core/services/user.service';
 import Permissions from '../models/permissions';
 import { InstanceService } from '../../core/services/instance.service';
 import { AlgoInstance, IAlgoInstanceStatus } from '../models/algo-instance.model';
+import { DATETIME_DISPLAY_FORMAT } from '../../core/utils/date-time';
 
 @Component({
   selector: 'app-algo-edit',
@@ -30,6 +31,7 @@ export class AlgoEditComponent implements OnInit, OnDestroy {
   algoErrors: string;
   instances: AlgoInstance[];
   forceDelete: boolean;
+  displayDateFormat =  DATETIME_DISPLAY_FORMAT;
 
   permissions: {
     canPublish: boolean,

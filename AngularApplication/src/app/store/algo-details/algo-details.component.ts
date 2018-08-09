@@ -1,4 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { DATETIME_DISPLAY_FORMAT } from '../../core/utils/date-time';
 import { Algo, AlgoVisibility } from '../models/algo.interface';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
@@ -35,6 +36,7 @@ export class AlgoDetailsComponent implements OnInit, OnDestroy {
   comments: AlgoComment[] = [];
   modalRef: BsModalRef;
   iAlgoVisibility = AlgoVisibility;
+  displayDateFormat = DATETIME_DISPLAY_FORMAT;
 
   constructor(
     private algoService: AlgoService,

@@ -1,12 +1,14 @@
 import { Component, Input, OnChanges, OnDestroy, SimpleChanges } from '@angular/core';
 import { SocketService } from '../../core/services/socket.service';
 import * as moment from 'moment';
+import { DATETIME_DISPLAY_FORMAT } from '../../core/utils/date-time';
 import { Candle } from './models/candle.model';
 import { Function } from './models/function.model';
 import { AlgoInstanceTrade } from '../../store/models/algo-instance-trade.model';
 import { InstanceService } from '../../core/services/instance.service';
 import { AlgoMetadata } from '../../store/models/algo-metadata.model';
 import { Subscription } from 'rxjs';
+import { IAlgoInstanceStatus } from '../../store/models/algo-instance.model';
 
 @Component({
   selector: 'app-chart',
@@ -14,9 +16,10 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./chart.component.scss']
 })
 export class ChartComponent implements OnChanges, OnDestroy {
-  
+
   ready = false;
   @Input() instanceId: string;
+  @Input() instanceStatus: IAlgoInstanceStatus;
   @Input() metadata: AlgoMetadata;
 
   series: any[] = [];
@@ -29,11 +32,11 @@ export class ChartComponent implements OnChanges, OnDestroy {
   socketSubscriptions: Subscription[] = [];
 
   constructor(private socketService: SocketService,
-              private instanceService: InstanceService) {    
+              private instanceService: InstanceService) {
 
-     this.series.push(this.generateCandleSeries('Candles'));
-     this.series.push(this.generateTradesSeries('Trades'));     
-                
+    this.series.push(this.generateCandleSeries('Candles'));
+    this.series.push(this.generateTradesSeries('Trades'));
+
     this.chartOptions = {
       title: {
         text: 'Chart'
@@ -62,7 +65,7 @@ export class ChartComponent implements OnChanges, OnDestroy {
         }
       ],
       xAxis: {
-        name:'Price',
+        name: 'Price',
         type: 'category',
         data: this.categories,
         scale: true,
@@ -83,9 +86,11 @@ export class ChartComponent implements OnChanges, OnDestroy {
   ngOnChanges(changes: SimpleChanges) {
     if (changes['instanceId'] && changes['metadata'] && changes['instanceId'].currentValue && changes['metadata'].currentValue) {
       this.getHistoricalData().then(() => {
-       this.ready = true;
-      this.initSocket();
-     });
+        this.ready = true;
+        if (this.instanceStatus === IAlgoInstanceStatus.Running) {
+          this.initSocket();
+        }
+      });
     }
   }
 
@@ -96,15 +101,15 @@ export class ChartComponent implements OnChanges, OnDestroy {
   private initSocket(): void {
     this.socketService.connect();
     this.socketSubscriptions.push(this.socketService.on(`instance/${this.instanceId}/candles`).subscribe((message) => {
-        this.drawCandle(message);
+      this.drawCandle(message);
     }));
 
     this.socketSubscriptions.push(this.socketService.on(`instance/${this.instanceId}/functions`).subscribe((message) => {
-        this.drawFunction(message);
+      this.drawFunction(message);
     }));
 
     this.socketSubscriptions.push(this.socketService.on(`instance/${this.instanceId}/trades`).subscribe((message) => {
-        this.drawTrade(message);
+      this.drawTrade(message);
     }));
 
     this.chartUpdateInterval = setInterval(() => {
@@ -113,27 +118,28 @@ export class ChartComponent implements OnChanges, OnDestroy {
   }
 
   private drawTrade(trade: AlgoInstanceTrade): void {
-    trade.DateOfTrade = moment(trade.DateOfTrade).format('YYYY-MM-DD HH:mm:ss');
-    this.series.find(s => s.name === 'Trades').data.push([trade.DateOfTrade, Number.parseInt(trade.Price), trade['AssetPairId'], trade.IsBuy, trade.Amount]);
+    trade.DateOfTrade = moment(trade.DateOfTrade).format(DATETIME_DISPLAY_FORMAT);
+    this.series.find(s => s.name === 'Trades')
+      .data.push([trade.DateOfTrade, Number.parseInt(trade.Price), trade['AssetPairId'], trade.IsBuy, trade.Amount]);
     this.categories.push(trade.DateOfTrade);
   }
 
   private drawCandle(candle: Candle): void {
-    candle.DateTime = moment(candle.DateTime).format('YYYY-MM-DD HH:mm:ss');
+    candle.DateTime = moment(candle.DateTime).format(DATETIME_DISPLAY_FORMAT);
     this.series.find(s => s.name === 'Candles').data.push([candle.Open, candle.Close, candle.Low, candle.High]);
     this.categories.push(candle.DateTime);
   }
 
   drawFunction(func: Function): void {
     const hasSeries = this.series.find(s => s.name === func.FunctionName);
-    if(!hasSeries) {
+    if (!hasSeries) {
       this.series.push(this.generateFunctionSeries(func.FunctionName));
     }
 
     this.series.find(s => s.name === func.FunctionName).data.push(func.Value);
-    func.CalculatedOn = moment(func.CalculatedOn).format('YYYY-MM-DD HH:mm:ss');
+    func.CalculatedOn = moment(func.CalculatedOn).format(DATETIME_DISPLAY_FORMAT);
     this.categories.push(func.CalculatedOn);
-    this.legend.push(func.FunctionName)
+    this.legend.push(func.FunctionName);
   }
 
   private updateChart(): void {
@@ -150,19 +156,38 @@ export class ChartComponent implements OnChanges, OnDestroy {
 
   private async getHistoricalData() {
     return new Promise((resolve, reject) => {
-      const now = moment().toISOString();
       const instanceStartDate = moment(this.metadata.Parameters.find(p => p.Key === 'StartFrom').Value).toISOString();
       const instanceTradedAsset = this.metadata.Parameters.find(p => p.Key === 'TradedAsset').Value;
       const instanceAssetPair = this.metadata.Parameters.find(p => p.Key === 'AssetPair').Value;
       const timeInterval = this.metadata.Parameters.find(p => p.Key === 'CandleInterval').Value;
 
       const historicalDataPromises = [];
-      historicalDataPromises.push(this.instanceService.getHistoricalCandles(instanceAssetPair, 1, timeInterval, instanceStartDate, now).toPromise());
-      historicalDataPromises.push(this.instanceService.getHistoricalTrades(this.instanceId, instanceTradedAsset, instanceStartDate, now).toPromise());
-      historicalDataPromises.push(this.instanceService.getHistoricalFunctions(this.instanceId, instanceStartDate, now).toPromise());
+      historicalDataPromises.push(
+        this.instanceService.getHistoricalCandles(instanceAssetPair, 3, timeInterval, instanceStartDate, now).toPromise());
+      historicalDataPromises.push(
+        this.instanceService.getHistoricalTrades(this.instanceId, instanceTradedAsset, instanceStartDate, now).toPromise());
+      historicalDataPromises.push(
+        this.instanceService.getHistoricalFunctions(this.instanceId, instanceStartDate, now).toPromise());
 
-      Promise.all(historicalDataPromises).then((values) => {
-        console.log(values);
+      Promise.all(historicalDataPromises).then((data) => {
+        console.log(data);
+        this.updateChart();
+        const historicalCandlesSeries = data[0];
+        const historicalTradesSeries = data[1].reverse();
+        const historicalFunctionsSeries = data[2];
+
+        for (const candle of historicalCandlesSeries) {
+          this.drawCandle(candle);
+        }
+
+        for (const trade of historicalTradesSeries) {
+          this.drawTrade(trade);
+        }
+
+        for (const func of historicalFunctionsSeries) {
+          this.drawFunction(func);
+        }
+
         resolve();
       });
     });
@@ -174,11 +199,11 @@ export class ChartComponent implements OnChanges, OnDestroy {
     clearInterval(this.chartUpdateInterval);
   }
 
-  private generateGlobalSeries() {    
+  private generateGlobalSeries() {
     return [
-      this.generateCandleSeries('Candles'),      
-      this.generateTradesSeries('Trades')      
-    ]
+      this.generateCandleSeries('Candles'),
+      this.generateTradesSeries('Trades')
+    ];
   }
 
   private generateCandleSeries(name: string) {
@@ -203,7 +228,7 @@ export class ChartComponent implements OnChanges, OnDestroy {
   }
 
   private generateTradesSeries(name: string) {
-     return {
+    return {
       name: name,
       type: 'scatter',
       data: [],
@@ -214,22 +239,22 @@ export class ChartComponent implements OnChanges, OnDestroy {
       },
       tooltip: {
         formatter: (params: any) => {
-        return `Trade <br>Date: ${params.data[0]}<br>Price: ${params.data[1]}<br>AssetPair: ${params.data[2]}<br>Operation: ${params.data[3] ? 'Buy' : 'Sell'}<br> Amount: ${params.data[4]}`;
+          return `Trade <br>Date: ${params.data[0]}<br>Price: ${params.data[1]}<br>AssetPair: ${params.data[2]}<br>Operation: ${params.data[3] ? 'Buy' : 'Sell'}<br> Amount: ${params.data[4]}`;
         }
       }
-    }
+    };
   }
 
   private generateFunctionSeries(name: string) {
-      return {
-        name: name,
-        type: 'line',
-        smooth: true,
-        // yAxisIndex: 1,
-        data: [],
-        lineStyle: {
-          normal: { opacity: 0.5 }
-        }
-      };
+    return {
+      name: name,
+      type: 'line',
+      smooth: true,
+      // yAxisIndex: 1,
+      data: [],
+      lineStyle: {
+        normal: { opacity: 0.5 }
+      }
+    };
   }
 }

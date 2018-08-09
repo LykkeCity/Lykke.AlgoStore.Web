@@ -21,19 +21,19 @@
   <ngx-datatable-column name="Created Date" prop="CreateDate"
                         [flexGrow]="3">
     <ng-template let-value="value" let-row="row" ngx-datatable-cell-template>
-      <div>{{value ? (value | amLocal | amDateFormat:'YYYY-MM-DD HH:mm:ss') : 'N/A'}}</div>
+      <div>{{value ? (value | amLocal | amDateFormat: displayDateFormat) : 'N/A'}}</div>
     </ng-template>
   </ngx-datatable-column>
   <ngx-datatable-column name="Start Date" prop="RunDate"
                         [flexGrow]="3">
     <ng-template let-value="value" let-row="row" ngx-datatable-cell-template>
-      <div>{{value ? (value | amLocal | amDateFormat:'YYYY-MM-DD HH:mm:ss') : 'N/A'}}</div>
+      <div>{{value ? (value | amLocal | amDateFormat: displayDateFormat) : 'N/A'}}</div>
     </ng-template>
   </ngx-datatable-column>
   <ngx-datatable-column name="End Date" prop="StopDate"
                         [flexGrow]="3">
     <ng-template let-value="value" let-row="row" ngx-datatable-cell-template>
-      <div>{{value ? (value | amLocal | amDateFormat:'YYYY-MM-DD HH:mm:ss') : 'N/A'}}</div>
+      <div>{{value ? (value | amLocal | amDateFormat: displayDateFormat) : 'N/A'}}</div>
     </ng-template>
   </ngx-datatable-column>
   <ngx-datatable-column name="Status" prop="InstanceStatus"

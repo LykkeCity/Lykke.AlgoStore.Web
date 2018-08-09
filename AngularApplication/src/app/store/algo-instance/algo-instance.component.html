@@ -55,7 +55,7 @@
           <div class="row mb-2">
             <div class="col-12 action-buttons">
               <span class="instance-type-badge" [ngClass]="{'live': instance.AlgoInstanceType === iAlgoInstanceType.Live}">{{instance.AlgoInstanceType | instanceTypeName}}</span>
-              <span>{{instance.AlgoInstanceRunDate | amLocal | amDateFormat:'YYYY-MM-DD HH:mm:ss'}}</span>
+              <span>{{instance.AlgoInstanceRunDate | amLocal | amDateFormat: displayDateFormat}}</span>
             </div>
           </div>
         </div>
@@ -170,7 +170,7 @@
               </thead>
               <tbody>
               <tr *ngFor="let trade of trades">
-                <td>{{trade.DateOfTrade ? (trade.DateOfTrade | amParse: 'YYYY-MM-DD[T]HH:mm:ss.SSS[Z]' | amDateFormat: 'YYYY-MM-DD HH:mm:ss') : ''}}</td>
+                <td>{{trade.DateOfTrade ? (trade.DateOfTrade | amParse: 'YYYY-MM-DD[T]HH:mm:ss.SSS[Z]' | amDateFormat: displayDateFormat) : ''}}</td>
                 <td>{{trade.Price}}</td>
                 <td>{{trade.IsBuy ? 'Buy' : 'Sell'}}</td>
                 <td>{{trade.Amount}}</td>
@@ -184,7 +184,7 @@
         </tab>
         <tab heading="Charts" (select)="onSelect($event)" *ngIf="permissions.canSeeCharts">
             <div class="container">
-              <app-chart [instanceId]="instance.InstanceId" [metadata]="instance.AlgoMetaDataInformation"></app-chart>
+              <app-chart [instanceId]="instance.InstanceId" [metadata]="instance.AlgoMetaDataInformation" [instanceStatus]="instance.AlgoInstanceStatus"></app-chart>
             </div>
           </tab>        
       </tabset>

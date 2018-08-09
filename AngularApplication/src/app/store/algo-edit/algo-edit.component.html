@@ -5,7 +5,7 @@
       <span class="label-private" *ngIf="algo.AlgoVisibility === iAlgoVisibility.Private">Private</span>
       <span class="label-public" *ngIf="algo.AlgoVisibility === iAlgoVisibility.Public">Public</span>
       <span class="label-draft" *ngIf="algo.AlgoVisibility === iAlgoVisibility.Demo">Draft</span>
-      <p>Created on {{ algo.DateCreated | amLocal | amDateFormat:'YYYY-MM-DD HH:mm:ss' }}{{algo.DateModified ? ', Last modified ' + (algo.DateModified | amLocal | amDateFormat:'YYYY-MM-DD HH:mm:ss' ) : ''}}</p>
+      <p>Created on {{ algo.DateCreated | amLocal | amDateFormat:  displayDateFormat }}{{algo.DateModified ? ', Last modified ' + (algo.DateModified | amLocal | amDateFormat: displayDateFormat ) : ''}}</p>
     </div>
     <div class="col-2 text-right public-holder">
       <span class="btn-wrapper d-inline-block"
