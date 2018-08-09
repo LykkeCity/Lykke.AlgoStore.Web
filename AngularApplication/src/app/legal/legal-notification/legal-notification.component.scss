@@ -1,0 +1,34 @@
+$notifications-panel-height: 960px;
+$legal-footer-height: 130px;
+$notifications-panel-max-height: #{$notifications-panel-height} - #{$legal-footer-height};
+
+.jumbotron {
+  height: 100%;
+  margin-bottom: 0;
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+}
+
+.legal-notification {
+  background-color: white;
+  border-radius: 8px;
+  width: 770px;
+  max-height: $notifications-panel-height;
+  overflow-y: scroll;
+
+  .footer {
+    height: $legal-footer-height;
+    position: absolute;
+    bottom: 0;
+    width: inherit;
+    box-shadow: 0 -2px 5px 0 rgba(0, 0, 0, 0.05);
+    background-color: white;
+
+    .row {
+      width: 100%;
+    }
+  }
+}
