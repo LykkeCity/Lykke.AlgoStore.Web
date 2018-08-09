@@ -88,11 +88,13 @@ export class ChartComponent implements OnChanges, OnDestroy {
       this.socketSubscriptions.push(this.getHistoricalData().subscribe((data) => {
         this.handleHistoricalData(data);
         this.ready = true;
-
-        if (this.instanceStatus === IAlgoInstanceStatus.Running) {
-          this.initSocket();
-        }
       }));
+    }
+
+    if (changes['instanceStatus'] && changes['instanceStatus'].currentValue) {
+      if (this.instanceStatus === IAlgoInstanceStatus.Running) {
+        this.initSocket();
+      }
     }
   }
 
