@@ -1,4 +1,5 @@
 import { AfterViewInit, Component, Input, OnChanges, SimpleChanges, ViewChild } from '@angular/core';
+import { DATETIME_DISPLAY_FORMAT } from '../../../core/utils/date-time';
 import { UserInstance } from '../../models/user-instance.interface';
 import { IAlgoInstanceStatus } from '../../models/algo-instance.model';
 import { environment } from '../../../../environments/environment';
@@ -17,6 +18,7 @@ export class InstancesTableComponent implements OnChanges {
   iAlgoInstanceStatus = IAlgoInstanceStatus;
   loadingIndicator: boolean;
   walletUrl = environment.walletApiUrl;
+  displayDateFormat = DATETIME_DISPLAY_FORMAT;
 
   constructor() {
     this.loadingIndicator = true;
