@@ -156,6 +156,7 @@ export class ChartComponent implements OnChanges, OnDestroy {
 
   private async getHistoricalData() {
     return new Promise((resolve, reject) => {
+      const now = moment().toISOString();
       const instanceStartDate = moment(this.metadata.Parameters.find(p => p.Key === 'StartFrom').Value).toISOString();
       const instanceTradedAsset = this.metadata.Parameters.find(p => p.Key === 'TradedAsset').Value;
       const instanceAssetPair = this.metadata.Parameters.find(p => p.Key === 'AssetPair').Value;
@@ -170,7 +171,6 @@ export class ChartComponent implements OnChanges, OnDestroy {
         this.instanceService.getHistoricalFunctions(this.instanceId, instanceStartDate, now).toPromise());
 
       Promise.all(historicalDataPromises).then((data) => {
-        console.log(data);
         this.updateChart();
         const historicalCandlesSeries = data[0];
         const historicalTradesSeries = data[1].reverse();
