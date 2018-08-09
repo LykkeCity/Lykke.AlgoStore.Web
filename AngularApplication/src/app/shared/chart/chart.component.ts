@@ -7,7 +7,7 @@ import { Function } from './models/function.model';
 import { AlgoInstanceTrade } from '../../store/models/algo-instance-trade.model';
 import { InstanceService } from '../../core/services/instance.service';
 import { AlgoMetadata } from '../../store/models/algo-metadata.model';
-import { Subscription } from 'rxjs';
+import { forkJoin, Subscription } from 'rxjs';
 import { IAlgoInstanceStatus } from '../../store/models/algo-instance.model';
 
 @Component({
@@ -85,12 +85,14 @@ export class ChartComponent implements OnChanges, OnDestroy {
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes['instanceId'] && changes['metadata'] && changes['instanceId'].currentValue && changes['metadata'].currentValue) {
-      this.getHistoricalData().then(() => {
+      this.socketSubscriptions.push(this.getHistoricalData().subscribe((data) => {
+        this.handleHistoricalData(data);
         this.ready = true;
+
         if (this.instanceStatus === IAlgoInstanceStatus.Running) {
           this.initSocket();
         }
-      });
+      }));
     }
   }
 
@@ -130,7 +132,7 @@ export class ChartComponent implements OnChanges, OnDestroy {
     this.categories.push(candle.DateTime);
   }
 
-  drawFunction(func: Function): void {
+  private drawFunction(func: Function): void {
     const hasSeries = this.series.find(s => s.name === func.FunctionName);
     if (!hasSeries) {
       this.series.push(this.generateFunctionSeries(func.FunctionName));
@@ -140,6 +142,25 @@ export class ChartComponent implements OnChanges, OnDestroy {
     func.CalculatedOn = moment(func.CalculatedOn).format(DATETIME_DISPLAY_FORMAT);
     this.categories.push(func.CalculatedOn);
     this.legend.push(func.FunctionName);
+  }
+
+  private handleHistoricalData(data: any): void {
+    this.updateChart();
+    const historicalCandlesSeries = data[0];
+    const historicalTradesSeries = data[1].reverse();
+    const historicalFunctionsSeries = data[2];
+
+    for (const candle of historicalCandlesSeries) {
+      this.drawCandle(candle);
+    }
+
+    for (const trade of historicalTradesSeries) {
+      this.drawTrade(trade);
+    }
+
+    for (const func of historicalFunctionsSeries) {
+      this.drawFunction(func);
+    }
   }
 
   private updateChart(): void {
@@ -154,43 +175,18 @@ export class ChartComponent implements OnChanges, OnDestroy {
     };
   }
 
-  private async getHistoricalData() {
-    return new Promise((resolve, reject) => {
+  private getHistoricalData() {
       const now = moment().toISOString();
       const instanceStartDate = moment(this.metadata.Parameters.find(p => p.Key === 'StartFrom').Value).toISOString();
       const instanceTradedAsset = this.metadata.Parameters.find(p => p.Key === 'TradedAsset').Value;
       const instanceAssetPair = this.metadata.Parameters.find(p => p.Key === 'AssetPair').Value;
       const timeInterval = this.metadata.Parameters.find(p => p.Key === 'CandleInterval').Value;
 
-      const historicalDataPromises = [];
-      historicalDataPromises.push(
-        this.instanceService.getHistoricalCandles(instanceAssetPair, 3, timeInterval, instanceStartDate, now).toPromise());
-      historicalDataPromises.push(
-        this.instanceService.getHistoricalTrades(this.instanceId, instanceTradedAsset, instanceStartDate, now).toPromise());
-      historicalDataPromises.push(
-        this.instanceService.getHistoricalFunctions(this.instanceId, instanceStartDate, now).toPromise());
+      const historicalCandles$ = this.instanceService.getHistoricalCandles(instanceAssetPair, 3, timeInterval, instanceStartDate, now);
+      const historicalTrades$ = this.instanceService.getHistoricalTrades(this.instanceId, instanceTradedAsset, instanceStartDate, now);
+      const historicalFunctions = this.instanceService.getHistoricalFunctions(this.instanceId, instanceStartDate, now);
 
-      Promise.all(historicalDataPromises).then((data) => {
-        this.updateChart();
-        const historicalCandlesSeries = data[0];
-        const historicalTradesSeries = data[1].reverse();
-        const historicalFunctionsSeries = data[2];
-
-        for (const candle of historicalCandlesSeries) {
-          this.drawCandle(candle);
-        }
-
-        for (const trade of historicalTradesSeries) {
-          this.drawTrade(trade);
-        }
-
-        for (const func of historicalFunctionsSeries) {
-          this.drawFunction(func);
-        }
-
-        resolve();
-      });
-    });
+      return forkJoin(historicalCandles$, historicalTrades$, historicalFunctions);
   }
 
   private stopChartUpating() {
@@ -250,7 +246,6 @@ export class ChartComponent implements OnChanges, OnDestroy {
       name: name,
       type: 'line',
       smooth: true,
-      // yAxisIndex: 1,
       data: [],
       lineStyle: {
         normal: { opacity: 0.5 }
