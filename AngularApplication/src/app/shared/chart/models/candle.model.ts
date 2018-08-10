@@ -1,4 +1,5 @@
 export interface Candle {
+  AssetPair?: string;
   InstanceId?: string;
   DateTime?: string;
   Open?: number;
