@@ -85,13 +85,11 @@ export class ChartComponent implements OnChanges, OnDestroy {
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes['instanceId'] && changes['metadata'] && changes['instanceId'].currentValue && changes['metadata'].currentValue) {
-      setTimeout(() => {
-        this.socketSubscriptions.push(this.getHistoricalData().subscribe((data) => {
-          this.handleHistoricalData(data);
-          this.ready = true;
-        }));
-      }, 1000);
-      }
+      this.socketSubscriptions.push(this.getHistoricalData().subscribe((data) => {
+        this.handleHistoricalData(data);
+        this.ready = true;
+      }));
+    }
 
 
     if (changes['instanceStatus'] && changes['instanceStatus'].currentValue) {
