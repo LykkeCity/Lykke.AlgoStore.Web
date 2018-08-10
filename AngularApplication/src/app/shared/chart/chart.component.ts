@@ -91,6 +91,7 @@ export class ChartComponent implements OnChanges, OnDestroy {
       }));
     }
 
+
     if (changes['instanceStatus'] && changes['instanceStatus'].currentValue) {
       if (this.instanceStatus === IAlgoInstanceStatus.Running) {
         this.initSocket();
@@ -130,7 +131,8 @@ export class ChartComponent implements OnChanges, OnDestroy {
 
   private drawCandle(candle: Candle): void {
     candle.DateTime = moment(candle.DateTime).format(DATETIME_DISPLAY_FORMAT);
-    this.series.find(s => s.name === 'Candles').data.push([candle.Open, candle.Close, candle.Low, candle.High]);
+    this.series.find(s => s.name === 'Candles')
+      .data.push([candle.Open, candle.Close, candle.Low, candle.High, candle.AssetPair, candle.DateTime]);
     this.categories.push(candle.DateTime);
   }
 
@@ -147,12 +149,11 @@ export class ChartComponent implements OnChanges, OnDestroy {
   }
 
   private handleHistoricalData(data: any): void {
-    this.updateChart();
-    const historicalCandlesSeries = data[0];
-    const historicalTradesSeries = data[1].reverse();
-    const historicalFunctionsSeries = data[2];
+    const historicalTradesSeries = data[0].reverse();
+    const historicalFunctionsSeries = data[1];
+    const historicalAlgoCandlesSeries = data[2];
 
-    for (const candle of historicalCandlesSeries) {
+    for (const candle of historicalAlgoCandlesSeries) {
       this.drawCandle(candle);
     }
 
@@ -163,6 +164,17 @@ export class ChartComponent implements OnChanges, OnDestroy {
     for (const func of historicalFunctionsSeries) {
       this.drawFunction(func);
     }
+
+    // if we have candles for indicators
+    if (data.length > 3) {
+      for (let i = 3; i < data.length; i++) {
+        for (const candle of data[i]) {
+          this.drawCandle(candle);
+        }
+      }
+    }
+
+    this.updateChart();
   }
 
   private updateChart(): void {
@@ -178,17 +190,44 @@ export class ChartComponent implements OnChanges, OnDestroy {
   }
 
   private getHistoricalData() {
-      const now = moment().toISOString();
-      const instanceStartDate = moment(this.metadata.Parameters.find(p => p.Key === 'StartFrom').Value).toISOString();
-      const instanceTradedAsset = this.metadata.Parameters.find(p => p.Key === 'TradedAsset').Value;
-      const instanceAssetPair = this.metadata.Parameters.find(p => p.Key === 'AssetPair').Value;
-      const timeInterval = this.metadata.Parameters.find(p => p.Key === 'CandleInterval').Value;
+    const requests = [];
 
-      const historicalCandles$ = this.instanceService.getHistoricalCandles(instanceAssetPair, 3, timeInterval, instanceStartDate, now);
-      const historicalTrades$ = this.instanceService.getHistoricalTrades(this.instanceId, instanceTradedAsset, instanceStartDate, now);
-      const historicalFunctions = this.instanceService.getHistoricalFunctions(this.instanceId, instanceStartDate, now);
+    const now = moment().toISOString();
+    const instanceStartDate = moment(this.metadata.Parameters.find(p => p.Key === 'StartFrom').Value).toISOString();
+    let instanceEndDate = moment(this.metadata.Parameters.find(p => p.Key === 'EndOn').Value).toISOString();
+    const instanceTradedAsset = this.metadata.Parameters.find(p => p.Key === 'TradedAsset').Value;
+    const instanceTimeInterval = this.metadata.Parameters.find(p => p.Key === 'CandleInterval').Value;
+    const instanceAssetPair = this.metadata.Parameters.find(p => p.Key === 'AssetPair').Value;
 
-      return forkJoin(historicalCandles$, historicalTrades$, historicalFunctions);
+    // check if the end date of the instance is in the past
+    // no need to get data after the end date
+    if (instanceEndDate > now) {
+      instanceEndDate = now;
+    }
+
+    // all candles should be last
+    requests.push(this.instanceService.getHistoricalTrades(this.instanceId, instanceTradedAsset, instanceStartDate, instanceEndDate));
+    requests.push(this.instanceService.getHistoricalFunctions(this.instanceId, instanceStartDate, instanceEndDate));
+    requests.push(this.instanceService.getHistoricalCandles(instanceAssetPair, 3, instanceTimeInterval, instanceStartDate, instanceEndDate));
+
+    this.metadata.Functions.forEach(func => {
+      const funcCandleInterval = func.Parameters.find(p => p.Key === 'candleTimeInterval').Value;
+      const funcAssetPair = func.Parameters.find(p => p.Key === 'assetPair').Value;
+      const funcStartDate = moment(func.Parameters.find(p => p.Key === 'startingDate').Value).toISOString();
+      let funcEndDate = moment(func.Parameters.find(p => p.Key === 'endingDate').Value).toISOString();
+
+      // check if the end date of the instance is in the past
+      // no need to get data after the end date
+      if (funcEndDate > now) {
+        funcEndDate = now;
+      }
+
+      if (instanceAssetPair !== funcAssetPair || instanceTimeInterval !== funcCandleInterval) {
+        requests.push(this.instanceService.getHistoricalCandles(funcAssetPair, 3, funcCandleInterval, funcStartDate, funcEndDate));
+      }
+    });
+
+    return forkJoin(requests);
   }
 
   private stopChartUpating() {
@@ -220,6 +259,25 @@ export class ChartComponent implements OnChanges, OnDestroy {
           color0: downColor,
           borderColor: upBorderColor,
           borderColor0: downBorderColor
+        }
+      },
+      tooltip: {
+        formatter: (params: any) => {
+          const open = params.data[1];
+          const close = params.data[2];
+          const low = params.data[3];
+          const high = params.data[4];
+          const assetPair = params.data[5];
+          const date = params.data[6];
+          return `
+            Candle <br/>
+            Date: ${date} <br/>
+            AssetPair: ${assetPair} <br/>
+            Open: ${open} <br/>
+            Close: ${close} <br/>
+            Lowest: ${low} <br/>
+            Highest: ${high}
+          `;
         }
       }
     };
