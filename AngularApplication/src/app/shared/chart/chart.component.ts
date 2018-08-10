@@ -241,10 +241,10 @@ export class ChartComponent implements OnChanges, OnDestroy {
   }
 
   private generateCandleSeries(name: string) {
-    const upColor = '#ec0000';
-    const upBorderColor = '#8A0000';
-    const downColor = '#00da3c';
-    const downBorderColor = '#008F28';
+    const downColor = '#ec0000';
+    const downBorderColor = '#8A0000';
+    const upColor = '#00da3c';
+    const upBorderColor = '#008F28';
 
     return {
       name: name,
