@@ -123,14 +123,12 @@ export class ChartComponent implements OnChanges, OnDestroy {
   }
 
   private drawTrade(trade: AlgoInstanceTrade): void {
-    trade.DateOfTrade = moment(trade.DateOfTrade).format(DATETIME_DISPLAY_FORMAT);
     this.series.find(s => s.name === 'Trades')
-      .data.push([trade.DateOfTrade, Number.parseInt(trade.Price), trade['AssetPairId'], trade.IsBuy, trade.Amount]);
+      .data.push([trade.DateOfTrade, trade.Price, trade['AssetPairId'], trade.IsBuy, trade.Amount]);
     this.categories.push(trade.DateOfTrade);
   }
 
   private drawCandle(candle: Candle): void {
-    candle.DateTime = moment(candle.DateTime).format(DATETIME_DISPLAY_FORMAT);
     this.series.find(s => s.name === 'Candles')
       .data.push([candle.Open, candle.Close, candle.Low, candle.High, candle.AssetPair, candle.DateTime]);
     this.categories.push(candle.DateTime);
@@ -143,7 +141,6 @@ export class ChartComponent implements OnChanges, OnDestroy {
     }
 
     this.series.find(s => s.name === func.FunctionName).data.push(func.Value);
-    func.CalculatedOn = moment(func.CalculatedOn).format(DATETIME_DISPLAY_FORMAT);
     this.categories.push(func.CalculatedOn);
     this.legend.push(func.FunctionName);
   }
