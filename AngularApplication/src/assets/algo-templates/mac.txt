@@ -1,6 +1,5 @@
-using Lykke.AlgoStore.CSharp.AlgoTemplate.Abstractions.Core.Domain;
-using Lykke.AlgoStore.CSharp.AlgoTemplate.Abstractions.Functions.ADX;
-using Lykke.AlgoStore.CSharp.AlgoTemplate.Abstractions.Functions.SMA;
+using Lykke.AlgoStore.Algo;
+using Lykke.AlgoStore.Algo.Indicators;
 
 namespace Lykke.AlgoStore.CSharp.Algo.Implemention.ExecutableClass
 {
@@ -9,9 +8,6 @@ namespace Lykke.AlgoStore.CSharp.Algo.Implemention.ExecutableClass
     /// </summary>
     public sealed class MovingAverageCrossAlgo : BaseAlgo
     {
-        /// <summary>
-        /// The adx treshold
-        /// </summary>
         public int ADXThreshold { get; set; }
 
         private bool _crossSMAShortAbove;
@@ -25,29 +21,15 @@ namespace Lykke.AlgoStore.CSharp.Algo.Implemention.ExecutableClass
         private double _currentSMALong;
         private double? _currentADX;
 
-        /// <summary>
-        /// Simple moving average indicator. It's period for execution should be slower, also known as fast simple moving average
-        /// </summary>
-        private SmaFunction _smaShortPeriod;
+        private SMA _smaShortPeriod;
+        private SMA _smaLongPeriod;
+        private ADX _adx;
 
-        /// <summary>
-        /// Simple moving average indicator. It's period for execution should be longer, also known as slow simple moving average
-        /// </summary>
-        private SmaFunction _smaLongPeriod;
-
-        /// <summary>
-        /// Average Directioan Index indicator, which is using Average True Range, Plus Directional Indicator and Minus Directional Indicator
-        /// </summary>
-        private AdxFunction _adx;
-
-        /// <summary>
-        /// Initial start-up of the algo method which is used to initialize indicators
-        /// </summary>
-        public override void OnStartUp(IFunctionProvider functions)
+        public override void OnStartUp()
         {
-            _smaShortPeriod = functions.GetFunction<SmaFunction>("SMA_Short");
-            _smaLongPeriod = functions.GetFunction<SmaFunction>("SMA_Long");
-            _adx = functions.GetFunction<AdxFunction>("ADX");
+            _smaShortPeriod = SMA("SMA_Short", period: 3);
+            _smaLongPeriod = SMA("SMA_Long", period: _smaShortPeriod.Period + 2);
+            _adx = ADX("ADX");
 
             _currentSMAShort = _smaShortPeriod.Value ?? 0;
             _currentSMALong = _smaLongPeriod.Value ?? 0;
@@ -58,17 +40,11 @@ namespace Lykke.AlgoStore.CSharp.Algo.Implemention.ExecutableClass
             _lastADXValue = _currentADX;
         }
 
-        /// <summary>
-        /// A method which is called when a new candle is received. The algo will be updated according to candle values.
-        /// </summary>
-        /// <param name="context">
-        /// Candle values
-        /// </param>
         public override void OnCandleReceived(ICandleContext contextCandle)
         {
             contextCandle.Actions.Log($"Algo ADX Threshold {ADXThreshold}");
-            contextCandle.Actions.Log($"SMA_Short Asset Pair: {_smaShortPeriod.FunctionParameters.AssetPair}, " +
-                                      $"SMA_Long Asset Pair: {_smaLongPeriod.FunctionParameters.AssetPair}");
+            contextCandle.Actions.Log($"SMA_Short Asset Pair: {_smaShortPeriod.AssetPair}, " +
+                                      $"SMA_Long Asset Pair: {_smaLongPeriod.AssetPair}");
 
             _currentSMAShort = _smaShortPeriod.Value ?? 0;
             _currentSMALong = _smaLongPeriod.Value ?? 0;
