@@ -1,0 +1,22 @@
+<div class="notice" *ngIf="!acceptedCookies">
+  <div class="holder">
+    <div class="row">
+      <div class="col-12">
+        <p class="font-weight-semibold">Cookie Notice</p>
+        <p>This website uses cookies and similar technologies to help us provide you with a better
+          service. They allow us to remember you and understand how you use this site.
+          <br />
+          NOTE: Your further use of this site will be considered consent.</p>
+      </div>
+    </div>
+    <hr/>
+    <div class="row">
+      <div class="col-6">
+        <div><img src="../../../assets/images/home/document-icn.svg"/> <a class="ml-2 font-weight-semibold cursor-pointer text-dark" href="https://www.lykke.com/cp/privacy_policy" target="_blank">Full cookie policy</a></div>
+      </div>
+      <div class="col-6 text-right">
+        <span class="link-style font-weight-semibold" (click)="hide()">Don’t show again</span>
+      </div>
+    </div>
+  </div>
+</div>

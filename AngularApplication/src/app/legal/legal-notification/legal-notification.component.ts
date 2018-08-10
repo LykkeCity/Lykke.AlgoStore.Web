@@ -1,15 +1,30 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
+import { Router } from '@angular/router';
+import { AuthService } from '../../core/services/auth.service';
+import { UserService } from '../../core/services/user.service';
 
 @Component({
   selector: 'app-legal-notification',
   templateUrl: './legal-notification.component.html',
   styleUrls: ['./legal-notification.component.scss']
 })
-export class LegalNotificationComponent implements OnInit {
+export class LegalNotificationComponent {
 
-  constructor() { }
+  agreed: boolean;
 
-  ngOnInit() {
+  constructor(private usersService: UserService,
+              private router: Router,
+              private authService: AuthService) { }
+
+  logout(): void {
+    this.authService.logout();
   }
 
+  agree(): void {
+    if (this.agreed) {
+      this.usersService.agreeLegalNotice().subscribe(() => {
+        this.router.navigate(['/store/my-algos']);
+      });
+    }
+  }
 }

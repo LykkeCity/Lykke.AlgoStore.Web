@@ -60,4 +60,12 @@ export class UserService {
   getFreeWallets(): Observable<Wallet[]> {
     return this.authRequestService.get(environment.storeApiUrl + '/v1/clients/wallets');
   }
+
+  agreeLegalNotice(): Observable<null> {
+    return this.authRequestService.post(environment.storeApiUrl + '/v1/');
+  }
+
+  agreeCookies(): Observable<null> {
+    return this.authRequestService.post(environment.storeApiUrl + '/v1/');
+  }
 }

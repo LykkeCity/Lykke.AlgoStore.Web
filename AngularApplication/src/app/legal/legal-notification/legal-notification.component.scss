@@ -1,34 +1,40 @@
 $notifications-panel-height: 960px;
 $legal-footer-height: 130px;
-$notifications-panel-max-height: #{$notifications-panel-height} - #{$legal-footer-height};
+$notifications-panel-max-height: calc(#{$notifications-panel-height} - #{$legal-footer-height});
 
 .jumbotron {
   height: 100%;
   margin-bottom: 0;
+  padding: 0;
 }
 
 .container {
-  display: flex;
-  justify-content: center;
+  overflow: hidden;
+  position: relative;
+  top: 50%;
+  height: 90%;
+  transform: translateY(-50%);
 }
 
 .legal-notification {
   background-color: white;
-  border-radius: 8px;
-  width: 770px;
-  max-height: $notifications-panel-height;
+  width: 59%;
+  max-height: calc(100% - 130px);
   overflow-y: scroll;
+  position: relative;
+  margin: 0 auto;
+  border-radius: 8px 8px 8px unset;
+}
 
-  .footer {
-    height: $legal-footer-height;
-    position: absolute;
-    bottom: 0;
-    width: inherit;
-    box-shadow: 0 -2px 5px 0 rgba(0, 0, 0, 0.05);
-    background-color: white;
+.footer {
+  height: 130px;
+  position: relative;
+  width: 59%;
+  box-shadow: 0 -2px 5px 0 rgba(0, 0, 0, 0.05);
+  background-color: white;
+  margin: 0 auto;
 
-    .row {
-      width: 100%;
-    }
+  .row {
+    width: 100%;
   }
 }
