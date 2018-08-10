@@ -14,7 +14,7 @@ export class CookieNoticeComponent implements OnInit {
     //   this.acceptedCookies = false;
     // });
 
-    this.acceptedCookies = false;
+    this.acceptedCookies = true;
   }
 
   ngOnInit() {
