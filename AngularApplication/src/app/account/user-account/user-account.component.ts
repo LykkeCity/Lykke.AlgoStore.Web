@@ -22,4 +22,7 @@ export class UserAccountComponent implements OnInit {
   ngOnInit() {
   }
 
+  deactivateAccount(): void {
+
+  }
 }
