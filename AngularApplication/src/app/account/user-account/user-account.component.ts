@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap';
 import { UserService } from '../../core/services/user.service';
 import { UserData } from '../../models/userdata.interface';
@@ -9,7 +9,7 @@ import { DeactivateAccountPopupComponent } from '../deactivate-account-popup/dea
   templateUrl: './user-account.component.html',
   styleUrls: ['./user-account.component.scss']
 })
-export class UserAccountComponent implements OnInit {
+export class UserAccountComponent implements OnDestroy {
 
   agreed: boolean;
   user: UserData;
@@ -23,7 +23,10 @@ export class UserAccountComponent implements OnInit {
 
   }
 
-  ngOnInit() {
+  ngOnDestroy() {
+    if (this.modalRef) {
+      this.modalRef.hide();
+    }
   }
 
   deactivateAccount(): void {
