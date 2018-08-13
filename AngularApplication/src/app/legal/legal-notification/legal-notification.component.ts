@@ -23,6 +23,9 @@ export class LegalNotificationComponent {
   agree(): void {
     if (this.agreed) {
       this.usersService.agreeLegalNotice().subscribe(() => {
+        const user = this.usersService.getLoggedUser();
+        user.Legal.GDPRConsent = true;
+        this.usersService.setLoggedUser(user);
         this.router.navigate(['/store/my-algos']);
       });
     }

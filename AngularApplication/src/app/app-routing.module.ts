@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { NotFoundComponent } from './components/not-found/not-found.component';
 import { HomeComponent } from './components/home/home.component';
+import { LegalGuard } from './core/guards/legal.guard';
 import { SiteLayoutComponent } from './layout/site-layout/site-layout.component';
 import { LoginRedirectGuard } from './core/guards/login-redirect.guard';
 import { AuthGuard } from './core/guards/auth-guard';
@@ -16,9 +17,9 @@ const routes: Routes = [
     path: '',
     component: SiteLayoutComponent,
     children: [
-      { path: 'account', loadChildren: 'app/account/account.module#AccountModule', canLoad: [UserDetailsGuard], canActivate: [AuthGuard] },
-      { path: 'store', loadChildren: 'app/store/store.module#StoreModule', canLoad: [UserDetailsGuard], canActivate: [AuthGuard] },
-      { path: 'users-acl', loadChildren: 'app/acl/acl.module#AclModule', canLoad: [UserDetailsGuard], canActivate: [AuthGuard] },
+      { path: 'account', loadChildren: 'app/account/account.module#AccountModule', canLoad: [UserDetailsGuard], canActivate: [AuthGuard, LegalGuard] },
+      { path: 'store', loadChildren: 'app/store/store.module#StoreModule', canLoad: [UserDetailsGuard], canActivate: [AuthGuard, LegalGuard] },
+      { path: 'users-acl', loadChildren: 'app/acl/acl.module#AclModule', canLoad: [UserDetailsGuard], canActivate: [AuthGuard, LegalGuard] },
       { path: '404', component: NotFoundComponent },
     ]
   },

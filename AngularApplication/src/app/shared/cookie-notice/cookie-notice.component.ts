@@ -10,9 +10,9 @@ export class CookieNoticeComponent implements OnInit {
 
   acceptedCookies: boolean;
   constructor(private usersService: UserService) {
-    // this.usersService.getCookieConsent().subscribe(() => {
-    //   this.acceptedCookies = false;
-    // });
+    this.usersService.loggedUserSubject.subscribe((user) => {
+      this.acceptedCookies = user.Legal.CookieConsent;
+    });
 
     this.acceptedCookies = true;
   }
@@ -22,6 +22,9 @@ export class CookieNoticeComponent implements OnInit {
 
   hide(): void {
     this.usersService.agreeCookies().subscribe(() => {
+      const user = this.usersService.getLoggedUser();
+      user.Legal.CookieConsent = true;
+      this.usersService.setLoggedUser(user);
       this.acceptedCookies = true;
     });
   }

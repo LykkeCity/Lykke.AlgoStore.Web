@@ -61,15 +61,19 @@ export class UserService {
     return this.authRequestService.get(environment.storeApiUrl + '/v1/clients/wallets');
   }
 
+  getLegatConsents(): Observable<{CookieConsent: boolean, GDPRConsent: boolean}> {
+    return this.authRequestService.get(environment.storeApiUrl + '/v1/users/legalConsents');
+  }
+
   agreeLegalNotice(): Observable<null> {
-    return this.authRequestService.post(environment.storeApiUrl + '/v1/');
+    return this.authRequestService.post(environment.storeApiUrl + '/v1/users/gdprConsent');
   }
 
   agreeCookies(): Observable<null> {
-    return this.authRequestService.post(environment.storeApiUrl + '/v1/');
+    return this.authRequestService.post(environment.storeApiUrl + '/v1/users/cookieConsent');
   }
 
   deactivateAccount(): Observable<null> {
-    return this.authRequestService.post(environment.storeApiUrl + '/v1/');
+    return this.authRequestService.post(environment.storeApiUrl + '/v1/users/deactivateAccount');
   }
 }
