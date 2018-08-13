@@ -68,4 +68,8 @@ export class UserService {
   agreeCookies(): Observable<null> {
     return this.authRequestService.post(environment.storeApiUrl + '/v1/');
   }
+
+  deactivateAccount(): Observable<null> {
+    return this.authRequestService.post(environment.storeApiUrl + '/v1/');
+  }
 }

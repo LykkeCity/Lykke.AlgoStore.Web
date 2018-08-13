@@ -5,6 +5,7 @@ import { SharedModule } from '../shared/shared.module';
 import { AccountRoutingModule } from './account-routing.module';
 import { AccountComponent } from './account.component';
 import { UserAccountComponent } from './user-account/user-account.component';
+import { DeactivateAccountPopupComponent } from './deactivate-account-popup/deactivate-account-popup.component';
 
 @NgModule({
   imports: [
@@ -13,8 +14,10 @@ import { UserAccountComponent } from './user-account/user-account.component';
   ],
   declarations: [
     AccountComponent,
-    UserAccountComponent
-  ]
+    UserAccountComponent,
+    DeactivateAccountPopupComponent
+  ],
+  entryComponents: [DeactivateAccountPopupComponent]
 })
 export class AccountModule {
 }
