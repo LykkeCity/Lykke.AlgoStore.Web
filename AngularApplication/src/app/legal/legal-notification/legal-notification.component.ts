@@ -11,6 +11,7 @@ import { UserService } from '../../core/services/user.service';
 export class LegalNotificationComponent {
 
   agreed: boolean;
+  loader: boolean;
 
   constructor(private usersService: UserService,
               private router: Router,
@@ -22,6 +23,7 @@ export class LegalNotificationComponent {
 
   agree(): void {
     if (this.agreed) {
+      this.loader = true;
       this.usersService.agreeLegalNotice().subscribe(() => {
         const user = this.usersService.getLoggedUser();
         user.Legal.GDPRConsent = true;

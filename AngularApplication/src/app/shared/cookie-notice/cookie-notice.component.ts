@@ -9,6 +9,8 @@ import { UserService } from '../../core/services/user.service';
 export class CookieNoticeComponent implements OnInit {
 
   acceptedCookies: boolean;
+  loader: boolean;
+
   constructor(private usersService: UserService) {
     this.usersService.loggedUserSubject.subscribe((user) => {
       this.acceptedCookies = user.Legal.CookieConsent;
@@ -21,6 +23,7 @@ export class CookieNoticeComponent implements OnInit {
   }
 
   hide(): void {
+    this.loader = true;
     this.usersService.agreeCookies().subscribe(() => {
       const user = this.usersService.getLoggedUser();
       user.Legal.CookieConsent = true;

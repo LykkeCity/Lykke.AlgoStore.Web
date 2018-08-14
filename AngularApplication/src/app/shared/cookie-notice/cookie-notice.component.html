@@ -15,7 +15,7 @@
         <div><img src="../../../assets/images/home/document-icn.svg"/> <a class="ml-2 font-weight-semibold cursor-pointer text-dark" href="https://www.lykke.com/cp/privacy_policy" target="_blank">Full cookie policy</a></div>
       </div>
       <div class="col-6 text-right">
-        <span class="link-style font-weight-semibold" (click)="hide()">Don’t show again</span>
+        <span class="link-style font-weight-semibold" [ngClass]="{'text-muted': loader}" (click)="!loader ? hide() : null"><i *ngIf="loader" class="icon--spin animate-spin"></i>Don’t show again</span>
       </div>
     </div>
   </div>
