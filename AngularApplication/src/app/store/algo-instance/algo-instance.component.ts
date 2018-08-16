@@ -238,6 +238,10 @@ export class AlgoInstanceComponent implements OnDestroy {
           sub.unsubscribe();
         });
 
+        this.instanceDataSubscriptions.forEach(sub => {
+          sub.unsubscribe();
+        });
+
         this.getWallets();
       }, (error) => {
         this.notificationsService.error('Error', error.DisplayMessage);
@@ -388,5 +392,23 @@ export class AlgoInstanceComponent implements OnDestroy {
     this.instanceDataSubscriptions = []; // clear the array so we don't have duplicate subscriptions
 
     this.getInstanceData();
+  }
+
+  private canRestartLive(): boolean {
+    return (this.instance.AlgoInstanceStatus === this.iAlgoInstanceStatus.Stopped
+      || this.instance.AlgoInstanceStatus === this.iAlgoInstanceStatus.Errored)
+      && this.instance.AlgoInstanceType === this.iAlgoInstanceType.Live;
+  }
+
+  private canRestartTest(): boolean {
+    return (this.instance.AlgoInstanceStatus === this.iAlgoInstanceStatus.Stopped
+      || this.instance.AlgoInstanceStatus === this.iAlgoInstanceStatus.Errored)
+      && this.instance.AlgoInstanceType === this.iAlgoInstanceType.Test;
+  }
+
+  private canDeleteInstance(): boolean {
+    return (this.instance.AlgoInstanceStatus === this.iAlgoInstanceStatus.Stopped
+      || this.instance.AlgoInstanceStatus === this.iAlgoInstanceStatus.Errored)
+      && this.permissions.canDeleteInstance;
   }
 }

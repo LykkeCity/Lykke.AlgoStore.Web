@@ -65,7 +65,7 @@ export class ChartComponent implements OnChanges, OnDestroy {
         }
       ],
       xAxis: {
-        name: 'Price',
+        name: 'Date',
         type: 'category',
         data: this.categories,
         scale: true,
@@ -77,6 +77,7 @@ export class ChartComponent implements OnChanges, OnDestroy {
         max: 'dataMax'
       },
       yAxis: [{
+        name: 'Price',
         scale: true
       }],
       series: this.series
