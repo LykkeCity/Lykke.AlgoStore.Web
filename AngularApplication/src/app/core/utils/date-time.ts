@@ -1,6 +1,7 @@
 import * as moment from 'moment';
 
 export const DATETIME_DISPLAY_FORMAT = 'YYYY-MM-DD HH:mm:ss';
+export const ISO_FORMAT = 'YYYY-MM-DD[T]HH:mm:ss.SSS[Z]';
 
 export default class DateTime {
 
@@ -14,5 +15,9 @@ export default class DateTime {
 
   static toUtc(datetime: string): string {
     return moment(datetime).toISOString();
+  }
+
+  static toISO(datetime: string): string {
+    return moment(datetime).format(ISO_FORMAT);
   }
 }

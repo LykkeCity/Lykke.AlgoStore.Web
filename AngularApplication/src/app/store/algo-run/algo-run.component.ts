@@ -253,18 +253,18 @@ export class AlgoRunComponent implements OnDestroy {
 
     this.algo.AlgoMetaDataInformation.Parameters.forEach(param => {
       if (param.Type === 'System.DateTime') {
-        param.Value = DateTime.toUtc(formValue.Parameters[param.Key]);
+        param.Value = DateTime.toISO(formValue.Parameters[param.Key]);
       } else {
-        param.Value = formValue.Parameters[param.Key];
+       param.Value = formValue.Parameters[param.Key];
       }
     });
 
     this.algo.AlgoMetaDataInformation.Functions.forEach(func => {
       func.Parameters.forEach(funcParam => {
         if (funcParam.Type === 'System.DateTime') {
-          funcParam.Value = DateTime.toUtc(formValue.Functions[func.Id][funcParam.Key]);
+         funcParam.Value = DateTime.toISO(formValue.Functions[func.Id][funcParam.Key]);
         } else {
-          funcParam.Value = formValue.Functions[func.Id][funcParam.Key];
+         funcParam.Value = formValue.Functions[func.Id][funcParam.Key];
         }
       });
     });

@@ -1,6 +1,7 @@
 import { Component, Input, OnChanges, OnDestroy, SimpleChanges } from '@angular/core';
 import { SocketService } from '../../core/services/socket.service';
 import * as moment from 'moment';
+import ArrayUtils from '../../core/utils/array-utils';
 import { DATETIME_DISPLAY_FORMAT } from '../../core/utils/date-time';
 import { Candle } from './models/candle.model';
 import { Function } from './models/function.model';
@@ -126,24 +127,25 @@ export class ChartComponent implements OnChanges, OnDestroy {
   private drawTrade(trade: AlgoInstanceTrade): void {
     this.series.find(s => s.name === 'Trades')
       .data.push([trade.DateOfTrade, trade.Price, trade['AssetPairId'], trade.IsBuy, trade.Amount]);
-    this.categories.push(trade.DateOfTrade);
+
+    ArrayUtils.BinaryInsert(trade.DateOfTrade, this.categories);
   }
 
   private drawCandle(candle: Candle): void {
     this.series.find(s => s.name === 'Candles')
       .data.push([candle.Open, candle.Close, candle.Low, candle.High, candle.AssetPair, candle.DateTime]);
-    this.categories.push(candle.DateTime);
+    ArrayUtils.BinaryInsert(candle.DateTime, this.categories);
   }
 
   private drawFunction(func: Function): void {
     const hasSeries = this.series.find(s => s.name === func.FunctionName);
     if (!hasSeries) {
       this.series.push(this.generateFunctionSeries(func.FunctionName));
+      this.legend.push(func.FunctionName);
     }
 
     this.series.find(s => s.name === func.FunctionName).data.push(func.Value);
-    this.categories.push(func.CalculatedOn);
-    this.legend.push(func.FunctionName);
+    ArrayUtils.BinaryInsert(func.CalculatedOn, this.categories);
   }
 
   private handleHistoricalData(data: any): void {
@@ -287,7 +289,6 @@ export class ChartComponent implements OnChanges, OnDestroy {
       type: 'scatter',
       data: [],
       hoverAnimation: false,
-      // symbolSize: [2, 40],
       itemStyle: {
         color: 'blue'
       },
