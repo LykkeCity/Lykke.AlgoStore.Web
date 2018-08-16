@@ -8,7 +8,7 @@ namespace Lykke.AlgoStore.CSharp.Algo.Implemention.ExecutableClass
     /// </summary>
     public sealed class MovingAverageCrossAlgo : BaseAlgo
     {
-        public int ADXThreshold { get; set; }
+        public int ADXThreshold { get; }
 
         private bool _crossSMAShortAbove;
         private bool _crossSMAShortBelow;
@@ -70,7 +70,7 @@ namespace Lykke.AlgoStore.CSharp.Algo.Implemention.ExecutableClass
             }
 
             //if we have adx and cross we can buy/sell
-            //TODO we should set in parameter value for sell and buy if
+            //TODO we should set in parameter value for sell and buy if 
             //it is one and the same we can use delegates for calling trading methods
 
             if (_currentADX.HasValue && _currentADX > ADXThreshold)
