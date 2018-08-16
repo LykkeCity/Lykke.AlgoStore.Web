@@ -7,8 +7,8 @@ namespace Lykke.AlgoStore.CSharp.Algo.Implemention.ExecutableClass
 {
     public sealed class SMA_Template : BaseAlgo
     {
-        public SMA _shortSma { get;}
-        public SMA _longSma { get;}
+        private SMA _shortSma;
+        private SMA _longSma;
 
         public override void OnStartUp()
         {
