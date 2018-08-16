@@ -17,13 +17,13 @@ const routes: Routes = [
     path: '',
     component: SiteLayoutComponent,
     children: [
-      { path: 'account', loadChildren: 'app/account/account.module#AccountModule', canLoad: [UserDetailsGuard], canActivate: [AuthGuard, LegalGuard] },
-      { path: 'store', loadChildren: 'app/store/store.module#StoreModule', canLoad: [UserDetailsGuard], canActivate: [AuthGuard, LegalGuard] },
-      { path: 'users-acl', loadChildren: 'app/acl/acl.module#AclModule', canLoad: [UserDetailsGuard], canActivate: [AuthGuard, LegalGuard] },
+      { path: 'account', loadChildren: 'app/account/account.module#AccountModule', canLoad: [LegalGuard, UserDetailsGuard], canActivate: [AuthGuard] },
+      { path: 'store', loadChildren: 'app/store/store.module#StoreModule', canLoad: [LegalGuard, UserDetailsGuard], canActivate: [AuthGuard] },
+      { path: 'users-acl', loadChildren: 'app/acl/acl.module#AclModule', canLoad: [LegalGuard, UserDetailsGuard], canActivate: [AuthGuard] },
       { path: '404', component: NotFoundComponent },
     ]
   },
-  { path: 'legal', loadChildren: 'app/legal/legal.module#LegalModule', canLoad: [UserDetailsGuard], canActivate: [AuthGuard] },
+  { path: 'legal', loadChildren: 'app/legal/legal.module#LegalModule', canActivate: [AuthGuard] },
   { path: '**', redirectTo: '404' }
 ];
 

@@ -1,22 +1,32 @@
 import { Injectable } from '@angular/core';
-import { CanActivate, Router } from '@angular/router';
+import { CanLoad, Router } from '@angular/router';
 import { Observable } from 'rxjs';
+import { UserData } from '../../models/userdata.interface';
 import { UserService } from '../services/user.service';
 
 @Injectable()
-export class LegalGuard implements CanActivate {
+export class LegalGuard implements CanLoad {
 
 
   constructor(private router: Router, private usersService: UserService) { }
 
-  canActivate(): Observable<boolean> | Promise<boolean> | boolean {
+  canLoad(): Observable<boolean> | Promise<boolean> | boolean {
+    return new Observable<boolean>(ob => {
+      this.usersService.getLegatConsents().subscribe(legal => {
+        const user = this.usersService.getLoggedUser() || {} as UserData;
+        user.Legal = legal;
 
-    if (this.usersService.getLoggedUser().Legal.GDPRConsent) {
-      return true;
-    } else {
-      this.router.navigateByUrl('/legal/notification');
-      return false;
-    }
+        this.usersService.setLoggedUser(user);
 
+        if (user.Legal && user.Legal.GDPRConsent) {
+          ob.next(true);
+          ob.complete();
+        } else {
+          this.router.navigate(['legal', 'notification']);
+          ob.next(false);
+          ob.complete();
+        }
+      });
+    });
   }
 }

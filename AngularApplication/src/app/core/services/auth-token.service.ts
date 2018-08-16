@@ -56,7 +56,7 @@ export class AuthTokenService implements OnDestroy {
       'Authorization': 'Bearer ' + token
     };
 
-    this.http.get(environment.storeApiUrl + '/v1/roles/verifyRole', { headers }).subscribe();
+    this.http.get(environment.storeApiUrl + '/v1/users/verifyUser', { headers }).subscribe();
   }
 
   private setToken(token): void {

@@ -1,4 +1,5 @@
 import { NgModule } from '@angular/core';
+import { LegalRedirectGuard } from '../core/guards/legal-redirect.guard';
 import { SharedModule } from '../shared/shared.module';
 import { LegalNotificationComponent } from './legal-notification/legal-notification.component';
 
@@ -13,6 +14,7 @@ import { LegalComponent } from './legal.component';
   declarations: [
     LegalNotificationComponent,
     LegalComponent
-  ]
+  ],
+  providers: [LegalRedirectGuard]
 })
 export class LegalModule { }

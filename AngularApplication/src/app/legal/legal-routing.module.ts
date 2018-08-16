@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { ACLGuard } from '../core/guards/acl.guard';
 import { AuthGuard } from '../core/guards/auth-guard';
+import { LegalRedirectGuard } from '../core/guards/legal-redirect.guard';
 import { LegalNotificationComponent } from './legal-notification/legal-notification.component';
 import { LegalComponent } from './legal.component';
 
@@ -12,8 +12,7 @@ const routes: Routes = [
       {
         path: 'notification',
         component: LegalNotificationComponent,
-        canActivate: [AuthGuard, ACLGuard],
-        data: { acl: [] }
+        canActivate: [AuthGuard, LegalRedirectGuard]
       },
     ]
   }

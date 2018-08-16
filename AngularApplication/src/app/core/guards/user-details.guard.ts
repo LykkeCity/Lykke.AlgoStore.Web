@@ -14,14 +14,11 @@ export class UserDetailsGuard implements CanLoad {
 
       return new Observable<boolean>((observer) => {
         forkJoin(this.userService.getUserInfoWithRoles(),
-          this.userService.getUserRoles(),
-          this.userService.getLegatConsents()).subscribe((data) => {
+          this.userService.getUserRoles()).subscribe((data) => {
           const user = data[0];
           const roles = data[1];
-          const legal = data[2];
 
           user.Roles = roles;
-          user.Legal = legal ? legal : { CookieConsent: false, GDPRConsent: false };
 
           this.userService.setLoggedUser(user);
           console.log(data);
