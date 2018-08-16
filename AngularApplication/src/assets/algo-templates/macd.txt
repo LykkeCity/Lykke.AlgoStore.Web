@@ -5,8 +5,8 @@ namespace Lykke.AlgoStore.CSharp.Algo.Implemention.ExecutableClass
 {
     public sealed class MacdTrendAlgo : BaseAlgo
     {
-        public double HoldingStep { get; set; }
-        public double Tolerance { get; set; }
+        public double HoldingStep { get;}
+        public double Tolerance { get; }
 
         private MACD _macd;
         private double _holdings;
