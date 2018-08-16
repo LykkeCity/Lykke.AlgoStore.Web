@@ -178,7 +178,7 @@ export class AlgoInstanceComponent implements OnDestroy {
     this.modalRef = this.bsModalService.show(AlgoInstancePopupComponent, { initialState, class: 'modal-sm run-instance-popup' });
   }
 
-  backtest(): void {
+  restartTest(): void {
     const assetPair = this.instance.AlgoMetaDataInformation.Parameters.find(param => param.Key === 'AssetPair').Value;
     const tradedAsset = this.instance.AlgoMetaDataInformation.Parameters.find(param => param.Key === 'TradedAsset').Value;
     let assetTwoName = '';
@@ -196,7 +196,7 @@ export class AlgoInstanceComponent implements OnDestroy {
         AlgoClientId: this.clientId,
         AlgoId: this.algo.AlgoId,
         AlgoMetaDataInformation: this.instance.AlgoMetaDataInformation,
-        AlgoInstanceType: IAlgoInstanceType.Test
+        AlgoInstanceType: this.instance.AlgoInstanceType
       } as AlgoInstanceData,
       onSuccess: (instance) => {
         this.router.navigate(['/store/algo-run', this.clientId, this.algo.AlgoId]);
@@ -403,7 +403,7 @@ export class AlgoInstanceComponent implements OnDestroy {
   private canRestartTest(): boolean {
     return (this.instance.AlgoInstanceStatus === this.iAlgoInstanceStatus.Stopped
       || this.instance.AlgoInstanceStatus === this.iAlgoInstanceStatus.Errored)
-      && this.instance.AlgoInstanceType === this.iAlgoInstanceType.Test;
+      && (this.instance.AlgoInstanceType === this.iAlgoInstanceType.Test || this.instance.AlgoInstanceType === this.iAlgoInstanceType.Demo);
   }
 
   private canDeleteInstance(): boolean {
