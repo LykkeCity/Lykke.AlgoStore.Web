@@ -55,7 +55,7 @@
           <div class="row mb-2">
             <div class="col-12 action-buttons">
               <span class="instance-type-badge" [ngClass]="{'live': instance.AlgoInstanceType === iAlgoInstanceType.Live}">{{instance.AlgoInstanceType | instanceTypeName}}</span>
-              <span>{{instance.AlgoInstanceRunDate ? (instance.AlgoInstanceRunDate | amLocal | amDateFormat: displayDateFormat) : 'N/A'}}</span>
+              <span>{{instance.AlgoInstanceRunDate ? (instance.AlgoInstanceRunDate | amDateFormat: displayDateFormat) : 'N/A'}}</span>
             </div>
           </div>
         </div>
