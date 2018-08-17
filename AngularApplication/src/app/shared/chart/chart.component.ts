@@ -2,7 +2,6 @@ import { Component, Input, OnChanges, OnDestroy, SimpleChanges } from '@angular/
 import { SocketService } from '../../core/services/socket.service';
 import * as moment from 'moment';
 import ArrayUtils from '../../core/utils/array-utils';
-import { DATETIME_DISPLAY_FORMAT } from '../../core/utils/date-time';
 import { Candle } from './models/candle.model';
 import { Function } from './models/function.model';
 import { AlgoInstanceTrade } from '../../store/models/algo-instance-trade.model';
@@ -29,7 +28,7 @@ export class ChartComponent implements OnChanges, OnDestroy {
   updateOptions: any;
   categories: string[] = [];
 
-  chartUpdateInterval: any;
+  chartUpdateTimeout: any;
   socketSubscriptions: Subscription[] = [];
 
   constructor(private socketService: SocketService,
@@ -70,7 +69,7 @@ export class ChartComponent implements OnChanges, OnDestroy {
         type: 'category',
         data: this.categories,
         scale: true,
-        boundaryGap: false,
+        boundaryGap: true,
         axisLine: { onZero: false },
         splitLine: { show: false },
         splitNumber: 20,
@@ -119,9 +118,7 @@ export class ChartComponent implements OnChanges, OnDestroy {
       this.drawTrade(message);
     }));
 
-    this.chartUpdateInterval = setInterval(() => {
-      this.updateChart();
-    }, 2000);
+    this.updateChart();
   }
 
   private drawTrade(trade: AlgoInstanceTrade): void {
@@ -129,12 +126,16 @@ export class ChartComponent implements OnChanges, OnDestroy {
       .data.push([trade.DateOfTrade, trade.Price, trade['AssetPairId'], trade.IsBuy, trade.Amount]);
 
     ArrayUtils.BinaryInsert(trade.DateOfTrade, this.categories);
+
+    this.updateChart();
   }
 
   private drawCandle(candle: Candle): void {
     this.series.find(s => s.name === 'Candles')
       .data.push([candle.Open, candle.Close, candle.Low, candle.High, candle.AssetPair, candle.DateTime]);
     ArrayUtils.BinaryInsert(candle.DateTime, this.categories);
+
+    this.updateChart();
   }
 
   private drawFunction(func: Function): void {
@@ -146,6 +147,8 @@ export class ChartComponent implements OnChanges, OnDestroy {
 
     this.series.find(s => s.name === func.FunctionName).data.push(func.Value);
     ArrayUtils.BinaryInsert(func.CalculatedOn, this.categories);
+
+    this.updateChart();
   }
 
   private handleHistoricalData(data: any): void {
@@ -173,20 +176,22 @@ export class ChartComponent implements OnChanges, OnDestroy {
         }
       }
     }
-
-    this.updateChart();
   }
 
   private updateChart(): void {
-    this.updateOptions = {
-      legend: {
-        data: this.legend
-      },
-      xAxis: {
-        data: this.categories
-      },
-      series: this.series
-    };
+    clearTimeout(this.chartUpdateTimeout);
+
+    this.chartUpdateTimeout = setTimeout(() => {
+      this.updateOptions = {
+        legend: {
+          data: this.legend
+        },
+        xAxis: {
+          data: this.categories
+        },
+        series: this.series
+      };
+    }, 1000);
   }
 
   private getHistoricalData() {
@@ -206,9 +211,14 @@ export class ChartComponent implements OnChanges, OnDestroy {
     }
 
     // all candles should be last
-    requests.push(this.instanceService.getHistoricalTrades(this.instanceId, instanceTradedAsset, instanceStartDate, instanceEndDate));
-    requests.push(this.instanceService.getHistoricalFunctions(this.instanceId, instanceStartDate, instanceEndDate));
-    requests.push(this.instanceService.getHistoricalCandles(instanceAssetPair, 3, instanceTimeInterval, instanceStartDate, instanceEndDate));
+    requests.push(this.instanceService
+      .getHistoricalTrades(this.instanceId, instanceTradedAsset, instanceStartDate, instanceEndDate));
+
+    requests.push(this.instanceService
+      .getHistoricalFunctions(this.instanceId, instanceStartDate, instanceEndDate));
+
+    requests.push(this.instanceService
+      .getHistoricalCandles(instanceAssetPair, 3, instanceTimeInterval, instanceStartDate, instanceEndDate));
 
     this.metadata.Functions.forEach(func => {
       const funcCandleInterval = func.Parameters.find(p => p.Key === 'candleTimeInterval').Value;
@@ -233,7 +243,7 @@ export class ChartComponent implements OnChanges, OnDestroy {
   private stopChartUpating() {
     this.socketSubscriptions.forEach(sub => sub.unsubscribe());
     this.socketService.disconnect();
-    clearInterval(this.chartUpdateInterval);
+    clearTimeout(this.chartUpdateTimeout);
   }
 
   private generateGlobalSeries() {

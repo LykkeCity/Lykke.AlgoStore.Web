@@ -32,7 +32,7 @@ export class AlgoInstanceComponent implements OnDestroy {
   clientId: string;
   instanceId: string;
   algoId: string;
-  algo: Algo = {};
+  algo: Algo;
   wallets: Wallet[] = [];
   trades: AlgoInstanceTrade[];
   stats: InstanceStatistic;

@@ -20,4 +20,8 @@ export default class DateTime {
   static toISO(datetime: string): string {
     return moment(datetime).format(ISO_FORMAT);
   }
+
+  static toDisplayFormat(datetime: string): string {
+    return moment(datetime, ISO_FORMAT).format(DATETIME_DISPLAY_FORMAT);
+  }
 }
