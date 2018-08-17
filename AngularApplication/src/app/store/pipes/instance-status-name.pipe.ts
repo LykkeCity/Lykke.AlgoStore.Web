@@ -13,6 +13,8 @@ export class InstanceStatusNamePipe implements PipeTransform {
         return 'Running';
       case 2:
         return 'Stopped';
+      case 3:
+        return 'Errored';
       default:
         return 'Unknown';
     }

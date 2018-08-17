@@ -13,6 +13,8 @@ export class InstanceTypeNamePipe implements PipeTransform {
         return 'Live';
       case 2:
         return 'Test';
+      case 3:
+        return 'Errored';
       default:
         return 'Unknown';
     }
