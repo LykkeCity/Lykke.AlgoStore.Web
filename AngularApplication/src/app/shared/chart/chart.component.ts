@@ -69,7 +69,7 @@ export class ChartComponent implements OnChanges, OnDestroy {
         type: 'category',
         data: this.categories,
         scale: true,
-        boundaryGap: true,
+        boundaryGap: false,
         axisLine: { onZero: false },
         splitLine: { show: false },
         splitNumber: 20,
