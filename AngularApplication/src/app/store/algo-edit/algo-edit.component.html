@@ -1,4 +1,4 @@
-<div class="container mt-5" *ngIf="algo && instances">
+<div class="container mt-5" *ngIf="algo && instances && !updateLoader">
   <div class="row">
     <div class="col-10">
       <h3 class="d-inline-block mb-0 mr-1 break-all">{{algo.Name}}</h3>
@@ -16,10 +16,10 @@
             triggers="mouseenter:mouseleave">
 
         <button class="btn btn-primary cursor-pointer" (click)="goPublic()"
-                [disabled]="!canBePublished || loader" *ngIf="algo.AlgoVisibility === iAlgoVisibility.Private && permissions.canPublish"><i *ngIf="loader" class="icon--spin animate-spin"></i>Go Public</button>
+                [disabled]="!canBePublished || publishLoader" *ngIf="algo.AlgoVisibility === iAlgoVisibility.Private && permissions.canPublish"><i *ngIf="publishLoader" class="icon--spin animate-spin"></i>Go Public</button>
 
         <button class="btn btn-primary cursor-pointer" (click)="goPrivate()"
-                [disabled]="!canBePublished || loader" *ngIf="algo.AlgoVisibility === iAlgoVisibility.Public && permissions.canUnpublish"><i *ngIf="loader" class="icon--spin animate-spin"></i>Go Private</button>
+                [disabled]="!canBePublished || publishLoader" *ngIf="algo.AlgoVisibility === iAlgoVisibility.Public && permissions.canUnpublish"><i *ngIf="publishLoader" class="icon--spin animate-spin"></i>Go Private</button>
       </span>
     </div>
   </div>
@@ -100,17 +100,17 @@
     <div class="row">
       <div class="col-6 text-right align-self-center">
         <span class="cursor-pointer cancel-btn"
-              [routerLink]="!loader ? '/store/my-algos' : null" [ngClass]="{'font-weight-semibold': !loader, 'text-muted': loader}">Cancel and close</span>
+              [routerLink]="!publishLoader ? '/store/my-algos' : null" [ngClass]="{'font-weight-semibold': !publishLoader, 'text-muted': publishLoader}">Cancel and close</span>
       </div>
       <div class="col-6 text-left">
-        <button type="submit" class="btn btn-primary" [disabled]="canBePublished || loader"><i *ngIf="loader" class="icon--spin animate-spin"></i>Save changes</button>
+        <button type="submit" class="btn btn-primary" [disabled]="canBePublished || publishLoader"><i *ngIf="publishLoader" class="icon--spin animate-spin"></i>Save changes</button>
       </div>
     </div>
   </form>
 </div>
 
 
-<app-loader [ready]="algo && instances"></app-loader>
+<app-loader [ready]="algo && instances && !updateLoader"></app-loader>
 
 <ng-template #editTooltip>
   <div>
