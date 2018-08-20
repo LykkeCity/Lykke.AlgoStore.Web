@@ -39,7 +39,8 @@ export class AlgoEditComponent implements OnInit, OnDestroy {
     canDelete: boolean
   };
 
-  loader = false;
+  updateLoader = false;
+  publishLoader = false;
   modalRef: BsModalRef;
 
   subscriptions: Subscription[] = [];
@@ -170,12 +171,12 @@ export class AlgoEditComponent implements OnInit, OnDestroy {
       return;
     }
 
-    this.loader = true;
+    this.publishLoader = true;
 
     this.subscriptions.push(this.algoService.publish(this.algo.AlgoId, this.algo.ClientId).subscribe(() => {
       this.algo.AlgoVisibility = this.iAlgoVisibility.Public;
       this.notificationsService.success('Success', 'Algo has been published successfully.');
-      this.loader = false;
+      this.publishLoader = false;
     }));
   }
 
@@ -184,15 +185,15 @@ export class AlgoEditComponent implements OnInit, OnDestroy {
       return;
     }
 
-    this.loader = true;
+    this.publishLoader = true;
 
     this.subscriptions.push(this.algoService.unpublish(this.algo.AlgoId, this.algo.ClientId).subscribe(() => {
       this.algo.AlgoVisibility = this.iAlgoVisibility.Private;
       this.notificationsService.success('Success', 'Algo has been unpublished successfully.');
-      this.loader = false;
+      this.publishLoader = false;
     }, (error) => {
       this.notificationsService.error('Error', error.DisplayMessage);
-      this.loader = false;
+      this.publishLoader = false;
     }));
   }
 
@@ -202,7 +203,7 @@ export class AlgoEditComponent implements OnInit, OnDestroy {
       return;
     }
 
-    this.loader = true;
+    this.updateLoader = true;
 
     const tempAlgo = {
       ...this.algoForm.value,
@@ -218,7 +219,7 @@ export class AlgoEditComponent implements OnInit, OnDestroy {
       this.router.navigate(['/store/my-algos']);
     }, (error) => {
       this.algoErrors = error.DisplayMessage;
-      this.loader = false;
+      this.updateLoader = false;
     }));
   }
 }
