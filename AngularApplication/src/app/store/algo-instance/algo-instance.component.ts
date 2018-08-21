@@ -40,6 +40,7 @@ export class AlgoInstanceComponent implements OnDestroy {
   heading = 'Log';
   hasTabLoader = false;
   interval: number;
+  lastLogElement: string;
 
   editor: any;
   subscriptions: Subscription[] = [];
@@ -244,6 +245,8 @@ export class AlgoInstanceComponent implements OnDestroy {
       this.instanceService.stopInstance(this.algo.AlgoId, this.instance.InstanceId, this.algo.ClientId).subscribe(() => {
         this.instance.AlgoInstanceStatus = IAlgoInstanceStatus.Stopped;
         this.notificationsService.success('Success', 'Instance has been stopped successfully.');
+        clearInterval(this.interval);
+
         this.subscriptions.forEach(sub => {
           sub.unsubscribe();
         });
@@ -305,30 +308,36 @@ export class AlgoInstanceComponent implements OnDestroy {
     this.hasTabLoader = true;
     this.instanceDataSubscriptions.push(this.fetchStatisticsFromApi());
 
-    this.interval = setInterval(() => {
-      this.hasTabLoader = true;
-      this.instanceDataSubscriptions.push(this.fetchStatisticsFromApi());
-    }, 5000);
+    if (this.instance.AlgoInstanceStatus !== this.iAlgoInstanceStatus.Stopped) {
+      this.interval = setInterval(() => {
+        this.hasTabLoader = true;
+        this.instanceDataSubscriptions.push(this.fetchStatisticsFromApi());
+      }, 5000);
+    }
   }
 
   getLogs(): void {
     this.hasTabLoader = true;
     this.instanceDataSubscriptions.push(this.fetchLogsFromApi());
 
-    this.interval = setInterval(() => {
-      this.hasTabLoader = true;
-      this.instanceDataSubscriptions.push(this.fetchLogsFromApi());
-    }, 5000);
+    if (this.instance.AlgoInstanceStatus !== this.iAlgoInstanceStatus.Stopped) {
+      this.interval = setInterval(() => {
+        this.hasTabLoader = true;
+        this.instanceDataSubscriptions.push(this.fetchLogsFromApi());
+      }, 5000);
+    }
   }
 
   getTrades(): void {
     this.hasTabLoader = true;
     this.instanceDataSubscriptions.push(this.fetchTradesFromApi());
 
-    this.interval = setInterval(() => {
-      this.hasTabLoader = true;
-      this.instanceDataSubscriptions.push(this.fetchTradesFromApi());
-    }, 5000);
+    if (this.instance.AlgoInstanceStatus !== this.iAlgoInstanceStatus.Stopped) {
+      this.interval = setInterval(() => {
+        this.hasTabLoader = true;
+        this.instanceDataSubscriptions.push(this.fetchTradesFromApi());
+      }, 5000);
+    }
   }
 
   getStatus(): void {
@@ -421,8 +430,9 @@ export class AlgoInstanceComponent implements OnDestroy {
       .subscribe(
         res => {
           this.hasTabLoader = false;
-          if (this.log.length !== res.Log.length) {
+          if (this.lastLogElement !== res.Log[0]) {
             this.log = res.Log;
+            this.lastLogElement = res.Log[0];
           }
         },
         () => {
