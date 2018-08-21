@@ -40,7 +40,6 @@ export class AlgoEditComponent implements OnInit, OnDestroy {
   };
 
   updateLoader = false;
-  publishLoader = false;
   modalRef: BsModalRef;
 
   subscriptions: Subscription[] = [];
@@ -171,12 +170,12 @@ export class AlgoEditComponent implements OnInit, OnDestroy {
       return;
     }
 
-    this.publishLoader = true;
+    this.updateLoader = true;
 
     this.subscriptions.push(this.algoService.publish(this.algo.AlgoId, this.algo.ClientId).subscribe(() => {
       this.algo.AlgoVisibility = this.iAlgoVisibility.Public;
       this.notificationsService.success('Success', 'Algo has been published successfully.');
-      this.publishLoader = false;
+      this.updateLoader = false;
     }));
   }
 
@@ -185,15 +184,15 @@ export class AlgoEditComponent implements OnInit, OnDestroy {
       return;
     }
 
-    this.publishLoader = true;
+    this.updateLoader = true;
 
     this.subscriptions.push(this.algoService.unpublish(this.algo.AlgoId, this.algo.ClientId).subscribe(() => {
       this.algo.AlgoVisibility = this.iAlgoVisibility.Private;
       this.notificationsService.success('Success', 'Algo has been unpublished successfully.');
-      this.publishLoader = false;
+      this.updateLoader = false;
     }, (error) => {
       this.notificationsService.error('Error', error.DisplayMessage);
-      this.publishLoader = false;
+      this.updateLoader = false;
     }));
   }
 
