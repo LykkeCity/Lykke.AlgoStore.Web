@@ -64,7 +64,7 @@ export class UserService {
     return this.authRequestService.get(environment.storeApiUrl + '/v1/clients/wallets');
   }
 
-  getLegatConsents(): Observable<{CookieConsent: boolean, GDPRConsent: boolean}> {
+  getLegalConsents(): Observable<{CookieConsent: boolean, GDPRConsent: boolean}> {
     return this.authRequestService.get(environment.storeApiUrl + '/v1/users/legalConsents');
   }
 

@@ -11,7 +11,7 @@ export class LegalRedirectGuard implements CanActivate {
 
   canActivate(): Observable<boolean> | Promise<boolean> | boolean {
     return new Observable<boolean>(ob => {
-      this.usersService.getLegatConsents().subscribe(legal => {
+      this.usersService.getLegalConsents().subscribe(legal => {
         if (legal && legal.GDPRConsent) {
           this.router.navigate(['store', 'my-algos']);
           ob.next(true);

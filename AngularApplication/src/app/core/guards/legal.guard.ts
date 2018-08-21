@@ -12,7 +12,7 @@ export class LegalGuard implements CanLoad {
 
   canLoad(): Observable<boolean> | Promise<boolean> | boolean {
     return new Observable<boolean>(ob => {
-      this.usersService.getLegatConsents().subscribe(legal => {
+      this.usersService.getLegalConsents().subscribe(legal => {
         const user = this.usersService.getLoggedUser() || {} as UserData;
         user.Legal = legal;
 

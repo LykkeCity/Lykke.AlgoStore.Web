@@ -1,6 +1,6 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import { environment } from '../../../environments/environment';
-import { BehaviorSubject ,  Observable } from 'rxjs';
+import { BehaviorSubject, forkJoin, Observable } from 'rxjs';
 import { tap, mergeMap } from 'rxjs/operators';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { ITokenResponse } from '../../models/token-response.interface';
@@ -56,7 +56,10 @@ export class AuthTokenService implements OnDestroy {
       'Authorization': 'Bearer ' + token
     };
 
-    this.http.get(environment.storeApiUrl + '/v1/users/verifyUser', { headers }).subscribe();
+    forkJoin(
+      this.http.get(environment.storeApiUrl + '/v1/users/verifyUser', { headers }),
+      this.http.get(environment.storeApiUrl + '/v1/roles/verifyRole', { headers })
+      ).subscribe();
   }
 
   private setToken(token): void {
