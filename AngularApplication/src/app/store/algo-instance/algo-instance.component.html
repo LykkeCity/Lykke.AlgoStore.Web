@@ -109,12 +109,18 @@
     </split-area>
     <split-area size="30" *ngIf="permissions.canSeeTrades || permissions.canSeeStatistics || permissions.canSeeLogs">
       <tabset #instanceTabs>          
-        <tab heading="Log" class="ml-3" (select)="onSelect($event)" *ngIf="permissions.canSeeLogs">
+        <tab class="ml-3" (select)="onSelect($event)" *ngIf="permissions.canSeeLogs" customClass="Log">
+          <ng-template tabHeading>
+            <span><i *ngIf="hasTabLoader && heading === 'Log'" class="icon--spin animate-spin" tooltip="Updating logs..." container="body"></i>Log</span>
+          </ng-template>
           <div class="container">
               <div *ngFor="let apilog of log" class="log-holder">{{apilog}}</div>
           </div>
         </tab>        
-        <tab heading="Statistics" (select)="onSelect($event)" *ngIf="permissions.canSeeStatistics">
+        <tab (select)="onSelect($event)" *ngIf="permissions.canSeeStatistics" customClass="Statistics">
+          <ng-template tabHeading>
+            <span><i *ngIf="hasTabLoader && heading === 'Statistics'" class="icon--spin animate-spin" tooltip="Updating Statistics..." container="body"></i>Statistics</span>
+          </ng-template>
           <div class="container">
             <div class="stats-holder">
               <div class="row">
@@ -153,7 +159,10 @@
             </div>
           </div>
         </tab>
-        <tab heading="Trades" (select)="onSelect($event)" *ngIf="permissions.canSeeTrades">
+        <tab (select)="onSelect($event)" *ngIf="permissions.canSeeTrades" customClass="Trades">
+          <ng-template tabHeading>
+            <span><i *ngIf="hasTabLoader && heading === 'Trades'" class="icon--spin animate-spin" tooltip="Updating Trades..." container="body"></i>Trades</span>
+          </ng-template>
           <div class="container">
             <table class="table">
               <thead>
