@@ -1,0 +1,19 @@
+.delete-icon-holder {
+  position: relative;
+  top: 5px;
+  right: 25px;
+  cursor: pointer;
+  z-index: 5;
+}
+
+.bottom-50 {
+  bottom: 50px;
+}
+
+.small-control {
+  padding: 0 1.2rem;
+}
+
+#search-field::-ms-clear {
+  display: none;
+}
