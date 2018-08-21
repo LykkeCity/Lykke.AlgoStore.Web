@@ -8,12 +8,7 @@
         </div>
       </div>
       <div class="offset-2 col-4 align-self-end">
-        <div class="input-group">
-          <div class="input-group-prepend">
-            <span class="input-group-text" id="search-input"><img src="../../../assets/images/search-icon.svg"/></span>
-          </div>
-          <input class="form-control" type='text' placeholder='Type to filter by name or author' (keyup)='updateFilter($event)' aria-describedby="search-input"/>
-        </div>
+        <app-search-field [placeholder]="'Type to filter by name or author'" [searchFunc]="updateFilter.bind(this)"></app-search-field>
       </div>
     </div>
   </div>

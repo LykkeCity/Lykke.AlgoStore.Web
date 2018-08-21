@@ -1,0 +1,7 @@
+<div class="input-group search" [ngClass]="{'bottom-50': instanceSearch }">
+  <div class="input-group-prepend">
+    <span class="input-group-text" id="search-input"><img src="../../../assets/images/search-icon.svg"/></span>
+  </div>
+  <input class="form-control small-control" id="search-field" type='text' [placeholder]='placeholder' (keyup)='searchFunc($event)' aria-describedby="search-input" #searchField/>
+  <span class="delete-icon-holder" *ngIf="searchField.value" (click)="clear()"><img src="../../../assets/images/store/delete-symbol-icon.svg"></span>
+</div>

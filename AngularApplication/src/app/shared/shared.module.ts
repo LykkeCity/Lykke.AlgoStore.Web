@@ -20,6 +20,7 @@ import { CollapseContentComponent } from './collapse/collapse-content.component'
 import { ChartComponent } from './chart/chart.component';
 import { NgxEchartsModule } from 'ngx-echarts';
 import { StompRService, StompService } from '@stomp/ng2-stompjs';
+import { SearchFieldComponent } from './search-field/search-field.component';
 
 
 @NgModule({
@@ -47,7 +48,8 @@ import { StompRService, StompService } from '@stomp/ng2-stompjs';
     StarRatingComponent,
     LoaderComponent,
     CollapseContentComponent,
-    ChartComponent
+    ChartComponent,
+    SearchFieldComponent
   ],
   exports: [
     CommonModule,
@@ -65,7 +67,8 @@ import { StompRService, StompService } from '@stomp/ng2-stompjs';
     PopoverModule,
     LoaderComponent,
     CollapseContentComponent,
-    ChartComponent
+    ChartComponent,
+    SearchFieldComponent
   ]
 })
 export class SharedModule {}
