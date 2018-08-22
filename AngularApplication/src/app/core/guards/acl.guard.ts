@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, CanActivate, CanLoad, Route, Router, RouterStateSnapshot } from '@angular/router';
+import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot } from '@angular/router';
 import { Observable } from 'rxjs';
 import { UserService } from '../services/user.service';
 import { NotificationsService } from 'angular2-notifications';
 
 @Injectable()
-export class ACLGuard implements CanActivate, CanLoad {
+export class ACLGuard implements CanActivate {
 
   constructor(private router: Router, private userService: UserService, private notificationsService: NotificationsService) {
   }
@@ -13,37 +13,40 @@ export class ACLGuard implements CanActivate, CanLoad {
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
     const hasAccess = this.hasAccess(route.data['acl']);
 
-    if (!hasAccess) {
+    if (hasAccess.legal && !hasAccess.permissions) {
       this.router.navigate(['/404']).then(() => {
         this.notificationsService.error('Forbidden', 'You do not have permission to perform this action.');
       });
+      return false;
     }
 
-    return hasAccess;
-  }
-
-
-  canLoad(route: Route): Observable<boolean> | Promise<boolean> | boolean {
-    const hasAccess = this.hasAccess(route.data['acl']);
-
-    if (!hasAccess) {
-      this.router.navigate(['/404']).then(() => {
-        this.notificationsService.error('Forbidden', 'You do not have permission to perform this action.');
-      });
+    if (!hasAccess.legal) {
+      return true;
     }
 
-    return hasAccess;
+    return hasAccess.permissions;
   }
 
-  private hasAccess(requiredPermissions: string[]): boolean {
-    const userRoles = this.userService.getLoggedUser().Roles;
+  private hasAccess(requiredPermissions: string[]): {legal: boolean, permissions: boolean} {
+    const user = this.userService.getLoggedUser();
+    const userRoles = user.Roles;
+    const access = {legal: false, permissions: false};
+
+    if (!userRoles) {
+      return access;
+    }
+
+    if (user.Legal && user.Legal.GdprConsent) {
+      access.legal = true;
+    }
+
     const userPermissions = userRoles.map(role => role.Permissions).reduce((acc, val) => acc.concat(val), []);
 
     const matchedPermissions = [];
 
     if (requiredPermissions.length === 1) {
       if (userPermissions.some(perm => perm.Id === requiredPermissions[0])) {
-        return true;
+        access.permissions = true;
       }
     } else {
       for (const requiredPermission of requiredPermissions) {
@@ -53,10 +56,10 @@ export class ACLGuard implements CanActivate, CanLoad {
       }
 
       if (matchedPermissions.length === requiredPermissions.length) {
-        return true;
+        access.permissions = true;
       }
     }
 
-    return false;
+    return access;
   }
 }

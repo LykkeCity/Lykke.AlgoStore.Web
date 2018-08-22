@@ -7,6 +7,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 // Components
 import { AppComponent } from './app.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
+import { LegalGuard } from './core/guards/legal.guard';
 import { SiteLayoutComponent } from './layout/site-layout/site-layout.component';
 import { HomeComponent } from './components/home/home.component';
 import { HeaderComponent } from './components/header/header.component';
@@ -61,6 +62,7 @@ import { FileService } from './core/services/file.service';
   ],
   providers: [
     AuthGuard,
+    LegalGuard,
     AuthService,
     IdleService,
     UserService,

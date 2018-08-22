@@ -26,7 +26,10 @@ export class UserService {
   }
 
   public setLoggedUser(userData: UserData) {
-    this.updatePermissions(userData.Roles);
+    if (userData.Roles) {
+      this.updatePermissions(userData.Roles);
+    }
+
     const user = {...this.getLoggedUser(), ...userData };
     this.loggedUserSubject.next(user);
   }
@@ -59,5 +62,21 @@ export class UserService {
 
   getFreeWallets(): Observable<Wallet[]> {
     return this.authRequestService.get(environment.storeApiUrl + '/v1/clients/wallets');
+  }
+
+  getLegalConsents(): Observable<{CookieConsent: boolean, GdprConsent: boolean}> {
+    return this.authRequestService.get(environment.storeApiUrl + '/v1/users/getLegalConsents');
+  }
+
+  agreeLegalNotice(): Observable<null> {
+    return this.authRequestService.post(environment.storeApiUrl + '/v1/users/setGdprConsent');
+  }
+
+  agreeCookies(): Observable<null> {
+    return this.authRequestService.post(environment.storeApiUrl + '/v1/users/setCookieConsent');
+  }
+
+  deactivateAccount(): Observable<null> {
+    return this.authRequestService.post(environment.storeApiUrl + '/v1/users/deactivateAccount');
   }
 }

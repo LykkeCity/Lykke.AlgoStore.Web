@@ -91,6 +91,11 @@ export class AuthRequestService {
       return observableThrowError(error.error);
     }
 
+    if (error.status === 451) {
+      this.router.navigate(['legal', 'notification']);
+      return observableThrowError(error.error);
+    }
+
     this.notificationsService.error('Error', error.error.DisplayMessage);
     console.error('ApiService::handleError', error);
     return observableThrowError(error.error ? error.error : error);

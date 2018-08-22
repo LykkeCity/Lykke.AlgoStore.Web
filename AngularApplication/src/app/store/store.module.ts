@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { SharedModule } from '../shared/shared.module';
 import { AngularSplitModule } from 'angular-split';
-import { TabsModule } from 'ngx-bootstrap';
 import { QuillModule } from 'ngx-quill';
 import { MomentModule } from 'angular2-moment';
 import { NgxPaginationModule } from 'ngx-pagination';
@@ -37,7 +36,6 @@ import { InstancesTableComponent } from './my-instances/instances-table/instance
   imports: [
     StoreRouting,
     SharedModule,
-    TabsModule.forRoot(),
     AngularSplitModule,
     QuillModule,
     MomentModule,

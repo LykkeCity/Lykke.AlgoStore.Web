@@ -1,15 +1,18 @@
-<div class="row user-profile-wrapper pull-right cursor-pointer" [popover]="navTemplate" [outsideClick]="true" placement="bottom">
-  <div class="col-3 align-self-center">
-    <button class="profile-nav"></button>
+<div class="row user-profile-wrapper pull-right cursor-pointer" dropdown>
+  <div dropdownToggle class="d-flex">
+    <div class="col-3 align-self-center">
+      <button class="profile-nav"></button>
+    </div>
+    <div class="col-9 align-self-center mt-3">
+      <span class="font-weight-semibold">{{userData && userData.FullName}}</span>
+    </div>
   </div>
-  <div class="col-9 align-self-center mt-3">
-    <span class="font-weight-semibold">{{userData && userData.FullName}}</span>
-  </div>
+  <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu" role="menu" aria-labelledby="button-basic">
+    <li role="menuitem">
+      <a class="dropdown-item" routerLink="/account/user-account">Account</a>
+    </li>
+    <li role="menuitem">
+      <a class="dropdown-item" href="javascript:;" (click)="logout()">Log out</a>
+    </li>
+  </ul>
 </div>
-
-<ng-template #navTemplate>
-  <div>
-    <a class="profile-nav-link" href="javascript:;" (click)="logout()">Log out</a>
-  </div>
-</ng-template>
-

@@ -3,10 +3,11 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { PopupComponent } from '../components/popup/popup.component';
-import { BsDropdownModule, ModalModule, PopoverModule, TooltipModule } from 'ngx-bootstrap';
+import { BsDropdownModule, ModalModule, PopoverModule, TabsModule, TooltipModule } from 'ngx-bootstrap';
 import { CodeEditorComponent } from './code-editor/code-editor.component';
 import { AceEditorModule } from 'ng2-ace-editor';
 import { UiSwitchModule } from 'ngx-ui-switch';
+import { CookieNoticeComponent } from './cookie-notice/cookie-notice.component';
 import { DateTimePickerComponent } from './date-time-picker/date-time-picker.component';
 import { DpDatePickerModule } from 'ng2-date-picker';
 import { AlertModule } from 'ngx-bootstrap';
@@ -37,6 +38,7 @@ import { SearchFieldComponent } from './search-field/search-field.component';
     TooltipModule.forRoot(),
     BsDropdownModule.forRoot(),
     PopoverModule.forRoot(),
+    TabsModule.forRoot(),
     NgxDatatableModule,
     NgxEchartsModule
   ],
@@ -49,6 +51,7 @@ import { SearchFieldComponent } from './search-field/search-field.component';
     LoaderComponent,
     CollapseContentComponent,
     ChartComponent,
+    CookieNoticeComponent,
     SearchFieldComponent
   ],
   exports: [
@@ -60,6 +63,7 @@ import { SearchFieldComponent } from './search-field/search-field.component';
     ModalModule,
     TooltipModule,
     BsDropdownModule,
+    TabsModule,
     StarRatingComponent,
     FormsModule,
     ReactiveFormsModule,
@@ -68,6 +72,7 @@ import { SearchFieldComponent } from './search-field/search-field.component';
     LoaderComponent,
     CollapseContentComponent,
     ChartComponent,
+    CookieNoticeComponent,
     SearchFieldComponent
   ]
 })

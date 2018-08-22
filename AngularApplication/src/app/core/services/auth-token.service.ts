@@ -1,6 +1,6 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import { environment } from '../../../environments/environment';
-import { BehaviorSubject ,  Observable } from 'rxjs';
+import { BehaviorSubject, forkJoin, Observable } from 'rxjs';
 import { tap, mergeMap } from 'rxjs/operators';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { ITokenResponse } from '../../models/token-response.interface';
@@ -9,13 +9,13 @@ import { ITokenResponse } from '../../models/token-response.interface';
 export class AuthTokenService implements OnDestroy {
 
   tokenName = 'algo-token';
-  tokenStream: BehaviorSubject<string|null>;
+  tokenStream: BehaviorSubject<string | null>;
 
   constructor(
     private http: HttpClient
   ) {
 
-    this.tokenStream = new BehaviorSubject( this.getToken() );
+    this.tokenStream = new BehaviorSubject(this.getToken());
     this.tokenStream.subscribe(
       token => {
         this.setToken(token);
@@ -27,7 +27,7 @@ export class AuthTokenService implements OnDestroy {
   }
 
   fetchToken(code: string): Observable<Object> {
-    return this.http.get(environment.authUrl, { params: new HttpParams().append('code', code)}).pipe(
+    return this.http.get(environment.authUrl, { params: new HttpParams().append('code', code) }).pipe(
       mergeMap(
         next => this.getWalletToken(next)
       )
@@ -56,7 +56,7 @@ export class AuthTokenService implements OnDestroy {
       'Authorization': 'Bearer ' + token
     };
 
-    this.http.get(environment.storeApiUrl + '/v1/roles/verifyRole', { headers }).subscribe();
+    this.http.post(environment.storeApiUrl + '/v1/users/verifyUser', null, { headers }).subscribe();
   }
 
   private setToken(token): void {

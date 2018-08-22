@@ -13,4 +13,8 @@ export interface UserData {
   Zip: string;
 
   Roles?: UserRole[];
+  Legal?: {
+    CookieConsent?: boolean;
+    GdprConsent?: boolean;
+  };
 }
