@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
+import { DATETIME_DISPLAY_FORMAT } from '../../../core/utils/date-time';
 import { AlgoMetadata } from '../../models/algo-metadata.model';
 import { BaseAlgoParam } from '../../models/base-algo-param.model';
 
@@ -12,6 +13,7 @@ export class AlgoMetadataComponent implements OnChanges {
   @Input() metadata: AlgoMetadata;
   @Output() onHighlight = new EventEmitter<BaseAlgoParam>();
   showAll: boolean;
+  displayDateFormat = DATETIME_DISPLAY_FORMAT;
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes['metadata'] && changes['metadata'].currentValue) {

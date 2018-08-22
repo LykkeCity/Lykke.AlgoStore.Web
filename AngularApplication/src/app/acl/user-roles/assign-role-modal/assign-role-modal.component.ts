@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { UserData } from '../../../models/userdata.interface';
 import { UserRole } from '../../../models/user-role.model';
-import { UserRolesService } from '../../../services/user-roles.service';
+import { UserRolesService } from '../../../core/services/user-roles.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { BsModalRef } from 'ngx-bootstrap';
 import { NotificationsService } from 'angular2-notifications';

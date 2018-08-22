@@ -1,10 +1,10 @@
 <div class="container" *ngIf="ready && !algoSubmitted">
-  <h3 class="mt-5 mb-5 text-center">Create New Algorithm</h3>
+  <h3 class="mt-5 mb-5 text-center">Create New Algo</h3>
 
   <div class="row">
     <div class="col-12 tabs-nav">
       <tabset #creationTabs>
-        <tab heading="Add Details">
+        <tab heading="Add Details" (select)="nextTab(0)">
           <form [formGroup]="algoForm">
             <div class="row mt-5">
               <div class="col-12">
@@ -30,15 +30,46 @@
                 <span class="font-weight-semibold cursor-pointer cancel-btn" routerLink="/store/my-algos">Cancel and close</span>
               </div>
               <div class="col-6 text-center">
-                <button class="btn btn-primary btn-small" (click)="nextTab()" [disabled]="algoForm.invalid">Next step</button>
+                <button class="btn btn-primary btn-small" (click)="nextTab(1)" [disabled]="algoForm.invalid">Next step</button>
               </div>
             </div>
           </form>
         </tab>
-        <tab heading="Write Code" [disabled]="algoForm.invalid">
+        <tab heading="Choose a Template" [disabled]="algoForm.invalid" (select)="algoForm.valid ? nextTab(1) : null">
+          <div class="row mt-3">
+            <div class="col-2">
+              <button class="btn btn-light" (click)="nextTab(2)">Skip this step</button>
+            </div>
+          </div>
+          <div class="row mt-3">
+            <div class="col-3 template-holder mt-2">
+              <div class="row template-item" *ngFor="let template of templates; let index = index;">
+                <div class="col-12">
+                  <h5 (click)="toggleState(index)" class="cursor-pointer">{{template.name}}</h5>
+                  <app-collapse-content [state]="template.state">
+                    <p>{{template.description}}</p>
+                    <p (click)="setTemplate(template)" class="link-style">Use this one</p>
+                  </app-collapse-content>
+                </div>
+              </div>
+            </div>
+            <div class="col-9 algo-create-editor-holder">
+              <app-code-editor [config]="{readOnly: true, sourceCode: currentTemplate, editorId: 'template-editor'}"></app-code-editor>
+            </div>
+          </div>
+          <div class="row mt-3">
+            <div class="offset-4 col-2 text-center align-self-center">
+              <span class="font-weight-semibold cursor-pointer cancel-btn" routerLink="/store/my-algos">Cancel and close</span>
+            </div>
+            <div class="col-2 text-center">
+              <button class="btn btn-primary btn-small" (click)="nextTab(2)">Next step</button>
+            </div>
+          </div>
+        </tab>
+        <tab heading="Write Code" [disabled]="algoForm.invalid" (select)="algoForm.valid ? nextTab(2) : null">
           <div class="row mt-5">
             <div class="col-8 algo-create-editor-holder">
-              <app-code-editor [config]="{readOnly: false, sourceCode: Algo.Content}" (onCodeUpdated)="onCodeUpdate($event)"></app-code-editor>
+              <app-code-editor [config]="{readOnly: false, sourceCode: Algo.Content}" (onCodeUpdated)="onCodeUpdate($event)" (onInitCompleted)="initEditor($event)"></app-code-editor>
             </div>
             <div class="col-4">
               <div class="row">

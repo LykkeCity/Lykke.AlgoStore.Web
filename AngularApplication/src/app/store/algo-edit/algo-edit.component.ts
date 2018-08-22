@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
-import { AlgoService } from '../../services/algo.service';
+import { AlgoService } from '../../core/services/algo.service';
 import { Algo, AlgoVisibility } from '../models/algo.interface';
 import { Subscription } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -9,10 +9,11 @@ import { BsModalRef, BsModalService } from 'ngx-bootstrap';
 import { PopupConfig } from '../../models/popup.interface';
 import { PopupComponent } from '../../components/popup/popup.component';
 import { NotificationsService } from 'angular2-notifications';
-import { UserService } from '../../services/user.service';
+import { UserService } from '../../core/services/user.service';
 import Permissions from '../models/permissions';
-import { InstanceService } from '../../services/instance.service';
+import { InstanceService } from '../../core/services/instance.service';
 import { AlgoInstance, IAlgoInstanceStatus } from '../models/algo-instance.model';
+import { DATETIME_DISPLAY_FORMAT } from '../../core/utils/date-time';
 
 @Component({
   selector: 'app-algo-edit',
@@ -30,6 +31,7 @@ export class AlgoEditComponent implements OnInit, OnDestroy {
   algoErrors: string;
   instances: AlgoInstance[];
   forceDelete: boolean;
+  displayDateFormat =  DATETIME_DISPLAY_FORMAT;
 
   permissions: {
     canPublish: boolean,
@@ -37,7 +39,7 @@ export class AlgoEditComponent implements OnInit, OnDestroy {
     canDelete: boolean
   };
 
-  loader = false;
+  updateLoader = false;
   modalRef: BsModalRef;
 
   subscriptions: Subscription[] = [];
@@ -158,6 +160,7 @@ export class AlgoEditComponent implements OnInit, OnDestroy {
       this.notificationsService.success('Success', 'Algo has been deleted successfully.');
       this.router.navigate(['/store/my-algos']);
     }, (error) => {
+      this.modalRef.hide();
       this.notificationsService.error('Error', error.DisplayMessage);
     }));
   }
@@ -167,12 +170,12 @@ export class AlgoEditComponent implements OnInit, OnDestroy {
       return;
     }
 
-    this.loader = true;
+    this.updateLoader = true;
 
     this.subscriptions.push(this.algoService.publish(this.algo.AlgoId, this.algo.ClientId).subscribe(() => {
       this.algo.AlgoVisibility = this.iAlgoVisibility.Public;
       this.notificationsService.success('Success', 'Algo has been published successfully.');
-      this.loader = false;
+      this.updateLoader = false;
     }));
   }
 
@@ -181,15 +184,15 @@ export class AlgoEditComponent implements OnInit, OnDestroy {
       return;
     }
 
-    this.loader = true;
+    this.updateLoader = true;
 
     this.subscriptions.push(this.algoService.unpublish(this.algo.AlgoId, this.algo.ClientId).subscribe(() => {
       this.algo.AlgoVisibility = this.iAlgoVisibility.Private;
       this.notificationsService.success('Success', 'Algo has been unpublished successfully.');
-      this.loader = false;
+      this.updateLoader = false;
     }, (error) => {
       this.notificationsService.error('Error', error.DisplayMessage);
-      this.loader = false;
+      this.updateLoader = false;
     }));
   }
 
@@ -199,7 +202,7 @@ export class AlgoEditComponent implements OnInit, OnDestroy {
       return;
     }
 
-    this.loader = true;
+    this.updateLoader = true;
 
     const tempAlgo = {
       ...this.algoForm.value,
@@ -215,7 +218,7 @@ export class AlgoEditComponent implements OnInit, OnDestroy {
       this.router.navigate(['/store/my-algos']);
     }, (error) => {
       this.algoErrors = error.DisplayMessage;
-      this.loader = false;
+      this.updateLoader = false;
     }));
   }
 }

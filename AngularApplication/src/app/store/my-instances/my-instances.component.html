@@ -29,7 +29,12 @@
   <div class="categories mt-5">
     <tabset class="instances-tabs">
       <tab heading="Live">
-        <div class="row mt-5">
+        <div class="row">
+          <div class="offset-8 col-4">
+            <app-search-field [placeholder]="'Type to filter by name or wallet'" [searchFunc]="updateFilter.bind(this)" [instanceSearch]="true"></app-search-field>
+          </div>
+        </div>
+        <div class="row">
           <div class="col-12">
             <app-instances-table [instances]="instances[iAlgoInstanceType.Live]" [isLive]="true"></app-instances-table>
           </div>

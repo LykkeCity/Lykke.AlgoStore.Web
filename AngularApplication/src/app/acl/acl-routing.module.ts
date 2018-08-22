@@ -1,12 +1,12 @@
 import { ModuleWithProviders } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { AuthGuard } from '../services/auth-guard';
+import { AuthGuard } from '../core/guards/auth-guard';
 import { AclComponent } from './acl.component';
 import { UsersListComponent } from './users-list/users-list.component';
 import { UserRolesComponent } from './user-roles/user-roles.component';
 import { RolesListComponent } from './roles-list/roles-list.component';
 import { EditRoleComponent } from './edit-role/edit-role.component';
-import { ACLGuard } from '../services/acl.guard';
+import { ACLGuard } from '../core/guards/acl.guard';
 import Permissions from '../store/models/permissions';
 
 

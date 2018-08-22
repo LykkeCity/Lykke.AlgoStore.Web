@@ -3,13 +3,13 @@ import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { Algo, AlgoVisibility } from '../models/algo.interface';
 import { Wallet } from '../../models/wallet.model';
-import { UserService } from '../../services/user.service';
+import { UserService } from '../../core/services/user.service';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap';
 import { AlgoInstancePopupComponent } from './algo-run-popup/algo-instance-popup.component';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AlgoInstance, AlgoInstanceData, IAlgoInstanceType } from '../models/algo-instance.model';
-import { AlgoService } from '../../services/algo.service';
-import { InstanceService } from '../../services/instance.service';
+import { AlgoService } from '../../core/services/algo.service';
+import { InstanceService } from '../../core/services/instance.service';
 import Permissions from '../models/permissions';
 import { AlgoFakeTradingPopupComponent } from './algo-fake-trading-popup/algo-fake-trading-popup.component';
 import DateTime from '../../core/utils/date-time';
@@ -253,18 +253,18 @@ export class AlgoRunComponent implements OnDestroy {
 
     this.algo.AlgoMetaDataInformation.Parameters.forEach(param => {
       if (param.Type === 'System.DateTime') {
-        param.Value = DateTime.toUtc(formValue.Parameters[param.Key]);
+        param.Value = DateTime.toISO(formValue.Parameters[param.Key]);
       } else {
-        param.Value = formValue.Parameters[param.Key];
+       param.Value = formValue.Parameters[param.Key];
       }
     });
 
     this.algo.AlgoMetaDataInformation.Functions.forEach(func => {
       func.Parameters.forEach(funcParam => {
         if (funcParam.Type === 'System.DateTime') {
-          funcParam.Value = DateTime.toUtc(formValue.Functions[func.Id][funcParam.Key]);
+         funcParam.Value = DateTime.toISO(formValue.Functions[func.Id][funcParam.Key]);
         } else {
-          funcParam.Value = formValue.Functions[func.Id][funcParam.Key];
+         funcParam.Value = formValue.Functions[func.Id][funcParam.Key];
         }
       });
     });

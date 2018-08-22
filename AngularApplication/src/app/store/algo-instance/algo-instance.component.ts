@@ -1,21 +1,22 @@
 import { Component, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { DATETIME_DISPLAY_FORMAT } from '../../core/utils/date-time';
 import { AlgoInstance, AlgoInstanceData, IAlgoInstanceStatus, IAlgoInstanceType } from '../models/algo-instance.model';
-import { Subscription, timer } from 'rxjs';
+import { Observable, Subscription, timer } from 'rxjs';
 import { Wallet } from '../../models/wallet.model';
 import { Algo } from '../models/algo.interface';
-import { UserService } from '../../services/user.service';
+import { UserService } from '../../core/services/user.service';
 import { BaseAlgoParam } from '../models/base-algo-param.model';
 import { AlgoInstanceTrade } from '../models/algo-instance-trade.model';
 import { InstanceStatistic } from '../models/algo-instance-statistic.model';
-import { BsModalRef, BsModalService } from 'ngx-bootstrap';
+import { BsModalRef, BsModalService, TabDirective } from 'ngx-bootstrap';
 import { AlgoInstancePopupComponent } from '../algo-run/algo-run-popup/algo-instance-popup.component';
 import { NotificationsService } from 'angular2-notifications';
-import { repeatWhen } from 'rxjs/operators';
+import { repeatWhen, startWith } from 'rxjs/operators';
 import { PopupComponent } from '../../components/popup/popup.component';
 import { PopupConfig } from '../../models/popup.interface';
-import { AlgoService } from '../../services/algo.service';
-import { InstanceService } from '../../services/instance.service';
+import { AlgoService } from '../../core/services/algo.service';
+import { InstanceService } from '../../core/services/instance.service';
 import Permissions from '../models/permissions';
 import { AlgoFakeTradingPopupComponent } from '../algo-run/algo-fake-trading-popup/algo-fake-trading-popup.component';
 
@@ -31,16 +32,21 @@ export class AlgoInstanceComponent implements OnDestroy {
   clientId: string;
   instanceId: string;
   algoId: string;
-  algo: Algo = {};
+  algo: Algo;
   wallets: Wallet[] = [];
   trades: AlgoInstanceTrade[];
   stats: InstanceStatistic;
   log: string[] = [];
   heading = 'Log';
+  hasTabLoader = false;
+  interval: number;
+  lastLogElement: string;
 
   editor: any;
   subscriptions: Subscription[] = [];
+  instanceDataSubscriptions: Subscription[] = [];
   statusSub: Subscription;
+  displayDateFormat = DATETIME_DISPLAY_FORMAT;
 
   permissions: {
     canSeeLogs: boolean,
@@ -50,7 +56,8 @@ export class AlgoInstanceComponent implements OnDestroy {
     canDeleteInstance: boolean,
     canEditName: boolean,
     canRestartInstance: boolean,
-    canSeeWallets: boolean
+    canSeeWallets: boolean,
+    canSeeCharts: boolean
   };
 
   modalRef: BsModalRef;
@@ -63,7 +70,6 @@ export class AlgoInstanceComponent implements OnDestroy {
               private bsModalService: BsModalService,
               private notificationsService: NotificationsService) {
 
-
     this.permissions = {
       canSeeLogs: this.userService.hasPermission(Permissions.GET_TEST_TAIL_LOG),
       canSeeStatistics: this.userService.hasPermission(Permissions.GET_ALGO_INSTANCE_STATISTIC),
@@ -72,7 +78,8 @@ export class AlgoInstanceComponent implements OnDestroy {
       canDeleteInstance: this.userService.hasPermission(Permissions.DELETE_ALGO_INSTANCE_DATA),
       canEditName: this.userService.hasPermission(Permissions.EDIT_INSTANCE_NAME),
       canRestartInstance: false,
-      canSeeWallets: this.userService.hasPermission(Permissions.GET_FREE_WALLETS)
+      canSeeWallets: this.userService.hasPermission(Permissions.GET_FREE_WALLETS),
+      canSeeCharts: true
     };
 
     this.subscriptions.push(this.route.params.subscribe(params => {
@@ -117,9 +124,15 @@ export class AlgoInstanceComponent implements OnDestroy {
       sub.unsubscribe();
     });
 
+    this.instanceDataSubscriptions.forEach(sub => {
+      sub.unsubscribe();
+    });
+
     if (this.statusSub) {
       this.statusSub.unsubscribe();
     }
+
+    clearInterval(this.interval);
   }
 
   onEditorCreated(editor: any): void {
@@ -167,10 +180,13 @@ export class AlgoInstanceComponent implements OnDestroy {
         this.router.navigate(['/store/algo-run', this.clientId, this.algo.AlgoId]);
       }
     };
-    this.modalRef = this.bsModalService.show(AlgoInstancePopupComponent, { initialState, class: 'modal-sm run-instance-popup' });
+    this.modalRef = this.bsModalService.show(AlgoInstancePopupComponent, {
+      initialState,
+      class: 'modal-sm run-instance-popup'
+    });
   }
 
-  backtest(): void {
+  restartTest(): void {
     const assetPair = this.instance.AlgoMetaDataInformation.Parameters.find(param => param.Key === 'AssetPair').Value;
     const tradedAsset = this.instance.AlgoMetaDataInformation.Parameters.find(param => param.Key === 'TradedAsset').Value;
     let assetTwoName = '';
@@ -188,13 +204,16 @@ export class AlgoInstanceComponent implements OnDestroy {
         AlgoClientId: this.clientId,
         AlgoId: this.algo.AlgoId,
         AlgoMetaDataInformation: this.instance.AlgoMetaDataInformation,
-        AlgoInstanceType: IAlgoInstanceType.Test
+        AlgoInstanceType: this.instance.AlgoInstanceType
       } as AlgoInstanceData,
       onSuccess: (instance) => {
         this.router.navigate(['/store/algo-run', this.clientId, this.algo.AlgoId]);
       }
     };
-    this.modalRef = this.bsModalService.show(AlgoFakeTradingPopupComponent, { initialState, class: 'modal-sm fakeTrading-instance-popup' });
+    this.modalRef = this.bsModalService.show(AlgoFakeTradingPopupComponent, {
+      initialState,
+      class: 'modal-sm fakeTrading-instance-popup'
+    });
   }
 
   stopInstancePrompt(): void {
@@ -226,11 +245,20 @@ export class AlgoInstanceComponent implements OnDestroy {
       this.instanceService.stopInstance(this.algo.AlgoId, this.instance.InstanceId, this.algo.ClientId).subscribe(() => {
         this.instance.AlgoInstanceStatus = IAlgoInstanceStatus.Stopped;
         this.notificationsService.success('Success', 'Instance has been stopped successfully.');
+        clearInterval(this.interval);
+
         this.subscriptions.forEach(sub => {
           sub.unsubscribe();
         });
 
+        this.instanceDataSubscriptions.forEach(sub => {
+          sub.unsubscribe();
+        });
+
         this.getWallets();
+      }, (error) => {
+        this.notificationsService.error('Error', error.DisplayMessage);
+        this.modalRef.hide();
       })
     );
   }
@@ -264,6 +292,9 @@ export class AlgoInstanceComponent implements OnDestroy {
       () => {
         this.notificationsService.success('Success', 'Instance has been deleted successfully.');
         this.router.navigate(['store/algo-run', this.instance.AlgoClientId, this.instance.AlgoId]);
+      }, (error) => {
+        this.notificationsService.error('Error', error.DisplayMessage);
+        this.modalRef.hide();
       }
     );
   }
@@ -274,41 +305,39 @@ export class AlgoInstanceComponent implements OnDestroy {
   }
 
   getStatistics(): void {
-    this.subscriptions.push(this.instanceService.getInstanceStatistics(this.instanceId)
-      .pipe(
-        repeatWhen(() => timer(10000, 5000))
-      )
-      .subscribe(
-        res => {
-          this.stats = res;
-        }
-      ));
+    this.hasTabLoader = true;
+    this.instanceDataSubscriptions.push(this.fetchStatisticsFromApi());
+
+    if (this.instance.AlgoInstanceStatus !== this.iAlgoInstanceStatus.Stopped) {
+      this.interval = setInterval(() => {
+        this.hasTabLoader = true;
+        this.instanceDataSubscriptions.push(this.fetchStatisticsFromApi());
+      }, 5000);
+    }
   }
 
   getLogs(): void {
-    this.subscriptions.push(this.instanceService.getInstanceLogs(this.algoId, this.instanceId, this.clientId)
-      .pipe(
-        repeatWhen(() => timer(10000, 5000))
-      )
-      .subscribe(
-        res => {
-          if (this.log.length !== res.Log.length) {
-            this.log = res.Log;
-          }
-        }
-      ));
+    this.hasTabLoader = true;
+    this.instanceDataSubscriptions.push(this.fetchLogsFromApi());
+
+    if (this.instance.AlgoInstanceStatus !== this.iAlgoInstanceStatus.Stopped) {
+      this.interval = setInterval(() => {
+        this.hasTabLoader = true;
+        this.instanceDataSubscriptions.push(this.fetchLogsFromApi());
+      }, 5000);
+    }
   }
 
   getTrades(): void {
-    this.subscriptions.push(this.instanceService.getInstanceTrades(this.instanceId)
-      .pipe(
-        repeatWhen(() => timer(10000, 5000))
-      )
-      .subscribe(
-        res => {
-          this.trades = res;
-        }
-      ));
+    this.hasTabLoader = true;
+    this.instanceDataSubscriptions.push(this.fetchTradesFromApi());
+
+    if (this.instance.AlgoInstanceStatus !== this.iAlgoInstanceStatus.Stopped) {
+      this.interval = setInterval(() => {
+        this.hasTabLoader = true;
+        this.instanceDataSubscriptions.push(this.fetchTradesFromApi());
+      }, 5000);
+    }
   }
 
   getStatus(): void {
@@ -324,6 +353,11 @@ export class AlgoInstanceComponent implements OnDestroy {
             this.statusSub.unsubscribe();
 
             this.getInstanceData();
+          }
+        },
+        () => {
+          if (this.modalRef) {
+            this.modalRef.hide();
           }
         }
       );
@@ -343,16 +377,86 @@ export class AlgoInstanceComponent implements OnDestroy {
     }
   }
 
-  onSelect(event) {
-    this.heading = event.heading;
+  onSelect(data: TabDirective) {
+    this.heading = data.customClass;
 
     if (this.instance.AlgoInstanceStatus === IAlgoInstanceStatus.Deploying) {
       return;
     }
 
-    this.subscriptions.forEach(sub => sub.unsubscribe());
-    this.subscriptions = []; // clear the array so we don't have duplicate subscriptions
+    clearInterval(this.interval);
+    this.instanceDataSubscriptions.forEach(sub => sub.unsubscribe());
+    this.instanceDataSubscriptions = []; // clear the array so we don't have duplicate subscriptions
 
     this.getInstanceData();
+  }
+
+  private canRestartLive(): boolean {
+    return (this.instance.AlgoInstanceStatus === this.iAlgoInstanceStatus.Stopped
+      || this.instance.AlgoInstanceStatus === this.iAlgoInstanceStatus.Errored)
+      && this.instance.AlgoInstanceType === this.iAlgoInstanceType.Live;
+  }
+
+  private canRestartTest(): boolean {
+    return (this.instance.AlgoInstanceStatus === this.iAlgoInstanceStatus.Stopped
+      || this.instance.AlgoInstanceStatus === this.iAlgoInstanceStatus.Errored)
+      && (this.instance.AlgoInstanceType === this.iAlgoInstanceType.Test || this.instance.AlgoInstanceType === this.iAlgoInstanceType.Demo);
+  }
+
+  private canDeleteInstance(): boolean {
+    return (this.instance.AlgoInstanceStatus === this.iAlgoInstanceStatus.Stopped
+      || this.instance.AlgoInstanceStatus === this.iAlgoInstanceStatus.Errored)
+      && this.permissions.canDeleteInstance;
+  }
+
+  private fetchStatisticsFromApi(): Subscription {
+    return this.instanceService.getInstanceStatistics(this.instanceId)
+      .subscribe(
+        res => {
+          this.hasTabLoader = false;
+          this.stats = res;
+        },
+        () => {
+          this.hasTabLoader = false;
+          if (this.modalRef) {
+            this.modalRef.hide();
+          }
+        }
+      );
+  }
+
+  private fetchLogsFromApi(): Subscription {
+    return this.instanceService.getInstanceLogs(this.algoId, this.instanceId, this.clientId)
+      .subscribe(
+        res => {
+          this.hasTabLoader = false;
+          if (this.lastLogElement !== res.Log[0]) {
+            this.log = res.Log;
+            this.lastLogElement = res.Log[0];
+          }
+        },
+        () => {
+          this.hasTabLoader = false;
+          if (this.modalRef) {
+            this.modalRef.hide();
+          }
+        }
+      );
+  }
+
+  private fetchTradesFromApi(): Subscription {
+    return this.instanceService.getInstanceTrades(this.instanceId)
+      .subscribe(
+        res => {
+          this.hasTabLoader = false;
+          this.trades = res;
+        },
+        () => {
+          this.hasTabLoader = false;
+          if (this.modalRef) {
+            this.modalRef.hide();
+          }
+        }
+      );
   }
 }

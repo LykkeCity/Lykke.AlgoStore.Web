@@ -5,9 +5,9 @@ export const environment = {
   applicationId: '0707736a-9c20-4845-bdb4-8ef3b761af95',
   redirectUrl: 'http://algo-store-web.lykke-algo-store.svc.cluster.local/',
 
+  wsUrl: 'ws://algo-store-api.lykke-algo-store.svc.cluster.local/live',
   storeApiUrl: 'http://algo-store-api.lykke-algo-store.svc.cluster.local/api',
   walletApiUrl: 'https://webwallet-dev.lykkex.net/wallets/hft',
-  apiV2Url: 'https://apiv2-dev.lykkex.net/api/',
   authUrl: 'http://algo-store-web.lykke-algo-store.svc.cluster.local/api/home/authentication',
   tokenUrl: 'https://auth-dev.lykkex.net/getlykkewallettoken',
   idleTime: 300,

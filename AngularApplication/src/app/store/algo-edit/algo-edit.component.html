@@ -1,11 +1,11 @@
-<div class="container mt-5" *ngIf="algo && instances">
+<div class="container mt-5" *ngIf="algo && instances && !updateLoader">
   <div class="row">
     <div class="col-10">
       <h3 class="d-inline-block mb-0 mr-1 break-all">{{algo.Name}}</h3>
       <span class="label-private" *ngIf="algo.AlgoVisibility === iAlgoVisibility.Private">Private</span>
       <span class="label-public" *ngIf="algo.AlgoVisibility === iAlgoVisibility.Public">Public</span>
       <span class="label-draft" *ngIf="algo.AlgoVisibility === iAlgoVisibility.Demo">Draft</span>
-      <p>Created on {{ algo.DateCreated | amLocal | amDateFormat:'YYYY-MM-DD HH:mm:ss' }}{{algo.DateModified ? ', Last modified ' + (algo.DateModified | amLocal | amDateFormat:'YYYY-MM-DD HH:mm:ss' ) : ''}}</p>
+      <p>Created on {{ algo.DateCreated | amDateFormat:  displayDateFormat }}{{algo.DateModified ? ', Last modified ' + (algo.DateModified | amDateFormat: displayDateFormat ) : ''}}</p>
     </div>
     <div class="col-2 text-right public-holder">
       <span class="btn-wrapper d-inline-block"
@@ -16,10 +16,10 @@
             triggers="mouseenter:mouseleave">
 
         <button class="btn btn-primary cursor-pointer" (click)="goPublic()"
-                [disabled]="!canBePublished || loader" *ngIf="algo.AlgoVisibility === iAlgoVisibility.Private && permissions.canPublish"><i *ngIf="loader" class="icon--spin animate-spin"></i>Go Public</button>
+                [disabled]="!canBePublished" *ngIf="algo.AlgoVisibility === iAlgoVisibility.Private && permissions.canPublish">Go Public</button>
 
         <button class="btn btn-primary cursor-pointer" (click)="goPrivate()"
-                [disabled]="!canBePublished || loader" *ngIf="algo.AlgoVisibility === iAlgoVisibility.Public && permissions.canUnpublish"><i *ngIf="loader" class="icon--spin animate-spin"></i>Go Private</button>
+                [disabled]="!canBePublished" *ngIf="algo.AlgoVisibility === iAlgoVisibility.Public && permissions.canUnpublish">Go Private</button>
       </span>
     </div>
   </div>
@@ -99,18 +99,18 @@
 
     <div class="row">
       <div class="col-6 text-right align-self-center">
-        <span class="cursor-pointer cancel-btn"
-              [routerLink]="!loader ? '/store/my-algos' : null" [ngClass]="{'font-weight-semibold': !loader, 'text-muted': loader}">Cancel and close</span>
+        <span class="cursor-pointer cancel-btn font-weight-semibold"
+              routerLink="/store/my-algos">Cancel and close</span>
       </div>
       <div class="col-6 text-left">
-        <button type="submit" class="btn btn-primary" [disabled]="canBePublished || loader"><i *ngIf="loader" class="icon--spin animate-spin"></i>Save changes</button>
+        <button type="submit" class="btn btn-primary" [disabled]="canBePublished">Save changes</button>
       </div>
     </div>
   </form>
 </div>
 
 
-<app-loader [ready]="algo && instances"></app-loader>
+<app-loader [ready]="algo && instances && !updateLoader"></app-loader>
 
 <ng-template #editTooltip>
   <div>

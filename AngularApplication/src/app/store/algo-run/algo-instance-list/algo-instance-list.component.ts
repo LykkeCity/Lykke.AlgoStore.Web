@@ -6,8 +6,8 @@ import { NotificationsService } from 'angular2-notifications';
 import { PopupComponent } from '../../../components/popup/popup.component';
 import { BsModalService } from 'ngx-bootstrap';
 import { PopupConfig } from '../../../models/popup.interface';
-import { InstanceService } from '../../../services/instance.service';
-import { UserService } from '../../../services/user.service';
+import { InstanceService } from '../../../core/services/instance.service';
+import { UserService } from '../../../core/services/user.service';
 import Permissions from '../../models/permissions';
 
 @Component({

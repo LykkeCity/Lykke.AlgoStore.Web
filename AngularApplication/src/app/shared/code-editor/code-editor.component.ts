@@ -45,7 +45,7 @@ export class CodeEditorComponent implements AfterViewInit, OnChanges {
       '../../../assets/editor-themes/algo-store-eclipse.js'
     );
 
-    this.editor = ace.edit('editor');
+    this.editor = ace.edit(this.config.editorId || 'editor');
     this.editor.setTheme('algo-store-eclipse');
     this.editor.setHighlightActiveLine(false);
 
@@ -76,10 +76,6 @@ export class CodeEditorComponent implements AfterViewInit, OnChanges {
             currentEditor.showKeyboardShortcuts();
           });
         }
-      });
-    } else {
-      this.editor.renderer.setOptions({
-        showFoldWidgets: false
       });
     }
 

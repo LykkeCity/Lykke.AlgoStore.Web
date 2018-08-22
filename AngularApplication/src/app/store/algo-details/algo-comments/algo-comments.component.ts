@@ -7,8 +7,8 @@ import { NotificationsService } from 'angular2-notifications';
 import { PopupComponent } from '../../../components/popup/popup.component';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { DomSanitizer } from '@angular/platform-browser';
-import { AlgoCommentService } from '../../../services/algo-comment.service';
-import { UserService } from '../../../services/user.service';
+import { AlgoCommentService } from '../../../core/services/algo-comment.service';
+import { UserService } from '../../../core/services/user.service';
 import Permissions from '../../models/permissions';
 import { Subscription } from 'rxjs';
 

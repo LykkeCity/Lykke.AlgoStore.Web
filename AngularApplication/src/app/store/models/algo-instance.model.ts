@@ -3,12 +3,14 @@ import { AlgoMetadata } from './algo-metadata.model';
 export enum IAlgoInstanceStatus {
   Deploying = 0,
   Running = 1,
-  Stopped = 2
+  Stopped = 2,
+  Errored = 3
 }
 export enum IAlgoInstanceType {
   Demo = 0,
   Live = 1,
-  Test = 2
+  Test = 2,
+  Errored = 3
 }
 
 export interface AlgoInstanceData {

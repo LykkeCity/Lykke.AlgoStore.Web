@@ -9,3 +9,13 @@
   background-size: contain;
   background-image: url(../../../../assets/images/user_default_gray.svg);
 }
+
+.dropdown-menu {
+  border-radius: 4px;
+  background-color: #ffffff;
+  box-shadow: 0 8px 50px 0 rgba(0, 0, 0, 0.16);
+
+  right: 300px !important;
+  top: 80px !important;
+  left: auto !important;
+}

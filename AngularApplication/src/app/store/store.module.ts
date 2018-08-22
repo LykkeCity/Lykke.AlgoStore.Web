@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { SharedModule } from '../shared/shared.module';
 import { AngularSplitModule } from 'angular-split';
-import { TabsModule } from 'ngx-bootstrap';
 import { QuillModule } from 'ngx-quill';
 import { MomentModule } from 'angular2-moment';
 import { NgxPaginationModule } from 'ngx-pagination';
@@ -33,12 +32,10 @@ import { AlgoVisibilityPipe } from './pipes/algo-visibility.pipe';
 import { MyInstancesComponent } from './my-instances/my-instances.component';
 import { InstancesTableComponent } from './my-instances/instances-table/instances-table.component';
 
-// SERVICES
 @NgModule({
   imports: [
     StoreRouting,
     SharedModule,
-    TabsModule.forRoot(),
     AngularSplitModule,
     QuillModule,
     MomentModule,

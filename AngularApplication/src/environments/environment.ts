@@ -5,11 +5,11 @@ export const environment = {
   applicationId: '62b4815e-3762-4cf2-bad1-876a1feabeb7',
   redirectUrl: 'http://localhost:4200/',
 
+  wsUrl: 'ws://algo-store-api.lykke-algo-store.svc.cluster.local/live',
   storeApiUrl: 'http://algo-store-api.lykke-algo-store.svc.cluster.local/api',
   walletApiUrl: 'https://webwallet-dev.lykkex.net/wallets/hft',
-  apiV2Url: 'https://apiv2-dev.lykkex.net/api/',
   authUrl: 'http://localhost:5000/api/home/authentication',
   tokenUrl: 'https://auth-dev.lykkex.net/getlykkewallettoken',
-  idleTime: 300,
+  idleTime: 1800, // 30 minutes
   idleTimeout: 60
 };

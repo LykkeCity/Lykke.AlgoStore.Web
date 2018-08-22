@@ -17,7 +17,7 @@ export interface Algo {
     DatePublished?: string;
     Status?: string;
     Author?: string;
-    UsersCount?: string;
+    UsesCount?: string;
     Rating?: number;
     RatedUsersCount?: number;
     Content?: string;

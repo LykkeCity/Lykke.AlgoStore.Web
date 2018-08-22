@@ -1,9 +1,9 @@
 import { Component, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { UserRolesService } from '../../services/user-roles.service';
+import { UserRolesService } from '../../core/services/user-roles.service';
 import { UserRole } from '../../models/user-role.model';
 import { Subscription } from 'rxjs';
-import { UserService } from '../../services/user.service';
+import { UserService } from '../../core/services/user.service';
 import { UserData } from '../../models/userdata.interface';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap';
 import { AssignRoleModalComponent } from './assign-role-modal/assign-role-modal.component';
@@ -65,6 +65,9 @@ export class UserRolesComponent implements OnDestroy {
       } else {
         this.userInfo = info;
       }
+    }, (error) => {
+      this.modalRef.hide();
+      this.notificationsService.error('Error', error.DisplayMessage);
     }));
 
     this.subscriptions.push(this.userRoleService.getAllRoles().subscribe(roles => {
@@ -116,6 +119,9 @@ export class UserRolesComponent implements OnDestroy {
                 this.usersService.updatePermissions(roles);
               });
             }
+          }, (error) => {
+            this.modalRef.hide();
+            this.notificationsService.error('Error', error.DisplayMessage);
           });
         }
       }

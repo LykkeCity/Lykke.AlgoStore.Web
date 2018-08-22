@@ -1,0 +1,39 @@
+<div class="modal-body">
+  <div class="row mt-4 mb-4 text-center">
+    <div class="col-12">
+      <div class="image-holder">
+        <img src="../../../assets/images/delete-big-icn.svg">
+      </div>
+    </div>
+  </div>
+  <div class="row mt-2 mb-2">
+    <div class="col-12">
+      <h3>Deactivate Account</h3>
+    </div>
+  </div>
+  <div class="row mt-2 mb-2">
+    <div class="col-12">
+      <p>You are about to permanently delete your Algo Store Account.</p>
+    </div>
+  </div>
+  <div class="row mt-2 mb-2">
+    <div class="col-12">
+      <div class="form-group">
+        <div class="custom-control custom-checkbox mr-sm-2">
+          <input type="checkbox" class="custom-control-input" id="legal-checkbox" [(ngModel)]="agreed">
+          <label class="custom-control-label cursor-pointer" for="legal-checkbox">I understand that all of my information and data related to the Algo Store will be deleted forever.</label>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row mt-2 mb-3 text-center">
+    <div class="col-12">
+      <button class="btn" [ngClass]="{'btn-primary': agreed, 'btn-secondary': !agreed}" (click)="deactivateAccount()" [disabled]="!agreed">Deactivate</button>
+    </div>
+  </div>
+  <div class="row text-center">
+    <div class="col-12 font-weight-semibold">
+      <a href="javascript:;" (click)="bsModalRef.hide()">Cancel</a>
+    </div>
+  </div>
+</div>
