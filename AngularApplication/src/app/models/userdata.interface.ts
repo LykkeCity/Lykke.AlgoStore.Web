@@ -15,6 +15,6 @@ export interface UserData {
   Roles?: UserRole[];
   Legal?: {
     CookieConsent?: boolean;
-    GDPRConsent?: boolean;
+    GdprConsent?: boolean;
   };
 }

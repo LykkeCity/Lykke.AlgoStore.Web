@@ -36,7 +36,7 @@ export class ACLGuard implements CanActivate {
       return access;
     }
 
-    if (user.Legal && user.Legal.GDPRConsent) {
+    if (user.Legal && user.Legal.GdprConsent) {
       access.legal = true;
     }
 

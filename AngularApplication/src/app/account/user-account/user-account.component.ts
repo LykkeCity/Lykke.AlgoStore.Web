@@ -1,5 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { NotificationsService } from 'angular2-notifications';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap';
+import { AuthService } from '../../core/services/auth.service';
 import { UserService } from '../../core/services/user.service';
 import { UserData } from '../../models/userdata.interface';
 import { DeactivateAccountPopupComponent } from '../deactivate-account-popup/deactivate-account-popup.component';
@@ -15,10 +17,12 @@ export class UserAccountComponent implements OnDestroy {
   user: UserData;
   modalRef: BsModalRef;
 
-  constructor(private userService: UserService, private modalService: BsModalService) {
+  constructor(private userService: UserService,
+              private modalService: BsModalService,
+              private notificationsService: NotificationsService,
+              private authService: AuthService) {
     this.userService.loggedUserSubject.subscribe(user => {
       this.user = user;
-      console.log(this.user);
     });
 
   }
@@ -33,7 +37,8 @@ export class UserAccountComponent implements OnDestroy {
     const initialState = {
       onDeactivateSuccess: () => {
         this.userService.deactivateAccount().subscribe(() => {
-
+          this.notificationsService.success('Success', 'The deactivation of your account has started.');
+          this.authService.logout();
         });
       }
     };

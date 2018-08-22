@@ -18,7 +18,7 @@ export class LegalGuard implements CanLoad {
 
         this.usersService.setLoggedUser(user);
 
-        if (user.Legal && user.Legal.GDPRConsent) {
+        if (user.Legal && user.Legal.GdprConsent) {
           ob.next(true);
           ob.complete();
         } else {

@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../../core/services/auth.service';
 import { UserService } from '../../core/services/user.service';
+import { UserData } from '../../models/userdata.interface';
 
 @Component({
   selector: 'app-legal-notification',
@@ -25,8 +26,8 @@ export class LegalNotificationComponent {
     if (this.agreed) {
       this.loader = true;
       this.usersService.agreeLegalNotice().subscribe(() => {
-        const user = this.usersService.getLoggedUser();
-        user.Legal ? user.Legal.GDPRConsent = true : user.Legal = { GDPRConsent: true, CookieConsent: false };
+        const user = this.usersService.getLoggedUser() || {} as UserData;
+        user.Legal ? user.Legal.GdprConsent = true : user.Legal = { GdprConsent: true, CookieConsent: false };
         this.usersService.setLoggedUser(user);
         this.router.navigate(['/store/my-algos']);
       });

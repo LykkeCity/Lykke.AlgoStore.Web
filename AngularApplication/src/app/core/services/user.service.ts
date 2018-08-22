@@ -64,16 +64,16 @@ export class UserService {
     return this.authRequestService.get(environment.storeApiUrl + '/v1/clients/wallets');
   }
 
-  getLegalConsents(): Observable<{CookieConsent: boolean, GDPRConsent: boolean}> {
-    return this.authRequestService.get(environment.storeApiUrl + '/v1/users/legalConsents');
+  getLegalConsents(): Observable<{CookieConsent: boolean, GdprConsent: boolean}> {
+    return this.authRequestService.get(environment.storeApiUrl + '/v1/users/getLegalConsents');
   }
 
   agreeLegalNotice(): Observable<null> {
-    return this.authRequestService.post(environment.storeApiUrl + '/v1/users/gdprConsent');
+    return this.authRequestService.post(environment.storeApiUrl + '/v1/users/setGdprConsent');
   }
 
   agreeCookies(): Observable<null> {
-    return this.authRequestService.post(environment.storeApiUrl + '/v1/users/cookieConsent');
+    return this.authRequestService.post(environment.storeApiUrl + '/v1/users/setCookieConsent');
   }
 
   deactivateAccount(): Observable<null> {
