@@ -1,7 +1,7 @@
 import { Component, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { InstanceService } from '../../core/services/instance.service';
-import { IAlgoInstanceType } from '../models/algo-instance.model';
+import { AlgoInstance, IAlgoInstanceType } from '../models/algo-instance.model';
 
 @Component({
   selector: 'app-my-instances',
@@ -42,21 +42,45 @@ export class MyInstancesComponent implements OnDestroy {
     this.subscriptions.forEach(sub => sub.unsubscribe());
   }
 
-  updateFilter(event) {
-    const val = event.target.value.toLowerCase();
-
+  private search(val: any, type: IAlgoInstanceType) {
     clearTimeout(this.typing);
 
     this.typing = setTimeout(() => {
 
-      const tempLive = this.temp[IAlgoInstanceType.Live].filter((instance) => {
+      let result = this.temp[type].filter((instance: AlgoInstance) => {
         return instance.InstanceName.toLocaleLowerCase().indexOf(val) !== -1
-          || instance.Wallet.Name.toLocaleLowerCase().indexOf(val) !== -1
+          || (instance.RunDate && instance.RunDate.indexOf(val) !== -1)
+          || (instance.StopDate && instance.RunDate.indexOf(val) !== -1)
+          || (instance.CreateDate && instance.RunDate.indexOf(val) !== -1)
           || !val;
       });
 
-      this.instances[IAlgoInstanceType.Live] = [...tempLive];
+      if (type === this.iAlgoInstanceType.Live) {
+        result = this.temp[type].filter((instance) => {
+          return instance.Wallet.Name.toLocaleLowerCase().indexOf(val) !== -1;
+        });
+      }
+
+      this.instances[type] = [...result];
 
     }, this.doneTypingInterval);
+  }
+
+  updateFilterLive(event) {
+    const val = event.target.value.toLowerCase();
+
+    this.search(val, this.iAlgoInstanceType.Live);
+  }
+
+  updateFilterDemo(event) {
+    const val = event.target.value.toLowerCase();
+
+    this.search(val, this.iAlgoInstanceType.Demo);
+  }
+
+  updateFilterTest(event) {
+    const val = event.target.value.toLowerCase();
+
+    this.search(val, this.iAlgoInstanceType.Test);
   }
 }

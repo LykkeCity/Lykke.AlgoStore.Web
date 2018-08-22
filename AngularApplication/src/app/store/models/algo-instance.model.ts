@@ -21,6 +21,9 @@ export interface AlgoInstanceData {
   AlgoInstanceType: IAlgoInstanceType;
   InstanceName: string;
   AlgoInstanceRunDate: string | null;
+  RunDate?: string;
+  StopDate?: string;
+  CreateDate?: string;
 }
 
 
