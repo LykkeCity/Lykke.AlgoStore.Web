@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { ACLGuard } from '../core/guards/acl.guard';
 import { AuthGuard } from '../core/guards/auth-guard';
 import { AccountComponent } from './account.component';
 import { UserAccountComponent } from './user-account/user-account.component';
@@ -12,8 +11,7 @@ const routes: Routes = [
       {
         path: 'user-account',
         component: UserAccountComponent,
-        canActivate: [AuthGuard, ACLGuard],
-        data: { acl: [] }
+        canActivate: [AuthGuard]
       },
     ]
   }
