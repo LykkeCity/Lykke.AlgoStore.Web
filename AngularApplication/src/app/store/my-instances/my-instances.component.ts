@@ -49,7 +49,9 @@ export class MyInstancesComponent implements OnDestroy {
 
       let result = this.temp[type].filter((instance: AlgoInstance) => {
         return instance.InstanceName.toLocaleLowerCase().indexOf(val) !== -1
-          || instance.Sta
+          || (instance.RunDate && instance.RunDate.indexOf(val) !== -1)
+          || (instance.StopDate && instance.RunDate.indexOf(val) !== -1)
+          || (instance.CreateDate && instance.RunDate.indexOf(val) !== -1)
           || !val;
       });
 
