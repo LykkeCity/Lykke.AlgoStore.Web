@@ -169,7 +169,8 @@ export class ChartComponent implements OnChanges, OnDestroy {
   private handleHistoricalData(data: any): void {
     const historicalTradesSeries = data[0].reverse();
     const historicalFunctionsSeries = data[1];
-    const historicalAlgoCandlesSeries = data[2];
+    const historicalQuotesSeries = data[2];
+    const historicalAlgoCandlesSeries = data[3];
 
     for (const candle of historicalAlgoCandlesSeries) {
       this.drawCandle(candle);
@@ -183,8 +184,12 @@ export class ChartComponent implements OnChanges, OnDestroy {
       this.drawFunction(func);
     }
 
+    for (const quote of historicalQuotesSeries) {
+      this.drawQuote(quote);
+    }
+
     // if we have candles for indicators
-    if (data.length > 3) {
+    if (data.length > 4) {
       for (let i = 3; i < data.length; i++) {
         for (const candle of data[i]) {
           this.drawCandle(candle);
@@ -231,6 +236,9 @@ export class ChartComponent implements OnChanges, OnDestroy {
 
     requests.push(this.instanceService
       .getHistoricalFunctions(this.instanceId, instanceStartDate, instanceEndDate));
+
+    requests.push(this.instanceService
+      .getHistoricalQuotes(this.instanceId, instanceAssetPair, instanceStartDate, instanceEndDate, true));
 
     requests.push(this.instanceService
       .getHistoricalCandles(instanceAssetPair, 3, instanceTimeInterval, instanceStartDate, instanceEndDate));

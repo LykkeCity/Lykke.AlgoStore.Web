@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment';
 import { Observable } from 'rxjs';
+import AlgoInstanceQuote from '../../store/models/algo-instance-quote.model';
 import { Algo } from '../../store/models/algo.interface';
 import { AuthRequestService } from './auth-request.service';
 import { AlgoInstance, IAlgoInstanceStatus } from '../../store/models/algo-instance.model';
@@ -84,6 +85,12 @@ export class InstanceService {
   getHistoricalFunctions(instanceId: string, fromMoment: string, toMoment: string): Observable<Function[]> {
     const params = { instanceId, fromMoment, toMoment };
     return this.authRequestService.get(environment.storeApiUrl + '/v1/history/functions', { params });
+  }
+
+  // TODO update assetPair name when fixed in API
+  getHistoricalQuotes(instanceId: string, asetPair: string, fromMoment: string, toMoment: string, isBuy?: boolean): Observable<AlgoInstanceQuote[]> {
+    const params = { instanceId, asetPair, fromMoment, toMoment };
+    return this.authRequestService.get(environment.storeApiUrl + '/v1/history/quotes/', { params });
   }
 
 }
