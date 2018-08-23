@@ -87,9 +87,8 @@ export class InstanceService {
     return this.authRequestService.get(environment.storeApiUrl + '/v1/history/functions', { params });
   }
 
-  // TODO update assetPair name when fixed in API
-  getHistoricalQuotes(instanceId: string, asetPair: string, fromMoment: string, toMoment: string, isBuy?: boolean): Observable<AlgoInstanceQuote[]> {
-    const params = { instanceId, asetPair, fromMoment, toMoment };
+  getHistoricalQuotes(instanceId: string, assetPair: string, fromMoment: string, toMoment: string, isBuy?: boolean): Observable<AlgoInstanceQuote[]> {
+    const params = { instanceId, assetPair, fromMoment, toMoment };
     return this.authRequestService.get(environment.storeApiUrl + '/v1/history/quotes/', { params });
   }
 
