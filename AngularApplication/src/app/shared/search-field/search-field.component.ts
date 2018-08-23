@@ -1,4 +1,4 @@
-import { Component, ElementRef, Input, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 
 @Component({
   selector: 'app-search-field',
@@ -12,7 +12,10 @@ export class SearchFieldComponent {
   @Input() searchFunc: Function;
   @Input() instanceSearch: boolean;
 
+  @Output() onClear = new EventEmitter();
+
   clear(): void {
+    this.onClear.emit();
     this.searchField.nativeElement.value = '';
     this.searchFunc({ target: { value: '' } });
   }
