@@ -14,21 +14,24 @@
           </div>
           <div class="instances-categories">
             <div>
-              <span class="instance-type">Live:</span> <span class="instance-count text-muted">{{instances[iAlgoInstanceType.Live]?.length}}</span>
+              <span class="instance-type">Live:</span> <span class="instance-count text-muted">{{liveCount}}</span>
             </div>
             <div>
-              <span class="instance-type">Demo:</span> <span class="instance-count text-muted">{{instances[iAlgoInstanceType.Demo]?.length}}</span>
+              <span class="instance-type">Demo:</span> <span class="instance-count text-muted">{{demoCount}}</span>
             </div>
             <div>
-              <span class="instance-type">Backtest:</span> <span class="instance-count text-muted">{{instances[iAlgoInstanceType.Test]?.length}}</span>
+              <span class="instance-type">Backtest:</span> <span class="instance-count text-muted">{{testCount}}</span>
             </div>
           </div>
       </div>
     </div>
   </div>
   <div class="categories mt-5">
-    <tabset class="instances-tabs">
-      <tab heading="Live">
+    <tabset class="instances-tabs" #instanceTabs>
+      <tab customClass="Live" (select)="onSelect($event)">
+        <ng-template tabHeading>
+          <span><i *ngIf="hasTabLoader && heading === 'Live'" class="icon--spin animate-spin" tooltip="Updating Statistics..." container="body"></i>Live</span>
+        </ng-template>
         <div class="row">
           <div class="offset-8 col-4">
             <app-search-field [placeholder]="'Type to filter by name, date or wallet'" [searchFunc]="updateFilterLive.bind(this)" [instanceSearch]="true"></app-search-field>
@@ -40,7 +43,10 @@
           </div>
         </div>
       </tab>
-      <tab heading="Demo">
+      <tab customClass="Demo" (select)="onSelect($event)">
+        <ng-template tabHeading>
+          <span><i *ngIf="hasTabLoader && heading === 'Demo'" class="icon--spin animate-spin" tooltip="Updating Statistics..." container="body"></i>Demo</span>
+        </ng-template>
         <div class="row">
           <div class="offset-8 col-4">
             <app-search-field [placeholder]="'Type to filter by name or date'" [searchFunc]="updateFilterDemo.bind(this)" [instanceSearch]="true"></app-search-field>
@@ -52,7 +58,10 @@
           </div>
         </div>
       </tab>
-      <tab heading="Backtest">
+      <tab customClass="Backtest" (select)="onSelect($event)">
+        <ng-template tabHeading>
+          <span><i *ngIf="hasTabLoader && heading === 'Backtest'" class="icon--spin animate-spin" tooltip="Updating Statistics..." container="body"></i>Backtest</span>
+        </ng-template>
         <div class="row">
           <div class="offset-8 col-4">
             <app-search-field [placeholder]="'Type to filter by name or date'" [searchFunc]="updateFilterTest.bind(this)" [instanceSearch]="true"></app-search-field>
