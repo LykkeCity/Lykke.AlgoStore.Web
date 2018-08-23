@@ -59,19 +59,28 @@ export class MyInstancesComponent implements OnDestroy {
     this.hasTabLoader = true;
     this.disableTabs();
 
+    console.log(this.hasTabLoader);
+    console.log(this.heading);
     this.typing = setTimeout(() => {
 
-      let result = this.temp[type].filter((instance: AlgoInstance) => {
-        return instance.InstanceName.toLocaleLowerCase().indexOf(val) !== -1
-          || (instance.RunDate && instance.RunDate.indexOf(val) !== -1)
-          || (instance.StopDate && instance.StopDate.indexOf(val) !== -1)
-          || (instance.CreateDate && instance.CreateDate.indexOf(val) !== -1)
-          || !val;
-      });
+      let result;
 
       if (type === this.iAlgoInstanceType.Live) {
         result = this.temp[type].filter((instance) => {
-          return instance.Wallet.Name.toLocaleLowerCase().indexOf(val) !== -1;
+          return instance.InstanceName.toLocaleLowerCase().indexOf(val) !== -1
+            || (instance.RunDate && instance.RunDate.indexOf(val) !== -1)
+            || (instance.StopDate && instance.StopDate.indexOf(val) !== -1)
+            || (instance.CreateDate && instance.CreateDate.indexOf(val) !== -1)
+            || instance.Wallet.Name.toLocaleLowerCase().indexOf(val) !== -1
+            || !val;
+        });
+      } else {
+        result = this.temp[type].filter((instance: AlgoInstance) => {
+          return instance.InstanceName.toLocaleLowerCase().indexOf(val) !== -1
+            || (instance.RunDate && instance.RunDate.indexOf(val) !== -1)
+            || (instance.StopDate && instance.StopDate.indexOf(val) !== -1)
+            || (instance.CreateDate && instance.CreateDate.indexOf(val) !== -1)
+            || !val;
         });
       }
 
@@ -102,7 +111,9 @@ export class MyInstancesComponent implements OnDestroy {
   }
 
   onSelect(tab: TabDirective) {
-    this.heading = tab.customClass;
+    if (tab.customClass) {
+      this.heading = tab.customClass;
+    }
   }
 
   private disableTabs(): void {

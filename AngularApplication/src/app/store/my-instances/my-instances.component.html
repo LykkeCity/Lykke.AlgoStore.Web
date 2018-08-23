@@ -30,7 +30,7 @@
     <tabset class="instances-tabs" #instanceTabs>
       <tab customClass="Live" (select)="onSelect($event)">
         <ng-template tabHeading>
-          <span><i *ngIf="hasTabLoader && heading === 'Live'" class="icon--spin animate-spin" tooltip="Updating Statistics..." container="body"></i>Live</span>
+          <span><i *ngIf="hasTabLoader && heading === 'Live'" class="icon--spin animate-spin"></i>Live</span>
         </ng-template>
         <div class="row">
           <div class="offset-8 col-4">
@@ -45,7 +45,7 @@
       </tab>
       <tab customClass="Demo" (select)="onSelect($event)">
         <ng-template tabHeading>
-          <span><i *ngIf="hasTabLoader && heading === 'Demo'" class="icon--spin animate-spin" tooltip="Updating Statistics..." container="body"></i>Demo</span>
+          <span><i *ngIf="hasTabLoader && heading === 'Demo'" class="icon--spin animate-spin"></i>Demo</span>
         </ng-template>
         <div class="row">
           <div class="offset-8 col-4">
@@ -60,7 +60,7 @@
       </tab>
       <tab customClass="Backtest" (select)="onSelect($event)">
         <ng-template tabHeading>
-          <span><i *ngIf="hasTabLoader && heading === 'Backtest'" class="icon--spin animate-spin" tooltip="Updating Statistics..." container="body"></i>Backtest</span>
+          <span><i *ngIf="hasTabLoader && heading === 'Backtest'" class="icon--spin animate-spin"></i>Backtest</span>
         </ng-template>
         <div class="row">
           <div class="offset-8 col-4">
