@@ -34,4 +34,40 @@ export default class ArrayUtils {
       return;
     }
   }
+
+  public static orderedInsertChartData(entities: any[], item: any, itemProp: string, arrayPropIndex: number): any[] {
+    if (!entities.length) {
+      entities.push(item);
+      return entities;
+    }
+
+    let index = 0;
+
+    // check if needed to be on the start
+    if (itemProp < entities[index][arrayPropIndex]) {
+      entities.splice(index, 0, item);
+      console.log('inserted first');
+      return entities;
+    }
+
+    // check if its last
+    if (itemProp > entities[entities.length - 1][arrayPropIndex]) {
+      entities.push(item);
+      console.log('inserted last');
+      return entities;
+    }
+
+    // find proper index
+    while (index < entities.length) {
+      if (itemProp < entities[index][arrayPropIndex]) {
+        break;
+      }
+      index++;
+    }
+
+    entities.splice(index, 0, item);
+    console.log('inserted on index ' + index);
+    return entities;
+  }
+
 }

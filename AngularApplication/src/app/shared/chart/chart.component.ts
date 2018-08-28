@@ -128,20 +128,26 @@ export class ChartComponent implements OnChanges, OnDestroy {
   }
 
   private drawTrade(trade: AlgoInstanceTrade): void {
-    this.series.find(s => s.name === 'Trades')
-      .data.push([trade.DateOfTrade, trade.Price, trade['AssetPairId'], trade.IsBuy, trade.Amount]);
+    const trades = this.series.find(s => s.name === 'Trades').data;
 
-    ArrayUtils.BinaryInsert(trade.DateOfTrade, this.categories);
+    if (!trades.find(t => t[0] === trade.DateOfTrade)) {
+      trades.push([trade.DateOfTrade, trade.Price, trade['AssetPairId'], trade.IsBuy, trade.Amount]);
+      ArrayUtils.BinaryInsert(trade.DateOfTrade, this.categories);
 
-    this.updateChart();
+      this.updateChart();
+    }
   }
 
   private drawCandle(candle: Candle): void {
-    this.series.find(s => s.name === 'Candles')
-      .data.push([candle.Open, candle.Close, candle.Low, candle.High, candle.AssetPair, candle.DateTime]);
-    ArrayUtils.BinaryInsert(candle.DateTime, this.categories);
+    const candles = this.series.find(s => s.name === 'Candles').data;
 
-    this.updateChart();
+    if (!candles.some(c => c[5] === candle.DateTime)) {
+      ArrayUtils.BinaryInsert(candle.DateTime, this.categories);
+      let item = [candle.Open, candle.Close, candle.Low, candle.High, candle.AssetPair, candle.DateTime];
+      // candles.push([candle.Open, candle.Close, candle.Low, candle.High, candle.AssetPair, candle.DateTime]);
+      this.series.find(s => s.name === 'Candles').data = ArrayUtils.orderedInsertChartData(candles, item, candle.DateTime, 5);
+      this.updateChart();
+    }
   }
 
   private drawFunction(func: Function): void {
@@ -151,10 +157,25 @@ export class ChartComponent implements OnChanges, OnDestroy {
       this.legend.push(func.FunctionName);
     }
 
-    this.series.find(s => s.name === func.FunctionName).data.push(func.Value);
-    ArrayUtils.BinaryInsert(func.CalculatedOn, this.categories);
+    const series = this.series.find(s => s.name === func.FunctionName).data;
 
-    this.updateChart();
+    if (!series.includes(func.Value)) {
+      ArrayUtils.BinaryInsert(func.CalculatedOn, this.categories);
+      series.push(func.Value);
+
+      this.updateChart();
+    }
+  }
+
+  private drawQuote(quote: AlgoInstanceQuote): void {
+    const quotes = this.series.find(s => s.name === 'Quotes').data;
+
+    if (!quotes.some(q => q[0] === quote.DateReceived)) {
+      ArrayUtils.BinaryInsert(quote.DateReceived, this.categories);
+      quotes.push([quote.DateReceived, quote.Price, quote['AssetPair'], quote.IsBuy, quote.IsOnline]);
+      // quotes.push(quote.Price);
+      this.updateChart();
+    }
   }
 
   private drawQuote(quote: AlgoInstanceQuote): void {
@@ -202,6 +223,7 @@ export class ChartComponent implements OnChanges, OnDestroy {
     clearTimeout(this.chartUpdateTimeout);
 
     this.chartUpdateTimeout = setTimeout(() => {
+      console.log(this.chartOptions);
       this.updateOptions = {
         legend: {
           data: this.legend
