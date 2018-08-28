@@ -178,15 +178,6 @@ export class ChartComponent implements OnChanges, OnDestroy {
     }
   }
 
-  private drawQuote(quote: AlgoInstanceQuote): void {
-    this.series.find(s => s.name === 'Quotes')
-      .data.push([quote.DateReceived, quote.Price, quote['AssetPair'], quote.IsBuy, quote.IsOnline]);
-
-    ArrayUtils.BinaryInsert(quote.DateReceived, this.categories);
-
-    this.updateChart();
-  }
-
   private handleHistoricalData(data: any): void {
     const historicalTradesSeries = data[0].reverse();
     const historicalFunctionsSeries = data[1];
