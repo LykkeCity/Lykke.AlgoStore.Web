@@ -41,10 +41,6 @@ export class AlgoService {
   getAlgoWithSource(algoId: string, clientId?: string): Observable<Algo> {
     const params = { algoId };
 
-    if (clientId) {
-      params['clientId'] = clientId;
-    }
-
     return forkJoin(
       this.authRequestService.get(environment.storeApiUrl + '/v1/algo/getAlgoInformation', { params }),
       this.getAlgoSource(algoId, clientId)
