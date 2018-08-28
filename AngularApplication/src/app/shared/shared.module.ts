@@ -2,8 +2,10 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
+// import { ɵa as ChartsDirective } from 'ngx-echarts';
 import { PopupComponent } from '../components/popup/popup.component';
 import { BsDropdownModule, ModalModule, PopoverModule, TabsModule, TooltipModule } from 'ngx-bootstrap';
+import { NgxEchartsDirective } from './chart/chart-package/ngx-echarts.directive';
 import { CodeEditorComponent } from './code-editor/code-editor.component';
 import { AceEditorModule } from 'ng2-ace-editor';
 import { UiSwitchModule } from 'ngx-ui-switch';
@@ -19,7 +21,6 @@ import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { LoaderComponent } from './loader/loader.component';
 import { CollapseContentComponent } from './collapse/collapse-content.component';
 import { ChartComponent } from './chart/chart.component';
-import { NgxEchartsModule } from 'ngx-echarts';
 import { StompRService, StompService } from '@stomp/ng2-stompjs';
 import { SearchFieldComponent } from './search-field/search-field.component';
 
@@ -39,8 +40,7 @@ import { SearchFieldComponent } from './search-field/search-field.component';
     BsDropdownModule.forRoot(),
     PopoverModule.forRoot(),
     TabsModule.forRoot(),
-    NgxDatatableModule,
-    NgxEchartsModule
+    NgxDatatableModule
   ],
   providers: [StarRatingConfigService, ACLGuard, UserDetailsGuard, StompService, StompRService],
   declarations: [
@@ -52,7 +52,9 @@ import { SearchFieldComponent } from './search-field/search-field.component';
     CollapseContentComponent,
     ChartComponent,
     CookieNoticeComponent,
-    SearchFieldComponent
+    SearchFieldComponent,
+    NgxEchartsDirective
+    // ChartsDirective
   ],
   exports: [
     CommonModule,
@@ -73,7 +75,9 @@ import { SearchFieldComponent } from './search-field/search-field.component';
     CollapseContentComponent,
     ChartComponent,
     CookieNoticeComponent,
-    SearchFieldComponent
+    SearchFieldComponent,
+    NgxEchartsDirective
+    // ChartsDirective
   ]
 })
 export class SharedModule {}
