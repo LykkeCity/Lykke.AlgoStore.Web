@@ -1,7 +1,8 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, ViewChild } from '@angular/core';
+import { TabDirective, TabsetComponent } from 'ngx-bootstrap';
 import { Subscription } from 'rxjs';
 import { InstanceService } from '../../core/services/instance.service';
-import { IAlgoInstanceType } from '../models/algo-instance.model';
+import { AlgoInstance, IAlgoInstanceType } from '../models/algo-instance.model';
 
 @Component({
   selector: 'app-my-instances',
@@ -10,6 +11,7 @@ import { IAlgoInstanceType } from '../models/algo-instance.model';
 })
 export class MyInstancesComponent implements OnDestroy {
 
+  @ViewChild('instanceTabs') staticTabs: TabsetComponent;
   subscriptions: Subscription[] = [];
   loadingIndicator = true;
   instancesCount: number;
@@ -18,7 +20,13 @@ export class MyInstancesComponent implements OnDestroy {
   iAlgoInstanceType = IAlgoInstanceType;
 
   typing: any;
+  heading = 'Live';
+  hasTabLoader: boolean;
   doneTypingInterval: number;
+
+  liveCount: number;
+  demoCount: number;
+  testCount: number;
 
   constructor(private instancesService: InstanceService) {
     this.doneTypingInterval = 1000;
@@ -32,6 +40,10 @@ export class MyInstancesComponent implements OnDestroy {
          this.instances[instance.InstanceType].push(instance);
        });
 
+       this.liveCount = this.instances[this.iAlgoInstanceType.Live].length;
+       this.demoCount = this.instances[this.iAlgoInstanceType.Demo].length;
+       this.testCount = this.instances[this.iAlgoInstanceType.Test].length;
+
        this.temp = { ...this.instances };
        this.loadingIndicator = false;
 
@@ -42,21 +54,73 @@ export class MyInstancesComponent implements OnDestroy {
     this.subscriptions.forEach(sub => sub.unsubscribe());
   }
 
-  updateFilter(event) {
-    const val = event.target.value.toLowerCase();
-
+  private search(val: any, type: IAlgoInstanceType) {
     clearTimeout(this.typing);
+    this.hasTabLoader = true;
+    this.disableTabs();
 
+    console.log(this.hasTabLoader);
+    console.log(this.heading);
     this.typing = setTimeout(() => {
 
-      const tempLive = this.temp[IAlgoInstanceType.Live].filter((instance) => {
-        return instance.InstanceName.toLocaleLowerCase().indexOf(val) !== -1
-          || instance.Wallet.Name.toLocaleLowerCase().indexOf(val) !== -1
-          || !val;
-      });
+      let result;
 
-      this.instances[IAlgoInstanceType.Live] = [...tempLive];
+      if (type === this.iAlgoInstanceType.Live) {
+        result = this.temp[type].filter((instance) => {
+          return instance.InstanceName.toLocaleLowerCase().indexOf(val) !== -1
+            || (instance.RunDate && instance.RunDate.indexOf(val) !== -1)
+            || (instance.StopDate && instance.StopDate.indexOf(val) !== -1)
+            || (instance.CreateDate && instance.CreateDate.indexOf(val) !== -1)
+            || instance.Wallet.Name.toLocaleLowerCase().indexOf(val) !== -1
+            || !val;
+        });
+      } else {
+        result = this.temp[type].filter((instance: AlgoInstance) => {
+          return instance.InstanceName.toLocaleLowerCase().indexOf(val) !== -1
+            || (instance.RunDate && instance.RunDate.indexOf(val) !== -1)
+            || (instance.StopDate && instance.StopDate.indexOf(val) !== -1)
+            || (instance.CreateDate && instance.CreateDate.indexOf(val) !== -1)
+            || !val;
+        });
+      }
 
+      this.instances[type] = [...result];
+      this.staticTabs.tabs.forEach(tab => tab.disabled = false);
+
+      this.enableTabs();
+      this.hasTabLoader = false;
     }, this.doneTypingInterval);
+  }
+
+  updateFilterLive(event) {
+    const val = event.target.value.toLowerCase();
+
+    this.search(val, this.iAlgoInstanceType.Live);
+  }
+
+  updateFilterDemo(event) {
+    const val = event.target.value.toLowerCase();
+
+    this.search(val, this.iAlgoInstanceType.Demo);
+  }
+
+  updateFilterTest(event) {
+    const val = event.target.value.toLowerCase();
+
+    this.search(val, this.iAlgoInstanceType.Test);
+  }
+
+  onSelect(tab: TabDirective) {
+    if (tab.customClass) {
+      this.heading = tab.customClass;
+    }
+  }
+
+  private disableTabs(): void {
+    this.staticTabs.tabs.forEach(tab => tab.disabled = true);
+  }
+
+  private enableTabs(): void {
+    this.staticTabs.tabs.forEach(tab => tab.disabled = false);
   }
 }

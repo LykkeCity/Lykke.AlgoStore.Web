@@ -21,7 +21,6 @@ export class UserDetailsGuard implements CanLoad {
           user.Roles = roles;
 
           this.userService.setLoggedUser(user);
-          console.log(data);
 
           observer.next(true);
           observer.complete();
