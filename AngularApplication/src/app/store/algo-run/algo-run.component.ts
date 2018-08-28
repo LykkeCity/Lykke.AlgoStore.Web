@@ -59,9 +59,9 @@ export class AlgoRunComponent implements OnDestroy {
     this.subscriptions.push(this.route.params.subscribe(params => {
       const algoId = params['algoId'];
 
-      // this.algoService.isAuthor(algoId).subscribe(isAuthor => {
-      //   this.permissions.isCurrentUser = isAuthor;
-      // });
+      this.algoService.isAuthor(algoId).subscribe(isAuthor => {
+        this.permissions.isCurrentUser = isAuthor;
+      });
 
       this.subscriptions.push(this.algoService.getAlgoWithSource(algoId).subscribe(algo => {
         this.algo = algo;

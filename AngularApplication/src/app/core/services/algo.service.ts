@@ -47,6 +47,11 @@ export class AlgoService {
     ).map( (res: any) => ({...res[0], ...res[1]}) );
   }
 
+  public isAuthor(algoId: string): Observable<boolean> {
+    const params = { algoId };
+    return this.authRequestService.get(environment.storeApiUrl + '/v1/algo/getIsLoggedUserCreatorOfAlgo', { params });
+  }
+
   getAlgoSource(algoId: string): Observable<{ Content: string }> {
     const params = { algoId };
 
