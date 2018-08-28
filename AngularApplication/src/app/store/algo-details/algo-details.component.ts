@@ -60,10 +60,8 @@ export class AlgoDetailsComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.subscriptions.push(this.route.params.subscribe(params => {
       const algoId = params['algoId'];
-      const clientId = params['clientId'];
-      this.subscriptions.push(this.algoService.getAlgoWithSource(algoId, clientId).subscribe(algo => {
+      this.subscriptions.push(this.algoService.getAlgoWithSource(algoId).subscribe(algo => {
         this.algo = algo;
-        this.algo.ClientId = clientId;
       }, () => {
         this.router.navigate(['/store/algo-list']);
       }));

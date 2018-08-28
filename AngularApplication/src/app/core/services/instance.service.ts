@@ -16,9 +16,9 @@ export class InstanceService {
 
   constructor(private authRequestService: AuthRequestService) { }
 
-  stopInstance(algoId: string, instanceId: string, algoClientId: string): Observable<Algo> {
+  stopInstance(algoId: string, instanceId: string): Observable<Algo> {
     return this.authRequestService.post(
-      environment.storeApiUrl + '/v1/management/stop', { AlgoId: algoId, InstanceId: instanceId, AlgoClientId: algoClientId }
+      environment.storeApiUrl + '/v1/management/stop', { AlgoId: algoId, InstanceId: instanceId }
     );
   }
 
@@ -26,8 +26,8 @@ export class InstanceService {
     return this.authRequestService.put(environment.storeApiUrl + `/v1/algoInstances/${instanceId}/name`, data);
   }
 
-  getInstanceLogs(AlgoId: string, InstanceId: string, AlgoClientId: string, Tail: number = 100): Observable<AlgoLog> {
-    const params = { AlgoId, InstanceId, AlgoClientId, Tail };
+  getInstanceLogs(AlgoId: string, InstanceId: string, Tail: number = 100): Observable<AlgoLog> {
+    const params = { AlgoId, InstanceId, Tail };
     return this.authRequestService.get(environment.storeApiUrl + `/v1/management/tailLog`, { params });
   }
 
