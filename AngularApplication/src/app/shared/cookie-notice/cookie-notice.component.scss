@@ -3,12 +3,13 @@
 .notice {
   width: 40%;
   left: 30%;
-  position: absolute;
+  position: fixed;
   border-radius: 8px;
   background-color: #ffffff;
   box-shadow: 0 8px 50px 0 rgba(63, 77, 96, 0.4), 0 5px 5px 0 rgba(63, 77, 96, 0.05);
   bottom: 40px;
   padding: 20px 20px 20px 0;
+  z-index: 1000;
 
   .holder {
     border-left: 2px solid $azure;
