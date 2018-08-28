@@ -73,6 +73,11 @@ export class AlgoEditComponent implements OnInit, OnDestroy {
       this.subscriptions.push(this.algoService.getAlgoWithSource(algoId).subscribe(algo => {
         this.algo = algo;
 
+        this.algoService.isAuthor(algoId).subscribe(isAuthor => {
+          this.permissions.canPublish = isAuthor && this.permissions.canPublish;
+          this.permissions.canUnpublish = isAuthor && this.permissions.canUnpublish;
+        });
+
         this.subscriptions.push(this.instanceService.getAlgoInstances(algoId).subscribe(instances => {
           this.instances = instances;
           let hasRunning = false;
