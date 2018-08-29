@@ -65,9 +65,6 @@ export class AlgoInstancePopupComponent implements OnDestroy {
           });
         });
 
-        // we don't need the clientId
-        delete liveAlgoData.AlgoClientId;
-
         this.subscriptions.push(this.instanceService.createLiveAlgoIntance(liveAlgoData)
           .subscribe((data) => {
             this.onInstanceCreateSuccess(data);

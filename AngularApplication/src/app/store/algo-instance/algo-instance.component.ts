@@ -2,7 +2,7 @@ import { Component, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DATETIME_DISPLAY_FORMAT } from '../../core/utils/date-time';
 import { AlgoInstance, AlgoInstanceData, IAlgoInstanceStatus, IAlgoInstanceType } from '../models/algo-instance.model';
-import { Observable, Subscription, timer } from 'rxjs';
+import { Subscription, timer } from 'rxjs';
 import { Wallet } from '../../models/wallet.model';
 import { Algo } from '../models/algo.interface';
 import { UserService } from '../../core/services/user.service';
@@ -12,7 +12,7 @@ import { InstanceStatistic } from '../models/algo-instance-statistic.model';
 import { BsModalRef, BsModalService, TabDirective } from 'ngx-bootstrap';
 import { AlgoInstancePopupComponent } from '../algo-run/algo-run-popup/algo-instance-popup.component';
 import { NotificationsService } from 'angular2-notifications';
-import { repeatWhen, startWith } from 'rxjs/operators';
+import { repeatWhen } from 'rxjs/operators';
 import { PopupComponent } from '../../components/popup/popup.component';
 import { PopupConfig } from '../../models/popup.interface';
 import { AlgoService } from '../../core/services/algo.service';
@@ -29,7 +29,6 @@ export class AlgoInstanceComponent implements OnDestroy {
   iAlgoInstanceStatus = IAlgoInstanceStatus;
   iAlgoInstanceType = IAlgoInstanceType;
   instance: AlgoInstance;
-  clientId: string;
   instanceId: string;
   algoId: string;
   algo: Algo;
@@ -83,7 +82,6 @@ export class AlgoInstanceComponent implements OnDestroy {
     };
 
     this.subscriptions.push(this.route.params.subscribe(params => {
-      this.clientId = params['clientId'];
       this.instanceId = params['instanceId'];
       this.algoId = params['algoId'];
 
@@ -95,8 +93,8 @@ export class AlgoInstanceComponent implements OnDestroy {
           || (this.userService.hasPermission(Permissions.SAVE_ALGO_INSTANCE_DATA)
             && this.userService.hasPermission(Permissions.GET_FREE_WALLETS));
 
-        this.subscriptions.push(this.algoService.getAlgoWithSource(this.algoId, this.clientId).subscribe(algo => {
-          this.algo = { ...algo, ClientId: this.clientId };
+        this.subscriptions.push(this.algoService.getAlgoWithSource(this.algoId).subscribe(algo => {
+          this.algo = algo;
         }));
 
         this.getWallets();
@@ -171,13 +169,12 @@ export class AlgoInstanceComponent implements OnDestroy {
       type: 'Live',
       algoInstanceData: {
         WalletId: wallet.Id,
-        AlgoClientId: this.clientId,
         AlgoId: this.algo.AlgoId,
         AlgoMetaDataInformation: this.instance['AlgoMetaDataInformation'],
         AlgoInstanceType: IAlgoInstanceType.Live
       } as AlgoInstanceData,
       onInstanceCreateSuccess: () => {
-        this.router.navigate(['/store/algo-run', this.clientId, this.algo.AlgoId]);
+        this.router.navigate(['/store/algo-run', this.algo.AlgoId]);
       }
     };
     this.modalRef = this.bsModalService.show(AlgoInstancePopupComponent, {
@@ -201,13 +198,12 @@ export class AlgoInstanceComponent implements OnDestroy {
       tradeAsset: tradedAsset,
       assetTwo: assetTwoName,
       algoInstanceData: {
-        AlgoClientId: this.clientId,
         AlgoId: this.algo.AlgoId,
         AlgoMetaDataInformation: this.instance.AlgoMetaDataInformation,
         AlgoInstanceType: this.instance.AlgoInstanceType
       } as AlgoInstanceData,
       onSuccess: (instance) => {
-        this.router.navigate(['/store/algo-run', this.clientId, this.algo.AlgoId]);
+        this.router.navigate(['/store/algo-run', this.algo.AlgoId]);
       }
     };
     this.modalRef = this.bsModalService.show(AlgoFakeTradingPopupComponent, {
@@ -242,7 +238,7 @@ export class AlgoInstanceComponent implements OnDestroy {
 
   stopInstance(): void {
     this.subscriptions.push(
-      this.instanceService.stopInstance(this.algo.AlgoId, this.instance.InstanceId, this.algo.ClientId).subscribe(() => {
+      this.instanceService.stopInstance(this.algo.AlgoId, this.instance.InstanceId).subscribe(() => {
         this.instance.AlgoInstanceStatus = IAlgoInstanceStatus.Stopped;
         this.notificationsService.success('Success', 'Instance has been stopped successfully.');
         clearInterval(this.interval);
@@ -291,7 +287,7 @@ export class AlgoInstanceComponent implements OnDestroy {
     this.instanceService.deleteAlgoInstance(this.instance).subscribe(
       () => {
         this.notificationsService.success('Success', 'Instance has been deleted successfully.');
-        this.router.navigate(['store/algo-run', this.instance.AlgoClientId, this.instance.AlgoId]);
+        this.router.navigate(['store/algo-run', this.instance.AlgoId]);
       }, (error) => {
         this.notificationsService.error('Error', error.DisplayMessage);
         this.modalRef.hide();
@@ -426,7 +422,7 @@ export class AlgoInstanceComponent implements OnDestroy {
   }
 
   private fetchLogsFromApi(): Subscription {
-    return this.instanceService.getInstanceLogs(this.algoId, this.instanceId, this.clientId)
+    return this.instanceService.getInstanceLogs(this.algoId, this.instanceId)
       .subscribe(
         res => {
           this.hasTabLoader = false;

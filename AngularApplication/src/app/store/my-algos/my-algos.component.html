@@ -36,7 +36,7 @@
         <ngx-datatable-column name="Name" prop="Name" [flexGrow]="2" [cellClass]="isBigger">
           <ng-template let-value="value" let-row="row" ngx-datatable-cell-template>
             <span class="text-truncate d-block">
-              <p [routerLink]="['/store/algo-details', row.ClientId, row?.Id]" [tooltip]="value" container="body" class="link-style">{{ value }}</p>
+              <p [routerLink]="['/store/algo-details', row?.Id]" [tooltip]="value" container="body" class="link-style">{{ value }}</p>
             </span>
           </ng-template>
         </ngx-datatable-column>
@@ -58,7 +58,7 @@
               <span class="cursor-pointer" dropdownToggle>
               <img src="../../../assets/images/actions-icon.svg">
               <ul *dropdownMenu class="dropdown-menu my-algos-menu">
-                <li [routerLink]="['/store/algo-edit', row.ClientId, row?.Id]" *ngIf="permissions.canEditAlgo">
+                <li [routerLink]="['/store/algo-edit', row?.Id]" *ngIf="permissions.canEditAlgo">
                  <a class="dropdown-item cursor-pointer"><img src="../../../assets/images/edit-icon.svg" class="mb-1"><span class="ml-1">Edit</span></a>
                 </li>
                 <li (click)="delete(row)" *ngIf="permissions.canDeleteAlgo">

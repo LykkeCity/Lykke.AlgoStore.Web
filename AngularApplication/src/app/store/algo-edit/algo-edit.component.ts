@@ -70,10 +70,13 @@ export class AlgoEditComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.subscriptions.push(this.route.params.subscribe(params => {
       const algoId = params['algoId'];
-      const clientId = params['clientId'];
-      this.subscriptions.push(this.algoService.getAlgoWithSource(algoId, clientId).subscribe(algo => {
+      this.subscriptions.push(this.algoService.getAlgoWithSource(algoId).subscribe(algo => {
         this.algo = algo;
-        this.algo.ClientId = clientId;
+
+        this.algoService.isAuthor(algoId).subscribe(isAuthor => {
+          this.permissions.canPublish = isAuthor && this.permissions.canPublish;
+          this.permissions.canUnpublish = isAuthor && this.permissions.canUnpublish;
+        });
 
         this.subscriptions.push(this.instanceService.getAlgoInstances(algoId).subscribe(instances => {
           this.instances = instances;
@@ -152,7 +155,6 @@ export class AlgoEditComponent implements OnInit, OnDestroy {
   deleteAlgo(force: boolean): void {
     const deleteModel = {
       AlgoId: this.algo.AlgoId,
-      AlgoClientId: this.algo.ClientId,
       ForceDelete: force
     };
 
@@ -172,7 +174,7 @@ export class AlgoEditComponent implements OnInit, OnDestroy {
 
     this.updateLoader = true;
 
-    this.subscriptions.push(this.algoService.publish(this.algo.AlgoId, this.algo.ClientId).subscribe(() => {
+    this.subscriptions.push(this.algoService.publish(this.algo.AlgoId).subscribe(() => {
       this.algo.AlgoVisibility = this.iAlgoVisibility.Public;
       this.notificationsService.success('Success', 'Algo has been published successfully.');
       this.updateLoader = false;
@@ -186,7 +188,7 @@ export class AlgoEditComponent implements OnInit, OnDestroy {
 
     this.updateLoader = true;
 
-    this.subscriptions.push(this.algoService.unpublish(this.algo.AlgoId, this.algo.ClientId).subscribe(() => {
+    this.subscriptions.push(this.algoService.unpublish(this.algo.AlgoId).subscribe(() => {
       this.algo.AlgoVisibility = this.iAlgoVisibility.Private;
       this.notificationsService.success('Success', 'Algo has been unpublished successfully.');
       this.updateLoader = false;
