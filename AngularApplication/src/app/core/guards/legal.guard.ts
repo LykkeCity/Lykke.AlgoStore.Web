@@ -26,6 +26,9 @@ export class LegalGuard implements CanLoad {
           ob.next(false);
           ob.complete();
         }
+      }, error => {
+        ob.next(true);
+        ob.complete();
       });
     });
   }
