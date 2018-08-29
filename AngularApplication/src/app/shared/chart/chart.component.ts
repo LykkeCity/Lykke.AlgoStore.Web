@@ -2,6 +2,7 @@ import { Component, Input, OnChanges, OnDestroy, SimpleChanges } from '@angular/
 import { SocketService } from '../../core/services/socket.service';
 import * as moment from 'moment';
 import ArrayUtils from '../../core/utils/array-utils';
+import DateTime from '../../core/utils/date-time';
 import AlgoInstanceQuote from '../../store/models/algo-instance-quote.model';
 import { Candle } from './models/candle.model';
 import { Function } from './models/function.model';
@@ -68,15 +69,18 @@ export class ChartComponent implements OnChanges, OnDestroy {
       ],
       xAxis: {
         name: 'Date',
-        type: 'category',
+        type: 'time',
         data: this.categories,
         scale: true,
-        boundaryGap: false,
+        boundaryGap: true,
         axisLine: { onZero: false },
         splitLine: { show: false },
         splitNumber: 20,
         min: 'dataMin',
-        max: 'dataMax'
+        max: 'dataMax',
+        xAxisTicks  : {
+          alignWithLabel  : true
+        }
       },
       yAxis: [{
         name: 'Price',
@@ -131,8 +135,8 @@ export class ChartComponent implements OnChanges, OnDestroy {
     const trades = this.series.find(s => s.name === 'Trades').data;
 
     if (!trades.find(t => t[0] === trade.DateOfTrade)) {
-      trades.push([trade.DateOfTrade, trade.Price, trade['AssetPairId'], trade.IsBuy, trade.Amount]);
-      ArrayUtils.BinaryInsert(trade.DateOfTrade, this.categories);
+      trades.push([DateTime.toChartFormat(trade.DateOfTrade), trade.Price, trade['AssetPairId'], trade.IsBuy, trade.Amount]);
+      ArrayUtils.BinaryInsert(DateTime.toChartFormat(trade.DateOfTrade), this.categories);
 
       this.updateChart();
     }
@@ -142,8 +146,9 @@ export class ChartComponent implements OnChanges, OnDestroy {
     const candles = this.series.find(s => s.name === 'Candles').data;
 
     if (!candles.some(c => c[5] === candle.DateTime)) {
-      ArrayUtils.BinaryInsert(candle.DateTime, this.categories);
-      let item = [candle.Open, candle.Close, candle.Low, candle.High, candle.AssetPair, candle.DateTime];
+      ArrayUtils.BinaryInsert(DateTime.toChartFormat(candle.DateTime), this.categories);
+      // this.categories.push(candle.DateTime);
+      const item = [DateTime.toChartFormat(candle.DateTime), candle.Open, candle.Close, candle.Low, candle.High, candle.AssetPair];
       // candles.push([candle.Open, candle.Close, candle.Low, candle.High, candle.AssetPair, candle.DateTime]);
       this.series.find(s => s.name === 'Candles').data = ArrayUtils.orderedInsertChartData(candles, item, candle.DateTime, 5);
       this.updateChart();
@@ -160,7 +165,7 @@ export class ChartComponent implements OnChanges, OnDestroy {
     const series = this.series.find(s => s.name === func.FunctionName).data;
 
     if (!series.includes(func.Value)) {
-      ArrayUtils.BinaryInsert(func.CalculatedOn, this.categories);
+      ArrayUtils.BinaryInsert(DateTime.toChartFormat(func.CalculatedOn), this.categories);
       series.push(func.Value);
 
       this.updateChart();
@@ -171,8 +176,8 @@ export class ChartComponent implements OnChanges, OnDestroy {
     const quotes = this.series.find(s => s.name === 'Quotes').data;
 
     if (!quotes.some(q => q[0] === quote.DateReceived)) {
-      ArrayUtils.BinaryInsert(quote.DateReceived, this.categories);
-      quotes.push([quote.DateReceived, quote.Price, quote['AssetPair'], quote.IsBuy, quote.IsOnline]);
+      ArrayUtils.BinaryInsert(DateTime.toChartFormat(quote.DateReceived), this.categories);
+      quotes.push([DateTime.toChartFormat(quote.DateReceived), quote.Price, quote['AssetPair'], quote.IsBuy, quote.IsOnline]);
       // quotes.push(quote.Price);
       this.updateChart();
     }
@@ -220,11 +225,13 @@ export class ChartComponent implements OnChanges, OnDestroy {
           data: this.legend
         },
         xAxis: {
-          data: this.categories
+          data: [...this.categories],
+          min: this.categories[0],
+          max: this.categories[this.categories.length - 1],
         },
         series: this.series
       };
-    }, 1000);
+    }, 100);
   }
 
   private getHistoricalData() {
@@ -309,12 +316,12 @@ export class ChartComponent implements OnChanges, OnDestroy {
       },
       tooltip: {
         formatter: (params: any) => {
+          const date = params.data[0];
           const open = params.data[1];
           const close = params.data[2];
           const low = params.data[3];
           const high = params.data[4];
           const assetPair = params.data[5];
-          const date = params.data[6];
           return `
             Candle <br/>
             Date: ${date} <br/>
