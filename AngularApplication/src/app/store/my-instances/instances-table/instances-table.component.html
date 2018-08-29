@@ -12,7 +12,7 @@
   <ngx-datatable-column name="Name" prop="InstanceName" [flexGrow]="2" [cellClass]="isBigger">
     <ng-template let-value="value" let-row="row" ngx-datatable-cell-template>
                   <span class="text-truncate d-block">
-                    <p [routerLink]="['/store/algo-instance', row?.AlgoClientId, row?.AlgoId, row?.InstanceId]"
+                    <p [routerLink]="['/store/algo-instance', row?.AlgoId, row?.InstanceId]"
                        [tooltip]="value" container="body"
                        class="link-style">{{ value }}</p>
                   </span>
