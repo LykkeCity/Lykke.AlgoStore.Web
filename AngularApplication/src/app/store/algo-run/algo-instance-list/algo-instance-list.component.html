@@ -11,7 +11,7 @@
   <div *ngIf="instancesArray">
     <div class="row instances-row" *ngFor="let instance of displayInstances">
       <div class="col-9 pl-0">
-        <div class="instance-date cursor-pointer break-all" [routerLink]="['/store/algo-instance', clientId, algoId, instance.InstanceId]">{{instance.InstanceName}}</div>
+        <div class="instance-date cursor-pointer break-all" [routerLink]="['/store/algo-instance', algoId, instance.InstanceId]">{{instance.InstanceName}}</div>
         <div class="text-muted fs-1r">{{instance.AlgoInstanceType | instanceTypeName}} • {{instance.AlgoInstanceStatus | instanceStatusName}}</div>
       </div>
       <div class="col-3 text-center">
