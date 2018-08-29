@@ -48,7 +48,7 @@ export class AlgoDuplicatePopupComponent implements OnInit, OnDestroy {
 
     this.loader = true;
 
-    this.subscriptions.push(this.algoService.getAlgoSource((this.algo.Id || this.algo.AlgoId), this.algo.ClientId).subscribe((code) => {
+    this.subscriptions.push(this.algoService.getAlgoSource((this.algo.Id || this.algo.AlgoId)).subscribe((code) => {
       const toCopyAlgo = {
         ...this.algo,
         ...this.algoDuplicateForm.value,
