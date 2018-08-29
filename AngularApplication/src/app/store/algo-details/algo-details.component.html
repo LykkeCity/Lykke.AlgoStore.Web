@@ -6,7 +6,7 @@
       </div>
       <div class="col-4 text-right">
         <span class="font-weight-semibold cursor-pointer cancel-btn mr-2" (click)="duplicate()" *ngIf="permissions.canDuplicate">Duplicate</span>
-        <a class="btn btn-primary ml-2" [routerLink]="['/store', 'algo-run', algo.ClientId, algo.AlgoId]" *ngIf="permissions.canRunInstance">Try Algo</a>
+        <a class="btn btn-primary ml-2" [routerLink]="['/store', 'algo-run', algo.AlgoId]" *ngIf="permissions.canRunInstance">Try Algo</a>
       </div>
     </div>
     <div class="row mb-2">
