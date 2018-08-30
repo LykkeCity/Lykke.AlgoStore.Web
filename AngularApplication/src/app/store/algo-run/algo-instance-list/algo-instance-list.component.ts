@@ -1,7 +1,6 @@
 import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
 import { AlgoInstance, IAlgoInstanceStatus, IAlgoInstanceType } from '../../models/algo-instance.model';
 import { Subscription } from 'rxjs';
-import { ActivatedRoute } from '@angular/router';
 import { NotificationsService } from 'angular2-notifications';
 import { PopupComponent } from '../../../components/popup/popup.component';
 import { BsModalService } from 'ngx-bootstrap';
@@ -24,7 +23,6 @@ export class AlgoInstanceListComponent implements OnChanges {
   displayInstances: AlgoInstance[];
 
   subscriptions: Subscription[] = [];
-  clientId: string;
   iAlgoInstanceStatus = IAlgoInstanceStatus;
   permissions: {
     canDeleteInstance: boolean
@@ -33,7 +31,6 @@ export class AlgoInstanceListComponent implements OnChanges {
   showAll = false;
 
   constructor(
-    private route: ActivatedRoute,
     private instanceService: InstanceService,
     private notificationsService: NotificationsService,
     private bsModalService: BsModalService,
@@ -42,10 +39,6 @@ export class AlgoInstanceListComponent implements OnChanges {
     this.permissions = {
       canDeleteInstance: this.usersService.hasPermission(Permissions.DELETE_ALGO_INSTANCE_DATA)
     };
-
-    this.subscriptions.push(this.route.params.subscribe(params => {
-      this.clientId = params['clientId'];
-    }));
   }
 
   ngOnChanges(changes: SimpleChanges) {

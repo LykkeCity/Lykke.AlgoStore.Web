@@ -26,17 +26,17 @@ const routes: Routes = [
         data: { acl: [Permissions.CREATE_ALGO] }
       },
       {
-        path: 'algo-edit/:clientId/:algoId',
+        path: 'algo-edit/:algoId',
         component: AlgoEditComponent,
         canActivate: [AuthGuard, ACLGuard],
         data: { acl: [Permissions.GET_ALGO_METADATA, Permissions.EDIT_ALGO, Permissions.GET_UPLOAD_STRING] }
       },
       {
-        path: 'algo-details/:clientId/:algoId', component: AlgoDetailsComponent,
+        path: 'algo-details/:algoId', component: AlgoDetailsComponent,
         canActivate: [AuthGuard, ACLGuard], data: { acl: [Permissions.GET_UPLOAD_STRING, Permissions.GET_ALGO_METADATA] }
       },
       {
-        path: 'algo-run/:clientId/:algoId',
+        path: 'algo-run/:algoId',
         component: AlgoRunComponent,
         canActivate: [AuthGuard, ACLGuard],
         data: {
@@ -45,7 +45,7 @@ const routes: Routes = [
         }
       },
       {
-        path: 'algo-instance/:clientId/:algoId/:instanceId', component: AlgoInstanceComponent,
+        path: 'algo-instance/:algoId/:instanceId', component: AlgoInstanceComponent,
         canActivate: [AuthGuard, ACLGuard], data: { acl: [Permissions.GET_ALGO_INSTANCE_DATA, Permissions.GET_UPLOAD_STRING] }
       },
       {

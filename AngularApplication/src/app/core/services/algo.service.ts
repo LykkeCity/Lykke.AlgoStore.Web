@@ -30,33 +30,31 @@ export class AlgoService {
     return this.authRequestService.delete(environment.storeApiUrl + '/v1/algo/delete', { body: deleteModel });
   }
 
-  publish(AlgoId: string, ClientId: string): Observable<Algo> {
-    return this.authRequestService.post(environment.storeApiUrl + '/v1/algo/addToPublic', { AlgoId, ClientId });
+  publish(AlgoId: string): Observable<Algo> {
+    return this.authRequestService.post(environment.storeApiUrl + '/v1/algo/addToPublic', { AlgoId });
   }
 
-  unpublish(AlgoId: string, ClientId: string): Observable<Algo> {
-    return this.authRequestService.post(environment.storeApiUrl + '/v1/algo/removeFromPublic', { AlgoId, ClientId });
+  unpublish(AlgoId: string): Observable<Algo> {
+    return this.authRequestService.post(environment.storeApiUrl + '/v1/algo/removeFromPublic', { AlgoId });
   }
 
-  getAlgoWithSource(algoId: string, clientId?: string): Observable<Algo> {
+  getAlgoWithSource(algoId: string): Observable<Algo> {
     const params = { algoId };
-
-    if (clientId) {
-      params['clientId'] = clientId;
-    }
 
     return forkJoin(
       this.authRequestService.get(environment.storeApiUrl + '/v1/algo/getAlgoInformation', { params }),
-      this.getAlgoSource(algoId, clientId)
+      this.getAlgoSource(algoId)
     ).map( (res: any) => ({...res[0], ...res[1]}) );
   }
 
-  getAlgoSource(algoId: string, clientId?: string): Observable<Algo> {
+  public isAuthor(algoId: string): Observable<boolean> {
+    const params = { algoId };
+    return this.authRequestService.get(environment.storeApiUrl + '/v1/algo/getIsLoggedUserCreatorOfAlgo', { params });
+  }
+
+  getAlgoSource(algoId: string): Observable<{ Content: string }> {
     const params = { algoId };
 
-    if (clientId) {
-      params['clientId'] = clientId;
-    }
     return this.authRequestService.get(environment.storeApiUrl + '/v1/algo/sourceCode/getString', { params });
   }
 

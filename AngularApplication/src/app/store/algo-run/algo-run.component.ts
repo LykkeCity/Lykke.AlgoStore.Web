@@ -30,7 +30,6 @@ export class AlgoRunComponent implements OnDestroy {
   iAlgoVisibility = AlgoVisibility;
   iAlgoInstanceType = IAlgoInstanceType;
   showMetadataForm = false;
-  clientId: string;
   permissions: {
     canRunInstance: boolean,
     canSeeInstances: boolean,
@@ -58,17 +57,14 @@ export class AlgoRunComponent implements OnDestroy {
     };
 
     this.subscriptions.push(this.route.params.subscribe(params => {
-      this.clientId = params['clientId'];
       const algoId = params['algoId'];
 
-      this.userService.getUserInfoWithRoles().subscribe((user) => {
-        this.permissions.isCurrentUser = user.ClientId === this.clientId;
+      this.algoService.isAuthor(algoId).subscribe(isAuthor => {
+        this.permissions.isCurrentUser = isAuthor;
       });
 
-
-      this.subscriptions.push(this.algoService.getAlgoWithSource(algoId, this.clientId).subscribe(algo => {
+      this.subscriptions.push(this.algoService.getAlgoWithSource(algoId).subscribe(algo => {
         this.algo = algo;
-        this.algo.ClientId = this.clientId;
 
         const assetPair = this.algo.AlgoMetaDataInformation.Parameters.find(p => p.Key === 'AssetPair');
 
@@ -145,7 +141,6 @@ export class AlgoRunComponent implements OnDestroy {
       tradeAsset: tradedAsset,
       assetTwo: assetTwoName,
       algoInstanceData: {
-        AlgoClientId: this.clientId,
         AlgoId: this.algo.AlgoId,
         AlgoMetaDataInformation: this.algo.AlgoMetaDataInformation,
         AlgoInstanceType: instanceType
@@ -182,7 +177,6 @@ export class AlgoRunComponent implements OnDestroy {
       type: 'Live',
       algoInstanceData: {
         WalletId: wallet.Id,
-        AlgoClientId: this.clientId,
         AlgoId: this.algo.AlgoId,
         AlgoMetaDataInformation: this.algo.AlgoMetaDataInformation,
         AlgoInstanceType: IAlgoInstanceType.Live

@@ -61,6 +61,9 @@ export class AlgoFakeTradingPopupComponent implements OnDestroy {
       });
     });
 
+    // we don't need the clientId
+    delete fakeTradingData.AlgoClientId;
+
     this.subscriptions.push(this.instanceService.fakeTrading(fakeTradingData).subscribe((data) => {
       this.notificationsService.success('Success', 'Instance created successfully.');
       this.modalRef.hide();
