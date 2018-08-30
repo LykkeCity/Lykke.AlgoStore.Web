@@ -2,10 +2,9 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
-// import { ɵa as ChartsDirective } from 'ngx-echarts';
+import { ɵa as ChartsDirective } from 'ngx-echarts';
 import { PopupComponent } from '../components/popup/popup.component';
 import { BsDropdownModule, ModalModule, PopoverModule, TabsModule, TooltipModule } from 'ngx-bootstrap';
-import { NgxEchartsDirective } from './chart/chart-package/ngx-echarts.directive';
 import { CodeEditorComponent } from './code-editor/code-editor.component';
 import { AceEditorModule } from 'ng2-ace-editor';
 import { UiSwitchModule } from 'ngx-ui-switch';
@@ -53,8 +52,7 @@ import { SearchFieldComponent } from './search-field/search-field.component';
     ChartComponent,
     CookieNoticeComponent,
     SearchFieldComponent,
-    NgxEchartsDirective
-    // ChartsDirective
+    ChartsDirective
   ],
   exports: [
     CommonModule,
@@ -76,8 +74,7 @@ import { SearchFieldComponent } from './search-field/search-field.component';
     ChartComponent,
     CookieNoticeComponent,
     SearchFieldComponent,
-    NgxEchartsDirective
-    // ChartsDirective
+    ChartsDirective
   ]
 })
 export class SharedModule {}
