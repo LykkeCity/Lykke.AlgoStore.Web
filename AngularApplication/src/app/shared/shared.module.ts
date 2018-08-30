@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
-import { ɵa as ChartsDirective } from 'ngx-echarts';
+import { NgxEchartsModule } from 'ngx-echarts';
 import { PopupComponent } from '../components/popup/popup.component';
 import { BsDropdownModule, ModalModule, PopoverModule, TabsModule, TooltipModule } from 'ngx-bootstrap';
 import { CodeEditorComponent } from './code-editor/code-editor.component';
@@ -39,7 +39,8 @@ import { SearchFieldComponent } from './search-field/search-field.component';
     BsDropdownModule.forRoot(),
     PopoverModule.forRoot(),
     TabsModule.forRoot(),
-    NgxDatatableModule
+    NgxDatatableModule,
+    NgxEchartsModule
   ],
   providers: [StarRatingConfigService, ACLGuard, UserDetailsGuard, StompService, StompRService],
   declarations: [
@@ -51,8 +52,7 @@ import { SearchFieldComponent } from './search-field/search-field.component';
     CollapseContentComponent,
     ChartComponent,
     CookieNoticeComponent,
-    SearchFieldComponent,
-    ChartsDirective
+    SearchFieldComponent
   ],
   exports: [
     CommonModule,
@@ -74,7 +74,7 @@ import { SearchFieldComponent } from './search-field/search-field.component';
     ChartComponent,
     CookieNoticeComponent,
     SearchFieldComponent,
-    ChartsDirective
+    NgxEchartsModule
   ]
 })
 export class SharedModule {}
