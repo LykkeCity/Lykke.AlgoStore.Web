@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
+import { NgxEchartsModule } from 'ngx-echarts';
 import { PopupComponent } from '../components/popup/popup.component';
 import { BsDropdownModule, ModalModule, PopoverModule, TabsModule, TooltipModule } from 'ngx-bootstrap';
 import { CodeEditorComponent } from './code-editor/code-editor.component';
@@ -19,7 +20,6 @@ import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { LoaderComponent } from './loader/loader.component';
 import { CollapseContentComponent } from './collapse/collapse-content.component';
 import { ChartComponent } from './chart/chart.component';
-import { NgxEchartsModule } from 'ngx-echarts';
 import { StompRService, StompService } from '@stomp/ng2-stompjs';
 import { SearchFieldComponent } from './search-field/search-field.component';
 
@@ -73,7 +73,8 @@ import { SearchFieldComponent } from './search-field/search-field.component';
     CollapseContentComponent,
     ChartComponent,
     CookieNoticeComponent,
-    SearchFieldComponent
+    SearchFieldComponent,
+    NgxEchartsModule
   ]
 })
 export class SharedModule {}

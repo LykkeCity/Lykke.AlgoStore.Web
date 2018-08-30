@@ -37,7 +37,7 @@
     "ng2-ace-editor": "^0.3.1",
     "ng2-date-picker": "^2.7.4",
     "ngx-bootstrap": "^2.0.2",
-    "ngx-echarts": "^2.3.1",
+    "ngx-echarts": "^4.0.0",
     "ngx-ui-switch": "^1.4.9",
     "rxjs": "^6.2.1",
     "rxjs-compat": "^6.2.1",
