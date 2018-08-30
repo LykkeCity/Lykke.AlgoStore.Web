@@ -239,7 +239,6 @@ export class ChartComponent implements OnChanges, OnDestroy {
     clearTimeout(this.chartUpdateTimeout);
 
     this.chartUpdateTimeout = setTimeout(() => {
-      console.log(this.chartOptions);
       this.updateOptions = {
         legend: {
           data: this.legend
@@ -251,7 +250,7 @@ export class ChartComponent implements OnChanges, OnDestroy {
         },
         series: this.series
       };
-    }, 200);
+    }, 500);
   }
 
   private getHistoricalData() {

@@ -46,14 +46,12 @@ export default class ArrayUtils {
     // check if needed to be on the start
     if (itemProp < entities[index][arrayPropIndex]) {
       entities.splice(index, 0, item);
-      console.log('inserted first');
       return entities;
     }
 
     // check if its last
     if (itemProp > entities[entities.length - 1][arrayPropIndex]) {
       entities.push(item);
-      console.log('inserted last');
       return entities;
     }
 
@@ -66,7 +64,6 @@ export default class ArrayUtils {
     }
 
     entities.splice(index, 0, item);
-    console.log('inserted on index ' + index);
     return entities;
   }
 
