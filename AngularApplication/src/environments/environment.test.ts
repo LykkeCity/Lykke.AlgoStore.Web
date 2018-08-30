@@ -10,6 +10,6 @@ export const environment = {
   walletApiUrl: 'https://webwallet-test.lykkex.net/wallets/hft',
   authUrl: 'http://algo-store-web.algo-store.svc.cluster.local/api/home/authentication',
   tokenUrl: 'https://auth-test.lykkex.net/getlykkewallettoken',
-  idleTime: 300,
+  idleTime: 1800, // 30 minutes
   idleTimeout: 60
 };
