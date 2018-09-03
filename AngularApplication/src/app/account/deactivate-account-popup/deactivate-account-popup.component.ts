@@ -17,6 +17,5 @@ export class DeactivateAccountPopupComponent {
   deactivateAccount(): void {
     this.loader = true;
     this.onDeactivateSuccess();
-    this.bsModalRef.hide();
   }
 }
