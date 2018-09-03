@@ -20,7 +20,7 @@
     <div class="col-12">
       <div class="form-group">
         <div class="custom-control custom-checkbox mr-sm-2">
-          <input type="checkbox" class="custom-control-input" id="legal-checkbox" [(ngModel)]="agreed">
+          <input type="checkbox" class="custom-control-input" id="legal-checkbox" [(ngModel)]="agreed" [disabled]="loader">
           <label class="custom-control-label cursor-pointer" for="legal-checkbox">I understand that all of my information and data related to the Algo Store will be deleted forever.</label>
         </div>
       </div>
@@ -28,12 +28,12 @@
   </div>
   <div class="row mt-2 mb-3 text-center">
     <div class="col-12">
-      <button class="btn" [ngClass]="{'btn-primary': agreed, 'btn-secondary': !agreed}" (click)="deactivateAccount()" [disabled]="!agreed">Deactivate</button>
+      <button class="btn" [ngClass]="{'btn-primary': agreed, 'btn-secondary': !agreed}" (click)="deactivateAccount()" [disabled]="!agreed || loader"><i *ngIf="loader" class="icon--spin animate-spin"></i>Deactivate</button>
     </div>
   </div>
   <div class="row text-center">
     <div class="col-12 font-weight-semibold">
-      <a href="javascript:;" (click)="bsModalRef.hide()">Cancel</a>
+      <a href="javascript:;" [ngClass]="{'font-weight-semibold': !loader, 'text-muted': loader}" (click)="!loader ? bsModalRef.hide() : null">Cancel</a>
     </div>
   </div>
 </div>
