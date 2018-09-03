@@ -6,7 +6,7 @@
      (focus)="onFocus($event)"
      (mouseleave)="onStarHover(0)">
   <div *ngIf="labelText" class="label-value">{{labelText}}</div>
-  <div class="star-container">
+  <div class="star-container" tooltip="{{rating}} of {{stars.length}}" continer="body">
     <div class="star"
          (mouseenter)="onStarHover(star)"
          *ngFor="let star of stars"
@@ -15,12 +15,15 @@
       <i *ngIf="!svgVisible()" class="star-empty {{classHalf}}"></i>
       <i *ngIf="!svgVisible()" class="star-filled {{classFilled}}"></i>
       <svg *ngIf="svgVisible()" class="star-empty default-star-empty-icon">
+        <!-- <title>{{rating}} of {{stars.length}}</title> -->
         <use xmlns:xlink="http://www.w3.org/1999/xlink" [attr.xlink:href]="pathEmpty"></use>
       </svg>
       <svg *ngIf="svgVisible()" class="star-half default-star-half-icon">
+          <!-- <title>{{rating}} of {{stars.length}}</title> -->
         <use xmlns:xlink="http://www.w3.org/1999/xlink" [attr.xlink:href]="pathHalf"></use>
       </svg>
       <svg *ngIf="svgVisible()" class="star-filled default-star-filled-icon">
+          <!-- <title>{{rating}} of {{stars.length}}</title> -->
         <use xmlns:xlink="http://www.w3.org/1999/xlink" [attr.xlink:href]="pathFilled"></use>
       </svg>
     </div>
