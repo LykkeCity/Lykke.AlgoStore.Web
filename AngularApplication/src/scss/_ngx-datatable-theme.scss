@@ -92,21 +92,9 @@
 	/**
 	 * Header Styles
 	 */
-	.datatable-header {
-    background: $pale-grey-two;
 
-    .datatable-header-cell {
-      text-align: left;
-      padding: .66rem 1.2rem;
-      font-weight: 600;
-      color: $black;
-      vertical-align: bottom;
-
-      .datatable-header-cell-wrapper {
-        position: relative;
-      }
-
-      .sort-btn {
+		 .datatable-header-cell:not(.action-column) {
+			.sort-btn {
         width: 18px;
         height: 18px;
         object-fit: contain;
@@ -119,6 +107,21 @@
           background-image: none;
         }
       }
+		 }
+
+	.datatable-header {
+    background: $pale-grey-two;
+
+    .datatable-header-cell {
+      text-align: left;
+      padding: .66rem 1.2rem;
+      font-weight: 600;
+      color: $black;
+      vertical-align: bottom;
+
+      .datatable-header-cell-wrapper {
+        position: relative;
+      }      
 
 			&.longpress {
         .draggable::after {

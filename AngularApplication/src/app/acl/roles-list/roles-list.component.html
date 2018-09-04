@@ -39,7 +39,7 @@
             <span *ngIf="!value.length">No active permissions.</span>
           </ng-template>
         </ngx-datatable-column>
-        <ngx-datatable-column [resizeable]="false" name="Actions" [flexGrow]="1.5" *ngIf="permissions.canDeleteRole || permissions.canModifyRole">
+        <ngx-datatable-column [resizeable]="false" name="Actions" [flexGrow]="1.5" [sortable]="false" headerClass="action-column" *ngIf="permissions.canDeleteRole || permissions.canModifyRole">
           <ng-template let-value="value" let-row="row" ngx-datatable-cell-template>
             <span dropdown>
               <span class="cursor-pointer" dropdownToggle>
