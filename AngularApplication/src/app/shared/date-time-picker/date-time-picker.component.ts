@@ -13,9 +13,12 @@ export class DateTimePickerComponent implements OnChanges {
   @Input() config: IDatePickerDirectiveConfig;
 
   public defaultData: IDatePickerDirectiveConfig = {
-    format: 'YYYY-MM-DD HH:mm',
+    format: 'YYYY-MM-DD HH:mm:ss',
     monthFormat: 'MMMM YYYY',
     firstDayOfWeek: 'mo',
+    showTwentyFourHours: true,
+    showSeconds: true,
+    hours24Format: 'HH',
     showGoToCurrent: false,
   };
 
