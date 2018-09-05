@@ -302,44 +302,35 @@ export class AlgoInstanceComponent implements OnDestroy {
 
   getStatistics(): void {
     this.hasTabLoader = true;
-    this.instanceDataSubscriptions.push(this.fetchStatisticsFromApi());
 
     if (this.instance.AlgoInstanceStatus !== this.iAlgoInstanceStatus.Stopped) {
-      this.interval = setInterval(() => {
         this.hasTabLoader = true;
         this.instanceDataSubscriptions.push(this.fetchStatisticsFromApi());
-      }, 5000);
     }
   }
 
   getLogs(): void {
     this.hasTabLoader = true;
-    this.instanceDataSubscriptions.push(this.fetchLogsFromApi());
 
     if (this.instance.AlgoInstanceStatus !== this.iAlgoInstanceStatus.Stopped) {
-      this.interval = setInterval(() => {
         this.hasTabLoader = true;
         this.instanceDataSubscriptions.push(this.fetchLogsFromApi());
-      }, 5000);
     }
   }
 
   getTrades(): void {
     this.hasTabLoader = true;
-    this.instanceDataSubscriptions.push(this.fetchTradesFromApi());
 
     if (this.instance.AlgoInstanceStatus !== this.iAlgoInstanceStatus.Stopped) {
-      this.interval = setInterval(() => {
         this.hasTabLoader = true;
         this.instanceDataSubscriptions.push(this.fetchTradesFromApi());
-      }, 5000);
     }
   }
 
   getStatus(): void {
     this.statusSub = this.instanceService.getInstanceStatus(this.instanceId)
       .pipe(
-        repeatWhen(() => timer(10000, 5000))
+        repeatWhen(completed => completed)
       )
       .subscribe(
         status => {
@@ -411,6 +402,8 @@ export class AlgoInstanceComponent implements OnDestroy {
         res => {
           this.hasTabLoader = false;
           this.stats = res;
+
+          this.getStatistics();
         },
         () => {
           this.hasTabLoader = false;
@@ -430,6 +423,8 @@ export class AlgoInstanceComponent implements OnDestroy {
             this.log = res.Log;
             this.lastLogElement = res.Log[0];
           }
+
+          this.getLogs();
         },
         () => {
           this.hasTabLoader = false;
@@ -446,6 +441,8 @@ export class AlgoInstanceComponent implements OnDestroy {
         res => {
           this.hasTabLoader = false;
           this.trades = res;
+
+          this.getTrades();
         },
         () => {
           this.hasTabLoader = false;
