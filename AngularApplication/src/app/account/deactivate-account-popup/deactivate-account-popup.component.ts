@@ -10,11 +10,12 @@ export class DeactivateAccountPopupComponent {
 
   onDeactivateSuccess: Function;
   agreed: boolean;
+  loader = false;
 
   constructor(public bsModalRef: BsModalRef) { }
 
   deactivateAccount(): void {
+    this.loader = true;
     this.onDeactivateSuccess();
-    this.bsModalRef.hide();
   }
 }
