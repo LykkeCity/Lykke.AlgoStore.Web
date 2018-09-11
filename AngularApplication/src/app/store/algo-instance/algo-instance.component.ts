@@ -99,8 +99,13 @@ export class AlgoInstanceComponent implements OnDestroy {
 
         this.getWallets();
 
-        if (this.instance.AlgoInstanceStatus !== IAlgoInstanceStatus.Deploying) {
+        if (this.instance.AlgoInstanceStatus !== IAlgoInstanceStatus.Deploying && this.instance.AlgoInstanceStatus !== IAlgoInstanceStatus.Stopped) {
           this.getInstanceData();
+        } else if (this.instance.AlgoInstanceStatus === IAlgoInstanceStatus.Stopped) {
+          this.hasTabLoader = true;
+          this.fetchLogsFromApi();
+          this.fetchStatisticsFromApi();
+          this.fetchTradesFromApi();
         } else {
           this.getStatus();
         }
@@ -302,29 +307,17 @@ export class AlgoInstanceComponent implements OnDestroy {
 
   getStatistics(): void {
     this.hasTabLoader = true;
-
-    if (this.instance.AlgoInstanceStatus !== this.iAlgoInstanceStatus.Stopped) {
-        this.hasTabLoader = true;
-        this.instanceDataSubscriptions.push(this.fetchStatisticsFromApi());
-    }
+    this.instanceDataSubscriptions.push(this.fetchStatisticsFromApi());
   }
 
   getLogs(): void {
     this.hasTabLoader = true;
-
-    if (this.instance.AlgoInstanceStatus !== this.iAlgoInstanceStatus.Stopped) {
-        this.hasTabLoader = true;
-        this.instanceDataSubscriptions.push(this.fetchLogsFromApi());
-    }
+    this.instanceDataSubscriptions.push(this.fetchLogsFromApi());
   }
 
   getTrades(): void {
     this.hasTabLoader = true;
-
-    if (this.instance.AlgoInstanceStatus !== this.iAlgoInstanceStatus.Stopped) {
-        this.hasTabLoader = true;
-        this.instanceDataSubscriptions.push(this.fetchTradesFromApi());
-    }
+    this.instanceDataSubscriptions.push(this.fetchTradesFromApi());
   }
 
   getStatus(): void {
@@ -351,6 +344,10 @@ export class AlgoInstanceComponent implements OnDestroy {
   }
 
   getInstanceData(): void {
+    if (this.instance.AlgoInstanceStatus === IAlgoInstanceStatus.Stopped) {
+      return;
+    }
+
     if (this.heading === 'Statistics' && this.permissions.canSeeStatistics) {
       this.getStatistics();
     }
@@ -403,7 +400,9 @@ export class AlgoInstanceComponent implements OnDestroy {
           this.hasTabLoader = false;
           this.stats = res;
 
-          this.getStatistics();
+          if (this.instance.AlgoInstanceStatus !== this.iAlgoInstanceStatus.Stopped) {
+            this.getStatistics();
+          }
         },
         () => {
           this.hasTabLoader = false;
@@ -424,7 +423,9 @@ export class AlgoInstanceComponent implements OnDestroy {
             this.lastLogElement = res.Log[0];
           }
 
-          this.getLogs();
+          if (this.instance.AlgoInstanceStatus !== this.iAlgoInstanceStatus.Stopped) {
+            this.getLogs();
+          }
         },
         () => {
           this.hasTabLoader = false;
@@ -441,8 +442,9 @@ export class AlgoInstanceComponent implements OnDestroy {
         res => {
           this.hasTabLoader = false;
           this.trades = res;
-
-          this.getTrades();
+          if (this.instance.AlgoInstanceStatus !== this.iAlgoInstanceStatus.Stopped) {
+            this.getTrades();
+          }
         },
         () => {
           this.hasTabLoader = false;
