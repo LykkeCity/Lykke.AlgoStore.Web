@@ -2,6 +2,7 @@ import { Component, Input, OnChanges, OnDestroy, SimpleChanges } from '@angular/
 import { SocketService } from '../../core/services/socket.service';
 import * as moment from 'moment';
 import ArrayUtils from '../../core/utils/array-utils';
+import DateTime from '../../core/utils/date-time';
 import AlgoInstanceQuote from '../../store/models/algo-instance-quote.model';
 import { Candle } from './models/candle.model';
 import { Function } from './models/function.model';
@@ -23,6 +24,7 @@ export class ChartComponent implements OnChanges, OnDestroy {
   @Input() instanceStatus: IAlgoInstanceStatus;
   @Input() metadata: AlgoMetadata;
 
+  chartInstance: any;
   series: any[] = [];
   legend: string[] = ['Trades', 'Candles', 'Quotes'];
   chartOptions: any;
@@ -34,10 +36,6 @@ export class ChartComponent implements OnChanges, OnDestroy {
 
   constructor(private socketService: SocketService,
               private instanceService: InstanceService) {
-
-    this.series.push(this.generateCandleSeries('Candles'));
-    this.series.push(this.generateTradesSeries('Trades'));
-    this.series.push(this.generateQuoteSeries('Quotes'));
 
     this.chartOptions = {
       title: {
@@ -68,15 +66,13 @@ export class ChartComponent implements OnChanges, OnDestroy {
       ],
       xAxis: {
         name: 'Date',
-        type: 'category',
+        type: 'time',
         data: this.categories,
         scale: true,
         boundaryGap: false,
         axisLine: { onZero: false },
         splitLine: { show: false },
-        splitNumber: 20,
-        min: 'dataMin',
-        max: 'dataMax'
+        splitNumber: 20
       },
       yAxis: [{
         name: 'Price',
@@ -90,7 +86,7 @@ export class ChartComponent implements OnChanges, OnDestroy {
     if (changes['instanceId'] && changes['metadata'] && changes['instanceId'].currentValue && changes['metadata'].currentValue) {
       this.socketSubscriptions.push(this.getHistoricalData().subscribe((data) => {
         this.handleHistoricalData(data);
-        this.ready = true;
+        this.chartInstance.hideLoading();
       }));
     }
 
@@ -100,6 +96,11 @@ export class ChartComponent implements OnChanges, OnDestroy {
         this.initSocket();
       }
     }
+  }
+
+  onChartInit(chartInstance): void {
+    this.chartInstance = chartInstance;
+    this.chartInstance.showLoading();
   }
 
   ngOnDestroy() {
@@ -128,42 +129,78 @@ export class ChartComponent implements OnChanges, OnDestroy {
   }
 
   private drawTrade(trade: AlgoInstanceTrade): void {
-    this.series.find(s => s.name === 'Trades')
-      .data.push([trade.DateOfTrade, trade.Price, trade['AssetPairId'], trade.IsBuy, trade.Amount]);
+    let tradesSeries = this.series.find(s => s.name === 'Trades');
 
-    ArrayUtils.BinaryInsert(trade.DateOfTrade, this.categories);
+    if (!tradesSeries) {
+      tradesSeries = this.generateTradesSeries('Trades');
+      this.series.push(tradesSeries);
+    }
 
-    this.updateChart();
+    const trades = tradesSeries.data;
+    trade.DateOfTrade = DateTime.toChartFormat(trade.DateOfTrade);
+
+    if (!trades.find(t => t[0] === trade.DateOfTrade)) {
+      trades.push([trade.DateOfTrade, trade.Price, trade['AssetPairId'], trade.IsBuy, trade.Amount]);
+      ArrayUtils.BinaryInsert(trade.DateOfTrade, this.categories);
+
+      this.updateChart();
+    }
   }
 
   private drawCandle(candle: Candle): void {
-    this.series.find(s => s.name === 'Candles')
-      .data.push([candle.Open, candle.Close, candle.Low, candle.High, candle.AssetPair, candle.DateTime]);
-    ArrayUtils.BinaryInsert(candle.DateTime, this.categories);
+    let candleSeries = this.series.find(s => s.name === 'Candles');
 
-    this.updateChart();
+    if (!candleSeries) {
+      candleSeries = this.generateCandleSeries('Candles');
+      this.series.push(candleSeries);
+    }
+
+    const candles = candleSeries.data;
+    candle.DateTime = DateTime.toChartFormat(candle.DateTime);
+
+    if (!candles.some(c => c[0] === candle.DateTime)) {
+      ArrayUtils.BinaryInsert(candle.DateTime, this.categories);
+      const item = [candle.DateTime, candle.Open, candle.Close, candle.Low, candle.High, candle.AssetPair];
+      this.series.find(s => s.name === 'Candles').data = ArrayUtils.orderedInsertChartData(candles, item, candle.DateTime, 0);
+      this.updateChart();
+    }
   }
 
   private drawFunction(func: Function): void {
-    const hasSeries = this.series.find(s => s.name === func.FunctionName);
-    if (!hasSeries) {
-      this.series.push(this.generateFunctionSeries(func.FunctionName));
+    let funcSeries = this.series.find(s => s.name === func.FunctionName);
+    if (!funcSeries) {
+      funcSeries = this.generateFunctionSeries(func.FunctionName);
+      this.series.push(funcSeries);
       this.legend.push(func.FunctionName);
     }
 
-    this.series.find(s => s.name === func.FunctionName).data.push(func.Value);
-    ArrayUtils.BinaryInsert(func.CalculatedOn, this.categories);
+    const data = funcSeries.data;
+    func.CalculatedOn = DateTime.toChartFormat(func.CalculatedOn);
 
-    this.updateChart();
+    if (!data.some(f => f[0] === func.CalculatedOn)) {
+      ArrayUtils.BinaryInsert(func.CalculatedOn, this.categories);
+      data.push([func.CalculatedOn, func.Value]);
+
+      this.updateChart();
+    }
   }
 
   private drawQuote(quote: AlgoInstanceQuote): void {
-    this.series.find(s => s.name === 'Quotes')
-      .data.push([quote.DateReceived, quote.Price, quote['AssetPair'], quote.IsBuy, quote.IsOnline]);
+    let quotesSeries = this.series.find(s => s.name === 'Quotes');
 
-    ArrayUtils.BinaryInsert(quote.DateReceived, this.categories);
+    if (!quotesSeries) {
+      quotesSeries = this.generateQuoteSeries('Quotes');
+      this.series.push(quotesSeries);
+    }
 
-    this.updateChart();
+    const quotes = quotesSeries.data;
+    quote.DateReceived = DateTime.toChartFormat(quote.DateReceived);
+
+    if (!quotes.some(q => q[0] === quote.DateReceived)) {
+      ArrayUtils.BinaryInsert(quote.DateReceived, this.categories);
+      quotes.push([quote.DateReceived, quote.Price, quote['AssetPair'], quote.IsBuy, quote.IsOnline]);
+      this.updateChart();
+    }
   }
 
   private handleHistoricalData(data: any): void {
@@ -207,11 +244,13 @@ export class ChartComponent implements OnChanges, OnDestroy {
           data: this.legend
         },
         xAxis: {
-          data: this.categories
+          data: [...this.categories],
+          min: this.categories[0],
+          max: this.categories[this.categories.length - 1],
         },
         series: this.series
       };
-    }, 1000);
+    }, 500);
   }
 
   private getHistoricalData() {
@@ -294,14 +333,15 @@ export class ChartComponent implements OnChanges, OnDestroy {
           borderColor0: downBorderColor
         }
       },
+      barMaxWidth: '15%',
       tooltip: {
         formatter: (params: any) => {
+          const date = params.data[0];
           const open = params.data[1];
           const close = params.data[2];
           const low = params.data[3];
           const high = params.data[4];
           const assetPair = params.data[5];
-          const date = params.data[6];
           return `
             Candle <br/>
             Date: ${date} <br/>
@@ -325,6 +365,7 @@ export class ChartComponent implements OnChanges, OnDestroy {
       itemStyle: {
         color: 'blue'
       },
+      z: 10,
       tooltip: {
         formatter: (params: any) => {
           return `Trade <br>Date: ${params.data[0]}<br>Price: ${params.data[1]}<br>AssetPair: ${params.data[2]}<br>Operation: ${params.data[3] ? 'Buy' : 'Sell'}<br> Amount: ${params.data[4]}`;
@@ -342,6 +383,7 @@ export class ChartComponent implements OnChanges, OnDestroy {
       lineStyle: {
         normal: { opacity: 0.5 }
       },
+      z: 15,
       tooltip: {
         formatter: (params: any) => {
           const date = params.data[0];
@@ -367,6 +409,7 @@ export class ChartComponent implements OnChanges, OnDestroy {
       type: 'line',
       smooth: true,
       data: [],
+      z: 20,
       lineStyle: {
         normal: { opacity: 0.5 }
       }
