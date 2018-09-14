@@ -2,6 +2,7 @@ import { Component, Input, OnChanges, OnDestroy, SimpleChanges } from '@angular/
 import { SocketService } from '../../core/services/socket.service';
 import * as moment from 'moment';
 import ArrayUtils from '../../core/utils/array-utils';
+import AlgoInstanceQuote from '../../store/models/algo-instance-quote.model';
 import { Candle } from './models/candle.model';
 import { Function } from './models/function.model';
 import { AlgoInstanceTrade } from '../../store/models/algo-instance-trade.model';
@@ -23,7 +24,7 @@ export class ChartComponent implements OnChanges, OnDestroy {
   @Input() metadata: AlgoMetadata;
 
   series: any[] = [];
-  legend: string[] = ['Trades', 'Candles'];
+  legend: string[] = ['Trades', 'Candles', 'Quotes'];
   chartOptions: any;
   updateOptions: any;
   categories: string[] = [];
@@ -36,6 +37,7 @@ export class ChartComponent implements OnChanges, OnDestroy {
 
     this.series.push(this.generateCandleSeries('Candles'));
     this.series.push(this.generateTradesSeries('Trades'));
+    this.series.push(this.generateQuoteSeries('Quotes'));
 
     this.chartOptions = {
       title: {
@@ -118,6 +120,10 @@ export class ChartComponent implements OnChanges, OnDestroy {
       this.drawTrade(message);
     }));
 
+    this.socketSubscriptions.push(this.socketService.on(`instance/${this.instanceId}/quotes`).subscribe((message) => {
+      this.drawQuote(message);
+    }));
+
     this.updateChart();
   }
 
@@ -151,10 +157,20 @@ export class ChartComponent implements OnChanges, OnDestroy {
     this.updateChart();
   }
 
+  private drawQuote(quote: AlgoInstanceQuote): void {
+    this.series.find(s => s.name === 'Quotes')
+      .data.push([quote.DateReceived, quote.Price, quote['AssetPair'], quote.IsBuy, quote.IsOnline]);
+
+    ArrayUtils.BinaryInsert(quote.DateReceived, this.categories);
+
+    this.updateChart();
+  }
+
   private handleHistoricalData(data: any): void {
     const historicalTradesSeries = data[0].reverse();
     const historicalFunctionsSeries = data[1];
-    const historicalAlgoCandlesSeries = data[2];
+    const historicalQuotesSeries = data[2];
+    const historicalAlgoCandlesSeries = data[3];
 
     for (const candle of historicalAlgoCandlesSeries) {
       this.drawCandle(candle);
@@ -168,8 +184,12 @@ export class ChartComponent implements OnChanges, OnDestroy {
       this.drawFunction(func);
     }
 
+    for (const quote of historicalQuotesSeries) {
+      this.drawQuote(quote);
+    }
+
     // if we have candles for indicators
-    if (data.length > 3) {
+    if (data.length > 4) {
       for (let i = 3; i < data.length; i++) {
         for (const candle of data[i]) {
           this.drawCandle(candle);
@@ -206,7 +226,7 @@ export class ChartComponent implements OnChanges, OnDestroy {
 
     // check if the end date of the instance is in the past
     // no need to get data after the end date
-    if (instanceEndDate > now) {
+    if (instanceStartDate < now && instanceEndDate > now) {
       instanceEndDate = now;
     }
 
@@ -216,6 +236,9 @@ export class ChartComponent implements OnChanges, OnDestroy {
 
     requests.push(this.instanceService
       .getHistoricalFunctions(this.instanceId, instanceStartDate, instanceEndDate));
+
+    requests.push(this.instanceService
+      .getHistoricalQuotes(this.instanceId, instanceAssetPair, instanceStartDate, instanceEndDate, true));
 
     requests.push(this.instanceService
       .getHistoricalCandles(instanceAssetPair, 3, instanceTimeInterval, instanceStartDate, instanceEndDate));
@@ -228,7 +251,7 @@ export class ChartComponent implements OnChanges, OnDestroy {
 
       // check if the end date of the instance is in the past
       // no need to get data after the end date
-      if (funcEndDate > now) {
+      if (funcStartDate < now && funcEndDate > now) {
         funcEndDate = now;
       }
 
@@ -305,6 +328,34 @@ export class ChartComponent implements OnChanges, OnDestroy {
       tooltip: {
         formatter: (params: any) => {
           return `Trade <br>Date: ${params.data[0]}<br>Price: ${params.data[1]}<br>AssetPair: ${params.data[2]}<br>Operation: ${params.data[3] ? 'Buy' : 'Sell'}<br> Amount: ${params.data[4]}`;
+        }
+      }
+    };
+  }
+
+  private generateQuoteSeries(name: string) {
+    return {
+      name: name,
+      type: 'line',
+      smooth: true,
+      data: [],
+      lineStyle: {
+        normal: { opacity: 0.5 }
+      },
+      tooltip: {
+        formatter: (params: any) => {
+          const date = params.data[0];
+          const price = params.data[1];
+          const assetPair = params.data[2];
+          const isBuy = params.data[3];
+          const isOnline = params.data[4];
+          return `
+          Quote <br/>
+            Date: ${date} <br/>
+            AssetPair: ${assetPair} <br/>
+            Price: ${price} <br/>
+            IsBuy: ${isBuy} <br/>
+            IsOnline: ${isOnline}`;
         }
       }
     };
