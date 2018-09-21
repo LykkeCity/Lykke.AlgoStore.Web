@@ -5,17 +5,24 @@ namespace Lykke.AlgoStore.CSharp.Algo.Implemention.ExecutableClass
 {
     public sealed class MacdTrendAlgo : BaseAlgo
     {
-        public double HoldingStep { get;}
+        public double HoldingStep { get; set; }
         public double Tolerance { get; }
 
         private MACD _macd;
-        private double _holdings;
 
-        public double Holdings => _holdings;
+        public double Holdings { get; private set; }
 
         public override void OnStartUp()
         {
             _macd = MACD("MACD", fastEmaPeriod: 5, signalLinePeriod: 3);
+
+            //Assign _holdings to the Volume you set for the Algo or get holdings from wallet
+            //WalletBalance walletBalance;
+            //Wallet.GetBalances().TryGetValue("BTC", out walletBalance);
+            //_holdings = (double)walletBalance.Balance;
+            
+            Holdings = Volume;
+            HoldingStep = Volume / 20;
         }
 
         public override void OnCandleReceived(ICandleContext context)
@@ -32,18 +39,18 @@ namespace Lykke.AlgoStore.CSharp.Algo.Implemention.ExecutableClass
 
             if (signalDeltaPercent > Tolerance)
             {
-                // TODO: Implement buying/selling when trading logic is finalized
-                //context.Actions.BuyStraight(HOLDINGS_STEP);
-                _holdings += HoldingStep;
+                //Buy 
+                context.Orders.Market.Create(OrderAction.Buy, HoldingStep);
+                Holdings += HoldingStep;
 
                 context.Actions.Log($"{signalDeltaPercent} is above {Tolerance}, buying {HoldingStep} more of the asset. " +
-                                    $"Current holdings: {_holdings}");
+                                    $"Current holdings: {Holdings}");
             }
-            else if (_holdings > 0 && signalDeltaPercent < -Tolerance)
+            else if (Holdings > 0 && signalDeltaPercent < -Tolerance)
             {
-                // TODO: Implement buying/selling when trading logic is finalized
-                //context.Actions.SellStraight(_holdings);
-                _holdings = 0;
+                //Sell all holdings
+                context.Orders.Market.Create(OrderAction.Sell, Holdings);
+                Holdings = 0;
 
                 context.Actions.Log($"{signalDeltaPercent} is below {-Tolerance}, selling all holdings.");
             }
