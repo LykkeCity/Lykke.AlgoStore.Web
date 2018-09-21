@@ -25,6 +25,9 @@ namespace Lykke.AlgoStore.CSharp.Algo.Implemention.ExecutableClass
         private SMA _smaLongPeriod;
         private ADX _adx;
 
+        private double _amountToBuy;
+        private double _amountToSell;
+
         public override void OnStartUp()
         {
             _smaShortPeriod = SMA("SMA_Short", period: 3);
@@ -38,6 +41,10 @@ namespace Lykke.AlgoStore.CSharp.Algo.Implemention.ExecutableClass
             _lastSMALong = _currentSMALong;
             _lastSMAShort = _currentSMAShort;
             _lastADXValue = _currentADX;
+
+            //Change amounts to buy and sell to suit your needs
+            _amountToBuy = Volume;
+            _amountToSell = Volume;
         }
 
         public override void OnCandleReceived(ICandleContext contextCandle)
@@ -70,20 +77,19 @@ namespace Lykke.AlgoStore.CSharp.Algo.Implemention.ExecutableClass
             }
 
             //if we have adx and cross we can buy/sell
-            //TODO we should set in parameter value for sell and buy if 
-            //it is one and the same we can use delegates for calling trading methods
-
             if (_currentADX.HasValue && _currentADX > ADXThreshold)
             {
                 if (_crossSMAShortAbove)
                 {
                     contextCandle.Actions.Log($"Cross above and ADX occurred BUY => SMA_Short: {_currentSMAShort}, SMA_Long: {_currentSMALong}");
-                    //context.Actions.BuyStraight(parameter.ValueToBuy);
+                    contextCandle.Orders.Market.Create(OrderAction.Buy, _amountToBuy);
                 }
 
                 if (_crossSMAShortBelow)
+                {
                     contextCandle.Actions.Log($"Cross below and ADX occurred SELL => SMA_Short: {_currentSMAShort}, SMA_Long: {_currentSMALong}");
-                //context.Actions.SellStraight(parameter.ValueToSell);
+                    contextCandle.Orders.Market.Create(OrderAction.Sell, _amountToBuy);
+                }
             }
 
             _lastSMALong = _currentSMALong;
