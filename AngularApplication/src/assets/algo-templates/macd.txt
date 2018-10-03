@@ -40,7 +40,7 @@ namespace Lykke.AlgoStore.CSharp.Algo.Implemention.ExecutableClass
             if (signalDeltaPercent > Tolerance)
             {
                 //Buy 
-                context.Orders.Market.Create(OrderAction.Buy, HoldingStep);
+                context.Orders.Market.Create(OrderAction.Buy, HoldingStep, context);
                 Holdings += HoldingStep;
 
                 context.Actions.Log($"{signalDeltaPercent} is above {Tolerance}, buying {HoldingStep} more of the asset. " +
@@ -49,7 +49,7 @@ namespace Lykke.AlgoStore.CSharp.Algo.Implemention.ExecutableClass
             else if (Holdings > 0 && signalDeltaPercent < -Tolerance)
             {
                 //Sell all holdings
-                context.Orders.Market.Create(OrderAction.Sell, Holdings);
+                context.Orders.Market.Create(OrderAction.Sell, Holdings, context);
                 Holdings = 0;
 
                 context.Actions.Log($"{signalDeltaPercent} is below {-Tolerance}, selling all holdings.");
