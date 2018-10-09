@@ -50,15 +50,19 @@
               </div>
               <hr class="mt-0">
               <form [formGroup]="metadataForm" *ngIf="showMetadataForm">
+                <div *ngFor="let param of algo.AlgoMetaDataInformation?.Parameters">
                 <app-edit-metadata-attribute class="meta-row edit-row" [form]="metadataForm.controls['Parameters']"
                                              [metadataProperty]="param"
                                              (onAssetPairChange)="onAssetPairChange($event)"
-                                             *ngFor="let param of algo.AlgoMetaDataInformation?.Parameters"></app-edit-metadata-attribute>
+                                             *ngIf="param.Visible"></app-edit-metadata-attribute>
+                </div>
                 <div *ngFor="let func of algo.AlgoMetaDataInformation?.Functions">
+                  <div *ngFor="let param of func.Parameters">
                   <app-edit-metadata-attribute class="meta-row edit-row"
                                                [form]="metadataForm.controls['Functions'].controls[func.Id]"
                                                [formName]="func.Id" [metadataProperty]="param"
-                                               *ngFor="let param of func.Parameters"></app-edit-metadata-attribute>
+                                               *ngIf="param.Visible"></app-edit-metadata-attribute>
+                  </div>
                 </div>
               </form>
 

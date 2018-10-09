@@ -5,4 +5,5 @@ export interface BaseAlgoParam {
   FunctionType?: string;
   Description?: string;
   PredefinedValues?: any[];
+  Visible?: boolean;
 }
