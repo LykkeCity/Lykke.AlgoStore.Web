@@ -82,13 +82,13 @@ namespace Lykke.AlgoStore.CSharp.Algo.Implemention.ExecutableClass
                 if (_crossSMAShortAbove)
                 {
                     contextCandle.Actions.Log($"Cross above and ADX occurred BUY => SMA_Short: {_currentSMAShort}, SMA_Long: {_currentSMALong}");
-                    contextCandle.Orders.Market.Create(OrderAction.Buy, _amountToBuy);
+                    contextCandle.Orders.Market.Create(OrderAction.Buy, _amountToBuy, contextCandle);
                 }
 
                 if (_crossSMAShortBelow)
                 {
                     contextCandle.Actions.Log($"Cross below and ADX occurred SELL => SMA_Short: {_currentSMAShort}, SMA_Long: {_currentSMALong}");
-                    contextCandle.Orders.Market.Create(OrderAction.Sell, _amountToBuy);
+                    contextCandle.Orders.Market.Create(OrderAction.Sell, _amountToBuy, contextCandle);
                 }
             }
 

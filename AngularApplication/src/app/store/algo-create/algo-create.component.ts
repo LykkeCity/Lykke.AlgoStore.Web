@@ -96,16 +96,23 @@ export class AlgoCreateComponent implements OnDestroy {
     }
 
     this.ready = false;
-    this.subscriptions.push(this.algoService.createAlgo({ ...this.algoForm.value, ...this.Algo, Content: btoa(this.Algo.Content) })
-      .subscribe((newAlgo) => {
+
+    try {
+      this.subscriptions.push(this.algoService.createAlgo({ ...this.algoForm.value, ...this.Algo, Content: btoa(this.Algo.Content) })
+        .subscribe((newAlgo) => {
+          this.ready = true;
+          this.algoSubmitted = true;
+          this.Algo.AlgoId = newAlgo.Id;
+        }, (error) => {
+          this.ready = true;
+          this.algoSubmitted = true;
+          this.algoErrors = error.DisplayMessage;
+        }));
+    } catch (e) {
       this.ready = true;
       this.algoSubmitted = true;
-      this.Algo.AlgoId = newAlgo.Id;
-    }, (error) => {
-      this.ready = true;
-      this.algoSubmitted = true;
-      this.algoErrors = error.DisplayMessage;
-    }));
+      this.algoErrors = e.message;
+    } 
   }
 
   initEditor(event) {
